@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useWorkSpace } from '@equinor/WorkSpace';
 
 import { FilterView } from '../../../../../packages/Filter/Components/FilterView/FilterView';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
@@ -15,9 +14,13 @@ import {
     VerticalDivider,
     RightSection,
 } from './quickFilterStyles';
-import { Chip } from '@equinor/eds-core-react';
+import { Button, Chip } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+import { useDataContext } from '../../Context/DataProvider';
+import { useWorkSpace } from '@equinor/WorkSpace';
+import { RefreshButton } from '../DataViewerHeader/RefreshButton/RefreshButton';
+import { ToggleHideFilterPopover } from './ToggleHideFilterPopover';
 
 export const QuickFilter = (): JSX.Element => {
     const [filterGroupOpen, setFilterGroupOpen] = useState<string | null>(null);
@@ -79,14 +82,22 @@ export const QuickFilter = (): JSX.Element => {
                                 />
                             </>
                         )}
+                        <div style={{ display: 'flex' }}>
+                            <FilterClearIcon
+                                isDisabled={!checkHasActiveFilters()}
+                                onClick={() => clearActiveFilters()}
+                            />
+                            <ToggleHideFilterPopover
+                                allFilters={filterGroups}
+                                setVisibleFilters={setVisibleFilterGroups}
+                                visibleFilters={visibleFilterGroups}
+                            />
 
-                        <FilterClearIcon
-                            isDisabled={!checkHasActiveFilters()}
-                            onClick={() => clearActiveFilters()}
-                        />
+                            <RefreshButton />
 
-                        <div onClick={() => setIsFilterExpanded((s) => !s)}>
-                            {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
+                            <div onClick={() => setIsFilterExpanded((s) => !s)}>
+                                {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
+                            </div>
                         </div>
                     </RightSection>
                 </SearchLine>

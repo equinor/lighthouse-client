@@ -1,6 +1,5 @@
 import { PowerBiFilter } from '../../../Types';
 import { FilterItems } from '../FilterItems';
-import { FilterTypeSelector } from '../FilterTypeSelector/FilterTypeSelector';
 import { FilterController } from '../PowerBIFilter';
 import { FilterItemsWrapper } from '../Styles';
 
@@ -14,11 +13,6 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
 
     return (
         <FilterItemsWrapper>
-            <FilterTypeSelector
-                allFilters={slicerFilters.map((s) => s.type)}
-                setVisibleFilters={setVisibleFilters}
-                visibleFilters={visibleFilters}
-            />
             {visibleFilters.map((groupName) => (
                 <FilterItems
                     controller={controller}
