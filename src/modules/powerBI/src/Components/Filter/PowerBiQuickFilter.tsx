@@ -53,20 +53,30 @@ export const PowerBIQuickFilter = ({ controller }: PowerBIQuickFilterProps): JSX
                                         />
                                     )
                             )}
+                            <FilterButtonContainer>
+                                <FilterClearIcon
+                                    isDisabled={!isAnyFiltersActive()}
+                                    onClick={async () => await resetFilter()}
+                                />
+
+                                <div onClick={() => setIsFilterExpanded(!isFilterExpanded)}>
+                                    {isFilterExpanded ? (
+                                        <FilterCollapseIcon />
+                                    ) : (
+                                        <FilterExpandIcon />
+                                    )}
+                                </div>
+                            </FilterButtonContainer>
                         </>
                     )}
-
-                    <FilterClearIcon
-                        isDisabled={!isAnyFiltersActive()}
-                        onClick={async () => await resetFilter()}
-                    />
-
-                    <div onClick={() => setIsFilterExpanded(!isFilterExpanded)}>
-                        {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
-                    </div>
                 </FilterBar>
             </CompactFilterWrapper>
             {isFilterExpanded && <ExpandedFilter controller={controller} />}
         </>
     );
 };
+
+const FilterButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;

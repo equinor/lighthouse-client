@@ -14,10 +14,9 @@ import {
     VerticalDivider,
     RightSection,
 } from './quickFilterStyles';
-import { Button, Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
-import { useDataContext } from '../../Context/DataProvider';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import { RefreshButton } from '../DataViewerHeader/RefreshButton/RefreshButton';
 import { ToggleHideFilterPopover } from './ToggleHideFilterPopover';
@@ -61,7 +60,6 @@ export const QuickFilter = (): JSX.Element => {
                 <SearchLine>
                     <LeftSection>
                         <FilterQuickSearch />
-                        <VerticalDivider />
                     </LeftSection>
                     <RightSection>
                         {!isFilterExpanded && (
@@ -87,11 +85,13 @@ export const QuickFilter = (): JSX.Element => {
                                 isDisabled={!checkHasActiveFilters()}
                                 onClick={() => clearActiveFilters()}
                             />
-                            <ToggleHideFilterPopover
-                                allFilters={filterGroups}
-                                setVisibleFilters={setVisibleFilterGroups}
-                                visibleFilters={visibleFilterGroups}
-                            />
+                            {isFilterExpanded && (
+                                <ToggleHideFilterPopover
+                                    allFilters={filterGroups}
+                                    setVisibleFilters={setVisibleFilterGroups}
+                                    visibleFilters={visibleFilterGroups}
+                                />
+                            )}
 
                             <RefreshButton />
 
