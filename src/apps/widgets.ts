@@ -2,30 +2,37 @@ import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
-    actionCenterSidesheetWidgetManifest,
+    actionCenterSidesheetWidgetManifest
 } from '../components/ActionCenter/ActionCenterSidesheet';
 import {
     htSidesheetWidgetComponent,
     htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetManifest,
+    ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
+import {
+    comPkgComponent,
+    comPkgManifest,
+    handoverCreatorComponent,
+    handoverCreatorManifest
+} from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
+import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
-    releaseCreatorManifest,
+    releaseCreatorManifest
 } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import {
     changeSideSheetWidgetComponent,
-    changeSideSheetWidgetManifest,
+    changeSideSheetWidgetManifest
 } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import {
     changeCreatorComponent,
-    changeCreatorManifest,
+    changeCreatorManifest
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
+import { tagWidgetComponent, tagWidgetManifest } from './Tags';
 import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
 
 const _widgets: WidgetManifest[] = [
@@ -39,7 +46,10 @@ const _widgets: WidgetManifest[] = [
     handoverCreatorManifest,
     workOrderCreatorManifest,
     releaseCreatorManifest,
+    comPkgManifest,
+    mcCreatorManifest,
     loopSidesheetWidgetManifest,
+    tagWidgetManifest,
 ];
 
 const _widgetComponents: ComponentManifest[] = [
@@ -54,6 +64,9 @@ const _widgetComponents: ComponentManifest[] = [
     workOrderCreatorComponent,
     workOrderCreatorComponent,
     releaseCreatorComponent,
+    comPkgComponent,
+    mcCreatorComponent,
+    tagWidgetComponent,
     loopSidesheetWidgetComponent,
 ];
 
