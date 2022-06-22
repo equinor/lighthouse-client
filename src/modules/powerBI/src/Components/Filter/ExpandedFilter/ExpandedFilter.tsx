@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { FilterCollapseIcon } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterCollapsIcon';
 import { FilterExpandIcon } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterExpandIcon';
@@ -26,7 +27,7 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
     } = controller;
 
     return (
-        <div style={{ display: 'flex', height: '250px' }}>
+        <ExpandedFilterWrapper>
             <FilterItemsWrapper>
                 {visibleFilters.map((groupName) => (
                     <FilterItems
@@ -40,6 +41,9 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
                 ))}
             </FilterItemsWrapper>
             <Sidebar>
+                <div onClick={() => setIsFilterExpanded(!isFilterExpanded)}>
+                    {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
+                </div>
                 <FilterClearIcon
                     isDisabled={!isAnyFiltersActive()}
                     onClick={async () => await resetFilter()}
@@ -50,20 +54,20 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
                     setVisibleFilters={setVisibleFilters}
                     visibleFilters={visibleFilters}
                 />
-
-                <div onClick={() => setIsFilterExpanded(!isFilterExpanded)}>
-                    {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
-                </div>
             </Sidebar>
-        </div>
+        </ExpandedFilterWrapper>
     );
 }
 
-const Sidebar = styled.div`
-    width: 30px;
+const ExpandedFilterWrapper = styled.div`
+    display: flex;
     height: 250px;
+    border-bottom: 1px solid ${tokens.colors.ui.background__medium.hex};
+`;
+
+const Sidebar = styled.div`
+    width: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
-    padding: 20px 20px;
 `;

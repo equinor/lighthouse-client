@@ -28,7 +28,7 @@ export const ToggleHideFilterPopover = ({
     return (
         <>
             <div ref={ref}>
-                <Button variant="ghost_icon" onClick={() => setIsOpen(true)}>
+                <Button title="Add filters" variant="ghost_icon" onClick={() => setIsOpen(true)}>
                     <Icon
                         name="playlist_add"
                         color={tokens.colors.interactive.primary__resting.hex}

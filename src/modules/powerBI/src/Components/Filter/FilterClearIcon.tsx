@@ -7,7 +7,7 @@ interface FilterClearIconProps {
 }
 
 export const FilterClearIcon = ({ onClick, isDisabled }: FilterClearIconProps): JSX.Element => (
-    <Button variant="ghost_icon" onClick={onClick} disabled={isDisabled}>
+    <Button title="Clear filters" variant="ghost_icon" onClick={onClick} disabled={isDisabled}>
         <svg
             width="24"
             height="24"

@@ -24,6 +24,7 @@ export const FilterItemsWrapper = styled.div`
     height: 100%;
     overflow-x: auto;
     overflow-y: hidden;
+    padding-left: 12px;
 `;
 
 export const MenuItems = styled.div`

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const CompactFilterWrapper = styled.div`
     height: 50px;
-    width: 100%;
+    width: 100vw;
     background-color: ${tokens.colors.ui.background__light.hex};
 `;
 

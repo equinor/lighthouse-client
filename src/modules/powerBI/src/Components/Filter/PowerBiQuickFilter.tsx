@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { FilterClearIcon } from '../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
 import { FilterCollapseIcon } from '../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterCollapsIcon';
@@ -14,7 +15,6 @@ interface PowerBIQuickFilterProps {
 }
 
 const FilterBar = styled.div`
-    padding-right: 12px;
     display: flex;
     justify-content: flex-end;
     gap: 2em;
@@ -33,10 +33,10 @@ export const PowerBIQuickFilter = ({ controller }: PowerBIQuickFilterProps): JSX
     } = controller;
 
     return (
-        <>
-            <CompactFilterWrapper>
-                <FilterBar>
-                    {!isFilterExpanded && (
+        <FilterWrapper>
+            {!isFilterExpanded && (
+                <CompactFilterWrapper>
+                    <FilterBar>
                         <>
                             {slicerFilters.map(
                                 (s, i) =>
@@ -68,11 +68,11 @@ export const PowerBIQuickFilter = ({ controller }: PowerBIQuickFilterProps): JSX
                                 </div>
                             </FilterButtonContainer>
                         </>
-                    )}
-                </FilterBar>
-            </CompactFilterWrapper>
+                    </FilterBar>
+                </CompactFilterWrapper>
+            )}
             {isFilterExpanded && <ExpandedFilter controller={controller} />}
-        </>
+        </FilterWrapper>
     );
 };
 
@@ -80,3 +80,5 @@ const FilterButtonContainer = styled.div`
     display: flex;
     align-items: center;
 `;
+
+const FilterWrapper = styled.div``;

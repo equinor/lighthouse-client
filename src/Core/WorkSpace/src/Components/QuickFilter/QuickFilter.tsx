@@ -55,7 +55,7 @@ export const QuickFilter = (): JSX.Element => {
         );
 
     return (
-        <>
+        <div>
             <CompactFilterWrapper>
                 <SearchLine>
                     <LeftSection>
@@ -81,10 +81,6 @@ export const QuickFilter = (): JSX.Element => {
                             </>
                         )}
                         <div style={{ display: 'flex' }}>
-                            <FilterClearIcon
-                                isDisabled={!checkHasActiveFilters()}
-                                onClick={() => clearActiveFilters()}
-                            />
                             {isFilterExpanded && (
                                 <ToggleHideFilterPopover
                                     allFilters={filterGroups}
@@ -92,6 +88,10 @@ export const QuickFilter = (): JSX.Element => {
                                     visibleFilters={visibleFilterGroups}
                                 />
                             )}
+                            <FilterClearIcon
+                                isDisabled={!checkHasActiveFilters()}
+                                onClick={() => clearActiveFilters()}
+                            />
 
                             <RefreshButton />
 
@@ -109,7 +109,7 @@ export const QuickFilter = (): JSX.Element => {
                     groups={filterGroups}
                 />
             )}
-        </>
+        </div>
     );
 };
 
