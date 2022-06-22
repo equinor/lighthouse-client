@@ -2,12 +2,12 @@ import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div<{ selected: boolean }>`
+export const Wrapper = styled.div<{ isSelected: boolean }>`
     display: flex;
     flex-direction: column;
     padding: 0.5rem 1rem;
-    background: ${({ selected }) =>
-        selected ? tokens.colors.interactive.text_highlight.hex : 'none'};
+    background: ${({ isSelected }) =>
+        isSelected ? tokens.colors.interactive.text_highlight.hex : 'none'};
 `;
 export const Title = styled(Typography)`
     font-style: normal;

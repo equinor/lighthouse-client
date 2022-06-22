@@ -35,24 +35,6 @@ export const handoverCreatorManifest = creator('SidesheetManifest');
 export const handoverCreatorComponent = creator('SidesheetComponentManifest');
 export const handoverResolverFunction = creator('ResolverFunction');
 
-const creatorComPkg = setupWorkspaceSidesheet<HandoverPackage, 'comPkg'>({
-    id: 'comPkg',
-    color: '#0084C4',
-    component: HandoverSideSheet,
-    props: {
-        objectIdentifier: 'commpkgNo',
-        parentApp: 'handover',
-        function: async (id: string) => {
-            const items = await responseParser(await responseAsync());
-            return items.find((item) => item.commpkgNo === id);
-        },
-    },
-});
-
-export const comPkgManifest = creatorComPkg('SidesheetManifest');
-export const comPkgComponent = creatorComPkg('SidesheetComponentManifest');
-export const comPkgResolverFunction = creatorComPkg('ResolverFunction');
-
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',

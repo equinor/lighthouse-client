@@ -1,6 +1,7 @@
 import { Search } from '@equinor/eds-core-react';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowNavigation } from 'react-arrow-navigation';
+import { useNavigate } from 'react-router';
 import { appsSearchMapper } from '../Config/Apps/appsSearchMapper';
 import { appsSearchRequest } from '../Config/Apps/appsSearchRequest';
 import { proCoSysSearchMapper } from '../Config/ProCoSys/proCoSysSearchMapper';
@@ -19,6 +20,7 @@ export const GlobalSearch = (): JSX.Element => {
     const [searchInput, setSearchInput] = useState('');
     const [placeHolderText, setPlaceholderText] = useState(SEARCH_BLUR);
     const searchRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
 
     const { searchResult, search, registerSearchItem } = useGlobalSearch();
 
@@ -91,7 +93,7 @@ export const GlobalSearch = (): JSX.Element => {
                                                 description={item.description}
                                                 searchText={searchInput}
                                                 action={(id: string) => {
-                                                    searchType.action(id, item);
+                                                    searchType.action(id, item, navigate);
                                                     setSearchInput('');
                                                 }}
                                             />

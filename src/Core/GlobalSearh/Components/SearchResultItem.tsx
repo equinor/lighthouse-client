@@ -41,7 +41,7 @@ export const SearchResultItem = ({
     return (
         <Wrapper
             onClick={handleOnMouseClick}
-            selected={selected}
+            isSelected={selected}
             onKeyDown={handleOnEnterKeyPress}
             ref={ref}
             tabIndex={tabIndex}

@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 
 import { Tag } from '../Types/tag';
-import { SidesheetBanner, TextItem } from './Banner';
+import { SidesheetBanner } from './Banner';
 import { SidesheetHeaderContent } from './Header';
+import { TextItem } from './TextItem';
 
 interface SidesheetWrapperProps {
     item: Tag;

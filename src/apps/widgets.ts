@@ -10,12 +10,7 @@ import {
     ReleaseControlSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import {
-    comPkgComponent,
-    comPkgManifest,
-    handoverCreatorComponent,
-    handoverCreatorManifest
-} from './Handover';
+import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
@@ -46,7 +41,7 @@ const _widgets: WidgetManifest[] = [
     handoverCreatorManifest,
     workOrderCreatorManifest,
     releaseCreatorManifest,
-    comPkgManifest,
+
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
     tagWidgetManifest,
@@ -64,7 +59,7 @@ const _widgetComponents: ComponentManifest[] = [
     workOrderCreatorComponent,
     workOrderCreatorComponent,
     releaseCreatorComponent,
-    comPkgComponent,
+
     mcCreatorComponent,
     tagWidgetComponent,
     loopSidesheetWidgetComponent,

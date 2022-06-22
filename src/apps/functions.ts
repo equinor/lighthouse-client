@@ -3,7 +3,7 @@ import {
     htResolverFunction,
     rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { comPkgResolverFunction, handoverResolverFunction } from './Handover';
+import { handoverResolverFunction } from './Handover';
 import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
@@ -24,7 +24,6 @@ export const functions: FunctionManifest[] = [
     workOrderResolverFunction,
     mcResolverFunction,
     releaseResolverFunction,
-    comPkgResolverFunction,
     mcResolverFunction,
     tagResolverFunction,
     loopResolverFunction,

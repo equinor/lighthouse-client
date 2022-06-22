@@ -1,3 +1,5 @@
+import { NavigateFunction } from 'react-router';
+
 export interface SearchItem {
     key: string;
     id: string;
@@ -20,7 +22,7 @@ export interface SearchResult {
     title: string;
     color: string;
     count?: number;
-    action(id: string, item: SearchItem): void;
+    action(id: string, item: SearchItem, navigate: NavigateFunction): void;
     items: SearchItem[];
 }
 
