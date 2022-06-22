@@ -1,15 +1,10 @@
 import { Menu, Button, Search } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { FilterValueType } from '../../../../../../packages/Filter/Types';
 import { FilterItemCheckbox } from '../FilterItemCheckbox';
-import {
-    ClearButtonWrapper,
-    FilterItemList,
-    MenuWrapper,
-    SearchHolder,
-    VerticalLine,
-} from './groupStyles';
+import { ClearButtonWrapper, MenuWrapper, SearchHolder, VerticalLine } from './groupStyles';
 
 interface FilterGroupPopoverMenuProps {
     anchorEl: HTMLElement | null | undefined;
@@ -91,14 +86,14 @@ export const FilterGroupPopoverMenu = ({
                     </>
                 )}
 
-                <FilterItemList>
+                <List>
                     {getValuesMatchingSearchText().map((value) => (
                         <FilterItemCheckbox
-                            ValueRender={() => CustomRender(value)}
-                            handleFilterItemLabelClick={() => handleFilterItemLabelClick(value)}
                             key={value}
+                            ValueRender={() => CustomRender(value)}
                             filterValue={value}
                             handleFilterItemClick={() => handleFilterItemClick(value)}
+                            handleFilterItemLabelClick={() => handleFilterItemLabelClick(value)}
                             isChecked={isChecked(value)}
                             count={getCountForFilterValue(
                                 { name: groupName, values },
@@ -107,7 +102,7 @@ export const FilterGroupPopoverMenu = ({
                             )}
                         />
                     ))}
-                </FilterItemList>
+                </List>
                 <VerticalLine />
                 <ClearButtonWrapper>
                     <Button onClick={markAllValuesActive} variant="ghost">
@@ -118,3 +113,10 @@ export const FilterGroupPopoverMenu = ({
         </Menu>
     );
 };
+
+const List = styled.div`
+    max-height: 250px;
+    padding: 8px 8px;
+    overflow: scroll;
+    height: auto;
+`;

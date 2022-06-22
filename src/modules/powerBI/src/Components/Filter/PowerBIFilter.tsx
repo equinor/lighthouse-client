@@ -1,5 +1,5 @@
 import { Report } from 'powerbi-client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../Types';
 import {
     createAdvancedPbiFilter,
@@ -10,7 +10,7 @@ import {
 import { PowerBIQuickFilter } from './PowerBiQuickFilter';
 
 export interface FilterController {
-    markAllValuesActive: (group: PowerBiFilter) => Promise<void>;
+    deselectAllValues: (group: PowerBiFilter, filter: PowerBiFilterItem) => Promise<void>;
     handleChangeGroup: (filter: PowerBiFilter) => Promise<void>;
     handleOnSelectAll: (
         group: PowerBiFilter,
@@ -87,7 +87,6 @@ export const PowerBIFilter = ({
                 [filter.type]: allVisibleFilterValues,
             }));
             await group.slicer?.setSlicerState({ filters: slicerFilter });
-            // }
         } catch (errors) {
             console.error("Couldn't select all filters", errors);
         }
@@ -163,6 +162,17 @@ export const PowerBIFilter = ({
         }
     };
 
+    const deselectAllValues = useCallback(
+        async (group: PowerBiFilter, filter: PowerBiFilterItem) => {
+            setActiveFilters((prev) => ({
+                ...prev,
+                [filter.type]: [],
+            }));
+            await group.slicer.setSlicerState({ filters: [] });
+        },
+        []
+    );
+
     /**
      * Effect should be triggered when report has first loaded,
      * initializing all possible filters and also checking for default active filters.
@@ -209,7 +219,7 @@ export const PowerBIFilter = ({
         handleChangeGroup,
         handleOnChange,
         handleOnSelectAll,
-        markAllValuesActive,
+        deselectAllValues,
         setIsFilterExpanded,
         isFilterExpanded,
         resetFilter,
@@ -222,6 +232,3 @@ export const PowerBIFilter = ({
     if (!isFilterActive) return null;
     return <PowerBIQuickFilter controller={controller} />;
 };
-async function markAllValuesActive(group: PowerBiFilter): Promise<void> {
-    await group.slicer.setSlicerState({ filters: [] });
-}
