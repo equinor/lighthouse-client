@@ -3,6 +3,7 @@ import { LoopContent } from '../../types';
 import { FamRequest } from '../helpers/fam';
 export const columnNames = [
     'Facility',
+    'ChecklistID',
     'LoopId',
     'ContentId',
     'Register',
@@ -11,10 +12,6 @@ export const columnNames = [
     'MechanicalCompletionPackageNo',
     'CommissioningPackageNo',
     'Description',
-    'PlannedCompletionDate',
-    'ActualCompletionDate',
-    'RemainingManHours',
-    'ChecklistID',
 ];
 export const getLoopContent = async (
     famFilter: FamRequest,
