@@ -96,7 +96,7 @@ const ClientTopBar = (): JSX.Element => {
                     >
                         <Icon name="bookmarks" />
                     </Action>
-                    <GlobalSearch />
+                    {clientEnv === 'dev' && <GlobalSearch />}
                 </Icons>
             </TopBar.Actions>
             {/* <SupportButton /> */}
