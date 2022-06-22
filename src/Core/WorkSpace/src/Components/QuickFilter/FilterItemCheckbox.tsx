@@ -1,5 +1,6 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { VirtualItem } from 'react-virtual';
 import styled from 'styled-components';
 import { Count } from '../../../../../packages/Filter/Components/FilterItem/FilterItem-Styles';
 
@@ -12,6 +13,7 @@ interface FilterItemCheckboxProps {
     isChecked: boolean;
     ValueRender: () => JSX.Element;
     count?: number;
+    virtualItem: VirtualItem;
 }
 
 export const FilterItemCheckbox = ({
@@ -21,9 +23,16 @@ export const FilterItemCheckbox = ({
     isChecked,
     handleFilterItemLabelClick,
     ValueRender,
+    virtualItem,
 }: FilterItemCheckboxProps): JSX.Element => {
     return (
-        <FilterItemWrap key={filterValue}>
+        <FilterItemWrap
+            style={{
+                transform: `translateY(${virtualItem.start}px)`,
+                height: `${virtualItem.size}px`,
+            }}
+            key={filterValue}
+        >
             <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
@@ -45,6 +54,10 @@ export const FilterItemWrap = styled.div`
     display: grid;
     align-items: center;
     padding-top: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     padding-bottom: 2px;
     > span {
         padding: 0px;

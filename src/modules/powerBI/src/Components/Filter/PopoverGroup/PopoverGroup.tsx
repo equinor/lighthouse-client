@@ -94,7 +94,7 @@ export const PowerBiGroupPopoverMenu = ({
                                 </>
                             )}
 
-                            <FilterItemList>
+                            <FilterItemList items={getValuesMatchingSearchText().length}>
                                 <VirtualList
                                     checkedValues={checkedValues}
                                     items={getValuesMatchingSearchText()}

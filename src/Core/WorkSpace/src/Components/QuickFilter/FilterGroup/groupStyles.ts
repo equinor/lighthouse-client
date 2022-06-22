@@ -43,9 +43,8 @@ export const MenuWrapper = styled.div`
     width: 200px;
 `;
 
-export const FilterItemList = styled.div`
-    max-height: 250px;
-    overflow: scroll;
+export const FilterItemList = styled.div<{ items: number }>`
+    height: ${({ items }) => (items > 10 ? '300px' : `${items * 22 + 16}px`)};
     padding: 8px 8px;
 
     ::-webkit-scrollbar-thumb {

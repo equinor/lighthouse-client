@@ -26,7 +26,7 @@ export function VirtualList({
     });
 
     return (
-        <div ref={ref}>
+        <div style={{ height: '100%', overflowY: 'scroll', overflowX: 'hidden' }} ref={ref}>
             <VirtualRowWrapper
                 style={{
                     height: `${rowVirtualizer.totalSize}px`,
@@ -36,6 +36,7 @@ export function VirtualList({
                     const item = items[virtualRow.index];
                     return (
                         <FilterItemValue
+                            virtualItem={virtualRow}
                             key={item.value}
                             ValueRender={() => <div>{item.value}</div>}
                             handleFilterItemLabelClick={() => onClickFilter(item, true)}
