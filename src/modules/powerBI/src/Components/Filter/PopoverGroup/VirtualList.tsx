@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
+import { VirtualFilterItemCheckbox } from '@equinor/WorkSpace';
 import { useRef, useCallback, memo } from 'react';
 import { useVirtual } from 'react-virtual';
 import styled from 'styled-components';
-import { VirtualFilterItemCheckbox } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterItemCheckbox';
 import { PowerBiFilterItem, ActiveFilter } from '../../../Types';
 
 interface VirtualListProps {

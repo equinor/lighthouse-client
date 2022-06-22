@@ -1,6 +1,6 @@
 import { Icon, Search } from '@equinor/eds-core-react';
 import React, { useState } from 'react';
-import { FilterClearIcon } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
+import { FilterClearIcon } from '../FilterClearIcon';
 import { FilterController } from '../PowerBIFilter';
 import { Container, SearchButton, Title } from './Styles';
 

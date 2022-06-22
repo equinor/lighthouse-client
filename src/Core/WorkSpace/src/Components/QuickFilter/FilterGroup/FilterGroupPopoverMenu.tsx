@@ -1,17 +1,10 @@
 import { Menu, Button, Search } from '@equinor/eds-core-react';
-import { memo, useCallback, useRef, useState } from 'react';
-import { useVirtual } from 'react-virtual';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { FilterValueType } from '../../../../../../packages/Filter/Types';
 import { FilterItemCheckbox } from '../FilterItemCheckbox';
-import {
-    ClearButtonWrapper,
-    FilterItemList,
-    MenuWrapper,
-    SearchHolder,
-    VerticalLine,
-} from './groupStyles';
+import { ClearButtonWrapper, MenuWrapper, SearchHolder, VerticalLine } from './groupStyles';
 
 interface FilterGroupPopoverMenuProps {
     anchorEl: HTMLElement | null | undefined;
@@ -94,21 +87,21 @@ export const FilterGroupPopoverMenu = ({
                 )}
 
                 <List>
-                    <VirtualList
-                        items={getValuesMatchingSearchText()}
-                        rowLength={getValuesMatchingSearchText().length}
-                        isChecked={isChecked}
-                        handleFilterItemLabelClick={(value) => handleFilterItemLabelClick(value)}
-                        handleFilterItemClick={(value) => handleFilterItemClick(value)}
-                        valueRender={(value) => CustomRender(value)}
-                        count={(value) =>
-                            getCountForFilterValue(
+                    {getValuesMatchingSearchText().map((value) => (
+                        <FilterItemCheckbox
+                            key={value}
+                            ValueRender={() => CustomRender(value)}
+                            filterValue={value}
+                            handleFilterItemClick={() => handleFilterItemClick(value)}
+                            handleFilterItemLabelClick={() => handleFilterItemLabelClick(value)}
+                            isChecked={isChecked(value)}
+                            count={getCountForFilterValue(
                                 { name: groupName, values },
                                 value,
                                 valueFormatter
-                            )
-                        }
-                    />
+                            )}
+                        />
+                    ))}
                 </List>
                 <VerticalLine />
                 <ClearButtonWrapper>
@@ -127,37 +120,3 @@ const List = styled.div`
     overflow: scroll;
     height: auto;
 `;
-
-interface VirtualListProps {
-    items: FilterValueType[];
-    rowLength: number;
-    isChecked: (value: FilterValueType) => boolean;
-    handleFilterItemLabelClick: (value: FilterValueType) => void;
-    handleFilterItemClick: (value: FilterValueType) => void;
-    count: (value: FilterValueType) => number;
-    valueRender: (value: FilterValueType) => JSX.Element;
-}
-const VirtualList = ({
-    items,
-    handleFilterItemClick,
-    handleFilterItemLabelClick,
-    isChecked,
-    count,
-    valueRender,
-}: VirtualListProps) => {
-    return (
-        <>
-            {items.map((s) => (
-                <FilterItemCheckbox
-                    key={s}
-                    ValueRender={() => valueRender(s)}
-                    filterValue={s}
-                    handleFilterItemClick={() => handleFilterItemClick(s)}
-                    handleFilterItemLabelClick={() => handleFilterItemLabelClick(s)}
-                    isChecked={isChecked(s)}
-                    count={count(s)}
-                />
-            ))}
-        </>
-    );
-};

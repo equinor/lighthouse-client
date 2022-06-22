@@ -1,11 +1,11 @@
-import { Menu, Search } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import { useRef, useState } from 'react';
-import { ClickableIcon } from '../../../../../packages/Components/Icon';
+import { Search } from '@equinor/eds-core-react';
+import { useState } from 'react';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
+import { SearchPickerDropdown } from './SearchPickerDropdown';
+import { getPlaceholderText } from './Utils/getSearchPlaceholderText';
 
-type SearchMode = 'id/desc' | 'all';
+export type SearchMode = 'id/desc' | 'all';
 
 export const FilterQuickSearch = (): JSX.Element => {
     const {
@@ -17,14 +17,6 @@ export const FilterQuickSearch = (): JSX.Element => {
     const { searchOptions = [] } = useWorkSpace();
 
     const [searchMode, setSearchMode] = useState<SearchMode>('id/desc');
-
-    const getPlaceholderText = () => {
-        if (searchMode === 'all') {
-            return 'Free text search';
-        } else {
-            return 'Search for id or title';
-        }
-    };
 
     function handleClear(e) {
         if (!e.isTrusted) {
@@ -57,7 +49,7 @@ export const FilterQuickSearch = (): JSX.Element => {
             <Search
                 size={50}
                 onChange={handleClear}
-                placeholder={getPlaceholderText()}
+                placeholder={getPlaceholderText(searchMode)}
                 onInput={handleInput}
                 value={searchText}
                 onKeyPress={(e) => {
@@ -75,44 +67,3 @@ export const FilterQuickSearch = (): JSX.Element => {
         </>
     );
 };
-
-interface MenuItem {
-    title: string;
-    onCLick: () => void;
-}
-interface SearchPickerDropdownProps {
-    menuItems: MenuItem[];
-}
-
-export function SearchPickerDropdown({ menuItems }: SearchPickerDropdownProps): JSX.Element {
-    const ref = useRef<HTMLDivElement>(null);
-    const [isOpen, setIsOpen] = useState(false);
-    return (
-        <>
-            <div ref={ref}>
-                <ClickableIcon
-                    name="chevron_down"
-                    onClick={() => setIsOpen(true)}
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            </div>
-            {isOpen && (
-                <Menu
-                    id="menu-complex"
-                    aria-labelledby="anchor-complex"
-                    open={true}
-                    anchorEl={ref.current}
-                    onClose={() => setIsOpen(false)}
-                    placement={'bottom-end'}
-                    title="Search for.."
-                >
-                    {menuItems.map((s) => (
-                        <Menu.Item key={s.title} onClick={s.onCLick}>
-                            {s.title}
-                        </Menu.Item>
-                    ))}
-                </Menu>
-            )}
-        </>
-    );
-}
