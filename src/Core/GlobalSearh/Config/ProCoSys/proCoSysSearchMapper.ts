@@ -1,7 +1,8 @@
-import { SearchItem, SearchResult } from '../Service/SearchApi';
-import { SearchItems, SearchResponse } from '../Types/ProcoSysSearch';
+import { SearchResult } from '../../Service/SearchApi';
+import { SearchResponse } from './types';
+import { searchPushItem } from './utils';
 
-export function searchMapper(response?: SearchResponse): SearchResult[] {
+export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] {
     if (!response) return [];
 
     return response.items.reduce((acc, item) => {
@@ -90,33 +91,4 @@ export function searchMapper(response?: SearchResponse): SearchResult[] {
         }
         return acc;
     }, [] as SearchResult[]);
-}
-
-function searchPushItem(
-    acc: SearchResult[],
-    item: SearchItems,
-    config: {
-        type: string;
-        title: string;
-        color: string;
-        mapper(item: SearchItems): SearchItem;
-        action(id: string): void;
-    }
-) {
-    const current = acc.find((i) => i.type === config.type);
-
-    if (current) {
-        current.items.push(config.mapper(item));
-        current.count = current?.count || 0 + 1;
-    } else {
-        acc.push({
-            type: config.type,
-            title: config.title,
-            color: config.color,
-            action: config.action,
-            count: 0,
-            items: [config.mapper(item)],
-        });
-    }
-    return acc;
 }

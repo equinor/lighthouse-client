@@ -25,12 +25,16 @@ export interface SearchResult {
 }
 
 /* Search Request Function, can be a async call to an api or call to localDB/ indexDB */
-export type SearchRequest<T> = (searchText: string) => Promise<T[] | undefined> | T[] | undefined;
+export type SearchRequest<T> = (
+    searchText: string
+) => Promise<T[] | undefined> | Promise<T | undefined> | T[] | T | undefined;
 
 /*The item used to register a search*/
 export interface SearchConfig<T> {
     type: string;
-    searchMapper: (data: T[] | T) => SearchResult[] | SearchResult;
+    searchMapper:
+        | ((data?: T[]) => SearchResult[] | SearchResult)
+        | ((data?: T) => SearchResult[] | SearchResult);
     searchRequest: SearchRequest<T>;
 }
 
@@ -97,7 +101,7 @@ export class Search {
 
     private dispatchSearch = async (
         searchId: number,
-        searchItem: SearchConfig<unknown>
+        searchItem: SearchConfig<any>
     ): Promise<void> => {
         const results = searchItem.searchMapper(await searchItem.searchRequest(this.searchText));
         if (searchId === this.searchId)

@@ -1,4 +1,4 @@
-import { AppManifest, isProduction } from '@equinor/lighthouse-portal-client';
+import { isProduction, readClientRegistry } from '@equinor/lighthouse-portal-client';
 export interface AppSearchItem {
     key: string;
     title: string;
@@ -8,7 +8,9 @@ export interface AppSearchItem {
     group: string;
 }
 
-export function searchApps(apps: AppManifest[], searchString: string): AppSearchItem[] {
+export function appsSearchRequest(searchString: string): AppSearchItem[] {
+    const { apps } = readClientRegistry();
+
     if (searchString.length === 0) return [];
     return apps
         .sort((a, b) => a.title.localeCompare(b.title))
