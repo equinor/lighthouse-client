@@ -386,3 +386,7 @@ export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
     ];
     return fullReleaseControlTemplate;
 }
+
+export const updateStep = (stepName: 'scope' | 'workflow') => {
+    updateAtom({ step: stepName });
+};

@@ -1,20 +1,43 @@
+import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-
-export const ButtonContainer = styled.div`
-    flex-direction: row;
-    gap: 0.5em;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 1em;
-`;
 
 export const ActionBar = styled.div`
     height: 64px;
     width: 100%;
     border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
     background-color: white;
+`;
+
+export const ButtonContainer = styled.div`
+    flex-direction: row;
+    gap: 0.5em;
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    float: right;
+`;
+
+export const NavigationButton = styled.div`
+    flex-direction: row;
+    gap: 0.5em;
+    display: flex;
+    align-items: center;
+    float: left;
+    padding: 1em;
+    float: left;
+`;
+
+export const SelectionRow = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+export const NewStepButton = styled(Button)`
+    margin-bottom: 20px;
+    margin-left: 60px;
+    margin-top: 16px;
+    width: 100px;
 `;
 
 export const FlexColumn = styled.div`
@@ -45,6 +68,7 @@ export const FormWrapper = styled.form`
     grid-column: 2;
     grid-template-columns: repeat(auto-fit, minmax(675px, 1fr));
     gap: 2em;
+    margin-bottom: 10px;
 `;
 
 export const AttachmentName = styled.a`

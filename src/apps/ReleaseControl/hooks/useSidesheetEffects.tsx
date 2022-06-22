@@ -48,27 +48,27 @@ export function useSidesheetEffects(
         menuItems.push(
             isVoided
                 ? {
-                    label: 'Unvoid',
-                    onClick: () => unVoidRequestMutation({ releaseControlId }),
-                    isDisabled: !canUnVoid,
-                    icon: (
-                        <Icon
-                            name="restore_from_trash"
-                            color={tokens.colors.interactive.primary__resting.hex}
-                        />
-                    ),
-                }
+                      label: 'Unvoid',
+                      onClick: () => unVoidRequestMutation({ releaseControlId }),
+                      isDisabled: !canUnVoid,
+                      icon: (
+                          <Icon
+                              name="restore_from_trash"
+                              color={tokens.colors.interactive.primary__resting.hex}
+                          />
+                      ),
+                  }
                 : {
-                    label: 'Void',
-                    onClick: () => voidRequestMutation({ releaseControlId }),
-                    isDisabled: !canVoid,
-                    icon: (
-                        <Icon
-                            name="delete_to_trash"
-                            color={tokens.colors.interactive.primary__resting.hex}
-                        />
-                    ),
-                }
+                      label: 'Void',
+                      onClick: () => voidRequestMutation({ releaseControlId }),
+                      isDisabled: !canVoid,
+                      icon: (
+                          <Icon
+                              name="delete_to_trash"
+                              color={tokens.colors.interactive.primary__resting.hex}
+                          />
+                      ),
+                  }
         );
         return menuItems;
     };
@@ -79,7 +79,7 @@ export function useSidesheetEffects(
 
     useEffect(() => {
         actions.setTitle(`RC${sequenceNumber} ${title}`);
-    }, [id]);
+    }, [id, title]);
 
     /** Only run once */
     useEffect(() => {
