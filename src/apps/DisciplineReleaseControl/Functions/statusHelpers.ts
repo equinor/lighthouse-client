@@ -513,8 +513,8 @@ export function getPipetestStatusForStep(checkLists: CheckList[]): string {
 
 export const getYearAndWeekFromDate = (date: Date): string => {
     const dateTime = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate());
-    if (dateTime.weekYear === 1) return DATE_BLANKSTRING;
-    return `${dateTime.weekYear}-${dateTime.weekNumber}`;
+    if (dateTime.year === 1) return DATE_BLANKSTRING;
+    return `${dateTime.year}-${dateTime.weekNumber}`;
 };
 
 export const DATE_BLANKSTRING = 'No Date';
@@ -617,4 +617,24 @@ export function getChecklistStepName(step: CheckListStepTag): string {
             break;
     }
     return stepName;
+}
+
+export function getCheckListStatusSortValue(checkList: CheckList): number {
+    switch (checkList.status) {
+        case CheckListStatus.Outstanding:
+            return 1;
+        case CheckListStatus.PunchAError:
+            return 2;
+        case CheckListStatus.PunchBError:
+            return 3;
+        case CheckListStatus.OK:
+            return 4;
+        default:
+            return 5;
+    }
+}
+
+export function sortCheckListsForTable(checkLists: CheckList[]): CheckList[] {
+    checkLists.sort((a, b) => getCheckListStatusSortValue(a) - getCheckListStatusSortValue(b));
+    return checkLists;
 }

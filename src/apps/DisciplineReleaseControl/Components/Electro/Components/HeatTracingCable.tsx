@@ -23,7 +23,7 @@ export const HeatTracingCable = ({
     eleNetwork,
     htCable,
 }: HeatTracingCableProps): JSX.Element => {
-    const { onSelect } = useWorkSpace();
+    const { onGroupeSelect } = useWorkSpace();
     const pipetestsOnHTCable = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === value));
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
     return (
@@ -31,21 +31,21 @@ export const HeatTracingCable = ({
             <HeatTracingCableNode htCount={pipetestsOnHTCable.length}>
                 {htCable === value ? (
                     <ElectroViewHTHighlight
-                        onClick={() =>
+                        onClick={() => {
                             value &&
-                            onSelect &&
-                            onSelect(getHTSidesheetObjectForHtCable(value, pipetests))
-                        }
+                                onGroupeSelect &&
+                                onGroupeSelect(getHTSidesheetObjectForHtCable(value, pipetests));
+                        }}
                     >
                         {value}
                     </ElectroViewHTHighlight>
                 ) : (
                     <ElectroViewNodeValueText
-                        onClick={() =>
+                        onClick={() => {
                             value &&
-                            onSelect &&
-                            onSelect(getHTSidesheetObjectForHtCable(value, pipetests))
-                        }
+                                onGroupeSelect &&
+                                onGroupeSelect(getHTSidesheetObjectForHtCable(value, pipetests));
+                        }}
                         clickable={true}
                     >
                         {value}

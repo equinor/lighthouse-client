@@ -2,7 +2,7 @@ import { Tabs } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
 export const ThreeDModel = styled.div`
-    height: ${() => window.innerHeight - 150 + 'px'};
+    height: ${() => window.innerHeight - 250 + 'px'};
 `;
 
 export const Panel = styled(Tabs.Panel)`
@@ -16,5 +16,5 @@ export const MessageWrapper = styled.div`
     align-items: center;
     background-color: #fff;
     width: 100%;
-    height: ${() => window.innerHeight - 150 + 'px'};
+    height: ${() => window.innerHeight - 500 + 'px'};
 `;

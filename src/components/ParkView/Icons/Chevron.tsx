@@ -8,3 +8,7 @@ export const ChevronUp = (): JSX.Element => (
 export const ChevronDown = (): JSX.Element => (
     <Icon name={'chevron_down'} color={tokens.colors.interactive.primary__resting.rgba} />
 );
+
+export const ChevronRight = (): JSX.Element => (
+    <Icon name={'chevron_right'} color={tokens.colors.interactive.primary__resting.rgba} />
+);

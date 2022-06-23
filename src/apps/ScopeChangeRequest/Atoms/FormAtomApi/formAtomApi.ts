@@ -13,7 +13,7 @@ interface ScopeChangeReferences {
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
-    punchListIds: number[];
+    punchListItemIds: number[];
 }
 
 interface FormAtomApi extends DefaultAtomAPI<ScopeChangeFormModel> {
@@ -52,6 +52,10 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             materialsIdentifiedInStorage: false,
             materialsNote: '',
             materialsToBeBoughtByContractor: false,
+            originatorId: null,
+            punchListItemIds: [],
+            attachmentsToDuplicate: [],
+            revisionAttachments: [],
         }),
 }));
 
@@ -73,7 +77,7 @@ function unPackReferences(api: DefaultAtomAPI<ScopeChangeFormModel>): ScopeChang
         documentNumbers: unpackByType(references, 'document'),
         systemIds: unpackByType(references, 'system') as unknown as number[],
         tagNumbers: unpackByType(references, 'tag'),
-        punchListIds: unpackByType(references, 'punch').map((s): number => Number(s)),
+        punchListItemIds: unpackByType(references, 'punch').map((s): number => Number(s)),
     };
 }
 
@@ -84,7 +88,11 @@ function unpackByType(list: TypedSelectOption[], referenceType: ReferenceType): 
 function prepareRequest(): ScopeChangeCreateEditModel {
     const { readAtomValue, unPackReferences } = scopeChangeFormAtomApi;
 
-    const newReq = { ...readAtomValue(), ...unPackReferences() };
+    const newReq = {
+        attachmentsToDuplicate: [],
+        ...readAtomValue(),
+        ...unPackReferences(),
+    };
     newReq.scopeId = newReq?.scope?.id;
     newReq.changeCategoryId = newReq?.changeCategory?.id;
     newReq.disciplineGuesstimates =

@@ -42,6 +42,14 @@ export function createWorkSpace<T, SideSheetIds extends string>(
         return item[options.objectIdentifier];
     };
 
+    const onGroupeSelect = (item: DataSet<unknown>): string => {
+        options.openSidesheet<any>(options.customGroupeSidesheet?.component, item, {
+            ...options.customGroupeSidesheet,
+            widgetId: options.customGroupeSidesheet?.id,
+        });
+        return item.value;
+    };
+
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
 
     function updateState(update: Partial<WorkSpaceConfig<unknown>>) {
@@ -61,6 +69,7 @@ export function createWorkSpace<T, SideSheetIds extends string>(
             ...state,
             [options.viewerId]: {
                 onSelect: onSelect as (item: unknown) => void,
+                onGroupeSelect: onGroupeSelect as (item: unknown) => void,
                 objectIdentifier: options.objectIdentifier as string,
                 name: options.viewerId,
                 defaultTab: options.defaultTab ?? 'table',
@@ -127,14 +136,6 @@ export function createWorkSpace<T, SideSheetIds extends string>(
             return workspaceAPI;
         },
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
-            const onGroupeSelect = (item: DataSet<unknown>): string => {
-                options.openSidesheet<any>(options.customGroupeSidesheet?.component, item, {
-                    ...options.customGroupeSidesheet,
-                    widgetId: options.customGroupeSidesheet?.id,
-                });
-                return item.value;
-            };
-
             updateState({
                 gardenOptions: {
                     customGroupByKeys: {},

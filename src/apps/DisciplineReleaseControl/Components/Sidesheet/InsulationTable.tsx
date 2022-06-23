@@ -58,9 +58,11 @@ export const InsulationTable = ({
         <>
             <h4>{pipeInsulation ? 'Pipe insulations:' : 'Box insulations:'}</h4>
             <Table
-                options={{ columns: columns, data: insulations }}
+                data={insulations}
+                columns={columns}
+                options={{}}
                 height={rowHeight + insulations?.length * rowHeight}
-            ></Table>
+            />
         </>
     );
 };

@@ -15,11 +15,13 @@ type TabTableProps<T extends Record<string | number, unknown>> = {
 /**
  * Component for displaying data in tabular format inside the Garden's package sidesheet.
  */
-export const TabTable = <T extends Record<string | number, unknown>>(props: TabTableProps<T>) => {
+export const TabTable = <T extends Record<string | number, unknown>>(
+    props: TabTableProps<T>
+): JSX.Element => {
     const { packages, columns, error, isFetching, resourceName } = props;
     if (isFetching) return <NoResourceData>{`Fetching ${resourceName}`}</NoResourceData>;
     if (error || packages === undefined || packages.length === 0) {
         return <NoResourceData>{`No ${resourceName}`}</NoResourceData>;
     }
-    return <Table options={{ columns, data: packages, groupByFn: defaultGroupByFn }} />;
+    return <Table columns={columns} data={packages} options={{ groupByFn: defaultGroupByFn }} />;
 };

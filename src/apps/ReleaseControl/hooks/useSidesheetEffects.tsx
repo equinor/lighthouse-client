@@ -2,13 +2,14 @@ import { deref, useAtom } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
-import { MenuItem, SidesheetApi } from '@equinor/sidesheet';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { releaseControlMutationKeys } from '../queries/releaseControlMutationKeys';
 import { unVoidReleaseControl, voidReleaseControl } from '../api/releaseControl/Request';
 import { sideSheetEditModeAtom } from '../Atoms/editModeAtom';
 import { useReleaseControlMutation } from './useReleaseControlMutation';
 import { ReleaseControl } from '../types/releaseControl';
 import { useReleaseControlContext } from './useReleaseControlContext';
+import { MenuItem } from '@equinor/overlay-menu';
 
 export function useSidesheetEffects(
     actions: SidesheetApi,
@@ -78,7 +79,7 @@ export function useSidesheetEffects(
 
     useEffect(() => {
         actions.setTitle(`RC${sequenceNumber} ${title}`);
-    }, [id]);
+    }, [id, title]);
 
     /** Only run once */
     useEffect(() => {

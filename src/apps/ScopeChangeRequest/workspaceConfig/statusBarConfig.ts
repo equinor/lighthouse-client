@@ -26,16 +26,18 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
         {
             title: 'Pending requests',
             value: () => {
-                const pendingRequests = data.reduce(
-                    (count, { state }) => (state === 'Open' ? count + 1 : count),
-                    0
-                );
+                const approvedIDS = filterApprovedRequests(data).map((s) => s.id);
+
+                const pendingRequests = data
+                    .filter((s) => !approvedIDS.includes(s.id))
+                    .reduce((count, { state }) => (state === 'Open' ? count + 1 : count), 0);
                 return numberFormat(pendingRequests);
             },
         },
         {
             title: 'Pending mhrs',
-            value: () => numberFormat(accPendingMhr(data)),
+            value: () =>
+                numberFormat(accPendingMhr(data) - accPendingMhr(filterApprovedRequests(data))),
         },
         {
             title: 'Approved requests',
@@ -80,12 +82,7 @@ const accPendingMhr = (requests: ScopeChangeRequest[]) =>
  * @returns
  */
 const filterApprovedRequests = (requests: ScopeChangeRequest[]) =>
-    requests
-        .filter(({ workflowSteps }) => workflowSteps !== null)
-        .filter(
-            ({ workflowSteps }) =>
-                workflowSteps &&
-                workflowSteps[workflowSteps.length - 1].criterias.every(
-                    ({ signedState }) => signedState === 'Approved'
-                )
-        );
+    requests.filter(
+        //Magic string
+        ({ workflowSteps }) => workflowSteps?.find((s) => s.name === 'Approval')?.isCompleted
+    );

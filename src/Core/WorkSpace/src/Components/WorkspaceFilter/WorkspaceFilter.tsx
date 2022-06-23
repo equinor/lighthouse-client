@@ -1,7 +1,5 @@
-import { FilterView } from '@equinor/filter';
-import { useViewerContext } from '../../Context/ViewProvider';
+import { QuickFilter } from '../QuickFilter/QuickFilter';
 
-export const WorkspaceFilter = (): JSX.Element => {
-    const { isFilterActive } = useViewerContext();
-    return <FilterView isActive={isFilterActive} />;
+export const WorkspaceFilter = (): JSX.Element | null => {
+    return <QuickFilter />;
 };

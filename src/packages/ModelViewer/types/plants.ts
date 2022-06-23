@@ -2,9 +2,11 @@ import { Cognite3DModel } from '@cognite/reveal';
 import {
     AssetMetadataSimpleDto,
     Echo3dMultiSelectionActions,
-    EchoSetupObject
+    EchoSetupObject,
+    ViewerNodeSelection
 } from '@equinor/echo3dweb-viewer';
 import { Message } from './message';
+
 
 export interface ModelViewerState {
     cognite3DModel: Cognite3DModel | undefined;
@@ -20,4 +22,5 @@ export interface ModelViewerState {
     modelIsVisible: boolean;
     tagsIsVisible: boolean;
     hasDefaultColor: boolean;
+    viewerNodeSelection: ViewerNodeSelection[];
 }

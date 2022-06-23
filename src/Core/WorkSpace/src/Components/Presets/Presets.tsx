@@ -1,5 +1,6 @@
 import { deref } from '@dbeining/react-atom';
 import { Chip } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
@@ -57,4 +58,13 @@ export function Presets(): JSX.Element {
 
 const PresetChip = styled(Chip)`
     z-index: auto;
+
+    :hover {
+        color: ${tokens.colors.text.static_icons__secondary.rgba};
+        background: ${tokens.colors.interactive.primary__hover_alt.rgba};
+
+        > svg > path {
+            fill: ${tokens.colors.text.static_icons__secondary.rgba};
+        }
+    }
 `;

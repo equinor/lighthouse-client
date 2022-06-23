@@ -1,28 +1,60 @@
-import { Button, Progress, SingleSelect } from '@equinor/eds-core-react';
+import { Button, Icon, Progress, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useMutation, useQueryClient } from 'react-query';
-import styled from 'styled-components';
+import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { PhaseSelect } from '../../../DisciplineReleaseControl/Components/Form/Inputs/PhaseSelect';
 import { getReleaseControlById } from '../../api/releaseControl/Request';
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 import { useRequestMutations } from '../../hooks/useRequestMutations';
+import { releaseControlQueries } from '../../queries/queries';
 import { releaseManifest } from '../../ReleaseControlApp';
+import { CreateReleaseControlStepModel } from '../../types/releaseControl';
 import { disciplineReleaseControlFactoryContext } from '../Factory/FactoryComponent';
 import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
-import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
+import {
+    ActionBar,
+    ButtonContainer,
+    FlexColumn,
+    FormWrapper,
+    NavigationButton,
+    NewStepButton,
+    SelectionRow,
+    Wrapper,
+} from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
-import { addStep, getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
-
+import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
+    const step = useAtomState(({ step }) => step ?? 'scope');
 
+    const { workflowsQuery, workflowTemplateQuery } = releaseControlQueries;
+
+    const [value, setValue] = useState<string | null>(null);
+    const { data: workflows } = useQuery(workflowsQuery);
+    useQuery([value], {
+        queryFn: workflowTemplateQuery(value).queryFn,
+        onSuccess: (data) => {
+            if (!data) {
+                return;
+            }
+            updateAtom({
+                workflowSteps:
+                    (data as any)[0].workflowStepTemplates.map(
+                        (x: CreateReleaseControlStepModel) => {
+                            x.criteriaTemplates = x.workflowStepCriteriaTemplates ?? [];
+                            return x;
+                        }
+                    ) ?? [],
+            });
+        },
+    });
     return (
-        <>
-            <div>
-                <FormWrapper>
+        <Wrapper>
+            <FormWrapper>
+                {step === 'scope' && (
                     <FlexColumn>
                         General info
                         <TitleInput />
@@ -31,6 +63,8 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         <PhaseSelect />
                         <ReferencesInput />
                     </FlexColumn>
+                )}
+                {step === 'workflow' && (
                     <FlexColumn>
                         Workflow
                         <div style={{ fontWeight: 400, fontSize: '16px' }}>
@@ -38,40 +72,36 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         </div>
                         <SelectionRow>
                             <SingleSelect
-                                items={predefinedWorkflows}
+                                items={workflows?.map((x) => x.name) ?? []}
                                 label="Workflow"
-                                placeholder="Select predefined workflow"
-                                size={30}
-                                handleSelectedItemChange={() => {
-                                    return null;
+                                placeholder="Select new or predefined workflow"
+                                size={35}
+                                handleSelectedItemChange={(change) => {
+                                    const id = workflows?.find(
+                                        (x) => x.name === change.selectedItem
+                                    )?.id;
+                                    setValue(id ?? null);
                                 }}
                             />
-                            <NewFlowButton
-                                onClick={() =>
-                                    updateAtom({
-                                        workflowSteps: getNewWorkflowSteps(),
-                                    })
-                                }
-                            >
-                                New flow
-                            </NewFlowButton>
                         </SelectionRow>
                         <WorkflowCustomEditor />
                         {steps.length !== 0 && (
                             <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
                         )}
                     </FlexColumn>
-                </FormWrapper>
-                <SubmitButtonBar />
-            </div>
-        </>
+                )}
+            </FormWrapper>
+            <SubmitButtonBar />
+        </Wrapper>
     );
 };
 
 export const SubmitButtonBar = (): JSX.Element => {
-    const { useIsValid } = DRCFormAtomApi;
+    const { useIsValid, useAtomState } = DRCFormAtomApi;
 
     const isValid = useIsValid();
+
+    const step = useAtomState(({ step }) => step ?? 'scope');
 
     const swapComponent = disciplineReleaseControlFactoryContext.useAtomState(
         ({ swapComponent }) => swapComponent
@@ -100,7 +130,7 @@ export const SubmitButtonBar = (): JSX.Element => {
 
     const onMutate = (draft: boolean) => {
         const { prepareRequest } = DRCFormAtomApi;
-
+        disciplineReleaseControlFactoryContext.readAtomValue().setHasUnsavedChanges(false);
         mutate({
             draft: draft,
             model: prepareRequest(),
@@ -109,6 +139,17 @@ export const SubmitButtonBar = (): JSX.Element => {
 
     return (
         <ActionBar>
+            <NavigationButton>
+                {step === 'workflow' && (
+                    <Button variant="outlined" onClick={() => updateStep('scope')}>
+                        <Icon
+                            name={'chevron_left'}
+                            color={tokens.colors.interactive.primary__resting.rgba}
+                        />
+                        Back to select scope
+                    </Button>
+                )}
+            </NavigationButton>
             <ButtonContainer>
                 {isLoading ? (
                     <Button variant="ghost_icon" disabled>
@@ -116,60 +157,29 @@ export const SubmitButtonBar = (): JSX.Element => {
                     </Button>
                 ) : (
                     <>
+                        {step === 'scope' && (
+                            <Button onClick={() => updateStep('workflow')}>
+                                Next: select workflow
+                                <Icon
+                                    name={'chevron_right'}
+                                    color={tokens.colors.text.static_icons__primary_white.hex}
+                                />
+                            </Button>
+                        )}
                         <Button disabled={!isValid} onClick={() => onMutate(false)}>
                             Submit
                         </Button>
-                        <Button
+                        {/* TODO - fix and clarify use of saving as draft */}
+                        {/* <Button
                             disabled={!isValid}
                             onClick={() => onMutate(true)}
                             variant="outlined"
                         >
                             Save
-                        </Button>
+                        </Button> */}
                     </>
                 )}
             </ButtonContainer>
         </ActionBar>
     );
 };
-
-export const ButtonContainer = styled.div`
-    flex-direction: row;
-    gap: 0.5em;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 1em;
-`;
-
-export const ActionBar = styled.div`
-    height: 64px;
-    width: 100%;
-    border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
-    background-color: white;
-`;
-
-export const SelectionRow = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-export const NewStepButton = styled(Button)`
-    margin-bottom: 20px;
-    margin-left: 60px;
-    margin-top: 16px;
-    width: 100px;
-`;
-
-export const NewFlowButton = styled(Button)`
-    width: 100px;
-    margin-left: 20px;
-    margin-top: 16px;
-`;
-
-const predefinedWorkflows = [
-    'Commissioning - With HT',
-    'Commissioning - No HT',
-    'Operation - With HT',
-    'Operation - No HT',
-];

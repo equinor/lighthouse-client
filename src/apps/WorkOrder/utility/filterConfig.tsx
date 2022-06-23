@@ -27,10 +27,12 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     {
         name: 'Discipline',
         valueFormatter: ({ disciplineCode }) => disciplineCode,
+        isQuickFilter: true,
     },
     {
         name: 'Job status',
         valueFormatter: ({ jobStatus }) => jobStatus,
+        isQuickFilter: true,
     },
     {
         name: 'Status',
@@ -44,6 +46,7 @@ export const filterConfig: FilterOptions<WorkOrder> = [
         customValueRender: (filterValue) => {
             return <FollowUpStatusFilter status={filterValue as FollowUpStatuses} />;
         },
+        isQuickFilter: true,
     },
     {
         name: 'Responsible',
@@ -107,15 +110,16 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     {
         name: 'Material',
         valueFormatter: ({ materialStatus }) => materialStatus,
+        isQuickFilter: true,
     },
     {
         name: 'Hold',
         valueFormatter: ({ holdBy }) => holdBy,
+        isQuickFilter: true,
     },
     {
         name: 'MC',
         valueFormatter: ({ mccrStatus }) => mccrStatus,
-        defaultHidden: true,
     },
     {
         name: 'Progress',
@@ -141,6 +145,5 @@ export const filterConfig: FilterOptions<WorkOrder> = [
             filterValues.sort(
                 (a, b) => progressPriMap[a as Progress] - progressPriMap[b as Progress]
             ),
-        defaultHidden: true,
     },
 ];

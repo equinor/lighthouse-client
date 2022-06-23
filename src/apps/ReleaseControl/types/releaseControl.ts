@@ -23,17 +23,6 @@ export interface SignedBy {
     email: string;
 }
 
-export interface Criteria {
-    id: string;
-    type: string;
-    value: string;
-    valueDescription: string;
-    signedAtUtc: string;
-    signedBy: SignedBy;
-    signedComment: string;
-    signedState: CriteriaSignState | null;
-}
-
 export interface Person {
     id: string;
     oid: string;
@@ -80,6 +69,7 @@ export interface ReleaseControlStep {
     contributors: Contributor[];
     allowContributors: boolean;
     criteriaTemplates: CriteriaTemplate[];
+    workflowStepCriteriaTemplates?: CriteriaTemplate[];
 }
 
 export interface CreateReleaseControlStepModel {
@@ -92,10 +82,22 @@ export interface CreateReleaseControlStepModel {
     isCompleted?: boolean;
     isCurrent?: boolean;
     tagNumbers?: string[];
+    contributors?: Contributor[];
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
+    workflowStepCriteriaTemplates?: CriteriaTemplate[];
 }
 
+export interface Criteria {
+    id: string;
+    type: string;
+    value: string;
+    valueDescription: string;
+    signedAtUtc: string;
+    signedBy: SignedBy;
+    signedComment: string;
+    signedState: CriteriaSignState | null;
+}
 export interface CriteriaTemplate {
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
     assignToCreator: boolean;
@@ -133,7 +135,19 @@ export interface ReleaseControl {
     hasPendingContributions: boolean;
     allowContributors: boolean;
     currentWorkflowStep: ReleaseControlStep;
-    workflowSteps: ReleaseControlStep[];
+    workflowSteps: CreateReleaseControlStepModel[];
+    editedWorkflowSteps: ReleaseControlStep[];
     tags: ReleaseControlTag[];
     areas: ReleaseControlArea[];
+}
+
+export interface ReleaseControlWorkflow {
+    id: string;
+    name: string;
+}
+
+export interface ReleaseControlWorkflowTemplate {
+    id: string;
+    isPublished: boolean;
+    workflowStepTemplates: CreateReleaseControlStepModel[];
 }

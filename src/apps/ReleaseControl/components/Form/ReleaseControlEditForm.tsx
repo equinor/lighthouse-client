@@ -1,4 +1,5 @@
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
 
 import styled from 'styled-components';
@@ -10,20 +11,22 @@ import { useReleaseControlMutation } from '../../hooks/useReleaseControlMutation
 import { useRequestMutations } from '../../hooks/useRequestMutations';
 import { releaseControlMutationKeys } from '../../queries/releaseControlMutationKeys';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
-import { NewStepButton } from './ReleaseControlProcessForm';
 import {
     ActionBar,
     ButtonContainer,
     FlexColumn,
     FormWrapper,
+    NavigationButton,
+    NewStepButton,
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
-import { addStep } from './WorkflowEditor/WorkflowEditorHelpers';
+import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlEditForm = (): JSX.Element => {
-    const { useAtomState, updateAtom } = DRCFormAtomApi;
+    const { useAtomState } = DRCFormAtomApi;
     const releaseControl = useReleaseControlContext(({ releaseControl }) => releaseControl);
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
+    const step = useAtomState(({ step }) => step ?? 'scope');
 
     useEffect(() => {
         const { clearState, updateAtom } = DRCFormAtomApi;
@@ -40,29 +43,26 @@ export const ReleaseControlEditForm = (): JSX.Element => {
         <>
             <Wrapper>
                 <FormWrapper>
-                    <FlexColumn>
-                        General info
-                        <TitleInput />
-                        <DescriptionInput />
-                        <PlannedDueDateInput />
-                        <ReferencesInput />
-                    </FlexColumn>
-                    <FlexColumn>
-                        Workflow
-                        <WorkflowCustomEditor />
-                        {steps.length !== 0 && (
-                            <NewStepButton
-                                style={{
-                                    width: '100px',
-                                    marginLeft: '20px',
-                                    marginTop: '16px',
-                                }}
-                                onClick={() => addStep(steps)}
-                            >
-                                Add step
-                            </NewStepButton>
-                        )}
-                    </FlexColumn>
+                    {step === 'scope' && (
+                        <FlexColumn>
+                            General info
+                            <TitleInput />
+                            <DescriptionInput />
+                            <PlannedDueDateInput />
+                            <ReferencesInput />
+                        </FlexColumn>
+                    )}
+                    {step === 'workflow' && (
+                        <FlexColumn>
+                            Workflow
+                            <WorkflowCustomEditor />
+                            {steps.length !== 0 && (
+                                <NewStepButton onClick={() => addStep(steps)}>
+                                    Add step
+                                </NewStepButton>
+                            )}
+                        </FlexColumn>
+                    )}
                 </FormWrapper>
                 <SubmitActionBar />
             </Wrapper>
@@ -86,6 +86,8 @@ const SubmitActionBar = (): JSX.Element => {
     const isValid = DRCFormAtomApi.useIsValid();
 
     const { editReleaseControlMutation } = useRequestMutations();
+    const { useAtomState } = DRCFormAtomApi;
+    const step = useAtomState(({ step }) => step ?? 'scope');
 
     const { isLoading, mutate } = useReleaseControlMutation(
         releaseControl.id,
@@ -106,6 +108,17 @@ const SubmitActionBar = (): JSX.Element => {
 
     return (
         <ActionBar>
+            <NavigationButton>
+                {step === 'workflow' && (
+                    <Button variant="outlined" onClick={() => updateStep('scope')}>
+                        <Icon
+                            name={'chevron_left'}
+                            color={tokens.colors.interactive.primary__resting.rgba}
+                        />
+                        Back to edit scope
+                    </Button>
+                )}
+            </NavigationButton>
             <ButtonContainer>
                 <>
                     {isLoading ? (
@@ -114,17 +127,21 @@ const SubmitActionBar = (): JSX.Element => {
                         </Button>
                     ) : (
                         <>
+                            {step === 'scope' && (
+                                <Button onClick={() => updateStep('workflow')}>
+                                    Next: edit workflow
+                                    <Icon
+                                        name={'chevron_right'}
+                                        color={tokens.colors.text.static_icons__primary_white.hex}
+                                    />
+                                </Button>
+                            )}
                             <Button variant="outlined" onClick={disableEditMode}>
                                 Cancel
                             </Button>
                             <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 Save
                             </Button>
-                            {releaseControl.state === 'Draft' && (
-                                <Button disabled={!isValid} onClick={() => handleSave(true)}>
-                                    Submit
-                                </Button>
-                            )}
                         </>
                     )}
                 </>

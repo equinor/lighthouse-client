@@ -20,12 +20,14 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         name: 'State',
         valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
         defaultUncheckedValues: ['Voided', 'Draft'],
+        isQuickFilter: true,
     },
     {
         name: 'Next to sign',
         valueFormatter: ({ currentWorkflowStep }) =>
             currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
             null,
+        isQuickFilter: true,
     },
     {
         name: 'Origin',
@@ -48,11 +50,13 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Workflow status',
         valueFormatter: ({ workflowStatus }) => workflowStatus,
+        isQuickFilter: true,
     },
     {
         name: 'Disciplines',
         valueFormatter: ({ disciplineGuesstimates }) =>
             disciplineGuesstimates.map(({ discipline }) => discipline.procosysCode),
+        isQuickFilter: true,
     },
     {
         name: 'Guesstimate',
@@ -62,6 +66,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
                     disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
                 )
                 : null,
+        isQuickFilter: true,
 
         sort: (a) =>
             a.sort((a, b) => {

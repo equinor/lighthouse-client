@@ -86,7 +86,7 @@ export type { ApiServiceConfiguration } from './types/apiServiceConfiguration';
 export type { EchoSetupObject } from './types/echoSetupObject';
 export type { ModelData } from './types/modelData';
 export type { RendererConfiguration } from './types/rendererConfiguration';
-export type { SelectedNodeInformation } from './types/selectedNodeInformation';
+export type { SelectedNodeInformation, ViewerNodeSelection } from './types/selectedNodeInformation';
 export type { TrackEventBySignature } from './types/trackEventBySignature';
 export {
     clamp,

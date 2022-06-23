@@ -1,12 +1,15 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useLocationKey } from '@equinor/filter';
+import { useLocationKey } from '@equinor/hooks';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
+
 import { ServerError } from '../../Api/Types/ServerError';
-import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import {
+    fetchAndChewPipetestDataFromApi,
+    sortCheckListsForTable
+} from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 import { Panel, ThreeDView } from '../3D';
@@ -18,8 +21,8 @@ import { ReleaseControlHTSidesheet } from './ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
+import { useSidesheetEffects } from './useSidesheetEffects';
 import { WorkOrderTab } from './WorkOrderTab';
-
 
 interface GatewaySidesheetProps {
     item: Pipetest | HTSidesheet;
@@ -43,27 +46,21 @@ interface ReleaseControlSidesheetProps {
     actions: SidesheetApi;
 }
 
-export const ReleaseControlSidesheet = ({
+export function ReleaseControlSidesheet({
     actions,
     item,
-}: ReleaseControlSidesheetProps): JSX.Element => {
+}: ReleaseControlSidesheetProps): JSX.Element {
     const [errorMessage] = useState<ServerError | undefined>();
 
     const [activeTab, setActiveTab] = useState<number>(0);
 
+    const width = window.innerWidth / 2;
+
+    useSidesheetEffects(actions, item);
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-
-    const width = window.innerWidth / 2;
-
-    useEffect(() => {
-        actions.setWidth(width);
-    }, [width]);
-
-    useEffect(() => {
-        actions.setTitle(`Pipetest ${item.name}`);
-    }, [item.name]);
 
     const locationKey = useLocationKey();
 
@@ -79,71 +76,74 @@ export const ReleaseControlSidesheet = ({
 
     return (
         <Wrapper>
-            <ModelViewerContextProvider>
-                <ReleaseControlErrorBanner message={errorMessage} />
-                <ReleaseControlSidesheetBanner pipetest={item} />
-                <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <SidesheetTabList>
-                        <Tabs.Tab>Circuit diagram</Tabs.Tab>
-                        <Tabs.Tab>Work orders</Tabs.Tab>
-                        <Tabs.Tab>Insulation</Tabs.Tab>
-                        <Tabs.Tab>Checklists</Tabs.Tab>
-                        {!isProduction() && <Tabs.Tab>3D-visualisation</Tabs.Tab>}
-                    </SidesheetTabList>
-                    <Tabs.Panels>
-                        <Tabs.Panel>
-                            <ElectroView
-                                pipetest={item}
-                                pipetests={data !== undefined ? data : []}
-                                width={width}
-                            />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <WorkOrderTab id={item.name} />
-                        </Tabs.Panel>
+            <ReleaseControlErrorBanner message={errorMessage} />
+            <ReleaseControlSidesheetBanner pipetest={item} />
+            <Tabs activeTab={activeTab} onChange={handleChange}>
+                <SidesheetTabList>
+                    <Tabs.Tab>Circuit diagram</Tabs.Tab>
+                    <Tabs.Tab>Work orders</Tabs.Tab>
+                    <Tabs.Tab>Insulation</Tabs.Tab>
+                    <Tabs.Tab>Checklists</Tabs.Tab>
+                    <Tabs.Tab>3D</Tabs.Tab>
+                </SidesheetTabList>
+                <Tabs.Panels>
+                    <Tabs.Panel>
+                        <ElectroView
+                            pipetest={item}
+                            pipetests={data !== undefined ? data : []}
+                            width={width}
+                        />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <WorkOrderTab id={item.name} />
+                    </Tabs.Panel>
 
-                        <Tabs.Panel>
-                            {missingInsulationCheckListsCount !== 0 &&
-                                (missingInsulationCheckListsCount === 1 ? (
-                                    <WarningBanner>
-                                        <WarningBannerText>
-                                            ! Warning: {missingInsulationCheckListsCount} insulation
-                                            box missing checklists in ProCoSys.
-                                        </WarningBannerText>
-                                    </WarningBanner>
-                                ) : (
-                                    <WarningBanner>
-                                        <WarningBannerText>
-                                            ! Warning: {missingInsulationCheckListsCount} insulation
-                                            boxes missing checklists in ProCoSys.
-                                        </WarningBannerText>
-                                    </WarningBanner>
-                                ))}
-                            <TablesTab>
-                                <InsulationTable
-                                    insulations={item.pipeInsulationBoxes}
-                                    pipeInsulation={true}
-                                />
-                                <br />
-                                <InsulationTable
-                                    insulations={item.insulationBoxes}
-                                    pipeInsulation={false}
-                                    pipetestName={item.name}
-                                />
-                            </TablesTab>
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <TablesTab>
-                                <h4>{item.description}</h4>
-                                <CheckListTable checkLists={item.checkLists} />
-                            </TablesTab>
-                        </Tabs.Panel>
-                        {!isProduction() && (
-                            <Panel>{activeTab === 4 && <ThreeDView pipetest={item} />}</Panel>
-                        )}
-                    </Tabs.Panels>
-                </Tabs>
-            </ModelViewerContextProvider>
+                    <Tabs.Panel>
+                        {missingInsulationCheckListsCount !== 0 &&
+                            (missingInsulationCheckListsCount === 1 ? (
+                                <WarningBanner>
+                                    <WarningBannerText>
+                                        Warning: {missingInsulationCheckListsCount} insulation box
+                                        missing checklists in ProCoSys.
+                                    </WarningBannerText>
+                                </WarningBanner>
+                            ) : (
+                                <WarningBanner>
+                                    <WarningBannerText>
+                                        Warning: {missingInsulationCheckListsCount} insulation boxes
+                                        missing checklists in ProCoSys.
+                                    </WarningBannerText>
+                                </WarningBanner>
+                            ))}
+                        <TablesTab>
+                            <InsulationTable
+                                insulations={item.pipeInsulationBoxes}
+                                pipeInsulation={true}
+                            />
+                            <br />
+                            <InsulationTable
+                                insulations={item.insulationBoxes}
+                                pipeInsulation={false}
+                                pipetestName={item.name}
+                            />
+                        </TablesTab>
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <TablesTab>
+                            <CheckListTable checkLists={sortCheckListsForTable(item.checkLists)} />
+                        </TablesTab>
+                    </Tabs.Panel>
+                    <>
+                        <Panel>
+                            {activeTab === 4 && (
+                                <ModelViewerContextProvider>
+                                    <ThreeDView pipetest={item} />
+                                </ModelViewerContextProvider>
+                            )}
+                        </Panel>
+                    </>
+                </Tabs.Panels>
+            </Tabs>
         </Wrapper>
     );
-};
+}

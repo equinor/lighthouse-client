@@ -10,6 +10,9 @@ export const BookmarkListWrapper = styled.div`
     max-width: 250px;
     overflow-y: auto;
     overflow-x: hidden;
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
 `;
 
 export const BookmarkEntry = styled.div`

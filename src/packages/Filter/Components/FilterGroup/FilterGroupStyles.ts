@@ -1,4 +1,5 @@
 import { Button, Checkbox } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Title = styled.h4`
@@ -59,10 +60,31 @@ export const FilterItemWrapper = styled.div`
     padding-bottom: 1rem;
 `;
 
-export const FilterHeaderGroup = styled.div`
+export const FilterHeaderGroup = styled.div<{ isActive: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 48px;
+
+    border-bottom: ${({ isActive }) =>
+        `2px solid ${isActive
+            ? tokens.colors.interactive.primary__resting.hex
+            : tokens.colors.ui.background__medium.hex
+        }`};
+
+    color: ${({ isActive }) =>
+        isActive
+            ? tokens.colors.interactive.primary__resting.hex
+            : tokens.colors.text.static_icons__default.hex};
+
+    #search {
+        visibility: hidden;
+    }
+
+    &:hover #search {
+        visibility: visible;
+    }
+    margin-bottom: 5px;
 `;
 
 export const SearchButton = styled(Button)`

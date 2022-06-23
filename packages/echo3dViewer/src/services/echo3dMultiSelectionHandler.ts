@@ -1,5 +1,7 @@
 import { Cognite3DModel, IndexSet, THREE } from '@cognite/reveal';
 import { CancelToken } from '@esfx/async-canceltoken';
+import { ViewerNodeSelection } from '../types/selectedNodeInformation';
+import { get3dPositionFromAabbMinMaxValues } from '../utils/calculationUtils';
 import { moveToAndLookAt } from '../utils/cameraUtils';
 import { convertCancelTokenToAbort } from '../utils/cancelTokenUtils';
 import { isIntentionallyCancelled } from '../utils/errorHandingUtils';
@@ -26,6 +28,8 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
 
     private selectionE3dTagNos: string[];
 
+    public viewerNodeSelection: ViewerNodeSelection[]
+
     /**
      * Setup a Echo3dMultiSelectionHandler.
      *
@@ -38,6 +42,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
         this.hierarchyClient = hierarchyClient || getHierarchyClient();
         this.hierarchyId = hierarchyId;
         this.selectionE3dTagNos = [];
+        this.viewerNodeSelection = []
     }
 
     /**
@@ -53,6 +58,8 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
      * Clear the current selection tags information, selected nodes and sibling nodes
      */
     clearSelection(): void {
+        this.selectionE3dTagNos = [];
+        this.viewerNodeSelection = []
         this.selectedNodes.clear();
     }
 
@@ -92,18 +99,20 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
                 e3dTagNos,
                 convertCancelTokenToAbort(localCancellationToken)
             );
+                
+                
             if (nodesByTagList.results.length === 0) throw Error("No nodes found with the current tag selection");
-
+       
+            this.addSelectedNodesToViewerSelection(nodesByTagList.results);
             this.createSelectionAaBB(nodesByTagList.results);
-
+            
             this.addSelectedNodes(nodesByTagList.results);
-
-            const leafNodes = await this.hierarchyClient.findLeafNodesByTagList(
-                this.hierarchyId,
-                e3dTagNos,
-                convertCancelTokenToAbort(localCancellationToken)
-            );
-
+            
+ 
+            const leafNodes = await this.hierarchyClient.findLeafNodesByTagList(this.hierarchyId, e3dTagNos, convertCancelTokenToAbort(localCancellationToken));
+            
+     
+                    
             this.addSelectedLeafNodes(leafNodes.results);
         } catch (error: unknown) {
             if (isIntentionallyCancelled(error) && !cancellationToken.signaled) {
@@ -124,6 +133,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
 
         if (hierarchyNodeModel) {
             hierarchyNodeModel.forEach((modelResult) => {
+    
                 if (modelResult.aabb) {
                     aabbCollection.push(modelResult.aabb);
                 }
@@ -165,6 +175,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
             nodeWithLeafNodes?.forEach((LeafNodeResult) => {
                 LeafNodeResult.leafNodes?.forEach((leafNode) => {
                     if (leafNode.id) {
+                      
                         selectionNodeIds.push(leafNode.id);
                     }
                 });
@@ -183,7 +194,36 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
      */
     private addSelectedNodes(hierarchyNodeModel?: HierarchyNodeModel[]): void {
         if (hierarchyNodeModel) {
-            this.selectedNodes.updateSet(new IndexSet(hierarchyNodeModel.map((nodeResult) => nodeResult.id)));
+            this.selectedNodes.updateSet(new IndexSet(hierarchyNodeModel.map((nodeResult) => nodeResult.id )));
         }
+    }
+
+
+    /**
+     * adds the selected Nodes to viewerSelection
+     *
+     * @private
+     * @param {HierarchyNodeModel[]} [hierarchyNodeModel] Nodes for abb and tag
+     * @memberof Echo3dSelectionHandler
+     */
+    private addSelectedNodesToViewerSelection(hierarchyNodeModel?: HierarchyNodeModel[]): void {
+                  
+        if (hierarchyNodeModel) {
+
+            this.viewerNodeSelection = hierarchyNodeModel.filter((nodeResult) => nodeResult.aabb && nodeResult.tag).map(nodeResult => {
+
+                const { min, max } = nodeResult.aabb!;
+
+                const boundingBox = new THREE.Box3(
+                    new THREE.Vector3(min.x, min.z, -max.y),
+                    new THREE.Vector3(max.x, max.z, -min.y)
+                );
+                return { position: get3dPositionFromAabbMinMaxValues(nodeResult.aabb!), tagNo: nodeResult.tag!, aabb: nodeResult.aabb!, boundingBox}
+                
+            }
+            );
+
+       }
+
     }
 }

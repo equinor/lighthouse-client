@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { Cell, Row, TableInstance, TableOptions } from 'react-table';
+import { Cell, Column, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 
 import { useTable } from '../Hooks/useTable';
@@ -19,11 +19,10 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
-//Feel free to extend
-
 interface DataTableProps<TData extends TableData> {
-    options: TableOptions<TData>;
-    FilterComponent?: React.FC<{ filterId: string }>;
+    options?: Partial<TableOptions<TData>>;
+    data: TData[];
+    columns: Column<TData>[];
     height?: number;
     itemSize?: number;
     onTableReady?: (getApi: () => TableAPI) => void;
@@ -34,14 +33,21 @@ const DEFAULT_ITEM_SIZE = 35;
 
 export function Table<TData extends TableData = TableData>({
     options,
-    FilterComponent,
+    data,
+    columns: dataColumns,
     itemSize,
     height,
     onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
-    const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
+    const hooks = RegisterReactTableHooks<TData>({
+        rowSelect: (options && options.enableSelectRows) || false,
+    });
     const ref = useRef<HTMLDivElement>(null);
-    const defaultColumn = useDefaultColumn(options);
+    const defaultColumn = useDefaultColumn({
+        data: data,
+        columns: dataColumns,
+        ...(options ?? {}),
+    });
 
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -51,12 +57,15 @@ export function Table<TData extends TableData = TableData>({
         toggleHideColumn,
         visibleColumns,
         getTableProps,
-        columns,
+        allColumns,
         getTableBodyProps,
         headerGroups,
         totalColumnsWidth,
         setColumnOrder,
-    } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
+    } = useTable(
+        { ...(options ?? {}), columns: dataColumns, defaultColumn, data },
+        hooks
+    ) as TableInstance<TableData>;
 
     const getVisibleColumns = () => visibleColumns;
 
@@ -68,19 +77,19 @@ export function Table<TData extends TableData = TableData>({
         getSelectedRowId: () => selectedId,
         setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
             setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
-        getColumns: () => columns,
+        getColumns: () => allColumns,
     });
 
     useEffect(() => {
         onTableReady && onTableReady(getTableApi);
-    }, []);
+    }, [getTableApi, onTableReady]);
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
         (cell, e) => {
             options?.onCellClick && options.onCellClick(cell, e);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [options.onCellClick]
+        [options?.onCellClick]
     );
 
     useLayoutEffect(() => {
@@ -90,7 +99,6 @@ export function Table<TData extends TableData = TableData>({
 
     return (
         <TableWrapper {...getTableProps()}>
-            {/* <TableConfigBar getTableApi={getTableApi} /> */}
             <div>
                 {headerGroups.map((headerGroup) => (
                     <div
@@ -98,11 +106,7 @@ export function Table<TData extends TableData = TableData>({
                         key={headerGroup.getHeaderGroupProps().key}
                     >
                         {headerGroup.headers.map((column) => (
-                            <HeaderCell
-                                {...column}
-                                FilterComponent={FilterComponent}
-                                key={column.getHeaderProps().key}
-                            />
+                            <HeaderCell {...column} key={column.getHeaderProps().key} />
                         ))}
                     </div>
                 ))}
@@ -179,11 +183,11 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                             {cell.isGrouped ? (
                                 <GroupCell row={row} cell={cell} />
                             ) : cell.isAggregated &&
-                              cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
-                                // For cells with repeated values, render null
-                                // Otherwise, just render the regular cell
-                                cell.render('Cell')
-                            )}
+                                cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
+                                    // For cells with repeated values, render null
+                                    // Otherwise, just render the regular cell
+                                    cell.render('Cell')
+                                )}
                         </span>
                     </TableCell>
                 );

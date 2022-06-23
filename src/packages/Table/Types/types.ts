@@ -41,7 +41,10 @@ type ObjectOrTableData<T> = T extends object ? T : TableData;
 export type CustomColumn<T> = Column<ObjectOrTableData<T>> &
     Required<
         Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header' | 'id' | 'width'>
-    >;
+    > &
+    Partial<{
+        Cell: (c: CellProps<ObjectOrTableData<T>>) => string | React.ReactNode | null;
+    }>;
 
 export type CustomCellType<T, D extends TableData> = {
     /** Custom cell to be display. Has access to table data object when used as a method */
@@ -131,6 +134,7 @@ declare module 'react-table' {
         extends UseFiltersColumnProps<TData>,
             UseGroupByColumnProps<TData>,
             UseResizeColumnsColumnProps<TData>,
+            UseTableColumnProps<TData>,
             UseSortByColumnProps<TData> {
         align: any; // TODO : what is it used for
     }

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { TableData, ColumnOptions } from '../Types/types';
+import { TableData, ColumnOptions, Column } from '../Types/types';
 import { generateHeaderKeys } from '../Utils/generateColumns';
 
 /**
@@ -13,8 +13,12 @@ import { generateHeaderKeys } from '../Utils/generateColumns';
  */
 export function useColumns<TData extends TableData>(
     dataObject: TData,
+    preventAutoGenerateColumns: boolean,
     options?: ColumnOptions<TData>
-) {
-    const columns = useMemo(() => generateHeaderKeys(dataObject, options), [dataObject, options]);
+): Column<TData>[] {
+    const columns = useMemo(
+        () => generateHeaderKeys(dataObject, preventAutoGenerateColumns, options),
+        [dataObject, options, preventAutoGenerateColumns]
+    );
     return columns;
 }

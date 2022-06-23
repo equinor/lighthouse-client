@@ -32,7 +32,7 @@ const creator = setupWorkspaceSidesheet<McPackage, 'mcDetails'>({
         function: async (id: string) => {
             // TODO: Add Proper resolver function
             const items = await responseParser(await responseAsync());
-            return items.find((item) => item.mcPkgId === id);
+            return items.find((item) => item.mcPkgId === id || item.mcPkgNumber === id);
         },
     },
 });
@@ -53,7 +53,10 @@ export function setup(addApi: ClientApi): void {
             responseParser: responseParser,
         })
         .registerFilterOptions(filterConfig)
-        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ mcPkgNumber }) => mcPkgNumber }])
+        .registerSearchOptions([
+            { name: 'Mc pkg', valueFormatter: ({ mcPkgNumber }) => mcPkgNumber },
+            { name: 'Comm pkg', valueFormatter: (pkg) => pkg.commPkgNumber },
+        ])
 
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)

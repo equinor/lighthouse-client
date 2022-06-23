@@ -1,5 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { ScopeChangeDiscipline } from '../../../../types/scopeChangeRequest';
 import { useEffect, useState } from 'react';
 import { Discipline as PCSDiscipline } from '../../../../types/ProCoSys/discipline';
@@ -32,7 +30,6 @@ export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
 
     return (
         <Wrapper key={discipline.id}>
-            <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />
             <TextWrapper>
                 <Link>
                     {discipline.procosysCode} - {foundDiscipline?.Description}

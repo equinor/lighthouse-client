@@ -1,4 +1,6 @@
 import { THREE } from '@cognite/reveal';
+import { CameraControlsExtended } from '../controls/CameraControlsExtended';
+import { FirstPersonCameraControls } from '../controls/FirstPersonCameraControls';
 import { AabbModel } from '../services/generated/EchoHierarchyApiClient';
 import { get3dPositionFromAabbMinMaxValues, worldToNormalizedViewportCoordinates } from './calculationUtils';
 
@@ -82,8 +84,37 @@ export const getDomPositionFor3DPosition = (
     renderer.getSize(renderSize);
     const pixelRatio = renderer.getPixelRatio();
 
-    return new THREE.Vector2(
-        Math.round((normalizedViewportCoordinates.x * renderSize.width) / pixelRatio),
-        Math.round((normalizedViewportCoordinates.y * renderSize.height) / pixelRatio)
-    );
+    const x = Math.round((normalizedViewportCoordinates.x * renderSize.width) / pixelRatio);
+    const y = Math.round((normalizedViewportCoordinates.y * renderSize.height) / pixelRatio);
+
+    
+    if (y > 0  && x > 0 && x < renderSize.width && y < renderSize.height) {
+        return new THREE.Vector2(
+            x,
+            y
+        );
+    }
+    
+   return undefined;
+};
+
+/**
+ * Method for setting a controls position and target
+ *
+ * @param {FirstPersonCameraControls | CameraControlsExtended | undefined} controls the controls to update
+ * @param {THREE.Vector3} position the new position
+ * @param {THREE.Vector3} target the new target
+ */
+export const setPositionAndTargetForControls = (
+    controls: FirstPersonCameraControls | CameraControlsExtended | undefined,
+    position: THREE.Vector3,
+    target: THREE.Vector3
+) => {
+    if (controls instanceof FirstPersonCameraControls) {
+        controls.setPosition(position);
+        controls.lookAt(target);
+    } else if (controls instanceof CameraControlsExtended) {
+        controls.setPosition(position.x, position.y, position.z);
+        controls.setTarget(target.x, target.y, target.z);
+    }
 };

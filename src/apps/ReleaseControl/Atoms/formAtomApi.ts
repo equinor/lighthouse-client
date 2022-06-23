@@ -12,8 +12,14 @@ interface ReleaseControlReferences {
     areaCodes: string[];
     documentNumbers: string[];
 }
+
+interface ReleaseControlPackedSteps {
+    editedWorkflowSteps?: CreateReleaseControlStepModel[];
+    signedWorkflowSteps?: CreateReleaseControlStepModel[];
+}
 export interface DRCCreateModel {
     id?: string;
+    step?: 'scope' | 'workflow';
     title?: string;
     description?: string;
     plannedDueDate?: string;
@@ -26,6 +32,8 @@ export interface DRCCreateModel {
     documentNumbers: string[];
     references?: TypedSelectOption[];
     workflowSteps?: CreateReleaseControlStepModel[];
+    editedWorkflowSteps?: CreateReleaseControlStepModel[];
+    signedWorkflowSteps?: CreateReleaseControlStepModel[];
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -48,11 +56,17 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             description: undefined,
             allowContributors: true,
             documentNumbers: [],
-            plannedDueDate: undefined,
+            plannedDueDate: '',
             systemIds: [],
             tagNumbers: [],
             workflowSteps: [],
             title: undefined,
+            phase: undefined,
+            references: [],
+            id: undefined,
+            step: 'scope',
+            editedWorkflowSteps: [],
+            signedWorkflowSteps: [],
         }),
 }));
 
@@ -73,13 +87,21 @@ function checkString(value?: string) {
 
 function unPackReferences(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlReferences {
     const references = api.readAtomValue().references ?? [];
-
     return {
         areaCodes: unpackByType(references, 'area'),
         commissioningPackageNumbers: unpackByType(references, 'commpkg'),
         documentNumbers: unpackByType(references, 'document'),
         systemIds: unpackByType(references, 'system') as unknown as number[],
         tagNumbers: unpackByType(references, 'tag'),
+    };
+}
+
+function packWorkflowSteps(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlPackedSteps {
+    const editedSteps = api.readAtomValue().workflowSteps?.filter((x) => !x.isCompleted) ?? [];
+    const signedSteps = api.readAtomValue().workflowSteps?.filter((x) => x.isCompleted) ?? [];
+    return {
+        editedWorkflowSteps: editedSteps,
+        signedWorkflowSteps: signedSteps,
     };
 }
 
@@ -96,12 +118,16 @@ function prepareRequest(): DRCFormModel {
     const newReq: DRCCreateModel = {
         ...readAtomValue(),
         ...unPackReferences(),
+        ...packWorkflowSteps(DRCFormAtomApi),
     };
     return newReq as DRCFormModel;
 }
 
 function checkFormState(
-    request: Pick<DRCFormModel, 'title' | 'description' | 'plannedDueDate' | 'phase'>
+    request: Pick<
+        DRCFormModel,
+        'title' | 'description' | 'plannedDueDate' | 'phase' | 'workflowSteps'
+    >
 ): boolean {
     if (MANDATORY_PROPERTIES.every((k) => Object.keys(request).includes(k))) {
         /** Validate content */
@@ -113,6 +139,26 @@ function checkFormState(
                 return false;
             case checkString(request.plannedDueDate):
                 return false;
+        }
+        //Do not allow empty workflowSteps
+        if (request.workflowSteps === undefined || request.workflowSteps.length === 0) {
+            return false;
+        }
+        //Do not allow empty steps
+        if (request.workflowSteps?.some((step) => step.name === null || step.name === '')) {
+            return false;
+        }
+        //Do not allow empty responsible (except initiate)
+        if (
+            request.workflowSteps?.some((step) =>
+                step.criteriaTemplates.some(
+                    (criteria) =>
+                        step.name !== 'Initiate' &&
+                        (criteria.value === null || criteria.value === '')
+                )
+            )
+        ) {
+            return false;
         }
 
         return true;

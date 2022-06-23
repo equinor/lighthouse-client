@@ -37,8 +37,9 @@ export class Echo3dBaseSelectionHandler {
 
     protected selectedNodes: TreeIndexNodeCollection;
 
-    protected siblingNodes: TreeIndexNodeCollection;
+    siblingNodes: TreeIndexNodeCollection;
 
+    
     /**
      * Setup
      *
