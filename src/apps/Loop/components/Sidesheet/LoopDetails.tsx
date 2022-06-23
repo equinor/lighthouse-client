@@ -1,12 +1,15 @@
 import { StringCell, Table } from '@equinor/GardenUtils';
+import styled from 'styled-components';
 import { Loop } from '../../types';
-
+const Wrapper = styled.div`
+    height: fit-content;
+`;
 type LoopDetailsProps = {
     loop: Loop;
 };
 export const LoopDetails = ({ loop }: LoopDetailsProps) => {
     return (
-        <div style={{ height: 'fit-content' }}>
+        <Wrapper>
             <h3>Details</h3>
             <Table>
                 <tbody>
@@ -44,6 +47,6 @@ export const LoopDetails = ({ loop }: LoopDetailsProps) => {
                     </tr>
                 </tbody>
             </Table>
-        </div>
+        </Wrapper>
     );
 };

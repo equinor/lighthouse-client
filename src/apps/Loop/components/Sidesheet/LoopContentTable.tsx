@@ -2,7 +2,7 @@ import { statusColorMap, TabTable } from '@equinor/GardenUtils';
 import { Column, StatusCustomCell } from '@equinor/Table';
 import { useQuery } from 'react-query';
 import { Loop, LoopContent } from '../../types';
-import { columnNames, getLoopContent } from '../../utility/api/getLoopContent';
+import { getLoopContent, loopContentColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 
 const columns: Column<LoopContent>[] = [
@@ -37,7 +37,7 @@ const columns: Column<LoopContent>[] = [
     },
     {
         id: 'commissioningPackageNo',
-        Header: 'Compkg',
+        Header: 'Cmpkg',
         accessor: (pkg) => pkg.commissioningPackageNo,
         width: 100,
     },
@@ -53,7 +53,7 @@ type LoopContentProps = {
 };
 export const LoopContentTable = ({ loop }: LoopContentProps) => {
     const expressions = generateExpressions('checklistID', 'Equals', [loop.checklistId || '']);
-    const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
+    const requestArgs = generateFamRequest(loopContentColumnNames, 'Or', expressions);
     const { data, isLoading, error } = useQuery(['loopcontent', loop.checklistId], ({ signal }) =>
         getLoopContent(requestArgs, signal)
     );

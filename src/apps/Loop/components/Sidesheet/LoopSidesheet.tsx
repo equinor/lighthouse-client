@@ -1,9 +1,7 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
 import { workorderColumnNames } from '../../utility/api';
@@ -14,7 +12,14 @@ import { BannerItem } from './BannerItem';
 import { Checklists } from './Checklists';
 import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
-import { ItemLink } from './sidesheet-styles';
+import {
+    ItemLink,
+    PanelContentWrapper,
+    SidesheetPanels,
+    SidesheetTabList,
+    SidesheetTabs,
+    TabsWrapper,
+} from './sidesheet-styles';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -93,45 +98,25 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                 />
                 <BannerItem title="Milestone" value={item.priority1 || 'N/A'} />
             </Banner>
-            <div style={{ height: '100%', gridTemplateRows: 'auto 1fr' }}>
+            <TabsWrapper>
                 <SidesheetTabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
                         <Tabs.Tab>Overview</Tabs.Tab>
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
-                    <Tabs.Panels
-                        style={{
-                            padding: '1em',
-                            height: '83%',
-                            overflowY: 'auto',
-                            overflowX: 'hidden',
-                        }}
-                    >
+                    <SidesheetPanels>
                         <Tabs.Panel>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                }}
-                            >
+                            <PanelContentWrapper>
                                 <LoopDetails loop={item} />
-                                <Checklists tagNo={item.loopId!} />
+                                <Checklists loopId={item.loopId!} />
                                 <LoopContentDetails item={item} />
-                            </div>
+                            </PanelContentWrapper>
                         </Tabs.Panel>
 
                         <Tabs.Panel>3D</Tabs.Panel>
-                    </Tabs.Panels>
+                    </SidesheetPanels>
                 </SidesheetTabs>
-            </div>
+            </TabsWrapper>
         </div>
     );
 };
-const SidesheetTabs = styled(Tabs)`
-    display: grid;
-    grid-template-rows: auto 1fr;
-    height: 100%;
-`;
-export const SidesheetTabList = styled(Tabs.List)`
-    background-color: ${tokens.colors.ui.background__light.hex};
-`;

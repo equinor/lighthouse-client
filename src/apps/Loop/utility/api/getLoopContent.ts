@@ -1,12 +1,11 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { LoopContent } from '../../types';
 import { FamRequest } from '../helpers/fam';
-export const columnNames = [
+export const loopContentColumnNames = [
     'Facility',
     'ChecklistID',
     'LoopId',
     'ContentId',
-    'Register',
     'MechanicalCompletionStatus',
     'MechanicalCompletionStatusOrder',
     'MechanicalCompletionPackageNo',
