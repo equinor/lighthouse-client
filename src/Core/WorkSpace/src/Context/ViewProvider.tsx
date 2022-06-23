@@ -13,7 +13,6 @@ interface ViewState {
     hasPowerBi: boolean;
     pages: Page[];
     activePage?: Page;
-    isFilterActive: boolean;
     hasActiveFilters: boolean;
     pbiOptions?: PBIOptions;
 }
@@ -28,7 +27,6 @@ interface ViewContext extends ViewState {
     registerPages(pages: Page[]): void;
     setActivePage(pages: Page, options?: PBIOptions): void;
     resetState(): void;
-    toggleFilter(): void;
     setHasActiveFilters(isActive: boolean): void;
 }
 
@@ -36,7 +34,6 @@ const Context = createContext({} as ViewContext);
 
 const INIT_STATE = {
     hasPowerBi: false,
-    isFilterActive: false,
     hasActiveFilters: false,
     pages: [],
     activePage: {} as Page,
@@ -71,12 +68,6 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
         });
     }, []);
 
-    const toggleFilter = useCallback(() => {
-        setState((s) => {
-            return { ...s, isFilterActive: !s.isFilterActive };
-        });
-    }, []);
-
     const setHasActiveFilters = useCallback((isActive: boolean) => {
         setState((s) => {
             return { ...s, hasActiveFilters: isActive };
@@ -94,7 +85,6 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
                 registerPages,
                 setActivePage,
                 resetState,
-                toggleFilter,
                 setHasActiveFilters,
             }}
         >
