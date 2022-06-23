@@ -1,55 +1,56 @@
-import { Checkbox } from '@equinor/eds-core-react';
-import React, { useMemo, useState } from 'react';
-import { PowerBiFilter } from '../../../Types';
-import { searchFilterItems } from '../FilterItems/searchFilterItems';
-import { Header } from '../Header';
-import { searchSlicerFilters } from './searchSlicerFilters';
-import { CheckboxItem, CheckboxWrap, Container, FilterGroupContainer } from './Styles';
+import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { useState, useRef } from 'react';
+import { getFilterHeaderText } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterGroup/FilterGroup';
+import { FilterGroupWrapper } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterGroup/groupStyles';
+import { PowerBiFilter, PowerBiFilterItem, ActiveFilter } from '../../../Types';
+import { PowerBiGroupPopoverMenu } from '../PopoverGroup/PopoverGroup';
+import { FilterController } from '../PowerBIFilter';
 
-type FilterGroupProps = {
-    slicerFilters: PowerBiFilter[];
-    filterGroupVisible: string[] | undefined;
-    handleChangeGroup: (filter: PowerBiFilter) => Promise<void>;
-};
-export const FilterGroup = ({
-    slicerFilters,
-    filterGroupVisible,
-    handleChangeGroup,
-}: FilterGroupProps): JSX.Element => {
-    const [filterSearchValue, setFilterSearchValue] = useState<string | undefined>();
-    const handleOnSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setFilterSearchValue(value);
-    };
-    const searchedFilterGroups = useMemo(
-        () => searchSlicerFilters(slicerFilters, filterSearchValue),
-        [slicerFilters, filterSearchValue]
-    );
-    //TODO: Check prefix on filter.type to see if it should render or not
+interface PowerBiFilterGroupProps {
+    controller: FilterController;
+    group: PowerBiFilter;
+    handleOnChange: (filter: PowerBiFilterItem, singleClick?: boolean) => Promise<void>;
+    activeFilters: ActiveFilter[];
+}
+export const PowerBiFilterGroup = ({
+    group,
+    activeFilters,
+    controller,
+    handleOnChange,
+}: PowerBiFilterGroupProps): JSX.Element | null => {
+    const [isOpen, setIsOpen] = useState(false);
+    const anchorEl = useRef<HTMLDivElement>(null);
+
+    if (!activeFilters) return null;
+    const isAllChecked =
+        activeFilters.length === 0 || activeFilters.length === group.filterVals.length;
     return (
-        <Container>
-            <Header title="Select Filter Type" onSearch={handleOnSearchChange} />
+        <div>
+            <FilterGroupWrapper onClick={() => setIsOpen(true)} ref={anchorEl}>
+                <div>
+                    {getFilterHeaderText(
+                        isAllChecked,
+                        group.type,
+                        activeFilters.map((s) => s?.toString() ?? '(Blank)')
+                    )}
+                </div>
 
-            <FilterGroupContainer>
-                <CheckboxWrap>
-                    {searchedFilterGroups.map((filter: PowerBiFilter) => {
-                        return (
-                            <CheckboxItem key={filter.type}>
-                                <Checkbox
-                                    onChange={async () => {
-                                        await handleChangeGroup(filter);
-                                    }}
-                                    checked={
-                                        filterGroupVisible?.find((a) => a === filter.type) !==
-                                        undefined
-                                    }
-                                />
-                                <label>{filter.type}</label>
-                            </CheckboxItem>
-                        );
-                    })}
-                </CheckboxWrap>
-            </FilterGroupContainer>
-        </Container>
+                <Icon color={tokens.colors.text.static_icons__tertiary.hex} name="chevron_down" />
+            </FilterGroupWrapper>
+            {isOpen && (
+                <PowerBiGroupPopoverMenu
+                    controller={controller}
+                    checkedValues={activeFilters}
+                    anchorEl={anchorEl.current}
+                    group={group}
+                    values={Object.values(group.value)}
+                    onClickFilter={(filter: PowerBiFilterItem, singleClick?: boolean) =>
+                        handleOnChange(filter, singleClick)
+                    }
+                    onCloseMenu={() => setIsOpen(false)}
+                />
+            )}
+        </div>
     );
 };

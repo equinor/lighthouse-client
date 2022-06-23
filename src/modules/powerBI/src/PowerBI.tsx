@@ -13,7 +13,6 @@ import './style.css';
 import { PBIOptions, PowerBIBookmarkPayload } from './Types';
 import { Filter } from './Types/filter';
 
-const TOP_BAR_FILTER_HEIGHT = 210;
 interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
@@ -24,10 +23,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     const { reportUri, filterOptions, options } = props;
     // Default Options
     const aspectRatio = useMemo(() => options?.aspectRatio || 0.41, [options?.aspectRatio]);
-    const isFilterActive = useMemo(
-        () => options?.isFilterActive || false,
-        [options?.isFilterActive]
-    );
 
     const [ref, { width }] = useElementData();
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
@@ -96,7 +91,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
         ],
         [
             'bookmarkApplied',
-            function (evt) {
+            function () {
                 /**
                  * Will cause useEffect to trigger in PowerBIFilter to
                  * update the list of new active filters
@@ -148,45 +143,59 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
         ],
     ]);
 
+    const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+
+    if (error) {
+        return (
+            <ReportErrorMessage
+                reportId={reportUri}
+                contextErrorType={error.code}
+                message={error.message}
+            />
+        );
+    }
+
     return (
         <>
-            {error ? (
-                <ReportErrorMessage
-                    reportId={reportUri}
-                    contextErrorType={error.code}
-                    message={error.message}
-                />
-            ) : (
-                <Wrapper ref={ref}>
-                    <TopBar>
+            <Wrapper ref={ref}>
+                <TopBar height={getFilterHeight(isFilterExpanded)}>
+                    {report && isLoaded && (
                         <PowerBIFilter
                             report={report}
+                            isFilterActive={true}
                             isLoaded={isLoaded}
-                            isFilterActive={isFilterActive}
+                            isFilterExpanded={isFilterExpanded}
+                            setIsFilterExpanded={setIsFilterExpanded}
                             options={{ hasFilter: options?.hasFilter }}
                         />
-                    </TopBar>
-                    <PBIWrapper height={isFilterActive ? TOP_BAR_FILTER_HEIGHT : 0}>
-                        <div style={{ height: `${width * aspectRatio}px` }}>
-                            <PowerBIEmbed
-                                embedConfig={config}
-                                eventHandlers={eventHandlersMap}
-                                getEmbeddedComponent={(embedObject: Embed) => {
-                                    if (options?.pageLoad) {
-                                        // eslint-disable-next-line no-console
-                                        console.log(
-                                            `Embedded object of type "${embedObject.embedtype}" received`
-                                        );
-                                        window['report'] = embedObject;
-                                    }
-                                    setReport(embedObject as Report);
-                                }}
-                                cssClassName="pbiEmbed"
-                            />
-                        </div>
-                    </PBIWrapper>
-                </Wrapper>
-            )}
+                    )}
+                </TopBar>
+                <PBIWrapper height={getFilterHeight(isFilterExpanded)}>
+                    <div
+                        style={{
+                            height: `${width * aspectRatio}px`,
+                        }}
+                    >
+                        <PowerBIEmbed
+                            embedConfig={config}
+                            eventHandlers={eventHandlersMap}
+                            getEmbeddedComponent={(embedObject: Embed) => {
+                                if (options?.pageLoad) {
+                                    // eslint-disable-next-line no-console
+                                    console.log(
+                                        `Embedded object of type "${embedObject.embedtype}" received`
+                                    );
+                                    window['report'] = embedObject;
+                                }
+                                setReport(embedObject as Report);
+                            }}
+                            cssClassName="pbiEmbed"
+                        />
+                    </div>
+                </PBIWrapper>
+            </Wrapper>
         </>
     );
 };
+
+const getFilterHeight = (isFilterExpanded: boolean) => (isFilterExpanded ? 250 : 48);

@@ -1,12 +1,12 @@
-import { Search } from '@equinor/eds-core-react';
+import { Icon, Search } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
+import { FilterClearIcon } from '../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
 import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterItemValue } from '../FilterItem/FilterItem';
-import Icon from '../Icon/Icon';
 import {
     FilterHeaderGroup,
     SearchButton,
@@ -25,6 +25,11 @@ interface FilterGroupeComponentProps {
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
 }: FilterGroupeComponentProps) => {
+    const {
+        filterGroupState: { getInactiveGroupValues },
+        operations: { markAllValuesActive },
+    } = useFilterApiContext();
+
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [searchActive, setSearchActive] = useState(false);
 
@@ -38,10 +43,10 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     }
 
     const isSearchable = filterGroup.values.length > 10;
-
+    const hasAnyActiveFilters = Boolean(getInactiveGroupValues(filterGroup.name).length);
     return (
         <Wrapper>
-            <FilterHeaderGroup>
+            <FilterHeaderGroup isActive={hasAnyActiveFilters}>
                 <Switch>
                     <Case when={searchActive}>
                         <Search
@@ -54,11 +59,19 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     </Case>
                     <Case when={true}>
                         <Title>{filterGroup.name}</Title>
+                        <FilterClearIcon
+                            onClick={() => markAllValuesActive(filterGroup.name)}
+                            isDisabled={!hasAnyActiveFilters}
+                        />
                     </Case>
                 </Switch>
                 {isSearchable && (
                     <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
-                        <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
+                        {searchActive ? (
+                            <Icon name={'chevron_right'} />
+                        ) : (
+                            <Icon name={'search'} id={'search'} />
+                        )}
                     </SearchButton>
                 )}
             </FilterHeaderGroup>

@@ -1,7 +1,7 @@
 import { FunctionManifest } from '@equinor/lighthouse-functions';
 import {
     htResolverFunction,
-    rcResolverFunction,
+    rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { handoverResolverFunction } from './Handover';
 import { loopResolverFunction } from './Loop/utility/config';
@@ -11,8 +11,8 @@ import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/D
 import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrResolverFunction } from './swcr';
+import { tagResolverFunction } from './Tags';
 import { workOrderResolverFunction } from './WorkOrder';
-
 export const functions: FunctionManifest[] = [
     changeCreatorAccessFunction,
     releaseCreatorAccessFunction,
@@ -24,6 +24,8 @@ export const functions: FunctionManifest[] = [
     workOrderResolverFunction,
     mcResolverFunction,
     releaseResolverFunction,
+    mcResolverFunction,
+    tagResolverFunction,
     loopResolverFunction,
 ];
 

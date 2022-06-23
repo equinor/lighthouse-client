@@ -15,6 +15,11 @@ export interface ScopeChangeCreateEditModel {
     originSourceId?: string;
     originSource: OriginType;
 
+    //Revision id
+    originatorId?: string | null;
+    /**Attachments id to duplicate */
+    attachmentsToDuplicate: string[] | null;
+    revisionAttachments: Attachment[] | null;
     //internal placeholder not sent to backend
     newAttachments?: File[];
     //internal placeholder not sent to backend
@@ -126,7 +131,10 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     sequenceNumber: number;
     workOrders: ScopeChangeWorkOrder[];
     scope: Scope;
+    originatorId: string;
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
+    revisionNumber: number;
+    serialNumber: string;
 }
 
 export interface ScopeChangeWorkOrder {

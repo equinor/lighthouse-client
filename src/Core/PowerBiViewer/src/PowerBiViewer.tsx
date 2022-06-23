@@ -130,7 +130,6 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                         filterOptions={activeReport.filter}
                         options={{
                             ...activeReport.options,
-                            isFilterActive,
                             activePage: activePage.pageId,
                             activePageDisplayName: activePage.pageTitle,
                             hasFilter: handleHasFilter,
