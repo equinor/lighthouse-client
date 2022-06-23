@@ -12,7 +12,6 @@ import { tableConfig } from './utility/tableConfig';
 
 async function responseParser(response: Response) {
     const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
-    console.log('parsed', parsedResponse);
     return parsedResponse;
 }
 
@@ -21,9 +20,6 @@ async function responseAsync(signal?: AbortSignal | undefined): Promise<Response
     const contextId = getFusionContextId();
     const { FAM } = httpClient();
     return await FAM.fetch(`v0.1/procosys/workorder/JCA`, { signal: signal });
-    return await fusionDataproxy.fetch(`api/contexts/${contextId}/work-orders`, {
-        signal: signal,
-    });
 }
 
 const creator = setupWorkspaceSidesheet<WorkOrder, 'work-orderDetails'>({
@@ -54,7 +50,6 @@ export function setup(appApi: ClientApi): void {
         })
         .registerDataSource({
             responseAsync: responseAsync,
-            responseParser: responseParser,
         })
         .registerFilterOptions(filterConfig)
         .registerStatusItems(statusBarConfig)

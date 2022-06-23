@@ -29,7 +29,7 @@ const ProgressBar = styled.div<ProgressSpanProps>`
     border-radius: 5px;
 `;
 
-export const ProgressCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
+const ProgressCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {
         value: { content, currentKey, cellAttributeFn },
     } = props;
@@ -45,3 +45,18 @@ export const ProgressCell = <T extends TableData>(props: CellProps<T, CellRender
         </Progress>
     );
 };
+type CustomProgressCellProps<T extends string | number | null> = {
+    progress: T;
+};
+const CustomProgressCell = <T extends string | number | null>({
+    progress,
+}: CustomProgressCellProps<T>) => {
+    return (
+        <Progress>
+            <ProgressBar percent={progress ? Number(progress) : 0}></ProgressBar>
+            {progress as string}%
+        </Progress>
+    );
+};
+
+export { CustomProgressCell, ProgressCell };

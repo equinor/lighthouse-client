@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
-import { useMemo } from 'react';
+import { HTMLAttributes, useMemo } from 'react';
 import { CellProps, CellRenderProps, TableData } from '../../Types/types';
 
-export const YearWeekCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
+const YearWeekCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {
         value: { content, currentKey, cellAttributeFn },
     } = props;
@@ -33,3 +33,28 @@ const toDate = (date: unknown) => {
         return undefined;
     }
 };
+type CustomYearAndWeekCellProps<T extends string | null> = {
+    dateString: T;
+    cellAttributeFunction?: (content: T) => HTMLAttributes<HTMLElement>;
+};
+const CustomYearAndWeekCell = <T extends string | null>({
+    dateString,
+    cellAttributeFunction,
+}: CustomYearAndWeekCellProps<T>) => {
+    const dateOrUndefined = toDate(dateString);
+    const dateDisplay = dateOrUndefined
+        ? `${dateOrUndefined.year}-${
+              dateOrUndefined.weekNumber < 10
+                  ? '0' + dateOrUndefined.weekNumber
+                  : dateOrUndefined.weekNumber
+          }`
+        : '';
+    const attr = useMemo(
+        () => (cellAttributeFunction ? cellAttributeFunction(dateString) : undefined),
+        [cellAttributeFunction, dateString]
+    );
+
+    return <div {...attr}>{dateDisplay}</div>;
+};
+
+export { CustomYearAndWeekCell, YearWeekCell };

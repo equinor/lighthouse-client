@@ -1,239 +1,246 @@
 import { tokens } from '@equinor/eds-tokens';
-import { EstimateBar, ExpendedProgressBar } from '@equinor/Table';
+import {
+    CellProps,
+    CustomProgressCell,
+    CustomYearAndWeekCell,
+    EstimateBar,
+    ExpendedProgressBar,
+    StatusCustomCell,
+} from '@equinor/Table';
 import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { WorkOrder } from '../Garden/models';
-import { getMatStatusColor, getMccrStatusColor } from '../Garden/utility';
-const hiddenColumns: (keyof WorkOrder)[] = [
-    'projectIdentifier',
-    'discipline',
-    'responsible',
-    'milestoneCode',
-    'w1ActualDate',
-    'w2ActualDate',
-    'w3ActualDate',
-    'w4ActualDate',
-    'w5ActualDate',
-    'w6ActualDate',
-    'w7ActualDate',
-    'w8ActualDate',
-    'w9ActualDate',
-    'w10ActualDate',
-    'commpkgNumber',
-    'workOrderId',
-    'materialComments',
-    'constructionComments',
-    'holdByDescription',
-    'projectDescription',
-];
+import { getMatStatusColorByStatus, getMccrStatusColorByStatus } from '../Garden/utility';
 export const tableConfig: TableOptions<WorkOrder> = {
     objectIdentifierKey: 'workOrderNumber',
+    preventAutoGenerateColumns: true,
     itemSize: 32,
-    hiddenColumns,
-    columnOrder: [
-        'workOrderNumber',
-        'description',
-        'disciplineCode',
-        'jobStatus',
-        'responsibleCode',
-        'milestone',
-        'commpkgNumber',
-        'plannedStartDate',
-        'plannedFinishDate',
-        'estimatedHours',
-        'expendedHours',
-        'remainingHours',
-        'projectProgress',
-        'materialStatus',
-        'holdBy',
-        'mccrStatus',
-    ] as (keyof WorkOrder)[],
-    headers: [
+    customColumns: [
         {
-            key: 'workOrderNumber',
-            title: 'Workorder',
+            id: 'workOrderNumber',
+            Header: 'Workorder',
+            accessor: (pkg) => pkg.workOrderNumber,
+            Aggregated: () => null,
+            aggregate: 'count',
             width: 200,
         },
         {
-            key: 'description',
-            title: 'Description',
+            id: 'description',
+            Header: 'Description',
+            accessor: (pkg) => pkg.description,
+            Aggregated: () => null,
+            aggregate: 'count',
+            Cell: (cellProps) => (
+                <div
+                    style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
+                    title={cellProps.value}
+                >
+                    {cellProps.value}
+                </div>
+            ),
             width: 300,
         },
         {
-            key: 'disciplineCode',
-            title: 'Discipline',
+            id: 'disciplineCode',
+            Header: 'Discipline',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.disciplineCode,
             width: 100,
         },
         {
-            key: 'jobStatus',
-            title: 'Job Status',
+            id: 'jobStatus',
+            Header: 'Job status',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.jobStatus,
             width: 150,
         },
         {
-            key: 'responsibleCode',
-            title: 'Responsible',
+            id: 'responsibleCode',
+            Header: 'Responsible',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.responsibleCode,
             width: 100,
         },
         {
-            key: 'milestone',
-            title: 'Milestone',
+            id: 'milestone',
+            Header: 'Milestone',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.milestone,
             width: 150,
         },
         {
-            key: 'plannedStartupDate',
-            title: 'Planned start',
+            id: 'plannedStartupDate',
+            Header: 'Planned start',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.plannedStartupDate,
+            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
             width: 150,
         },
         {
-            key: 'plannedFinishDate',
-            title: 'Planned finish',
+            id: 'plannedFinishDate',
+            Header: 'Planned finish',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.plannedFinishDate,
+            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
             width: 150,
         },
         {
-            key: 'estimatedHours',
-            title: 'Est mhr',
-            width: 100,
-        },
-        {
-            key: 'expendedHours',
-            title: 'Exp mhr',
-            width: 100,
-        },
-        {
-            key: 'remainingHours',
-            title: 'Rem mhrs',
-            width: 100,
-        },
-        {
-            key: 'projectProgress',
-            title: 'Progress',
-            width: 100,
-        },
-        {
-            key: 'materialStatus',
-            title: 'Material',
-            width: 100,
-        },
-        {
-            key: 'holdBy',
-            title: 'Hold',
-            width: 100,
-        },
-        {
-            key: 'mccrStatus',
-            title: 'MC',
-            width: 100,
-        },
-    ],
-    customCellView: [
-        {
-            key: 'description',
-            type: 'Description',
-        },
-        {
-            key: 'plannedStartupDate',
+            id: 'estimatedHours',
+            Header: 'Est mhr',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.estimatedHours,
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value || Math.round(Number(cellProps.value)) === 0) {
+                    return null;
+                }
+                const maxCount = Math.max(
+                    ...cellProps.cell.column.filteredRows.map((val) =>
+                        Number(val.original?.estimatedHours)
+                    )
+                );
 
-            type: 'YearAndWeek',
-        },
-        {
-            key: 'plannedFinishDate',
-            type: 'YearAndWeek',
-        },
-        {
-            key: 'estimatedHours',
-            type: {
-                Cell: (table) => {
-                    const maxCount = Math.max(
-                        ...table.cell.column.filteredRows.map((val) =>
-                            Number(val.original?.estimatedHours)
-                        )
-                    );
-                    return (
-                        <EstimateBar
-                            current={Number(table.value.content.estimatedHours)}
-                            max={maxCount}
-                        />
-                    );
-                },
+                return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
             },
+            width: 100,
         },
         {
-            key: 'expendedHours',
-            type: {
-                Cell: (table) => {
-                    const maxCount = Math.max(
-                        ...table.cell.column.filteredRows.map((val) =>
-                            Number(val.original?.expendedHours)
-                        )
-                    );
+            id: 'expendedHours',
+            Header: 'Exp mhr',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => ({ content: pkg, currentKey: 'expendedHours' }),
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (
+                    !cellProps.value ||
+                    Math.round(Number(cellProps.value.content.expendedHours)) === 0
+                ) {
+                    return null;
+                }
+                const maxCount = Math.max(
+                    ...cellProps.cell.column.filteredRows.map((val) =>
+                        Number(val.original?.expendedHours)
+                    )
+                );
 
-                    return (
-                        <ExpendedProgressBar
-                            actual={Number(table.value.content.expendedHours)}
-                            estimate={Number(table.value.content.estimatedHours)}
-                            highestExpended={maxCount}
-                        />
-                    );
-                },
+                return (
+                    <ExpendedProgressBar
+                        actual={Number(cellProps.value.content.expendedHours)}
+                        estimate={Number(cellProps.value.content.estimatedHours)}
+                        highestExpended={maxCount}
+                    />
+                );
             },
+            width: 100,
         },
         {
-            key: 'remainingHours',
-            type: {
-                Cell: (table) => {
-                    const maxCount = Math.max(
-                        ...table.cell.column.filteredRows.map((val) =>
-                            Number(val.original?.remainingHours)
-                        )
-                    );
-                    return (
-                        <EstimateBar
-                            current={Number(table.value.content.remainingHours)}
-                            max={maxCount}
-                        />
-                    );
-                },
+            id: 'remaningHours',
+            Header: 'Rem mhr',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.remainingHours,
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value || Math.round(Number(cellProps.value)) === 0) {
+                    return null;
+                }
+                const maxCount = Math.max(
+                    ...cellProps.cell.column.filteredRows.map((val) =>
+                        Number(val.original?.remainingHours)
+                    )
+                );
+                return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
             },
+            width: 100,
         },
         {
-            key: 'projectProgress',
-            type: 'Progress',
+            id: 'projectProgress',
+            Header: 'Progress',
+            accessor: (pkg) => pkg.projectProgress,
+            Aggregated: () => null,
+            aggregate: 'count',
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value || Number(cellProps.value) === 0) {
+                    return null;
+                }
+
+                return <CustomProgressCell progress={cellProps.value} />;
+            },
+            width: 100,
         },
         {
-            key: 'mccrStatus',
-            type: 'Status',
-            cellAttributeFn: (item) => {
-                const statusColor = getMccrStatusColor(item);
-                return {
-                    style: {
-                        backgroundColor: item.mccrStatus !== '' ? statusColor : 'transparent',
-                    },
-                };
+            id: 'materialStatus',
+            Header: 'Material',
+            accessor: (pkg) => pkg.materialStatus,
+            Aggregated: () => null,
+            aggregate: 'count',
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value) return null;
+                const statusColor = getMatStatusColorByStatus(cellProps.value);
+                return (
+                    <StatusCustomCell
+                        contentToBeDisplayed={cellProps.value}
+                        cellAttributeFunction={() => ({
+                            style: {
+                                backgroundColor:
+                                    cellProps.value !== '' ? statusColor : 'transparent',
+                            },
+                        })}
+                    />
+                );
             },
+            width: 100,
         },
         {
-            key: 'materialStatus',
-            type: 'Status',
-            cellAttributeFn: (item) => {
-                const statusColor = getMatStatusColor(item);
-                return {
-                    style: {
-                        backgroundColor: item.materialStatus !== '' ? statusColor : 'transparent',
-                    },
-                };
+            id: 'holdBy',
+            Header: 'Hold',
+            accessor: (pkg) => pkg.holdBy,
+            Aggregated: () => null,
+            aggregate: 'count',
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value) return null;
+
+                return (
+                    <StatusCustomCell
+                        contentToBeDisplayed={cellProps.value}
+                        cellAttributeFunction={() => ({
+                            style: {
+                                backgroundColor: cellProps.value
+                                    ? tokens.colors.interactive.danger__resting.hsla
+                                    : 'transparent',
+                            },
+                        })}
+                    />
+                );
             },
+            width: 100,
         },
         {
-            key: 'holdBy',
-            type: 'Status',
-            cellAttributeFn: (item) => {
-                return {
-                    style: {
-                        backgroundColor: item.holdBy
-                            ? tokens.colors.interactive.danger__resting.hsla
-                            : 'transparent',
-                    },
-                };
+            id: 'mccrStatus',
+            Header: 'MC',
+            accessor: (pkg) => pkg.mccrStatus,
+            Aggregated: () => null,
+            aggregate: 'count',
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value) return null;
+                const statusColor = getMccrStatusColorByStatus(cellProps.value);
+                return (
+                    <StatusCustomCell
+                        contentToBeDisplayed={cellProps.value}
+                        cellAttributeFunction={() => ({
+                            style: {
+                                backgroundColor:
+                                    cellProps.value !== '' ? statusColor : 'transparent',
+                            },
+                        })}
+                    />
+                );
             },
+            width: 100,
         },
     ],
 };
