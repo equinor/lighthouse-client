@@ -1,5 +1,7 @@
-import { Search } from '@equinor/eds-core-react';
+import { Search as EdsSearch } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { SearchPickerDropdown } from './SearchPickerDropdown';
@@ -67,3 +69,11 @@ export const FilterQuickSearch = (): JSX.Element => {
         </>
     );
 };
+
+export const Search = styled(EdsSearch)`
+    background: ${tokens.colors.ui.background__light.rgba};
+
+    :focus-within {
+        background: ${tokens.colors.ui.background__default.rgba};
+    }
+`;
