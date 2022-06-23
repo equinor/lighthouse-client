@@ -1,19 +1,25 @@
-import { Progress, Tabs } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { Tabs } from '@equinor/eds-core-react';
+import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import styled from 'styled-components';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
-import { getWorkorders, workorderColumnNames } from '../../utility/api';
+import { workorderColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
+import { Status } from '../Status';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
-import { LoopContentTable } from './LoopContentTable';
+import { Checklists } from './Checklists';
+import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
-import { LoopWorkOrderTab } from './LoopWorkorderTable';
-import { ItemLink } from './sidesheet-styles';
+import {
+    ItemLink,
+    PanelContentWrapper,
+    SidesheetPanels,
+    SidesheetTabList,
+    SidesheetTabs,
+    TabsWrapper,
+} from './sidesheet-styles';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -25,8 +31,8 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
         setActiveTab(index);
     };
     useEffect(() => {
-        actions.setTitle(`${item.tagNo}, ${item.checklistId}`);
-    }, []);
+        actions.setTitle(`${item.tagNo}, ${item.description}`);
+    }, [item.tagNo, item.description]);
     const workorderExpressions = generateExpressions('checklistID', 'Equals', [
         item.checklistId || '',
     ]);
@@ -35,17 +41,29 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
         'Or',
         workorderExpressions
     );
-    const {
-        data: workorders,
-        isLoading: isLoadingWorkorders,
-        error: workorderError,
-    } = useQuery(['workorder', item.checklistId], ({ signal }) =>
-        getWorkorders(workorderRequestArgs, signal)
-    );
+    // const {
+    //     data: workorders,
+    //     isLoading: isLoadingWorkorders,
+    //     error: workorderError,
+    // } = useQuery(['workorder', item.checklistId], ({ signal }) =>
+    //     getWorkorders(workorderRequestArgs, signal)
+    // );
     return (
-        <div>
+        <div style={{ height: '100%' }}>
             <Banner padding="0 1.2em">
-                <BannerItem title="MC Status" value={item.loopContentStatus ?? 'N/A'}></BannerItem>
+                <BannerItem
+                    title="Checklist status"
+                    value={
+                        item.status ? (
+                            <Status
+                                content={item.status}
+                                statusColor={statusColorMap[item.status]}
+                            />
+                        ) : (
+                            'N/A'
+                        )
+                    }
+                ></BannerItem>
                 <BannerItem
                     title="Cmpkg"
                     value={
@@ -80,44 +98,25 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                 />
                 <BannerItem title="Milestone" value={item.priority1 || 'N/A'} />
             </Banner>
-            <div>
-                <Tabs activeTab={activeTab} onChange={handleChange}>
+            <TabsWrapper>
+                <SidesheetTabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
                         <Tabs.Tab>Overview</Tabs.Tab>
-                        <Tabs.Tab>
-                            Work orders{' '}
-                            {isLoadingWorkorders ? (
-                                <Progress.Dots color="primary" />
-                            ) : workorders ? (
-                                `(${workorders.length})`
-                            ) : (
-                                `(${0})`
-                            )}
-                        </Tabs.Tab>
-                        <Tabs.Tab>Checklists</Tabs.Tab>
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
-                    <Tabs.Panels style={{ padding: '1em' }}>
+                    <SidesheetPanels>
                         <Tabs.Panel>
-                            <LoopDetails loop={item} />
-                            <h3>Content</h3>
-                            <LoopContentTable loop={item} />
+                            <PanelContentWrapper>
+                                <LoopDetails loop={item} />
+                                <Checklists loopId={item.loopId!} />
+                                <LoopContentDetails item={item} />
+                            </PanelContentWrapper>
                         </Tabs.Panel>
-                        <Tabs.Panel>
-                            <LoopWorkOrderTab
-                                workorders={workorders}
-                                isLoading={isLoadingWorkorders}
-                                error={workorderError instanceof Error ? workorderError : null}
-                            />
-                        </Tabs.Panel>
-                        <Tabs.Panel>Checklists</Tabs.Panel>
+
                         <Tabs.Panel>3D</Tabs.Panel>
-                    </Tabs.Panels>
-                </Tabs>
-            </div>
+                    </SidesheetPanels>
+                </SidesheetTabs>
+            </TabsWrapper>
         </div>
     );
 };
-export const SidesheetTabList = styled(Tabs.List)`
-    background-color: ${tokens.colors.ui.background__light.hex};
-`;
