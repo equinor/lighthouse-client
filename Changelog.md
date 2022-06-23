@@ -8,7 +8,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Scope change] Revisions
 - [Workspace] New version of filter
 - [PowerBI] New version of filter
-
+- [ReleaseControl] Split scope and workflow into two steps/tabs
 
 ## 1.6.2
 - [3D]  Loading model Full-Pro
