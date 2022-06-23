@@ -38,13 +38,6 @@ export const LoopDetails = ({ loop }: LoopDetailsProps) => {
                             <StringCell value={loop.status} />
                         </td>
                     </tr>
-                    <tr>
-                        <td>Contractor</td>
-
-                        <td>
-                            <StringCell value={loop.responsible} />
-                        </td>
-                    </tr>
                 </tbody>
             </Table>
         </Wrapper>
