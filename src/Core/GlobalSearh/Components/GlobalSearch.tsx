@@ -1,4 +1,3 @@
-import { Search } from '@equinor/eds-core-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowNavigation } from 'react-arrow-navigation';
 import { useNavigate } from 'react-router';
@@ -7,7 +6,7 @@ import { procosysConfig } from '../Config/ProCoSys';
 import { SearchResponse } from '../Config/ProCoSys/types';
 import { useGlobalSearch } from '../Service/GlobalSearch';
 import { SearchItem } from '../Service/SearchApi';
-import { SearchResult, Wrapper } from './GlobalSearchStyles';
+import { Search, SearchResult, Wrapper } from './GlobalSearchStyles';
 import { SearchResultHeading } from './SearchResultHeading';
 import { SearchResultItem } from './SearchResultItem';
 
