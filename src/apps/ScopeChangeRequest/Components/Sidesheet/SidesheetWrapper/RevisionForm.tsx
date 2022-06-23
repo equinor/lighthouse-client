@@ -46,24 +46,26 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
             <FormBanner />
             <WarningRevisionBanner />
             <Wrapper>
-                <FormWrapper>
-                    <FlexColumn>
-                        Request
-                        <ScopeChangeBaseForm />
-                        Disciplines and guesstimates
-                        <GuesstimateDiscipline />
-                        Materials
-                        <MaterialsInput />
-                    </FlexColumn>
+                <div>
+                    <FormWrapper>
+                        <FlexColumn>
+                            Request
+                            <ScopeChangeBaseForm />
+                            Disciplines and guesstimates
+                            <GuesstimateDiscipline />
+                            Materials
+                            <MaterialsInput />
+                        </FlexColumn>
 
-                    <FlexColumn>
-                        <Section>
-                            <ScopeChangeReferences />
-                        </Section>
-                        Attachments
-                        <RevisionAttachments />
-                    </FlexColumn>
-                </FormWrapper>
+                        <FlexColumn>
+                            <Section>
+                                <ScopeChangeReferences />
+                            </Section>
+                            Attachments
+                            <RevisionAttachments />
+                        </FlexColumn>
+                    </FormWrapper>
+                </div>
             </Wrapper>
             <RevisionSubmitBar cancel={cancel} />
         </RevisionFormStyledWrapper>
@@ -72,7 +74,7 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
 
 const RevisionFormStyledWrapper = styled.div`
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto 1fr auto;
     overflow: hidden;
     height: 100%;
     font-size: 14px;

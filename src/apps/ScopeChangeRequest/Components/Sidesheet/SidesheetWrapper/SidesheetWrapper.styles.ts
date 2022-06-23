@@ -19,7 +19,7 @@ export const FlexColumn = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 44px;
+    /* gap: 44px; */
     max-width: 600px;
 `;
 

@@ -26,7 +26,7 @@ export const RevisionsList = (): JSX.Element | null => {
                     title,
                     workflowStatus,
                 }) => (
-                    <RevisionText key={sequenceNumber}>
+                    <RevisionText key={id}>
                         <Link onClick={() => openNewScopeChange(id)}>
                             {sequenceNumber}
                             {revisionNumber && `-${revisionNumber}`}, {title}
