@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -60,4 +61,35 @@ export const SubSectionTitle = styled.div`
 
 export const SectionWrapper = styled.div`
     margin-left: 5px;
+`;
+
+export const Banner = styled.div<{ padding?: string }>`
+    height: 76px;
+    width: 100%;
+    background-color: ${tokens.colors.ui.background__light.hex};
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+    padding: ${({ padding = 0 }) => `${padding}`};
+    align-items: center;
+`;
+
+export const BannerItemTitle = styled.div`
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: ${tokens.colors.text.static_icons__tertiary.hex};
+`;
+
+export const BannerItemValue = styled.div`
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: ${tokens.colors.text.static_icons__default.hex};
+    min-height: 24px;
+`;
+
+export const BannerWarningTriangle = styled.div`
+    margin-top: 3px;
+    margin-left: 3px;
 `;

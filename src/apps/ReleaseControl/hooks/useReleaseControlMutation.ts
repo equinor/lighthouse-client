@@ -7,7 +7,7 @@ import {
     UseMutationResult,
     useQueryClient,
 } from 'react-query';
-import { releaseControlQueries } from '../queries/queries';
+import { releaseControlQueryKeys } from '../queries/releaseControlQueryKeys';
 
 export function useReleaseControlMutation<
     TData = unknown,
@@ -15,7 +15,7 @@ export function useReleaseControlMutation<
     TVariables = void,
     TContext = unknown
 >(
-    requestId: string,
+    releaseControlId: string,
     mutationKey: MutationKey,
     mutationFn: MutationFunction<TData, TVariables>,
     options?: Omit<
@@ -26,7 +26,7 @@ export function useReleaseControlMutation<
     const queryClient = useQueryClient();
     const { appName } = useSideSheet();
 
-    const baseKey = releaseControlQueries.baseQuery(requestId).queryKey;
+    const { baseKey } = releaseControlQueryKeys(releaseControlId);
     function invalidate() {
         queryClient.invalidateQueries(appName);
         queryClient.invalidateQueries(baseKey);
