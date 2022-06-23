@@ -6,7 +6,6 @@ import { Presets } from '../Presets/Presets';
 import { CreatorButton } from './CreatorButton/CreatorButton';
 import { LeftSection, FillSection, RightSection } from './HeaderStyles';
 import { HeaderTabButtons } from './HeaderTabButtons/HeaderTabButtons';
-import { RefreshButton } from './RefreshButton/RefreshButton';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useFilterApiContext } from '@equinor/filter';
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
@@ -40,7 +39,6 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
 
                 <HeaderTabButtons tabs={tabs} />
 
-                <RefreshButton />
                 <BookmarkDropdown appKey={shortName} subSystem={group} />
                 <ViewSettings tabs={tabs} />
             </RightSection>

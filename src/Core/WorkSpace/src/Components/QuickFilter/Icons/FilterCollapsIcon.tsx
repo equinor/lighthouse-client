@@ -5,7 +5,7 @@ interface FilterCollapseIconProps {
 }
 
 export const FilterCollapseIcon = ({ onClick }: FilterCollapseIconProps): JSX.Element => (
-    <Button variant="ghost_icon" onClick={onClick}>
+    <Button title="Compact filter" variant="ghost_icon" onClick={onClick}>
         <svg
             width="24"
             height="24"

@@ -10,6 +10,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Phase',
         valueFormatter: ({ phase }) => phase,
+        defaultHidden: true,
     },
     {
         name: 'Category',

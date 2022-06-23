@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { Attachments } from './Attachments';
 
-const maxSizeInBytes = 100 * 1000 ** 2;
+export const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const Upload = (): JSX.Element => {
     const { useAtomState } = scopeChangeFormAtomApi;
 
@@ -38,7 +38,7 @@ export const Upload = (): JSX.Element => {
 
     return (
         <Wrapper>
-            <Attachments onDrop={onDrop} maxSizeInBytes={maxSizeInBytes} />
+            <Attachments onDrop={onDrop} maxSizeInBytes={MAX_SIZE_IN_BYTES} />
             {attachments.map((attachment, i) => {
                 return (
                     <AttachmentsList key={i}>
@@ -56,7 +56,7 @@ export const Upload = (): JSX.Element => {
                         <Inline>
                             <div>
                                 {attachment.size && (attachment?.size / 1000 ** 2).toFixed(2)}MB /
-                                {maxSizeInBytes / 1000 ** 2}MB
+                                {MAX_SIZE_IN_BYTES / 1000 ** 2}MB
                             </div>
                             <Icon
                                 style={{ margin: '0em 0.5em' }}
