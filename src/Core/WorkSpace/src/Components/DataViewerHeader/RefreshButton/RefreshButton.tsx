@@ -7,7 +7,7 @@ export const RefreshButton = (): JSX.Element => {
     const { dataApi } = useDataContext();
 
     return (
-        <Button variant="ghost_icon" onClick={() => dataApi.refetch()}>
+        <Button title="Refresh data" variant="ghost_icon" onClick={() => dataApi.refetch()}>
             <Switch>
                 <Case when={dataApi.isFetching}>
                     <CircularProgress size={24} />
