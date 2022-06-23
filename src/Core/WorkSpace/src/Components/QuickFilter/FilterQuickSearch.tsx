@@ -1,7 +1,5 @@
-import { Search as EdsSearch } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { Search } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { SearchPickerDropdown } from './SearchPickerDropdown';
@@ -48,8 +46,14 @@ export const FilterQuickSearch = (): JSX.Element => {
     }
     return (
         <>
+            <SearchPickerDropdown
+                menuItems={[
+                    { title: 'Id and title', onCLick: () => setSearchMode('id/desc') },
+                    { title: 'All', onCLick: () => setSearchMode('all') },
+                ]}
+            />
             <Search
-                size={50}
+                size={200}
                 onChange={handleClear}
                 placeholder={getPlaceholderText(searchMode)}
                 onInput={handleInput}
@@ -60,20 +64,6 @@ export const FilterQuickSearch = (): JSX.Element => {
                     }
                 }}
             />
-            <SearchPickerDropdown
-                menuItems={[
-                    { title: 'Id and title', onCLick: () => setSearchMode('id/desc') },
-                    { title: 'All', onCLick: () => setSearchMode('all') },
-                ]}
-            />
         </>
     );
 };
-
-export const Search = styled(EdsSearch)`
-    background: ${tokens.colors.ui.background__light.rgba};
-
-    :focus-within {
-        background: ${tokens.colors.ui.background__default.rgba};
-    }
-`;
