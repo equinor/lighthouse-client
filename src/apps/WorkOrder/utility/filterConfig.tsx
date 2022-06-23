@@ -34,48 +34,41 @@ export const filterConfig: FilterOptions<WorkOrder> = [
         valueFormatter: ({ jobStatus }) => jobStatus,
         isQuickFilter: true,
     },
-    // {
-    //     name: 'Status',
-    //     valueFormatter: (workOrder) => getFollowUpStatus(workOrder),
-    //     sort: (filterValues) =>
-    //         filterValues.sort(
-    //             (a, b) =>
-    //                 followUpStatusPriorityMap[b as FollowUpStatuses] -
-    //                 followUpStatusPriorityMap[a as FollowUpStatuses]
-    //         ),
-    //     customValueRender: (filterValue) => {
-    //         return <FollowUpStatusFilter status={filterValue as FollowUpStatuses} />;
-    //     },
-    //     isQuickFilter: true,
-    // },
-    // {
-    //     name: 'Responsible',
-    //     valueFormatter: ({ responsibleCode }) => responsibleCode,
-    // },
-    // {
-    //     name: 'Milestone',
-    //     valueFormatter: ({ milestoneCode }) => milestoneCode,
-    // },
-    // {
-    //     name: 'Planned start',
-    //     valueFormatter: ({ plannedStartDate,   }) => plannedStartDate,
+    {
+        name: 'Status',
+        valueFormatter: (workOrder) => getFollowUpStatus(workOrder),
+        sort: (filterValues) =>
+            filterValues.sort(
+                (a, b) =>
+                    followUpStatusPriorityMap[b as FollowUpStatuses] -
+                    followUpStatusPriorityMap[a as FollowUpStatuses]
+            ),
+        customValueRender: (filterValue) => {
+            return <FollowUpStatusFilter status={filterValue as FollowUpStatuses} />;
+        },
+        isQuickFilter: true,
+    },
+    {
+        name: 'Responsible',
+        valueFormatter: ({ responsibleCode }) => responsibleCode,
+    },
+    {
+        name: 'Milestone',
+        valueFormatter: ({ milestoneCode }) => milestoneCode,
+    },
 
-    // },
-    // {
-    //     name: 'Planned Finish',
-    //     valueFormatter: ({ plannedFinishDate }) => plannedFinishDate,
-    // },
     // {
     //     name: 'Start date',
-    //     valueFormatter: ({ plannedStartupDate, actualStartupDate }) => {
+    //     valueFormatter: ({ plannedStartupDate, actualStartupDate, plannedStartDateDiff }) => {
+    //         if (!plannedStartDateDiff) return 'Other';
     //         const plannedDate = new Date(plannedStartupDate || '');
     //         const actualDate = new Date(actualStartupDate || '');
-    //         const dateDiffs = daysDiff(plannedDate);
+    //         // const dateDiffs = daysDiff(plannedDate);
 
     //         // If planned start date is a date that has already been
     //         // and the actual date happened later than the planned or that there is no actual date
     //         if (
-    //             dateDiffs.days <= 0 &&
+    //             plannedStartDateDiff.days <= 0 &&
     //             (actualDate.getTime() > plannedDate.getTime() || !actualStartupDate)
     //         ) {
     //             return 'Overdue';
@@ -84,7 +77,7 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     //         else if (actualDate.getTime() < plannedDate.getTime()) {
     //             return 'Other';
     //         } else {
-    //             return getFilterDateValues(dateDiffs.days);
+    //             return getFilterDateValues(plannedStartDateDiff.days);
     //         }
     //     },
     // },
@@ -107,43 +100,43 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     //         }
     //     },
     // },
-    // {
-    //     name: 'Material',
-    //     valueFormatter: ({ materialStatus }) => materialStatus,
-    //     isQuickFilter: true,
-    // },
-    // {
-    //     name: 'Hold',
-    //     valueFormatter: ({ holdBy }) => holdBy,
-    //     isQuickFilter: true,
-    // },
-    // {
-    //     name: 'MC',
-    //     valueFormatter: ({ mccrStatus }) => mccrStatus,
-    // },
-    // {
-    //     name: 'Progress',
-    //     valueFormatter: ({ projectProgress }): Progress => {
-    //         const progress = parseFloat(projectProgress || '');
-    //         if (progress >= 100) {
-    //             return '100%';
-    //         } else if (progress >= 95) {
-    //             return '95-99%';
-    //         } else if (progress >= 75) {
-    //             return '75-95%';
-    //         } else if (progress >= 50) {
-    //             return '50-75%';
-    //         } else if (progress >= 25) {
-    //             return '25-50%';
-    //         } else if (progress > 0) {
-    //             return '0-25%';
-    //         } else {
-    //             return 'Not Started';
-    //         }
-    //     },
-    //     sort: (filterValues) =>
-    //         filterValues.sort(
-    //             (a, b) => progressPriMap[a as Progress] - progressPriMap[b as Progress]
-    //         ),
-    // },
+    {
+        name: 'Material',
+        valueFormatter: ({ materialStatus }) => materialStatus,
+        isQuickFilter: true,
+    },
+    {
+        name: 'Hold',
+        valueFormatter: ({ holdBy }) => holdBy,
+        isQuickFilter: true,
+    },
+    {
+        name: 'MC',
+        valueFormatter: ({ mccrStatus }) => mccrStatus,
+    },
+    {
+        name: 'Progress',
+        valueFormatter: ({ projectProgress }): Progress => {
+            const progress = parseFloat(projectProgress || '');
+            if (progress >= 100) {
+                return '100%';
+            } else if (progress >= 95) {
+                return '95-99%';
+            } else if (progress >= 75) {
+                return '75-95%';
+            } else if (progress >= 50) {
+                return '50-75%';
+            } else if (progress >= 25) {
+                return '25-50%';
+            } else if (progress > 0) {
+                return '0-25%';
+            } else {
+                return 'Not Started';
+            }
+        },
+        sort: (filterValues) =>
+            filterValues.sort(
+                (a, b) => progressPriMap[a as Progress] - progressPriMap[b as Progress]
+            ),
+    },
 ];

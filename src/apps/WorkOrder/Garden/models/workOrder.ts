@@ -45,6 +45,8 @@
 //     jobStatus: string;
 // };
 
+import { Duration } from 'luxon';
+
 export type WorkOrder = {
     actualFinishDate: string | null;
     actualStartupDate: string | null;
@@ -84,4 +86,5 @@ export type WorkOrder = {
     w10ActualDate: string | null;
     workOrderId: string | null;
     workOrderNumber: string;
+    plannedStartDateDiff: Duration | null;
 };
