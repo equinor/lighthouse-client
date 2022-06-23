@@ -7,28 +7,25 @@ import { releaseControlMutationKeys } from '../queries/releaseControlMutationKey
 import { unVoidReleaseControl, voidReleaseControl } from '../api/releaseControl/Request';
 import { sideSheetEditModeAtom } from '../Atoms/editModeAtom';
 import { useReleaseControlMutation } from './useReleaseControlMutation';
-import { ReleaseControl } from '../types/releaseControl';
 import { useReleaseControlContext } from './useReleaseControlContext';
 import { MenuItem } from '@equinor/overlay-menu';
 
 export function useSidesheetEffects(
     actions: SidesheetApi,
     toggleEditMode: () => void,
-    releaseControl: ReleaseControl
+    releaseControlId: string
 ): void {
-    const releaseControlId = releaseControl.id;
     const { canPatch, canVoid, canUnVoid, title, isVoided, id, sequenceNumber } =
         useReleaseControlContext((s) => ({ ...s.requestAccess, ...s.releaseControl }));
-
     const editMode = useAtom(sideSheetEditModeAtom);
-    const { unvoidKey, voidKey } = releaseControlMutationKeys(releaseControl.id);
+    const { unvoidKey, voidKey } = releaseControlMutationKeys(releaseControlId);
     const { mutate: voidRequestMutation } = useReleaseControlMutation(
-        releaseControl.id,
+        releaseControlId,
         voidKey,
         voidReleaseControl
     );
     const { mutate: unVoidRequestMutation } = useReleaseControlMutation(
-        releaseControl.id,
+        releaseControlId,
         unvoidKey,
         unVoidReleaseControl
     );
@@ -75,7 +72,7 @@ export function useSidesheetEffects(
 
     useEffect(() => {
         actions.setMenuItems(makeMenuItems());
-    }, [editMode, canVoid, canUnVoid, canPatch]);
+    }, [editMode, canVoid, canUnVoid, canPatch, isVoided]);
 
     useEffect(() => {
         actions.setTitle(`RC${sequenceNumber} ${title}`);
