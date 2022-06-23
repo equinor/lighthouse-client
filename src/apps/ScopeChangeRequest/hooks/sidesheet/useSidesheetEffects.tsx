@@ -13,9 +13,10 @@ import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 export function useSidesheetEffects(
     actions: SidesheetApi,
     toggleEditMode: () => void,
-    requestId: string
+    requestId: string,
+    setRevisionMode: () => void
 ): void {
-    const { canPatch, canVoid, canUnVoid, title, isVoided, id, sequenceNumber } =
+    const { canPatch, canVoid, canUnVoid, title, isVoided, id, serialNumber } =
         useScopeChangeContext((s) => ({ ...s.requestAccess, ...s.request }));
 
     const editMode = useAtom(sideSheetEditModeAtom);
@@ -39,7 +40,14 @@ export function useSidesheetEffects(
                 onClick: toggleEditMode,
             });
         }
-
+        if (canPatch) {
+            menuItems.push({
+                label: 'Create revision',
+                icon: <Icon name="copy" />,
+                isDisabled: !canPatch,
+                onClick: setRevisionMode,
+            });
+        }
         menuItems.push(
             isVoided
                 ? {
@@ -76,7 +84,7 @@ export function useSidesheetEffects(
     }, [editMode, canVoid, canUnVoid, canPatch]);
 
     useEffect(() => {
-        actions.setTitle(`${sequenceNumber} ${title}`);
+        actions.setTitle(`${serialNumber} ${title}`);
     }, [id]);
 
     /** Only run once */

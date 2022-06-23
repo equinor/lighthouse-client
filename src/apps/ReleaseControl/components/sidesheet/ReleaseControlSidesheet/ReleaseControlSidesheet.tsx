@@ -11,7 +11,7 @@ import { Banner } from '../../../../ScopeChangeRequest/Components/Sidesheet/Side
 import {
     disableEditMode,
     sideSheetEditModeAtom,
-    toggleEditMode
+    toggleEditMode,
 } from '../../../Atoms/editModeAtom';
 import { useGetReleaseControl } from '../../../hooks/useGetReleaseControl';
 import { useReleaseControlAccess } from '../../../hooks/useReleaseControlAccess';
@@ -20,9 +20,10 @@ import { useReleaseControlMutationWatcher } from '../../../hooks/useReleaseContr
 import { useSidesheetEffects } from '../../../hooks/useSidesheetEffects';
 import { ReleaseControl } from '../../../types/releaseControl';
 import { ReleaseControlEditForm } from '../../Form/ReleaseControlEditForm';
-import { DetailsTab } from './Tabs/DetailsTab';
+import { ScopeTab } from './Tabs/ScopeTab';
 import { HistoryTab } from './Tabs/HistoryTab';
 import { updateContext } from './updateContext';
+import { WorkflowTab } from './Tabs/WorkflowTab';
 
 interface ReleaseControlSidesheetProps {
     item: ReleaseControl;
@@ -62,15 +63,16 @@ export const ReleaseControlSidesheet = ({
             </Banner>
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
-                    <HeaderTab>
-                        <div>Details</div>
-                    </HeaderTab>
-
+                    <HeaderTab>Scope</HeaderTab>
+                    <HeaderTab>Workflow</HeaderTab>
                     <HeaderTab>History</HeaderTab>
                 </SidesheetTabList>
                 <TabList>
                     <Tab>
-                        <DetailsTab />
+                        <ScopeTab />
+                    </Tab>
+                    <Tab>
+                        <WorkflowTab />
                     </Tab>
 
                     <Tab>

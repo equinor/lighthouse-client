@@ -5,9 +5,15 @@ import { FilterGroups, FilterGroupWrapper, Wrapper } from './FilterView-style';
 
 interface FilterViewProps {
     groups: string[];
+    visibleFilterGroups: string[];
+    setVisibleFilterGroups: (newVal: string[]) => void;
 }
 
-export const FilterView = ({ groups }: FilterViewProps): JSX.Element => {
+export const FilterView = ({
+    groups,
+    setVisibleFilterGroups,
+    visibleFilterGroups,
+}: FilterViewProps): JSX.Element => {
     const {
         filterGroupState: { getGroupValues },
     } = useFilterApiContext();
@@ -16,6 +22,7 @@ export const FilterView = ({ groups }: FilterViewProps): JSX.Element => {
         <Wrapper>
             <FilterGroups>
                 {groups
+                    .filter((s) => visibleFilterGroups.includes(s))
                     .sort()
                     .map(
                         (groupName): FilterGroup => ({
