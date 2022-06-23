@@ -8,6 +8,7 @@ interface ProCoSysUrls {
     getDocumentUrl: (documentId: string | number) => string;
     getWorkOrderUrl: (workOrderId: string | number) => string;
     getMcUrl: (mcId: string | number) => string;
+    getFormTypeUrl: (checklistId: string | number) => string;
 }
 
 const getProCoSysUrl = () =>
@@ -21,4 +22,6 @@ export const proCoSysUrls: ProCoSysUrls = {
     getDocumentUrl: (documentId) => `${getProCoSysUrl()}/Documents/Document#id=${documentId}`,
     getWorkOrderUrl: (workOrderId) => `${getProCoSysUrl()}/WorkOrders/WorkOrder#id=${workOrderId}`,
     getMcUrl: (mcId) => `${getProCoSysUrl()}/Completion#McPkg|${mcId}`,
+    getFormTypeUrl: (checklistId) =>
+        `${getProCoSysUrl()}/Completion/TagCheck/Form/Main/Index?id=${checklistId}`,
 };
