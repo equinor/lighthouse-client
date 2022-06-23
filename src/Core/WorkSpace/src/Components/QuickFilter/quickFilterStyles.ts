@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const CompactFilterWrapper = styled.div`
     height: 50px;
-    width: 100%;
+    width: 100vw;
     background-color: ${tokens.colors.ui.background__light.hex};
 `;
 
@@ -11,6 +11,7 @@ export const LeftSection = styled.div`
     display: flex;
     align-items: center;
     padding-left: 16px;
+    gap: 0.5em;
 `;
 
 export const RightSection = styled.div`
@@ -27,7 +28,7 @@ export const SearchLine = styled.div`
 `;
 
 export const VerticalDivider = styled.div`
-    border-color: ${tokens.colors.ui.background__medium.hex} 1px solid;
+    border-left: ${tokens.colors.ui.background__medium.hex} 2px solid;
     height: 50px;
-    width: 1px;
+    width: 2px;
 `;

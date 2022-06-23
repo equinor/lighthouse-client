@@ -23,10 +23,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     const { reportUri, filterOptions, options } = props;
     // Default Options
     const aspectRatio = useMemo(() => options?.aspectRatio || 0.41, [options?.aspectRatio]);
-    const isFilterActive = useMemo(
-        () => options?.isFilterActive || false,
-        [options?.isFilterActive]
-    );
 
     const [ref, { width }] = useElementData();
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
@@ -162,11 +158,11 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     return (
         <>
             <Wrapper ref={ref}>
-                <TopBar height={getFilterHeight(isFilterActive, isFilterExpanded)}>
+                <TopBar height={getFilterHeight(isFilterExpanded)}>
                     {report && isLoaded && (
                         <PowerBIFilter
                             report={report}
-                            isFilterActive={isFilterActive}
+                            isFilterActive={true}
                             isLoaded={isLoaded}
                             isFilterExpanded={isFilterExpanded}
                             setIsFilterExpanded={setIsFilterExpanded}
@@ -174,7 +170,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                         />
                     )}
                 </TopBar>
-                <PBIWrapper height={getFilterHeight(isFilterActive, isFilterExpanded)}>
+                <PBIWrapper height={getFilterHeight(isFilterExpanded)}>
                     <div
                         style={{
                             height: `${width * aspectRatio}px`,
@@ -202,10 +198,4 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     );
 };
 
-function getFilterHeight(isFilterActive: boolean, isFilterExpanded: boolean) {
-    if (!isFilterActive) return 0;
-
-    if (!isFilterExpanded) return 48;
-
-    return 250;
-}
+const getFilterHeight = (isFilterExpanded: boolean) => (isFilterExpanded ? 250 : 48);

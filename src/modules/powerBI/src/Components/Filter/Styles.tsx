@@ -24,6 +24,7 @@ export const FilterItemsWrapper = styled.div`
     height: 100%;
     overflow-x: auto;
     overflow-y: hidden;
+    padding-left: 12px;
 `;
 
 export const MenuItems = styled.div`
@@ -36,4 +37,19 @@ export const MenuItems = styled.div`
 export const Item = styled(Button)`
     width: 36px;
     height: 36px;
+`;
+
+export const ExpandedFilterWrapper = styled.div`
+    display: flex;
+    height: 250px;
+    overflow: hidden;
+    border-bottom: 1px solid ${tokens.colors.ui.background__medium.hex};
+`;
+
+export const Sidebar = styled.div`
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -2px 0px 5px 0px rgba(0, 0, 0, 0.24);
 `;

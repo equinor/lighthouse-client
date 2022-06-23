@@ -1,4 +1,3 @@
-import { FilterTypeSelector } from '../../../../modules/powerBI/src/Components/Filter/FilterTypeSelector/FilterTypeSelector';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
@@ -21,11 +20,6 @@ export const FilterView = ({
 
     return (
         <Wrapper>
-            <FilterTypeSelector
-                visibleFilters={visibleFilterGroups}
-                setVisibleFilters={setVisibleFilterGroups}
-                allFilters={groups}
-            />
             <FilterGroups>
                 {groups
                     .filter((s) => visibleFilterGroups.includes(s))
