@@ -1,5 +1,6 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { VirtualItem } from 'react-virtual';
 import styled from 'styled-components';
 import { Count } from '../../../../../packages/Filter/Components/FilterItem/FilterItem-Styles';
 
@@ -14,16 +15,30 @@ interface FilterItemCheckboxProps {
     count?: number;
 }
 
-export const FilterItemCheckbox = ({
+interface VirtualFilterItemCheckboxProps extends FilterItemCheckboxProps {
+    virtualItem: VirtualItem;
+}
+
+export const VirtualFilterItemCheckbox = ({
     count,
     filterValue,
     handleFilterItemClick,
     isChecked,
     handleFilterItemLabelClick,
     ValueRender,
-}: FilterItemCheckboxProps): JSX.Element => {
+    virtualItem,
+}: VirtualFilterItemCheckboxProps): JSX.Element => {
     return (
-        <FilterItemWrap key={filterValue}>
+        <FilterItemWrap
+            style={{
+                transform: `translateY(${virtualItem.start}px)`,
+                height: `${virtualItem.size}px`,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+            }}
+            key={filterValue}
+        >
             <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
@@ -45,6 +60,8 @@ export const FilterItemWrap = styled.div`
     display: grid;
     align-items: center;
     padding-top: 2px;
+
+    width: 100%;
     padding-bottom: 2px;
     > span {
         padding: 0px;
@@ -62,3 +79,22 @@ export const FilterItemWrap = styled.div`
         background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
     }
 `;
+
+export const FilterItemCheckbox = ({
+    count,
+    filterValue,
+    handleFilterItemClick,
+    isChecked,
+    handleFilterItemLabelClick,
+    ValueRender,
+}: FilterItemCheckboxProps): JSX.Element => {
+    return (
+        <FilterItemWrap key={filterValue}>
+            <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
+            <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
+                <ValueRender />
+            </FilterLabelWrapper>
+            {typeof count === 'number' && <Count>({count})</Count>}
+        </FilterItemWrap>
+    );
+};

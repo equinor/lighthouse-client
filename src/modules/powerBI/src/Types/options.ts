@@ -21,7 +21,6 @@ export interface PBIOptions extends IReportEmbedConfiguration {
     activePage?: string;
     activePageDisplayName?: string;
     pageLoad?: boolean;
-    isFilterActive?: boolean;
     aspectRatio?: number;
     hasFilter?: (hasFilter: boolean) => void;
     persistPayload?: (saveArgs: SaveArgs<PowerBIBookmarkPayload>) => void;

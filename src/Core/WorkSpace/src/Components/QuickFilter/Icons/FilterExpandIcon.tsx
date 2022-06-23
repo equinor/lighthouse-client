@@ -5,7 +5,7 @@ interface FilterExpandIconProps {
 }
 
 export const FilterExpandIcon = ({ onClick }: FilterExpandIconProps): JSX.Element => (
-    <Button onClick={onClick} variant="ghost_icon">
+    <Button title="Advanced filter" onClick={onClick} variant="ghost_icon">
         <svg
             width="24"
             height="24"
