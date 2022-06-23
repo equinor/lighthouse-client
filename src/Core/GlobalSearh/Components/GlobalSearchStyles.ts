@@ -1,3 +1,5 @@
+import { Search as EdsSearch } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -14,4 +16,12 @@ export const SearchResult = styled.div`
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     max-height: 90vh;
     overflow-y: auto;
+`;
+
+export const Search = styled(EdsSearch)`
+    background: ${tokens.colors.ui.background__default.rgba};
+
+    :focus-within {
+        background: ${tokens.colors.ui.background__light.rgba};
+    }
 `;
