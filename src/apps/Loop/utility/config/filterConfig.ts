@@ -3,19 +3,31 @@ import { Loop } from '../../types/loop';
 
 export const filterConfig: FilterOptions<Loop> = [
     {
-        name: 'Priority 1',
+        name: 'Priority',
         valueFormatter: (pkg) => pkg.priority1,
+        isQuickFilter: true,
     },
     {
         name: 'Responsible',
         valueFormatter: (pkg) => pkg.responsible,
+        isQuickFilter: true,
     },
     {
-        name: 'MC status',
+        name: 'Checklist status',
+        valueFormatter: (pkg) => pkg.status,
+        isQuickFilter: true,
+    },
+    {
+        name: 'Content MC status',
         valueFormatter: (pkg) => pkg.loopContentStatus,
+        isQuickFilter: true,
     },
     {
-        name: 'Functional System',
+        name: 'System',
         valueFormatter: (pkg) => pkg.functionalSystem,
+    },
+    {
+        name: 'Form type',
+        valueFormatter: (pkg) => pkg.formularType,
     },
 ];

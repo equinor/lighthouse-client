@@ -10,7 +10,7 @@ import {
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus,
+    sortPackagesByStatus
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
 import { statusBarConfig } from './utility/config/statusBarConfig';
@@ -25,7 +25,8 @@ const creator = setupWorkspaceSidesheet<HandoverPackage, 'handoverDetails'>({
         parentApp: 'handover',
         function: async (id: string) => {
             const items = await responseParser(await responseAsync());
-            return items.find((item) => item.id === id);
+            const result = items.find((item) => item.id === id);
+            return result ? result : items.find((item) => item.commpkgNo === id);
         },
     },
 });

@@ -15,6 +15,7 @@ import { getPhases } from '../api/ScopeChange/getPhases';
 import { getScopes } from '../api/ScopeChange/getScopes';
 import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
+import { getRevisions } from '../api/ScopeChange/Request/getRevisions';
 import { CacheTime } from '../enum/cacheTimes';
 import { LogEntry, Scope, ScopeChangeRequest } from '../types/scopeChangeRequest';
 
@@ -27,6 +28,12 @@ const scopeChangeHistoryKey = (requestId: string): string[] => [
     ...scopeChangeBaseKey(requestId),
     'history',
 ];
+
+const scopeChangeRevisionsKey = (requestId: string): string[] => [
+    ...scopeChangeBaseKey(requestId),
+    'revisions',
+];
+
 const scopeChangeStepKey = (requestId: string, stepId: string) => [
     ...scopeChangeBaseKey(requestId),
     'step',
@@ -91,6 +98,7 @@ interface ScopeChangeQueries {
     scopeQuery: QueryFunction<Scope[]>;
     baseQuery: (id: string) => QueryFunction<ScopeChangeRequest>;
     historyQuery: (id: string) => QueryFunction<LogEntry[]>;
+    revisionsQuery: (id: string) => QueryFunction<ScopeChangeRequest[]>;
     permissionQueries: PermissionQueries;
     workflowQueries: WorkflowQueries;
 }
@@ -122,6 +130,10 @@ export const scopeChangeQueries: ScopeChangeQueries = {
         queryFn: ({ signal }) => getHistory(id, signal),
         queryKey: scopeChangeHistoryKey(id),
         staleTime: CacheTime.FiveMinutes,
+    }),
+    revisionsQuery: (id: string) => ({
+        queryFn: ({ signal }) => getRevisions(id, signal),
+        queryKey: scopeChangeRevisionsKey(id),
     }),
     workflowQueries: scopeChangeWorkflowQueries,
     permissionQueries: {

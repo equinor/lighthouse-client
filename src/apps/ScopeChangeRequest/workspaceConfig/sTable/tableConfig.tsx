@@ -48,8 +48,8 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     customColumns: [
         defineColumn({
             header: 'Id',
-            accessor: (s) => s.sequenceNumber,
-            width: 60,
+            accessor: (s) => s.serialNumber,
+            width: 90,
         }),
         defineColumn({
             header: 'Title',
@@ -103,18 +103,19 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             width: 120,
             render: (_, u, cell) => GuessMhrsRender({ cell }),
         }),
-        defineColumn({
-            header: 'Est mhrs',
-            accessor: (s) => s.estimatedChangeHours,
-            width: 120,
-            render: (s, u, cell) => EstMhrsRender({ cell }),
-        }),
-        defineColumn({
-            header: 'Exp mhrs',
-            accessor: (s) => s.actualChangeHours ?? 0,
-            width: 120,
-            render: (s, u, cell) => ExpMhrsRender({ cell }),
-        }),
+        /**Disabled pending FAM integration in backend */
+        // defineColumn({
+        //     header: 'Est mhrs',
+        //     accessor: (s) => s.estimatedChangeHours,
+        //     width: 120,
+        //     render: (s, u, cell) => EstMhrsRender({ cell }),
+        // }),
+        // defineColumn({
+        //     header: 'Exp mhrs',
+        //     accessor: (s) => s.actualChangeHours ?? 0,
+        //     width: 120,
+        //     render: (s, u, cell) => ExpMhrsRender({ cell }),
+        // }),
         defineColumn({
             header: 'Change cateogry',
             accessor: (s) => s?.changeCategory?.name,

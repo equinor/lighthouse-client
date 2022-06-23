@@ -35,6 +35,8 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         documentNumbers:
             request.documents.map(({ stidDocumentNumber }) => stidDocumentNumber) || [],
         areaCodes: [],
+        attachmentsToDuplicate: [],
+        revisionAttachments: [],
     };
 
     const payload = {

@@ -11,12 +11,15 @@ export const FilterGroupWrapper = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
+    padding-left: 2px;
     font-size: 14px;
     font-weight: 700;
     line-height: 20px;
-
     text-align: left;
+    border-radius: 5px;
+    &:hover {
+        background-color: ${tokens.colors.interactive.primary__hover_alt.hex};
+    }
 `;
 
 export const NormalText = styled.div`
@@ -40,20 +43,9 @@ export const MenuWrapper = styled.div`
     width: 200px;
 `;
 
-export const FilterItemList = styled.div`
-    max-height: 250px;
-    overflow: scroll;
+export const FilterItemList = styled.div<{ items: number }>`
+    height: ${({ items }) => (items > 10 ? '300px' : `${items * 22 + 16}px`)};
     padding: 8px 8px;
-
-    ::-webkit-scrollbar-thumb {
-        background: ${tokens.colors.ui.background__medium.hex};
-        border-radius: 5px;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: ${tokens.colors.ui.background__medium.hex};
-    }
 `;
 
 export const ClearButtonWrapper = styled.div`

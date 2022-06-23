@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { tokens } from '@equinor/eds-tokens';
-import { useWorkSpace } from '@equinor/WorkSpace';
-import styled from 'styled-components';
 
 import { FilterView } from '../../../../../packages/Filter/Components/FilterView/FilterView';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
@@ -10,6 +7,13 @@ import { FilterQuickSearch } from './FilterQuickSearch';
 import { FilterCollapseIcon } from './Icons/FilterCollapsIcon';
 import { FilterExpandIcon } from './Icons/FilterExpandIcon';
 import { FilterClearIcon } from './Icons/FilterClear';
+import { CompactFilterWrapper, SearchLine, LeftSection, RightSection } from './quickFilterStyles';
+import { Chip } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
+import { useWorkSpace } from '@equinor/WorkSpace';
+import { RefreshButton } from '../DataViewerHeader/RefreshButton/RefreshButton';
+import { ToggleHideFilterPopover } from './ToggleHideFilterPopover';
 
 export const QuickFilter = (): JSX.Element => {
     const [filterGroupOpen, setFilterGroupOpen] = useState<string | null>(null);
@@ -20,6 +24,7 @@ export const QuickFilter = (): JSX.Element => {
     const {
         operations: { clearActiveFilters },
         filterState: { checkHasActiveFilters },
+        filterGroupState: { getInactiveGroupValues },
     } = useFilterApiContext();
 
     const { filterOptions = [] } = useWorkSpace();
@@ -30,15 +35,25 @@ export const QuickFilter = (): JSX.Element => {
 
     const filterGroups = filterOptions.map(({ name }) => name);
 
+    const [visibleFilterGroups, setVisibleFilterGroups] = useState<string[]>(
+        filterOptions.filter((s) => !s.defaultHidden).map((s) => s.name)
+    );
+
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
+    const calculateHiddenFiltersApplied = () =>
+        filterOptions.reduce(
+            (acc, curr) =>
+                !curr.isQuickFilter && getInactiveGroupValues(curr.name).length > 0 ? acc + 1 : acc,
+            0
+        );
+
     return (
-        <>
+        <div>
             <CompactFilterWrapper>
                 <SearchLine>
                     <LeftSection>
                         <FilterQuickSearch />
-                        <VerticalDivider />
                     </LeftSection>
                     <RightSection>
                         {!isFilterExpanded && (
@@ -54,52 +69,59 @@ export const QuickFilter = (): JSX.Element => {
                                             />
                                         )
                                 )}
+                                <OtherFiltersAppliedInfo
+                                    activeFilters={calculateHiddenFiltersApplied()}
+                                />
                             </>
                         )}
+                        <div style={{ display: 'flex' }}>
+                            {isFilterExpanded && (
+                                <ToggleHideFilterPopover
+                                    allFilters={filterGroups}
+                                    setVisibleFilters={setVisibleFilterGroups}
+                                    visibleFilters={visibleFilterGroups}
+                                />
+                            )}
+                            <FilterClearIcon
+                                isDisabled={!checkHasActiveFilters()}
+                                onClick={() => clearActiveFilters()}
+                            />
 
-                        <FilterClearIcon
-                            isDisabled={!checkHasActiveFilters()}
-                            onClick={() => clearActiveFilters()}
-                        />
+                            <RefreshButton />
 
-                        <div onClick={() => setIsFilterExpanded((s) => !s)}>
-                            {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
+                            <div onClick={() => setIsFilterExpanded((s) => !s)}>
+                                {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
+                            </div>
                         </div>
                     </RightSection>
                 </SearchLine>
             </CompactFilterWrapper>
-            {isFilterExpanded && <FilterView groups={filterGroups} />}
-        </>
+            {isFilterExpanded && (
+                <FilterView
+                    setVisibleFilterGroups={setVisibleFilterGroups}
+                    visibleFilterGroups={visibleFilterGroups}
+                    groups={filterGroups}
+                />
+            )}
+        </div>
     );
 };
 
-const CompactFilterWrapper = styled.div`
-    height: 50px;
-    width: 100%;
-    background-color: ${tokens.colors.ui.background__light.hex};
-`;
+interface OtherFiltersAppliedInfoProps {
+    activeFilters: number;
+}
 
-const LeftSection = styled.div`
-    display: flex;
-    align-items: center;
-    padding-left: 16px;
-`;
+export function OtherFiltersAppliedInfo({
+    activeFilters,
+}: OtherFiltersAppliedInfoProps): JSX.Element | null {
+    if (activeFilters <= 0) return null;
 
-const RightSection = styled.div`
-    display: flex;
-    gap: 2em;
-    align-items: center;
-    padding-right: 12px;
-`;
+    return <InfoChip>+{activeFilters} other filters applied</InfoChip>;
+}
 
-const SearchLine = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-const VerticalDivider = styled.div`
-    border-color: ${tokens.colors.ui.background__medium.hex} 1px solid;
-    height: 50px;
-    width: 1px;
+const InfoChip = styled(Chip)`
+    background-color: ${tokens.colors.ui.background__info.hex};
+    color: ${tokens.colors.text.static_icons__default.hex};
+    font-weight: 500;
+    font-size: 12px;
 `;
