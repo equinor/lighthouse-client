@@ -17,7 +17,11 @@ export function setup(addApi: ClientApi): void {
             objectIdentifier: 'checklistId',
         })
         .registerDataSource({ responseAsync: responseAsync })
-        .registerSearchOptions([{ name: 'Checklist ID', valueFormatter: (pkg) => pkg.checklistId }])
+        .registerSearchOptions([
+            { name: 'Checklist ID', valueFormatter: (pkg) => pkg.checklistId },
+            { name: 'Cmpkg', valueFormatter: (pkg) => pkg.commissioningPackageNo ?? '' },
+            { name: 'MCpkg', valueFormatter: (pkg) => pkg.mechanicalCompletionPackageNo ?? '' },
+        ])
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerFilterOptions(filterConfig)
