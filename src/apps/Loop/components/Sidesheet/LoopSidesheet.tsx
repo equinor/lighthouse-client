@@ -2,11 +2,13 @@ import { Tabs } from '@equinor/eds-core-react';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
+import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
 import { workorderColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 import { Status } from '../Status';
+import { ThreeDView } from './3D/3dView';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
 import { Checklists } from './Checklists';
@@ -113,7 +115,13 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                             </PanelContentWrapper>
                         </Tabs.Panel>
 
-                        <Tabs.Panel>3D</Tabs.Panel>
+                        <Tabs.Panel>
+                            {activeTab === 1 && (
+                                <ModelViewerContextProvider>
+                                    <ThreeDView loop={item} />
+                                </ModelViewerContextProvider>
+                            )}
+                        </Tabs.Panel>
                     </SidesheetPanels>
                 </SidesheetTabs>
             </TabsWrapper>

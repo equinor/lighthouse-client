@@ -36,16 +36,19 @@ export function useModel(loadFullModel?: boolean, tags?: string[], padding?: num
                 if (tags) {
                     try {
                         await selectTagsByTagNos(selection, tags, padding);
+                        setModelWithSelection({
+                            cognite3DModel,
+                            selection,
+                            viewerNodeSelection: selection.viewerNodeSelection,
+                            ...selectionOptions,
+                        });
                     } catch (error: any) {
-                        setMessage(createMessage(error.message, 'NoTags'));
+                        setModelWithSelection({
+                            cognite3DModel,
+                            ...selectionOptions,
+                            message: createMessage(error.message, 'NoTags'),
+                        });
                     }
-
-                    setModelWithSelection({
-                        cognite3DModel,
-                        selection,
-                        viewerNodeSelection: selection.viewerNodeSelection,
-                        ...selectionOptions,
-                    });
                 } else {
                     setModelWithSelection({ cognite3DModel, selection });
                 }
