@@ -28,7 +28,7 @@ export const HeatTracingCable = ({
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
     return (
         <ElectroViewNodeGroup>
-            <HeatTracingCableNode htCount={pipetestsOnHTCable.length}>
+            <HeatTracingCableNode pipetestCount={pipetestsOnHTCable.length}>
                 {htCable === value ? (
                     <ElectroViewHTHighlight
                         onClick={() => {
@@ -82,14 +82,18 @@ export const HeatTracingCable = ({
     );
 };
 
-const HeatTracingCableNode = styled.div<{ htCount: number }>`
+const HeatTracingCableNode = styled.div<{ pipetestCount: number }>`
     display: flex;
     flex-direction: horizontal;
-    padding: 6px;
+    padding: 3px;
+    padding-top: 6px;
     text-align: center;
     margin-bottom: 2px;
     margin-top: 16px;
-    width: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '200px' : 60 + 90 * p.htCount + 'px')};
+    width: ${(p) =>
+        p.pipetestCount === 0 || p.pipetestCount === 1
+            ? '150px'
+            : 45 + 92 * p.pipetestCount + 'px'};
     border-bottom: 2px dashed ${tokens.colors.text.static_icons__default.hex};
 
     &:after {
@@ -101,7 +105,10 @@ const HeatTracingCableNode = styled.div<{ htCount: number }>`
 
         position: relative;
         top: 18px;
-        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '62px' : 90 * p.htCount - 76 + 'px')};
+        left: ${(p) =>
+            p.pipetestCount === 0 || p.pipetestCount === 1
+                ? '30px'
+                : 92 * p.pipetestCount - 76 + 'px'};
     }
 `;
 
