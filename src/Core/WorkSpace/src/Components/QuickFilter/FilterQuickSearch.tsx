@@ -1,5 +1,7 @@
 import { Search } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { SearchPickerDropdown } from './SearchPickerDropdown';
@@ -52,7 +54,8 @@ export const FilterQuickSearch = (): JSX.Element => {
                     { title: 'All', onCLick: () => setSearchMode('all') },
                 ]}
             />
-            <Search
+            <EdsSearch
+                hasValue={Boolean(searchText)}
                 size={200}
                 onChange={handleClear}
                 placeholder={getPlaceholderText(searchMode)}
@@ -67,3 +70,8 @@ export const FilterQuickSearch = (): JSX.Element => {
         </>
     );
 };
+
+const EdsSearch = styled(Search) <{ hasValue: boolean }>`
+    border: ${({ hasValue }) =>
+        hasValue ? `1px solid ${tokens.colors.interactive.primary__resting.hex}` : 'none'};
+`;

@@ -4,6 +4,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
 import { FilterClearIcon } from '../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
 import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
+import { useOutsideClick } from '../../../../hooks/useOutsideClick';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterItemValue } from '../FilterItem/FilterItem';
@@ -42,10 +43,14 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         setSearchActive((isActive) => !isActive);
     }
 
+    const ref = useRef<HTMLDivElement>(null);
+
+    useOutsideClick(ref, () => setSearchActive(false));
+
     const isSearchable = filterGroup.values.length > 10;
     const hasAnyActiveFilters = Boolean(getInactiveGroupValues(filterGroup.name).length);
     return (
-        <Wrapper>
+        <Wrapper ref={ref}>
             <FilterHeaderGroup isActive={hasAnyActiveFilters}>
                 <Switch>
                     <Case when={searchActive}>
@@ -59,21 +64,18 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     </Case>
                     <Case when={true}>
                         <Title>{filterGroup.name}</Title>
-                        <FilterClearIcon
-                            onClick={() => markAllValuesActive(filterGroup.name)}
-                            isDisabled={!hasAnyActiveFilters}
-                        />
+                        {isSearchable && (
+                            <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
+                                <Icon name={'search'} id={'search'} />
+                            </SearchButton>
+                        )}
+                        {hasAnyActiveFilters && (
+                            <FilterClearIcon
+                                onClick={() => markAllValuesActive(filterGroup.name)}
+                            />
+                        )}
                     </Case>
                 </Switch>
-                {isSearchable && (
-                    <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
-                        {searchActive ? (
-                            <Icon name={'chevron_right'} />
-                        ) : (
-                            <Icon name={'search'} id={'search'} />
-                        )}
-                    </SearchButton>
-                )}
             </FilterHeaderGroup>
             <VirtualContainer filterGroup={filterGroup} filterSearchValue={filterSearchValue} />
         </Wrapper>
