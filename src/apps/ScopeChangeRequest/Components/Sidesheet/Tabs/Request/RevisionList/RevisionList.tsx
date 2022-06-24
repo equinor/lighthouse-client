@@ -10,8 +10,8 @@ export const RevisionsList = (): JSX.Element | null => {
     const id = useScopeChangeContext((s) => s.request.id);
     const { data } = useQuery(scopeChangeQueries.revisionsQuery(id));
 
-    if (!data) {
-        return null;
+    if (!data || data.length <= 1) {
+        return <NoRevisionsText>No revisions has been made.</NoRevisionsText>;
     }
 
     return (
@@ -40,6 +40,11 @@ export const RevisionsList = (): JSX.Element | null => {
         </RevisionWrapper>
     );
 };
+
+const NoRevisionsText = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;
 
 const Link = styled.div`
     color: ${tokens.colors.interactive.primary__resting.hex};

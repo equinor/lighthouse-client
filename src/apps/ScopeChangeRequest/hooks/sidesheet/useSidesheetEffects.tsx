@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
+import { WorkflowStep } from '../../types/scopeChangeRequest';
 import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 
@@ -16,7 +17,7 @@ export function useSidesheetEffects(
     requestId: string,
     setRevisionMode: () => void
 ): void {
-    const { canPatch, canVoid, canUnVoid, title, isVoided, id, serialNumber } =
+    const { canPatch, canVoid, canUnVoid, title, isVoided, id, serialNumber, workflowSteps } =
         useScopeChangeContext((s) => ({ ...s.requestAccess, ...s.request }));
 
     const editMode = useAtom(sideSheetEditModeAtom);
@@ -33,12 +34,16 @@ export function useSidesheetEffects(
         const menuItems: MenuItem[] = [];
 
         if (!deref(sideSheetEditModeAtom)) {
-            menuItems.push({
-                icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
-                label: 'Edit request',
-                isDisabled: !canPatch,
-                onClick: toggleEditMode,
-            });
+            if (workflowSteps && !isAfterApproval(workflowSteps)) {
+                menuItems.push({
+                    icon: (
+                        <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />
+                    ),
+                    label: 'Edit request',
+                    isDisabled: !canPatch,
+                    onClick: toggleEditMode,
+                });
+            }
         }
         if (canPatch) {
             menuItems.push({
@@ -81,7 +86,7 @@ export function useSidesheetEffects(
         return () => {
             actions.setMenuItems([]);
         };
-    }, [editMode, canVoid, canUnVoid, canPatch]);
+    }, [editMode, canVoid, canUnVoid, canPatch, workflowSteps]);
 
     useEffect(() => {
         actions.setTitle(`${serialNumber} ${title}`);
@@ -91,4 +96,8 @@ export function useSidesheetEffects(
     useEffect(() => {
         actions.setWidth(1150);
     }, []);
+}
+
+function isAfterApproval(steps: WorkflowStep[]): boolean {
+    return Boolean(steps.find((s) => s.name === 'Approval')?.isCompleted);
 }
