@@ -4,7 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
-import { useLocationContext } from '../../Context/LocationProvider';
+import { tabApis, useLocationContext } from '../../Context/LocationProvider';
 import { gardenApiAtom } from '../../Util/bookmarks/gardenBookmarks/gardenApiAtom';
 import { TabButton } from '../ToggleButton';
 
@@ -33,6 +33,12 @@ export function Presets(): JSX.Element {
             }
 
             case 'table': {
+                const getApi = tabApis.readAtomValue().table.getApi;
+                const api = getApi && getApi();
+                if (!api) {
+                    throw 'No table api';
+                }
+                api.setColumnOrder(preset.table.columnOrder);
                 break;
             }
         }
