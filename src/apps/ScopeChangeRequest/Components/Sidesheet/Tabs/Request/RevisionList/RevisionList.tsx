@@ -21,22 +21,14 @@ export const RevisionsList = (): JSX.Element | null => {
     return (
         <RevisionWrapper>
             {removeLastRevisionIfSelf(data, id).map(
-                ({
-                    id,
-                    isVoided,
-                    revisionNumber,
-                    sequenceNumber,
-                    state,
-                    title,
-                    workflowStatus,
-                }) => (
+                ({ id, isVoided, revisionNumber, sequenceNumber, title, workflowStatus }) => (
                     <RevisionText key={id}>
                         <Link onClick={() => openNewScopeChange(id)}>
                             {sequenceNumber}
                             {revisionNumber && `-${revisionNumber}`}, {title}
                         </Link>
                         <MetaData>
-                            {state}, {workflowStatus}, {isVoided ? 'Voided' : 'Not voided'}
+                            {workflowStatus}, {isVoided ? 'Voided' : 'Not voided'}
                         </MetaData>
                     </RevisionText>
                 )
