@@ -10,7 +10,7 @@ import {
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
-    WorkspaceTab
+    WorkspaceTab,
 } from './workspaceState';
 
 export interface DataSource<T> {
@@ -87,7 +87,10 @@ interface TablePresetOption {
     table: TablePreset;
 }
 
-interface TablePreset {}
+interface TablePreset {
+    columnOrder: string[];
+}
+
 interface GardenPreset {
     gardenKey: string;
     groupByKeys?: string[];
