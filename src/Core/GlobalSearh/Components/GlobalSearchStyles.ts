@@ -18,9 +18,18 @@ export const SearchResult = styled.div`
     overflow-y: auto;
 `;
 
-export const Search = styled(EdsSearch)`
+export const Search = styled(EdsSearch)<{ isSearching: boolean }>`
     background: ${tokens.colors.ui.background__default.rgba};
-
+    padding-left: 6px;
+    padding-top: 4px;
+    padding-right: 6px;
+    padding-bottom: 4px;
+    > div {
+        display: ${({ isSearching }) => (isSearching ? 'none' : 'flex')};
+    }
+    > input {
+        font-size: 14px;
+    }
     :focus-within {
         background: ${tokens.colors.ui.background__light.rgba};
     }

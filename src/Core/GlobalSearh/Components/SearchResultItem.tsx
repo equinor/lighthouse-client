@@ -7,9 +7,12 @@ interface SearchResultItemProps {
     id: string;
     title: string;
     description?: string;
+    descriptionProps?: Record<string, any>;
+    descriptionComponent?: React.FC<Record<string, any> & { searchText: string }>;
     searchText: string;
     action: (id: string) => void;
     index: number;
+    shouldHighlightDescription?: boolean;
 }
 
 export const SearchResultItem = ({
@@ -19,6 +22,9 @@ export const SearchResultItem = ({
     description,
     searchText,
     index,
+    shouldHighlightDescription,
+    descriptionProps,
+    descriptionComponent: DescriptionComponent,
 }: SearchResultItemProps): JSX.Element => {
     const {
         selected,
@@ -49,13 +55,17 @@ export const SearchResultItem = ({
             <Title variant="h6" title={title}>
                 {getHighlightedText(title, searchText)}
             </Title>
-            <Description title={description}>
-                {description ? (
-                    <> Description: {getHighlightedText(description, searchText)}</>
-                ) : (
-                    '-'
-                )}
-            </Description>
+            {DescriptionComponent ? (
+                <Description>
+                    <DescriptionComponent searchText={searchText} {...descriptionProps} />
+                </Description>
+            ) : (
+                <Description title={description}>
+                    {shouldHighlightDescription
+                        ? getHighlightedText(description || '', searchText)
+                        : description}
+                </Description>
+            )}
         </Wrapper>
     );
 };

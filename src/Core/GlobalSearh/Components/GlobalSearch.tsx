@@ -1,3 +1,4 @@
+import { DotProgress } from '@equinor/eds-core-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowNavigation } from 'react-arrow-navigation';
 import { useNavigate } from 'react-router';
@@ -19,7 +20,7 @@ export const GlobalSearch = (): JSX.Element => {
     const searchRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
 
-    const { searchResult, search, registerSearchItem } = useGlobalSearch();
+    const { searchResult, search, isSearching, registerSearchItem } = useGlobalSearch();
 
     useEffect(() => {
         const procosysSearchRegistration = registerSearchItem<SearchResponse>(procosysConfig);
@@ -61,10 +62,16 @@ export const GlobalSearch = (): JSX.Element => {
                     placeholder={placeHolderText}
                     onFocus={() => setPlaceholderText(SEARCH_FOCUS)}
                     onBlur={() => setPlaceholderText(SEARCH_BLUR)}
+                    isSearching={isSearching}
                     onChange={(e) => {
                         setSearchInput(e.currentTarget.value);
                     }}
                 ></Search>
+                {isSearching && (
+                    <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                        <DotProgress color="primary" />
+                    </div>
+                )}
                 {search.length > 0 && (
                     <SearchResult>
                         <>
@@ -74,16 +81,17 @@ export const GlobalSearch = (): JSX.Element => {
                                         typeTitle={searchType.title}
                                         color={searchType.color}
                                     />
-                                    {searchType.items.map((item) => {
+                                    {searchType.items.slice(0, 5).map((item) => {
                                         keyNavigationIndex++;
                                         return (
                                             <SearchResultItem
                                                 index={keyNavigationIndex}
+                                                {...searchType}
+                                                {...item}
                                                 key={item.key}
-                                                title={item.title}
-                                                id={item.id}
                                                 description={item.description}
                                                 searchText={searchInput}
+                                                shouldHighlightDescription={!item.group}
                                                 action={(id: string) => {
                                                     searchType.action(id, item, navigate);
                                                     setSearchInput('');

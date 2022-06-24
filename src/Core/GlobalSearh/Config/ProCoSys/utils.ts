@@ -1,13 +1,15 @@
 import { SearchItem, SearchResult } from '../../Service/SearchApi';
 import { SearchItems } from './types';
 
-export function searchPushItem(
+export function searchPushItem<T extends Record<string, any>>(
     acc: SearchResult[],
     item: SearchItems,
     config: {
         type: string;
         title: string;
         color: string;
+        descriptionProps?: T;
+        descriptionComponent?: React.FC<T & { searchText: string }>;
         mapper(item: SearchItems): SearchItem;
         action(id: string): void;
     }
@@ -23,6 +25,14 @@ export function searchPushItem(
             title: config.title,
             color: config.color,
             action: config.action,
+            descriptionProps: config.descriptionProps,
+            descriptionComponent: config.descriptionComponent as
+                | React.FC<
+                      Record<string, any> & {
+                          searchText: string;
+                      }
+                  >
+                | undefined,
             count: 0,
             items: [config.mapper(item)],
         });

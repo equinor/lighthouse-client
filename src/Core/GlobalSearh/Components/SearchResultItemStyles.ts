@@ -5,9 +5,13 @@ import styled from 'styled-components';
 export const Wrapper = styled.div<{ isSelected: boolean }>`
     display: flex;
     flex-direction: column;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 1rem;
+    cursor: pointer;
     background: ${({ isSelected }) =>
         isSelected ? tokens.colors.interactive.text_highlight.hex : 'none'};
+    :hover {
+        background: ${tokens.colors.interactive.text_highlight.hex};
+    }
 `;
 export const Title = styled(Typography)`
     font-style: normal;
