@@ -11,7 +11,7 @@ interface SubmitActionBarProps {
 }
 
 export const RevisionSubmitBar = ({ cancel }: SubmitActionBarProps): JSX.Element => {
-    const request = useScopeChangeContext(({ request }) => request);
+    const { request, actions } = useScopeChangeContext();
 
     const { createScopeChangeMutation } = useRequestMutations();
 
@@ -20,7 +20,8 @@ export const RevisionSubmitBar = ({ cancel }: SubmitActionBarProps): JSX.Element
 
     const { isLoading, mutate } = useMutation(createScopeChangeMutation);
 
-    const createRevision = () =>
+    const createRevision = () => {
+        actions.setHasUnsavedChanges(false);
         mutate({
             draft: false,
             model: {
@@ -29,6 +30,7 @@ export const RevisionSubmitBar = ({ cancel }: SubmitActionBarProps): JSX.Element
                 originatorId: request.id,
             },
         });
+    };
 
     return (
         <ActionBar>
