@@ -23,6 +23,7 @@ import { OriginLink } from '../../../DetailView/OriginLink';
 import { Checkbox } from '@equinor/eds-core-react';
 import { CheckboxWrapper } from '../../../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
 import { RevisionsList } from './RevisionList/RevisionList';
+import { AtsDetailCheckbox } from '../../../AtsScopeCheckbox/AtsCheckbox';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -38,6 +39,7 @@ export function RequestTab(): JSX.Element {
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{request.description}</SubSectionText>
                             <WarrantyCaseDetailCheckbox />
+                            <AtsDetailCheckbox />
                         </SectionWrapper>
                         <SectionHeading>Change origin</SectionHeading>
                         <SectionWrapper>
