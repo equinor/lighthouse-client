@@ -96,13 +96,7 @@ export const QuickFilter = (): JSX.Element => {
                     </RightSection>
                 </SearchLine>
             </CompactFilterWrapper>
-            {isFilterExpanded && (
-                <FilterView
-                    setVisibleFilterGroups={setVisibleFilterGroups}
-                    visibleFilterGroups={visibleFilterGroups}
-                    groups={filterGroups}
-                />
-            )}
+            {isFilterExpanded && <FilterView visibleFilterGroups={visibleFilterGroups} />}
         </div>
     );
 };
