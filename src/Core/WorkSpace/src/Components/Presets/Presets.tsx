@@ -4,7 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
-import { tabApis, useLocationContext } from '../../Context/LocationProvider';
+import { useLocationContext } from '../../Context/LocationProvider';
 import { gardenApiAtom } from '../../Util/bookmarks/gardenBookmarks/gardenApiAtom';
 import { TabButton } from '../ToggleButton';
 
