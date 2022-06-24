@@ -36,24 +36,6 @@ export function setup(appApi: ClientApi): void {
         .registerGardenOptions(gardenConfig)
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
-        .registerPresets([
-            {
-                type: 'table',
-                name: 'Workflow',
-                filter: { filterGroups: [] },
-                table: {
-                    columnOrder: [
-                        'Workflow',
-                        'Current step',
-                        'Next',
-                        'Status',
-                        'Comment',
-                        'Contr.',
-                        'Last signed',
-                    ],
-                },
-            },
-        ])
         .registerPrefetchQueries(prefetchQueriesOptions)
         .registerSearchOptions([
             { name: 'Id', valueFormatter: ({ sequenceNumber }) => sequenceNumber.toString() },

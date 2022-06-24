@@ -33,12 +33,6 @@ export function Presets(): JSX.Element {
             }
 
             case 'table': {
-                const getApi = tabApis.readAtomValue().table.getApi;
-                const api = getApi && getApi();
-                if (!api) {
-                    throw 'No table api';
-                }
-                api.setColumnOrder(preset.table.columnOrder);
                 break;
             }
         }

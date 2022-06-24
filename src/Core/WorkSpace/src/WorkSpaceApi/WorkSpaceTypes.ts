@@ -87,9 +87,7 @@ interface TablePresetOption {
     table: TablePreset;
 }
 
-interface TablePreset {
-    columnOrder: string[];
-}
+interface TablePreset { }
 
 interface GardenPreset {
     gardenKey: string;
