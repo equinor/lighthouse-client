@@ -5,6 +5,7 @@ import { IsWarrantyCaseCheckbox } from '../Inputs/IsWarrantyCheckbox/IsWarrantyC
 import { TitleInput } from '../Inputs/TitleInput/TitleInput';
 import { DescriptionInput } from '../Inputs/DescriptionInput/DescriptionInput';
 import { OriginSourceSelect } from '../Inputs/OriginSourceSelect/OriginSourceSelect';
+import { IsATSScopeCheckbox } from '../Inputs/AtsScopeCheckbox';
 
 export const ScopeChangeBaseForm = (): JSX.Element => {
     return (
@@ -17,6 +18,9 @@ export const ScopeChangeBaseForm = (): JSX.Element => {
             <DescriptionInput />
             <CheckboxWrapper>
                 <IsWarrantyCaseCheckbox />
+            </CheckboxWrapper>
+            <CheckboxWrapper>
+                <IsATSScopeCheckbox />
             </CheckboxWrapper>
         </BaseFormContainer>
     );
