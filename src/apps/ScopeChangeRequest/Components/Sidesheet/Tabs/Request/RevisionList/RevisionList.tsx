@@ -15,7 +15,7 @@ export const RevisionsList = (): JSX.Element | null => {
     const { data } = useQuery(scopeChangeQueries.revisionsQuery(id));
 
     if (!data || data.length <= 1) {
-        return <NoRevisionsText>No revisions has been made.</NoRevisionsText>;
+        return <NoRevisionsText>No revisions have been made.</NoRevisionsText>;
     }
 
     return (
