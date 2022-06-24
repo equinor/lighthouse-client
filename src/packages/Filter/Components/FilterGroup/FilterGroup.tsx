@@ -27,7 +27,8 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
 }: FilterGroupeComponentProps) => {
     const {
         filterGroupState: { getInactiveGroupValues },
-        operations: { markAllValuesActive },
+        filterState: { getFilterState },
+        operations: { markAllValuesActive, setFilterState },
     } = useFilterApiContext();
 
     const [filterSearchValue, setFilterSearchValue] = useState('');
@@ -44,6 +45,16 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
 
     const isSearchable = filterGroup.values.length > 10;
     const hasAnyActiveFilters = Boolean(getInactiveGroupValues(filterGroup.name).length);
+
+    const groupsMatchingSearch = useMemo(
+        () =>
+            searchByValue(
+                filterGroup.values.map((v) => (v !== null ? v.toString() : DEFAULT_NULL_VALUE)),
+                filterSearchValue
+            ),
+        [filterGroup.values, filterSearchValue]
+    );
+
     return (
         <Wrapper>
             <FilterHeaderGroup isActive={hasAnyActiveFilters}>
@@ -51,10 +62,32 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     <Case when={searchActive}>
                         <Search
                             autoFocus={searchActive}
+                            onBlur={() => {
+                                setSearchActive(false);
+                                setFilterSearchValue('');
+                            }}
                             aria-label="in filter group"
                             id="search-normal"
                             placeholder="Search"
                             onChange={handleOnChange}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    setFilterState([
+                                        ...getFilterState().filter(
+                                            (s) => s.name !== filterGroup.name
+                                        ),
+                                        {
+                                            name: filterGroup.name,
+                                            values: filterGroup.values.filter(
+                                                (s) =>
+                                                    !groupsMatchingSearch.includes(
+                                                        s?.toString() ?? '(Blank)'
+                                                    )
+                                            ),
+                                        },
+                                    ]);
+                                }
+                            }}
                         />
                     </Case>
                     <Case when={true}>
