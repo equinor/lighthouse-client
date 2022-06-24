@@ -120,7 +120,6 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
             this.addSelectedLeafNodes(leafNodes.results);
         } catch (error: unknown) {
             if (isIntentionallyCancelled(error) && !cancellationToken.signaled) {
-                debugger;
                 // Ignore internally cancelled error, but not when its cancelled from the outside
             } else throw error;
         }
