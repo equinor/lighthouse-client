@@ -19,9 +19,10 @@ interface RevisionFormProps {
 }
 
 export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
-    const request = useScopeChangeContext(({ request }) => request);
+    const { actions, request } = useScopeChangeContext();
 
     useEffect(() => {
+        actions.setHasUnsavedChanges(true);
         const { clearState, updateAtom } = scopeChangeFormAtomApi;
         clearState();
         updateAtom({
@@ -36,6 +37,7 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
             ),
         });
         return () => {
+            actions.setHasUnsavedChanges(false);
             clearState();
         };
     }, []);
