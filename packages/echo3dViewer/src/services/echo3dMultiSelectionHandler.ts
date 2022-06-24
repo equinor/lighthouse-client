@@ -11,7 +11,7 @@ import {
     HierarchyClient,
     HierarchyNodeModel,
     NodeWithLeafNodes,
-    Vector3Model
+    Vector3Model,
 } from './generated/EchoHierarchyApiClient';
 import { getHierarchyClient } from './hierarchyClient';
 
@@ -28,7 +28,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
 
     private selectionE3dTagNos: string[];
 
-    public viewerNodeSelection: ViewerNodeSelection[]
+    public viewerNodeSelection: ViewerNodeSelection[];
 
     /**
      * Setup a Echo3dMultiSelectionHandler.
@@ -42,7 +42,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
         this.hierarchyClient = hierarchyClient || getHierarchyClient();
         this.hierarchyId = hierarchyId;
         this.selectionE3dTagNos = [];
-        this.viewerNodeSelection = []
+        this.viewerNodeSelection = [];
     }
 
     /**
@@ -59,7 +59,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
      */
     clearSelection(): void {
         this.selectionE3dTagNos = [];
-        this.viewerNodeSelection = []
+        this.viewerNodeSelection = [];
         this.selectedNodes.clear();
     }
 
@@ -88,7 +88,10 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
             const localCancellationToken = this.cancelOngoingSelections(cancellationToken);
 
             // no need to preform the same api calls twice
-            if (this.selectionE3dTagNos.every((e3dTagNo) => e3dTagNos.includes(e3dTagNo)) && this.selectionE3dTagNos.length > 0) {
+            if (
+                this.selectionE3dTagNos.every((e3dTagNo) => e3dTagNos.includes(e3dTagNo)) &&
+                this.selectionE3dTagNos.length > 0
+            ) {
                 return;
             }
 
@@ -99,23 +102,25 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
                 e3dTagNos,
                 convertCancelTokenToAbort(localCancellationToken)
             );
-                
-                
-            if (nodesByTagList.results.length === 0) throw Error("No nodes found with the current tag selection");
-       
+
+            if (nodesByTagList.results.length === 0)
+                throw Error('No nodes found with the current tag selection');
+
             this.addSelectedNodesToViewerSelection(nodesByTagList.results);
             this.createSelectionAaBB(nodesByTagList.results);
-            
+
             this.addSelectedNodes(nodesByTagList.results);
-            
- 
-            const leafNodes = await this.hierarchyClient.findLeafNodesByTagList(this.hierarchyId, e3dTagNos, convertCancelTokenToAbort(localCancellationToken));
-            
-     
-                    
+
+            const leafNodes = await this.hierarchyClient.findLeafNodesByTagList(
+                this.hierarchyId,
+                e3dTagNos,
+                convertCancelTokenToAbort(localCancellationToken)
+            );
+
             this.addSelectedLeafNodes(leafNodes.results);
         } catch (error: unknown) {
             if (isIntentionallyCancelled(error) && !cancellationToken.signaled) {
+                debugger;
                 // Ignore internally cancelled error, but not when its cancelled from the outside
             } else throw error;
         }
@@ -133,7 +138,6 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
 
         if (hierarchyNodeModel) {
             hierarchyNodeModel.forEach((modelResult) => {
-    
                 if (modelResult.aabb) {
                     aabbCollection.push(modelResult.aabb);
                 }
@@ -148,12 +152,12 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
                 newAabb.min = new Vector3Model({
                     x: Math.min(newAabb.min.x, aabbModel.min.x),
                     y: Math.min(newAabb.min.y, aabbModel.min.y),
-                    z: Math.min(newAabb.min.z, aabbModel.min.z)
+                    z: Math.min(newAabb.min.z, aabbModel.min.z),
                 });
                 newAabb.max = new Vector3Model({
                     x: Math.max(newAabb.max.x, aabbModel.max.x),
                     y: Math.max(newAabb.max.y, aabbModel.max.y),
-                    z: Math.max(newAabb.max.z, aabbModel.max.z)
+                    z: Math.max(newAabb.max.z, aabbModel.max.z),
                 });
             }
         });
@@ -175,7 +179,6 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
             nodeWithLeafNodes?.forEach((LeafNodeResult) => {
                 LeafNodeResult.leafNodes?.forEach((leafNode) => {
                     if (leafNode.id) {
-                      
                         selectionNodeIds.push(leafNode.id);
                     }
                 });
@@ -194,10 +197,11 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
      */
     private addSelectedNodes(hierarchyNodeModel?: HierarchyNodeModel[]): void {
         if (hierarchyNodeModel) {
-            this.selectedNodes.updateSet(new IndexSet(hierarchyNodeModel.map((nodeResult) => nodeResult.id )));
+            this.selectedNodes.updateSet(
+                new IndexSet(hierarchyNodeModel.map((nodeResult) => nodeResult.id))
+            );
         }
     }
-
 
     /**
      * adds the selected Nodes to viewerSelection
@@ -207,23 +211,23 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
      * @memberof Echo3dSelectionHandler
      */
     private addSelectedNodesToViewerSelection(hierarchyNodeModel?: HierarchyNodeModel[]): void {
-                  
         if (hierarchyNodeModel) {
+            this.viewerNodeSelection = hierarchyNodeModel
+                .filter((nodeResult) => nodeResult.aabb && nodeResult.tag)
+                .map((nodeResult) => {
+                    const { min, max } = nodeResult.aabb!;
 
-            this.viewerNodeSelection = hierarchyNodeModel.filter((nodeResult) => nodeResult.aabb && nodeResult.tag).map(nodeResult => {
-
-                const { min, max } = nodeResult.aabb!;
-
-                const boundingBox = new THREE.Box3(
-                    new THREE.Vector3(min.x, min.z, -max.y),
-                    new THREE.Vector3(max.x, max.z, -min.y)
-                );
-                return { position: get3dPositionFromAabbMinMaxValues(nodeResult.aabb!), tagNo: nodeResult.tag!, aabb: nodeResult.aabb!, boundingBox}
-                
-            }
-            );
-
-       }
-
+                    const boundingBox = new THREE.Box3(
+                        new THREE.Vector3(min.x, min.z, -max.y),
+                        new THREE.Vector3(max.x, max.z, -min.y)
+                    );
+                    return {
+                        position: get3dPositionFromAabbMinMaxValues(nodeResult.aabb!),
+                        tagNo: nodeResult.tag!,
+                        aabb: nodeResult.aabb!,
+                        boundingBox,
+                    };
+                });
+        }
     }
 }
