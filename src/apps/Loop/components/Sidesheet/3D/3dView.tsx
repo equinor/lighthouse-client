@@ -31,7 +31,7 @@ export const ThreeDView = ({ loop }: ThreeDViewProps) => {
     }
     const newData = data.reduce((acc, curr) => {
         acc[curr.contentTagNo] = {
-            tagNo: curr.contentTagNo.replace('@LOOP-', ''),
+            tagNo: curr.contentTagNo,
             status: curr.mechanicalCompletionStatus || '',
             type: curr.register || '',
         };
