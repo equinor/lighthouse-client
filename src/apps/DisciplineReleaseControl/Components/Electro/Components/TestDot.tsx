@@ -44,6 +44,7 @@ const TestDotWrapper = styled.div`
     flex-direction: horizontal;
     flex: 1;
     justify-content: center;
+    padding-bottom: 3px;
 `;
 
 const TestDotCircle = styled.div<{ color: string }>`
@@ -64,7 +65,7 @@ const TestDotCircle = styled.div<{ color: string }>`
 `;
 
 export const TestDotCircleText = styled.div`
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400, regular;
     cursor: default;
 `;

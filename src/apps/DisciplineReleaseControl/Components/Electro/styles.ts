@@ -27,7 +27,7 @@ export const SwitchBoardContainer = styled.div`
     flex-wrap: wrap;
     white-space: nowrap;
     max-width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 `;
 
 export const SwitchBoardBorderContainer = styled.div`
@@ -40,8 +40,8 @@ export const SwitchBoardBorderContainer = styled.div`
 export const ElectroViewRow = styled.div`
     display: flex;
     flex-direction: row;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
     /* flex-basis: 100% gives us a new row per circuit */
     flex-basis: 100%;
 `;
@@ -59,24 +59,27 @@ export const ElectroViewNodeGroupRow = styled.div`
 export const ElectroViewNodeText = styled.div`
     display: flex;
     flex-direction: horizontal;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500, Medium;
     margin-left: 4px;
+    padding-top: 3px;
 `;
 
 export const ElectroViewNodeValueText = styled.div<{ clickable?: boolean }>`
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400, regular;
-    margin-left: 5px;
+    margin-left: 4px;
+    padding-top: 2px;
     cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
 `;
 
 export const ElectroViewHTHighlight = styled.div`
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400, regular;
     margin-left: 5px;
     cursor: pointer;
     padding: 1px;
+    margin-top: 2px;
     background-color: ${tokens.colors.interactive.primary__resting.hex};
     color: ${tokens.colors.text.static_icons__primary_white.hex};
     font-variant-numeric: tabular-nums;

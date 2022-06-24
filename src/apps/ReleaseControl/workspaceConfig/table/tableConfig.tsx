@@ -55,6 +55,10 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             )),
         },
         {
+            key: 'state',
+            type: customCellView((rc) => <>{rc.isVoided ? 'Voided' : rc.state}</>),
+        },
+        {
             key: 'modifiedAtUtc',
             type: customCellView((rc) => (
                 <>{rc.modifiedAtUtc && new Date(rc.modifiedAtUtc).toLocaleDateString('en-gb')}</>

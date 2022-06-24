@@ -17,7 +17,7 @@ export const TitleBar = styled.div`
 `;
 
 export const ActionBar = styled.div`
-    height: 48px;
+    height: 52px;
     display: grid;
     grid-template-columns: 2fr auto;
     width: -webkit-fill-available;
