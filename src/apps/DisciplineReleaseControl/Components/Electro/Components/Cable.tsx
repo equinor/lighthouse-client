@@ -79,13 +79,13 @@ export const Cable = ({ cable, status, borderBottom }: CableProps): JSX.Element 
 const CableWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 150px;
+    width: 110px;
 `;
 
 export const CableNode = styled.div`
     display: flex;
     flex-direction: horizontal;
-    width: 150px;
+    width: 110px;
 `;
 
 const CableInfo = styled.div<{
@@ -95,10 +95,10 @@ const CableInfo = styled.div<{
     display: flex;
     flex-direction: horizontal;
     flex: 1;
-    width: ${(p) => 150 - p.disconnectedCount * 9 + 'px'};
+    width: ${(p) => 110 - p.disconnectedCount * 9 + 'px'};
     max-height: 15px;
     padding-top: 6px;
-    padding-bottom: 6px;
+    padding-bottom: 3px;
     text-align: center;
     margin-top: ${(p) => (p.borderBottom ? '16px' : null)};
     justify-content: center;
@@ -109,11 +109,11 @@ const CableInfo = styled.div<{
 const DisconnectedStart = styled.div`
     width: 9px;
     margin-left: 4px;
-    margin-top: 33px;
+    margin-top: 30px;
 `;
 
 const DisconnectedEnd = styled.div`
     width: 9px;
     margin-right: 4px;
-    margin-top: 33px;
+    margin-top: 30px;
 `;
