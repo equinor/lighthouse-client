@@ -15,9 +15,11 @@ import {
 
 export interface DataSource<T> {
     /** Function that returns the api call promise */
-    responseAsync: (signal?: AbortSignal) => Promise<Response>;
+    responseAsync?: (signal?: AbortSignal) => Promise<Response>;
     /** Function that parses the response to correct format, defaults to just parsing the raw response */
     responseParser?: (Response: Response) => Promise<T[]>;
+    /** Function that returns the List of T or Promise<T[]> */
+    dataSourceAsync?: ((signal?: AbortSignal) => Promise<T[]>) | ((signal?: AbortSignal) => T[]);
 }
 
 export type Validator<T> = (data: unknown[]) => T[];
@@ -32,6 +34,7 @@ export interface WorkspaceOptions<T, SideSheetId extends string = string> {
     openSidesheet: OpenSidesheetFunc;
     customSidesheetOptions?: WorkspaceSideSheet<T, SideSheetId>;
     customGroupeSidesheet?: WorkspaceSideSheet<any, string>;
+    onSelect?(item: T): T[keyof T];
 }
 
 export interface DataViewerProps<T> extends ViewOptions<T> {

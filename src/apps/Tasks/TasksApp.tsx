@@ -1,23 +1,35 @@
 import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
 import { useEffect } from 'react';
 import { Assignment } from '../../Core/Assignments/Types/assignment';
+import { openSidesheetById } from '../../packages/Sidesheet/Functions';
 import { SidesheetApi } from '../../packages/Sidesheet/Types/SidesheetApi';
+import { Task } from './types/task';
 
-const customCellView = (render: (req: Assignment) => JSX.Element | null) => ({
-    Cell: ({ cell }: any) => <>{render(cell.value.content)}</>,
-});
+// 'const customCellView = (render: (req: Assignment) => JSX.Element | null) => ({
+//     Cell: ({ cell }: any) => <>{render(cell.value.content)}</>,
+// });'
 
 export function setup(appApi: ClientApi): void {
     appApi
-        .createWorkSpace<Assignment>({
+        .createWorkSpace<Task>({
             objectIdentifier: 'id',
             defaultTab: 'garden',
+            onSelect: (item) => {
+                if (item.subCategory === 'ScopeChangeControl') {
+                    console.log('change', item);
+                    openSidesheetById('change', item.identifier);
+                }
+                if (item.subCategory === 'COMMPKG') {
+                    openSidesheetById('handoverDetails', item.identifier);
+                }
+                return item['sourceSystem.identifier'];
+            },
         })
         .registerDataSource({
-            responseAsync,
+            dataSourceAsync,
         })
         .registerFilterOptions([
-            { name: 'Application', valueFormatter: (s) => s.sourceSystem.subSystem },
+            { name: 'Application', valueFormatter: (s) => s.sourceSystem },
             { name: 'Type', valueFormatter: ({ type }) => type },
             {
                 name: 'State',
@@ -27,60 +39,18 @@ export function setup(appApi: ClientApi): void {
         ])
         .registerTableOptions({
             objectIdentifierKey: 'id',
-            columnOrder: ['id', 'title', 'category', 'url'],
-            hiddenColumns: [
-                'body',
-                'taskMode',
-                // 'sourceSystem',
-                'ownerApplication',
-                'taskContexts',
-                'metadata',
-                'createdBy',
-                'modifiedBy',
-                'assignedTo',
-                'externalId',
-                // 'id',
-                // 'created',
-                // 'dueDate',
-                'modified',
-                'url',
-            ],
+            columnOrder: ['id', 'title', 'category'],
+            hiddenColumns: ['id'],
             headers: [
                 { key: 'id', title: 'ID' },
                 { key: 'title', title: 'Title', width: 200 },
                 { key: 'category', title: 'Category' },
-                { key: 'url', title: 'URL' },
                 { key: 'state', title: 'State' },
-                { key: 'priority', title: 'Priority' },
                 { key: 'dueDate', title: 'Due date' },
-                { key: 'created', title: 'Days since notified' },
-                { key: 'modified', title: 'Modified at' },
-                { key: 'sourceSystem', title: 'Source system' },
-            ],
-            customCellView: [
-                {
-                    key: 'ownerApplication',
-                    type: customCellView((req) => <>{req.ownerApplication.title}</>),
-                },
-                {
-                    key: 'sourceSystem',
-                    type: customCellView((req) => <>{req?.sourceSystem.subSystem}</>),
-                },
-                {
-                    key: 'created',
-                    type: customCellView((req) => (
-                        <>{new Date(req.created.split('T')[0]).toLocaleDateString('en-gb')}</>
-                    )),
-                },
+                { key: 'identifier', title: 'Source system' },
+                { key: 'description', title: 'Description' },
             ],
         })
-        // .registerIdResolver({
-        //     idResolver: async (id) => {
-        //         const { fusionTasks } = httpClient();
-        //code: 403 cant access instance of tasks, contact fusion core
-        //         return await (await fusionTasks.fetch(`tasks/${id}`)).json();
-        //     },
-        // })
         .registerGardenOptions({
             objectIdentifier: 'id',
             gardenKey: 'state',
@@ -91,20 +61,69 @@ export function setup(appApi: ClientApi): void {
         });
 }
 
-export async function responseAsync(signal?: AbortSignal): Promise<Response> {
+async function getTasks(): Promise<Task[]> {
     const { fusionTasks } = httpClient();
+    const response = await fusionTasks.fetch('persons/me/tasks');
+    return taskMapper(await response.json(), {
+        id: 'id',
+        category: 'category',
+        dueDate: 'dueDate',
+        subCategory: 'sourceSystem.subSystem',
+        sourceSystem: 'sourceSystem.subSystem',
+        title: 'title',
+        state: 'state',
+        description: 'todoDescription',
+        identifier: 'sourceSystem.identifier',
+        type: 'type',
+    });
+}
 
-    return await fusionTasks.fetch('persons/me/tasks', { signal });
+async function getProcosysTasks(): Promise<Task[]> {
+    const { fusionTasks } = httpClient();
+    const response = await fusionTasks.fetch('persons/me/tasks/procosys');
+    return taskMapper(await response.json(), {
+        id: 'id',
+        category: 'category',
+        dueDate: 'dueDate',
+        subCategory: 'subCategory',
+        sourceSystem: 'description',
+        title: 'todo',
+        state: 'string',
+        description: 'todoDescription',
+        identifier: 'title',
+        type: '',
+    });
+}
+
+export async function dataSourceAsync(): Promise<Task[]> {
+    const results = await Promise.all<Task[]>([getTasks(), getProcosysTasks()]);
+    return results.flat();
 }
 
 interface TasksSidesheetProps {
     item: Assignment;
     actions: SidesheetApi;
 }
+
 export function TasksSidesheet({ actions, item }: TasksSidesheetProps): JSX.Element {
     useEffect(() => {
         actions.setTitle(item.title);
     }, []);
 
     return <div>Comning soon...</div>;
+}
+
+function taskMapper(tasks: any[], mapper: Record<keyof Task, string>): Task[] {
+    console.log(tasks);
+    return tasks.map((task) => {
+        return Object.keys(mapper).reduce((acc, key) => {
+            acc[key] = resolve(mapper[key], task);
+            return acc;
+        }, {} as Task);
+    });
+}
+
+function resolve(path, obj = self, separator = '.') {
+    const properties = Array.isArray(path) ? path : path.split(separator);
+    return properties.reduce((prev, curr) => prev && prev[curr], obj);
 }

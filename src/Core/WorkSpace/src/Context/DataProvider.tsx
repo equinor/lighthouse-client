@@ -125,24 +125,37 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const queryApi = useQuery(
         [key],
         async ({ signal }) => {
-            if (!dataSource) return;
+            if (!dataSource) throw new TypeError('No data source registered');
 
-            let response: Response | null;
-            try {
-                response = await dataSource.responseAsync(signal);
-            } catch (e) {
-                throw 'Server failed to respond';
+            if (dataSource.responseAsync) {
+                let response: Response | null;
+                try {
+                    response = await dataSource.responseAsync(signal);
+                } catch (e) {
+                    throw e
+                        ? `Server failed to respond, with error: ${e}`
+                        : 'Server failed to respond';
+                }
+
+                checkResponseCode(response);
+
+                const data: unknown[] = dataSource.responseParser
+                    ? await dataSource.responseParser(response)
+                    : await response.json();
+
+                if (Array.isArray(data)) {
+                    return data;
+                }
             }
 
-            checkResponseCode(response);
+            if (dataSource.dataSourceAsync) {
+                const data: unknown[] = await dataSource.dataSourceAsync(signal);
 
-            const data: unknown[] = dataSource.responseParser
-                ? await dataSource.responseParser(response)
-                : await response.json();
-
-            if (Array.isArray(data)) {
-                return data;
+                if (Array.isArray(data)) {
+                    return data;
+                }
             }
+
             throw 'Unknown data format';
         },
         { refetchOnWindowFocus: false, staleTime: ONE_HOUR }

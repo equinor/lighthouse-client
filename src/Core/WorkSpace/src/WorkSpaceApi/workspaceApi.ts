@@ -34,13 +34,15 @@ import {
 export function createWorkSpace<T, SideSheetIds extends string>(
     options: WorkspaceOptions<T, SideSheetIds>
 ): WorkSpaceApi<T> {
-    const onSelect = (item: T) => {
-        options.openSidesheet(options.customSidesheetOptions?.component, item, {
-            ...options.customSidesheetOptions,
-            widgetId: options.customSidesheetOptions?.id,
-        });
-        return item[options.objectIdentifier];
-    };
+    const onSelect = options.onSelect
+        ? options.onSelect
+        : (item: T) => {
+              options.openSidesheet(options.customSidesheetOptions?.component, item, {
+                  ...options.customSidesheetOptions,
+                  widgetId: options.customSidesheetOptions?.id,
+              });
+              return item[options.objectIdentifier];
+          };
 
     const onGroupeSelect = (item: DataSet<unknown>): string => {
         options.openSidesheet<any>(options.customGroupeSidesheet?.component, item, {
