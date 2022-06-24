@@ -59,21 +59,18 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     </Case>
                     <Case when={true}>
                         <Title>{filterGroup.name}</Title>
-                        <FilterClearIcon
-                            onClick={() => markAllValuesActive(filterGroup.name)}
-                            isDisabled={!hasAnyActiveFilters}
-                        />
+                        {isSearchable && (
+                            <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
+                                <Icon name={'search'} id={'search'} />
+                            </SearchButton>
+                        )}
+                        {hasAnyActiveFilters && (
+                            <FilterClearIcon
+                                onClick={() => markAllValuesActive(filterGroup.name)}
+                            />
+                        )}
                     </Case>
                 </Switch>
-                {isSearchable && (
-                    <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
-                        {searchActive ? (
-                            <Icon name={'chevron_right'} />
-                        ) : (
-                            <Icon name={'search'} id={'search'} />
-                        )}
-                    </SearchButton>
-                )}
             </FilterHeaderGroup>
             <VirtualContainer filterGroup={filterGroup} filterSearchValue={filterSearchValue} />
         </Wrapper>
