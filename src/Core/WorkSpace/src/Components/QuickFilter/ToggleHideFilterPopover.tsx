@@ -97,12 +97,13 @@ const PopoverList = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px 0px;
+    padding-bottom: 20px;
 `;
 
 const ItemWrapper = styled.div`
-    display: flex;
-    gap: 0.2em;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+
     align-items: center;
     width: 100%;
     height: 32px;

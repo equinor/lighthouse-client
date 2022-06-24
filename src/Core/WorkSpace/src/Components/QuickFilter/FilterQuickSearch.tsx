@@ -50,8 +50,8 @@ export const FilterQuickSearch = (): JSX.Element => {
         <>
             <SearchPickerDropdown
                 menuItems={[
-                    { title: 'Id and title', onCLick: () => setSearchMode('id/desc') },
                     { title: 'All', onCLick: () => setSearchMode('all') },
+                    { title: 'ID and title (default) ', onCLick: () => setSearchMode('id/desc') },
                 ]}
             />
             <EdsSearch
