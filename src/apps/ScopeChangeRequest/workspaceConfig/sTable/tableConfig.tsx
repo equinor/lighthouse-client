@@ -70,11 +70,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 <PendingContributions hasPending={hasPendingContributions} />
             ),
         }),
-        defineColumn({
-            header: 'Phase',
-            accessor: (s) => s.phase,
-            width: 60,
-        }),
+        /**Hidden for now only one phase */
+        // defineColumn({
+        //     header: 'Phase',
+        //     accessor: (s) => s.phase,
+        //     width: 60,
+        // }),
         defineColumn({
             header: 'Workflow',
             accessor: (s) => s.workflowSteps?.map((s) => s.name).toString(),
@@ -96,6 +97,14 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             header: 'State',
             accessor: (s) => (s.isVoided ? 'Voided' : s.state),
             width: 80,
+        }),
+        defineColumn({
+            header: 'Disciplines',
+            accessor: (s) =>
+                s.disciplineGuesstimates
+                    .map(({ discipline: { procosysCode } }) => procosysCode)
+                    .toString(),
+            width: 180,
         }),
         defineColumn({
             header: 'Guess Mhrs',
@@ -147,14 +156,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             accessor: getLastSigned,
             width: 180,
             render: (s, v) => <>{v && <div>{v.toRelative({ locale: 'en-GB' })}</div>}</>,
-        }),
-        defineColumn({
-            header: 'Disciplines',
-            accessor: (s) =>
-                s.disciplineGuesstimates
-                    .map(({ discipline: { procosysCode } }) => procosysCode)
-                    .toString(),
-            width: 180,
         }),
     ],
 };
