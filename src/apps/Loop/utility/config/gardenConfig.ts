@@ -100,7 +100,7 @@ export const getItemWidth = (
                 : item.tagNo.replace('@LOOP-', '').length;
         })
     );
-    return Math.max(longestKey * 8 + 80, minWidth);
+    return Math.max(longestKey * 8 + 50, minWidth);
 };
 
 export const gardenConfig: GardenOptions<Loop> = {

@@ -38,6 +38,9 @@ export const ProgressCell = <T extends TableData>(props: CellProps<T, CellRender
         () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
         [cellAttributeFn, content]
     );
+    if (content?.[currentKey] === (null || undefined)) {
+        return null;
+    }
     return (
         <Progress {...attr}>
             <ProgressBar percent={content[currentKey] as number}></ProgressBar>

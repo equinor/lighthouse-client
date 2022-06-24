@@ -24,7 +24,7 @@ export function setup({ createWorkSpace }: ClientApi): void {
     createWorkSpace<ReleaseControl>({
         objectIdentifier: 'id',
         customSidesheetOptions: creator('WorkspaceSideSheet'),
-        defaultTab: 'garden',
+        defaultTab: 'table',
     })
         .registerDataSource(dataSource)
         .registerTableOptions(tableConfig)

@@ -33,8 +33,8 @@ export const FilterItems = ({
 }: FilterItemsProps): JSX.Element | null => {
     const [searchValue, setSearchValue] = useState<string | undefined>();
     const parentRef = useRef<HTMLDivElement | null>(null);
-    const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(e.target.value);
+    const handleOnSearchChange = (value: string | undefined) => {
+        setSearchValue(value);
     };
 
     const filterValues = Object.values(group.value);

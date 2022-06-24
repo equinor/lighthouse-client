@@ -4,19 +4,23 @@ import styled from 'styled-components';
 import { openNewScopeChange } from '../../../../../functions/openNewScopeChange';
 import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { scopeChangeQueries } from '../../../../../keys/queries';
+import {
+    ScopeChangeRequest,
+    ScopeChangeRequestState,
+} from '../../../../../types/scopeChangeRequest';
 import { MetaData } from '../../../../SearchReferences/searchReferences.styles';
 
 export const RevisionsList = (): JSX.Element | null => {
     const id = useScopeChangeContext((s) => s.request.id);
     const { data } = useQuery(scopeChangeQueries.revisionsQuery(id));
 
-    if (!data) {
-        return null;
+    if (!data || data.length <= 1) {
+        return <NoRevisionsText>No revisions have been made.</NoRevisionsText>;
     }
 
     return (
         <RevisionWrapper>
-            {data.map(
+            {removeLastRevisionIfSelf(data, id).map(
                 ({
                     id,
                     isVoided,
@@ -40,6 +44,15 @@ export const RevisionsList = (): JSX.Element | null => {
         </RevisionWrapper>
     );
 };
+
+function removeLastRevisionIfSelf(data: ScopeChangeRequest[], id: string) {
+    return data[0].id === id ? data.slice(1) : data;
+}
+
+const NoRevisionsText = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;
 
 const Link = styled.div`
     color: ${tokens.colors.interactive.primary__resting.hex};

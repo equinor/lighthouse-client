@@ -18,6 +18,14 @@ export const Wrapper = styled.div`
     word-wrap: break-word;
     height: 180px;
 
+    #search {
+        visibility: hidden;
+    }
+
+    &:hover #search {
+        visibility: visible;
+    }
+
     label {
         padding: 0;
         white-space: nowrap;
@@ -64,8 +72,9 @@ export const FilterHeaderGroup = styled.div<{ isActive: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 48px;
-
+    height: 50px;
+    min-height: 50px;
+    box-sizing: border-box;
     border-bottom: ${({ isActive }) =>
         `2px solid ${isActive
             ? tokens.colors.interactive.primary__resting.hex
@@ -77,13 +86,6 @@ export const FilterHeaderGroup = styled.div<{ isActive: boolean }>`
             ? tokens.colors.interactive.primary__resting.hex
             : tokens.colors.text.static_icons__default.hex};
 
-    #search {
-        visibility: hidden;
-    }
-
-    &:hover #search {
-        visibility: visible;
-    }
     margin-bottom: 5px;
 `;
 

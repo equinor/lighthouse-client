@@ -59,6 +59,10 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         isQuickFilter: true,
     },
     {
+        name: 'Has revisions',
+        valueFormatter: ({ revisionNumber }) => (revisionNumber > 1 ? 'Yes' : 'No'),
+    },
+    {
         name: 'Guesstimate',
         valueFormatter: ({ disciplineGuesstimates }) =>
             disciplineGuesstimates.length > 0

@@ -6,8 +6,6 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
-import { BannerItem } from '../../../../DisciplineReleaseControl/Components/Sidesheet/ReleaseControlSidesheetBanner';
-import { Banner } from '../../../../ScopeChangeRequest/Components/Sidesheet/SidesheetBanner/SidesheetBanner';
 import {
     disableEditMode,
     sideSheetEditModeAtom,
@@ -24,6 +22,7 @@ import { ScopeTab } from './Tabs/ScopeTab';
 import { HistoryTab } from './Tabs/HistoryTab';
 import { updateContext } from './updateContext';
 import { WorkflowTab } from './Tabs/WorkflowTab';
+import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 
 interface ReleaseControlSidesheetProps {
     item: ReleaseControl;
@@ -36,12 +35,11 @@ export const ReleaseControlSidesheet = ({
     useReleaseControlMutationWatcher(item.id);
     useGetReleaseControl(item.id, item);
     useReleaseControlAccess(item.id);
-    useSidesheetEffects(actions, toggleEditMode, item);
+    useSidesheetEffects(actions, toggleEditMode, item.id);
 
     const { activeTab, handleChange } = useEdsTabs();
 
     const editMode = useAtom(sideSheetEditModeAtom);
-
     useEffect(() => {
         disableEditMode();
         updateContext(item, actions);
@@ -55,12 +53,7 @@ export const ReleaseControlSidesheet = ({
         <ReleaseControlEditForm />
     ) : (
         <div>
-            <Banner>
-                <BannerItem title="" />
-                <BannerItem title={'Phase'} value={item.phase} />
-                <BannerItem title={'Status'} value={item.workflowStatus} />
-                <BannerItem title={'State'} value={item.isVoided ? 'Voided' : item.state} />
-            </Banner>
+            <ReleaseControlSidesheetBanner></ReleaseControlSidesheetBanner>
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <HeaderTab>Scope</HeaderTab>
