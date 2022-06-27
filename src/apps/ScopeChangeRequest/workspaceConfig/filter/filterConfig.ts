@@ -91,4 +91,9 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ potentialWarrantyCase }) => (potentialWarrantyCase ? 'Yes' : 'No'),
         sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
     },
+    {
+        name: 'Potential ATS scope',
+        valueFormatter: (s) => (s.potentialAtsScope ? 'Yes' : 'No'),
+        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+    },
 ];
