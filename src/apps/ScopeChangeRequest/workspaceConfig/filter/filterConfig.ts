@@ -1,5 +1,4 @@
-import { FilterValue } from 'react-table';
-import { FilterOptions } from '../../../../packages/Filter/Types';
+import { FilterOptions, FilterValueType } from '../../../../packages/Filter/Types';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import {
     calculateGuesstimateHoursGap,
@@ -105,6 +104,6 @@ function booleanToHumanReadable(val: boolean | undefined) {
     return val ? 'Yes' : 'No';
 }
 
-function sortOnYesNo(a: FilterValue, b: FilterValue) {
+function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
     return b === 'No' ? -1 : 1;
 }
