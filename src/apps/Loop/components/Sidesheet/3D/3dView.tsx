@@ -17,9 +17,9 @@ type ThreeDViewProps = {
 const columnNames = ['LoopNo', 'ContentTagNo', 'MechanicalCompletionStatus', 'Register'];
 export const ThreeDView = ({ loop }: ThreeDViewProps) => {
     const { echoPlantId } = useFacility();
-    const expressions = generateExpressions('loopNo', 'Equals', [loop.tagNo]);
+    const expressions = generateExpressions('loopNo', 'Equals', [loop.loopNo]);
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
-    const { data, isLoading } = useQuery(['loopcontent', loop.tagNo], ({ signal }) =>
+    const { data, isLoading } = useQuery(['loopcontent', loop.loopNo], ({ signal }) =>
         getLoopContent(requestArgs, signal)
     );
     const tags = useMemo(() => data?.map((a) => a.contentTagNo), [data]);
