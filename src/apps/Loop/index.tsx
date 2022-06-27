@@ -24,7 +24,7 @@ export function setup(addApi: ClientApi): void {
         })
         .registerDataSource({ responseAsync: responseAsync })
         .registerSearchOptions([
-            { name: 'Checklist ID', valueFormatter: (pkg) => pkg.checklistId },
+            { name: 'Loop tag', valueFormatter: (pkg) => pkg.tagNo },
             { name: 'Cmpkg', valueFormatter: (pkg) => pkg.commissioningPackageNo ?? '' },
             { name: 'MCpkg', valueFormatter: (pkg) => pkg.mechanicalCompletionPackageNo ?? '' },
         ])
