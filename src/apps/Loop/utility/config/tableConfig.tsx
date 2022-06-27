@@ -221,14 +221,6 @@ const customColumns: CustomColumn<Loop>[] = [
         Aggregated: () => null,
         aggregate: 'count',
     },
-    {
-        id: 'loopContentProgress',
-        Aggregated: () => null,
-        aggregate: 'count',
-        width: 100,
-        accessor: (pkg) => pkg.loopContentProgress,
-        Header: 'Progress',
-    },
 ];
 export const tableConfig: TableOptions<Loop> = {
     objectIdentifierKey: 'checklistId',
