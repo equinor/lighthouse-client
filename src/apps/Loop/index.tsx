@@ -24,11 +24,6 @@ export function setup(addApi: ClientApi): void {
         })
         .registerDataSource({
             responseAsync: responseAsync,
-            responseParser: async (res) => {
-                const a = JSON.parse(await res.text()) as Loop[];
-                console.log(a);
-                return a;
-            },
         })
         .registerSearchOptions([
             { name: 'Checklist ID', valueFormatter: (pkg) => pkg.checklistId },
