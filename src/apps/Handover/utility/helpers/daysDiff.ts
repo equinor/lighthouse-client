@@ -1,8 +1,7 @@
 import { DateTime, Duration } from 'luxon';
-export const daysDiff = (date: string | null): Duration | null => {
-    if (!date) return null;
+export const daysDiff = (date: Date): Duration => {
     const now = DateTime.local();
-    const woDate = DateTime.fromFormat(date, 'yyyy-MM-dd');
+    const woDate = DateTime.fromJSDate(date);
     const diff = woDate.diff(now, ['days']);
     return diff;
 };
