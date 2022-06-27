@@ -6,6 +6,7 @@ import {
 } from '@equinor/GardenUtils';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from 'react-table';
+import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrderMccr } from '../../../models';
 
 export type MccrTabProps = {

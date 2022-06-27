@@ -1,7 +1,5 @@
 import { FollowUpStatuses } from '@equinor/GardenUtils';
 import { FilterOptions } from '../../../packages/Filter/Types';
-import { daysDiff } from '../../Handover/utility/helpers/daysDiff';
-import { getFilterDateValues } from '../../Handover/utility/helpers/getFilterDateValues';
 import { FollowUpStatusFilter } from '../components';
 import { WorkOrder } from '../Garden/models';
 import { getFollowUpStatus, followUpStatusPriorityMap } from '../Garden/utility';
@@ -18,12 +16,6 @@ const progressPriMap: Record<Progress, number> = {
 };
 
 export const filterConfig: FilterOptions<WorkOrder> = [
-    // {
-    //     name: 'Work order',
-    //     valueFormatter: ({ workOrderNumber }) => workOrderNumber,
-    //     defaultHidden: true,
-    // },
-
     {
         name: 'Discipline',
         valueFormatter: ({ disciplineCode }) => disciplineCode,

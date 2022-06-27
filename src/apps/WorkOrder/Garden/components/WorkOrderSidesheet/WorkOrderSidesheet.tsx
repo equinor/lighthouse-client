@@ -8,6 +8,7 @@ import {
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
+import { proCoSysUrls } from '../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';
@@ -23,13 +24,13 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-    const procosysUrl = isProduction()
-        ? `${PROCOSYS_PROD_JC_BASE_URL}/WorkOrders/WorkOrder#id=${item.workOrderId}`
-        : `${PROCOSYS_TEST_JC_BASE_URL}/WorkOrders/WorkOrder#id=${item.workOrderId}`;
+    const workOrderProcosysUrl = proCoSysUrls.getWorkOrderUrl(item.workOrderId ?? '');
 
     useEffect(() => {
-        actions.setTitle(<SidesheetHeaderContent title={item.workOrderNumber} url={procosysUrl} />);
-    }, [item.workOrderNumber, procosysUrl]);
+        actions.setTitle(
+            <SidesheetHeaderContent title={item.workOrderNumber} url={workOrderProcosysUrl} />
+        );
+    }, [item.workOrderNumber, workOrderProcosysUrl]);
 
     const {
         material,
