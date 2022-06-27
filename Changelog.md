@@ -8,6 +8,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Scope change] ATS scope
 - [Scope change] Revisions
 - [Filter] Bugfix
+- [Loop] 3D view
 
 
 ## 1.6.4
