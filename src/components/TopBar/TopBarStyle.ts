@@ -5,10 +5,12 @@ import styled from 'styled-components';
 export const Icons = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: row-reverse;
-    > * {
+    gap: 1em;
+    /* > * {
         margin-left: 1rem;
-    }
+    } */
 `;
 
 export const Action = styled.button<{ disabled?: boolean }>`
