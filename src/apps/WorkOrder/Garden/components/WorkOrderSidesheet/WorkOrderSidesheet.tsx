@@ -1,11 +1,5 @@
-import { Tabs } from '@equinor/eds-core-react';
-import {
-    SideSheetContainer,
-    SidesheetHeaderContent,
-    PROCOSYS_PROD_JC_BASE_URL,
-    PROCOSYS_TEST_JC_BASE_URL,
-} from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/lighthouse-portal-client';
+import { Progress, Tabs } from '@equinor/eds-core-react';
+import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { proCoSysUrls } from '../../../../../packages/ProCoSysUrls/procosysUrl';
@@ -18,6 +12,10 @@ interface WorkorderSideSheetProps {
     item: WorkOrder;
     actions: SidesheetApi;
 }
+
+const Loading = () => {
+    return <Progress.Dots color="primary" />;
+};
 
 export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
@@ -44,8 +42,10 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <Tabs.List>
                     <Tabs.Tab>Details</Tabs.Tab>
-                    <Tabs.Tab>MCCR ({mccr?.length || 0})</Tabs.Tab>
-                    <Tabs.Tab>Material ({material?.length || 0})</Tabs.Tab>
+                    <Tabs.Tab>MCCR {mccrIsFetching ? <Loading /> : mccr?.length || 0}</Tabs.Tab>
+                    <Tabs.Tab>
+                        Material {materialIsFetching ? <Loading /> : material?.length || 0}
+                    </Tabs.Tab>
                 </Tabs.List>
 
                 <Tabs.Panels>

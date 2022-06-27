@@ -1,10 +1,4 @@
-import {
-    CellWithLink,
-    PROCOSYS_PROD_JC_BASE_URL,
-    PROCOSYS_TEST_JC_BASE_URL,
-    TabTable,
-} from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/lighthouse-portal-client';
+import { CellWithLink, TabTable } from '@equinor/GardenUtils';
 import { Column } from 'react-table';
 import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrderMccr } from '../../../models';
@@ -19,9 +13,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'tagNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#Tag|${pkg.tagId}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#Tag|${pkg.tagId}`,
+            url: proCoSysUrls.getTagUrl(pkg.tagId ?? ''),
             currentKey: 'tagNumber',
         }),
         Header: 'TagNo.',
@@ -37,9 +29,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'mccrType',
         accessor: (pkg) => ({
             content: pkg,
-            url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${pkg.mccrId}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${pkg.mccrId}`,
+            url: proCoSysUrls.getFormTypeUrl(pkg.mccrId ?? ''),
             currentKey: 'mccrType',
         }),
         Header: 'Type',
@@ -60,9 +50,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'mcpkgNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#McPkg|${pkg.mcpkgNumber}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#McPkg|${pkg.mcpkgNumber}`,
+            url: proCoSysUrls.getMcUrl(pkg.mcPkgId ?? ''),
             currentKey: 'mcpkgNumber',
         }),
         Header: 'McpkgNo.',
@@ -72,9 +60,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'commpkgNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#CommPkg|${pkg.commpkgNumber}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#CommPkg|${pkg.commpkgNumber}`,
+            url: proCoSysUrls.getCommPkgUrl(pkg.commpkgId || ''),
             currentKey: 'commpkgNumber',
         }),
         Header: 'CommpkgNo.',
