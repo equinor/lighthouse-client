@@ -4,7 +4,10 @@ import { Loop } from '../../types';
 import { CustomItemView } from '@equinor/ParkView';
 import { ItemText, ItemWrapper, Root, StatusCircles } from './customGardenItem.styles';
 import { PopoverContent } from '../Popover';
-
+const createProgressBackground = (progress: number) => {
+    const standardColor = '#ffffff';
+    return `linear-gradient(90deg, #d9eaf2 ${progress}%, ${standardColor} ${progress}%)`;
+};
 function CustomGardenItem({
     data,
     itemKey,
@@ -25,6 +28,7 @@ function CustomGardenItem({
     const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
     const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
 
+    const linear = createProgressBackground((data.loopContentProgress ?? 0) * 100);
     return (
         <>
             <Root>
@@ -38,7 +42,7 @@ function CustomGardenItem({
                         hoverTimeout && clearTimeout(hoverTimeout);
                         setIsOpen(false);
                     }}
-                    backgroundColor={'#d9eaf2'}
+                    backgroundColor={linear}
                     onClick={onClick}
                     style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
                     isSelected={isSelected}
@@ -62,7 +66,7 @@ function CustomGardenItem({
                     columnStart={columnStart}
                     width={itemWidth}
                     parentRef={parentRef}
-                    popoverTitle={`${data.tagNo}`}
+                    popoverTitle={`${data.loopNo}`}
                 >
                     <PopoverContent loop={data} />
                 </PopoverWrapper>
