@@ -141,6 +141,10 @@ export interface ReleaseControl {
     punchList: ReleaseControlPunch[];
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
+
+    //TODO remove
+    tags?: string[];
+    areas?: string[];
 }
 
 export interface ReleaseControlWorkflow {
