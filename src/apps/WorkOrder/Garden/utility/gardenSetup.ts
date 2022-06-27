@@ -37,9 +37,8 @@ export const fieldSettings: FieldSettings<WorkOrder, ExtendedGardenFields> = {
 
 export const getHighlightedColumn = (groupByKey: string) => {
     const groupBy = getGroupBy(groupByKey);
-
     switch (groupBy) {
-        case 'plannedStartDate':
+        case 'plannedStartupDate':
         case 'plannedFinishDate':
             return getYearAndWeekFromDate(new Date());
         default:
