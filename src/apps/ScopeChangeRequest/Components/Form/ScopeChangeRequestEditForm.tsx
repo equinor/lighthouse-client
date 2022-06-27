@@ -13,6 +13,8 @@ import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/Re
 import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
 import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 import { EditFormActionBar } from './EditFormActionBar';
+import { CheckboxWrapper } from '../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
+import { IsATSScopeCheckbox } from './Inputs/AtsScopeCheckbox';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
@@ -45,6 +47,9 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
                         Request
                         <ScopeChangeBaseForm />
                         Disciplines and guesstimates
+                        <CheckboxWrapper>
+                            <IsATSScopeCheckbox />
+                        </CheckboxWrapper>
                         <GuesstimateDiscipline />
                         Materials
                         <MaterialsInput />

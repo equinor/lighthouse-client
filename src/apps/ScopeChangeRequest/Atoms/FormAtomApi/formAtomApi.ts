@@ -47,6 +47,7 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             scopeId: undefined,
             setAsOpen: false,
             systemIds: [],
+            potentialAtsScope: false,
             tagNumbers: [],
             title: '',
             materialsIdentifiedInStorage: false,
