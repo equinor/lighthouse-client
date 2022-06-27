@@ -9,6 +9,7 @@ import { GlobalSearch } from '../../Core/GlobalSearh/Components/GlobalSearch';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import { AddMenu } from '../../FusionModules/DataCreatorReact/Components/AddMenu';
 import { useDataCreator } from '../../FusionModules/DataCreatorReact/Hooks/useCreator';
+import { ClickableIcon } from '../../packages/Components/Icon';
 import Icon from '../Icon/Icon';
 import { useMenuContext } from '../Menu';
 import { LocationBreadCrumbs } from './BreadCrumbs/Breadcrumbs';
@@ -53,9 +54,16 @@ const ClientTopBar = (): JSX.Element => {
                     <NotificationBell />
                     <HelpMenu />
 
+                    {/* <Action
+                        onClick={() => {
+                            openSidesheet(BookmarkSidesheet);
+                        }}
+                    >
+                    <Icon name="bookmarks" />
+                </Action> */}
                     {creators.length > 0 && (
                         <ActionWrapper ref={addMenuRef}>
-                            <Action
+                            <div
                                 title={'Add Item'}
                                 onFocus={() => setIsAddMenuOpen((s) => !s)}
                                 onMouseOver={() => {
@@ -63,8 +71,11 @@ const ClientTopBar = (): JSX.Element => {
                                 }}
                                 onBlur={() => setIsAddMenuOpen(false)}
                             >
-                                <Icon name="add" />
-                            </Action>
+                                <Icon
+                                    color={tokens.colors.interactive.primary__resting.hex}
+                                    name="add"
+                                />
+                            </div>
                             <AddMenu
                                 anchorEl={addMenuRef.current}
                                 isOpen={isAddMenuOpen}
@@ -73,14 +84,10 @@ const ClientTopBar = (): JSX.Element => {
                             />
                         </ActionWrapper>
                     )}
-
-                    <Action
-                        onClick={() => {
-                            openSidesheet(BookmarkSidesheet);
-                        }}
-                    >
-                        <Icon name="bookmarks" />
-                    </Action>
+                    <ClickableIcon
+                        name="bookmarks"
+                        onClick={() => openSidesheet(BookmarkSidesheet)}
+                    />
                     {clientEnv === 'dev' && <GlobalSearch />}
                 </Icons>
             </TopBar.Actions>

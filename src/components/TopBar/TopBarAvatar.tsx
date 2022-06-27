@@ -1,4 +1,5 @@
 import { Avatar, Icon, Popover } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -19,7 +20,10 @@ export const TopBarAvatar = (): JSX.Element | null => {
         <div>
             <div ref={ref} onClick={open}>
                 {!userImageUrl ? (
-                    <Icon name="account_circle" />
+                    <Icon
+                        color={tokens.colors.interactive.primary__resting.hex}
+                        name="account_circle"
+                    />
                 ) : (
                     <Avatar alt="User avatar" src={userImageUrl} />
                 )}

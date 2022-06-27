@@ -22,7 +22,7 @@ export const HelpMenu = (): JSX.Element => {
 
     return (
         <div ref={ref}>
-            <ClickableIcon name="help" onClick={() => setIsOpen(true)} />
+            <ClickableIcon name="help_outline" onClick={() => setIsOpen(true)} />
 
             {isOpen && (
                 <Menu
