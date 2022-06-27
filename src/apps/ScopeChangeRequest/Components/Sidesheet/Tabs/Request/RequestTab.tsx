@@ -39,7 +39,6 @@ export function RequestTab(): JSX.Element {
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{request.description}</SubSectionText>
                             <WarrantyCaseDetailCheckbox />
-                            <AtsDetailCheckbox />
                         </SectionWrapper>
                         <SectionHeading>Change origin</SectionHeading>
                         <SectionWrapper>
@@ -56,6 +55,7 @@ export function RequestTab(): JSX.Element {
                         <SectionHeading>Disciplines and guesstimates</SectionHeading>
                         <SectionWrapper>
                             <SubSectionText>
+                                <AtsDetailCheckbox />
                                 {request.disciplineGuesstimates.length > 0 && (
                                     <GuesstimatesList>
                                         <GuesstimateRow>
