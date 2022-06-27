@@ -1,6 +1,5 @@
-import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
+import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
-import { daysDiff } from '../Handover/utility/helpers/daysDiff';
 import { WorkorderSideSheet } from './Garden/components';
 import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
@@ -14,15 +13,9 @@ import { tableConfig } from './utility/tableConfig';
 async function responseParser(response: Response) {
     const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
     return parsedResponse;
-    // return parsedResponse.map((wo) => ({
-    //     ...wo,
-    //     plannedStartDateDiff: null,
-    // }));
 }
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
-    const { fusionDataproxy } = httpClient();
-    const contextId = getFusionContextId();
     const { FAM } = httpClient();
     return await FAM.fetch(`v0.1/procosys/workorder/JCA`, { signal: signal });
 }
@@ -55,7 +48,6 @@ export function setup(appApi: ClientApi): void {
         })
         .registerDataSource({
             responseAsync: responseAsync,
-            // responseParser: responseParser,
         })
         .registerFilterOptions(filterConfig)
         .registerStatusItems(statusBarConfig)
