@@ -1,4 +1,4 @@
-import { FilterOptions } from '../../../../packages/Filter/Types';
+import { FilterOptions, FilterValueType } from '../../../../packages/Filter/Types';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import {
     calculateGuesstimateHoursGap,
@@ -39,13 +39,14 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     },
     {
         name: 'Has comments',
-        valueFormatter: ({ hasComments }) => (hasComments ? 'Yes' : 'No'),
-        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+        valueFormatter: ({ hasComments }) => booleanToHumanReadable(hasComments),
+        sort: (a) => a.sort(sortOnYesNo),
     },
     {
         name: 'Pending contributions',
-        valueFormatter: ({ hasPendingContributions }) => (hasPendingContributions ? 'Yes' : 'No'),
-        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+        valueFormatter: ({ hasPendingContributions }) =>
+            booleanToHumanReadable(hasPendingContributions),
+        sort: (a) => a.sort(sortOnYesNo),
     },
     {
         name: 'Workflow status',
@@ -60,7 +61,8 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     },
     {
         name: 'Has revisions',
-        valueFormatter: ({ revisionNumber }) => (revisionNumber > 1 ? 'Yes' : 'No'),
+        valueFormatter: ({ revisionNumber }) => booleanToHumanReadable(revisionNumber > 1),
+        sort: (s) => s.sort(sortOnYesNo),
     },
     {
         name: 'Guesstimate',
@@ -88,7 +90,20 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     },
     {
         name: 'Potential warranty case',
-        valueFormatter: ({ potentialWarrantyCase }) => (potentialWarrantyCase ? 'Yes' : 'No'),
-        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+        valueFormatter: (s) => booleanToHumanReadable(s.potentialWarrantyCase),
+        sort: (a) => a.sort(sortOnYesNo),
+    },
+    {
+        name: 'Potential ATS scope',
+        valueFormatter: (s) => booleanToHumanReadable(s.potentialAtsScope),
+        sort: (a) => a.sort(sortOnYesNo),
     },
 ];
+
+function booleanToHumanReadable(val: boolean | undefined) {
+    return val ? 'Yes' : 'No';
+}
+
+function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
+    return b === 'No' ? -1 : 1;
+}
