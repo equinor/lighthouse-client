@@ -42,9 +42,11 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <Tabs.List>
                     <Tabs.Tab>Details</Tabs.Tab>
-                    <Tabs.Tab>MCCR {mccrIsFetching ? <Loading /> : mccr?.length || 0}</Tabs.Tab>
                     <Tabs.Tab>
-                        Material {materialIsFetching ? <Loading /> : material?.length || 0}
+                        MCCR {mccrIsFetching ? <Loading /> : `(${mccr?.length || 0})`}
+                    </Tabs.Tab>
+                    <Tabs.Tab>
+                        Material {materialIsFetching ? <Loading /> : `(${material?.length || 0})`}
                     </Tabs.Tab>
                 </Tabs.List>
 

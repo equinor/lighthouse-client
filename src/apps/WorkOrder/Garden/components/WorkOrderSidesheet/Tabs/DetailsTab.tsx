@@ -142,7 +142,7 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                     </tr>
                     <tr>
                         <td>Planned finish date</td>
-                        <td>{workOrder.actualFinishDate}</td>
+                        <td>{workOrder.plannedFinishDate}</td>
                     </tr>
                 </tbody>
             </Table>

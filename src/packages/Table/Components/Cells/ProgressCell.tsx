@@ -57,7 +57,7 @@ const CustomProgressCell = <T extends string | number | null>({
     return (
         <Progress>
             <ProgressBar percent={progress ? Number(progress) : 0}></ProgressBar>
-            {progress as string}%
+            {Number(progress)}%
         </Progress>
     );
 };

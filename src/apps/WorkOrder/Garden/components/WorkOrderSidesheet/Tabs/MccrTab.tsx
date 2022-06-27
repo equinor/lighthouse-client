@@ -60,7 +60,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'commpkgNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: proCoSysUrls.getCommPkgUrl(pkg.commpkgId || ''),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commpkgId ?? ''),
             currentKey: 'commpkgNumber',
         }),
         Header: 'CommpkgNo.',
