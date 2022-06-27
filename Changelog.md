@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.6.5
+- [Scope change] ATS scope
+- [Scope change] Revisions
+- [Filter] Bugfix
+- [Loop] 3D view
+
+
 ## 1.6.4
 - [Scope change] Revisions
 - [Filter] Small fixes
