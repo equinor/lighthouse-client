@@ -1,17 +1,24 @@
 import { statusColorMap, TabTable } from '@equinor/GardenUtils';
-import { Column, StatusCustomCell } from '@equinor/Table';
+import {
+    CellProps,
+    Column,
+    CustomLinkCellWithTextDecoration,
+    StatusCustomCell,
+} from '@equinor/Table';
 import { useQuery } from 'react-query';
+import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop, LoopContent } from '../../types';
 import { getLoopContent, loopContentColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 
 const columns: Column<LoopContent>[] = [
     {
-        id: 'checklistID',
+        id: 'contentTagNo',
         Header: 'Tag',
         accessor: (pkg) => pkg.contentTagNo,
-        width: 80,
+        width: 120,
     },
+
     {
         id: 'description',
         Header: 'Description',
@@ -38,19 +45,38 @@ const columns: Column<LoopContent>[] = [
     {
         id: 'commissioningPackageNo',
         Header: 'Cmpkg',
-        accessor: (pkg) => pkg.commissioningPackageNo,
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId ?? ''),
+        }),
+        Cell: (cellProps: CellProps<Loop>) => (
+            <CustomLinkCellWithTextDecoration
+                contentToBeDisplayed={cellProps.value.content.commissioningPackageNo}
+                url={cellProps.value.url}
+            />
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
         width: 100,
     },
     {
         id: 'mechanicalCompletionPackageNo',
         Header: 'MCpkg',
-        accessor: (pkg) => pkg.mechanicalCompletionPackageNo,
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'mechanicalCompletionPackageNo',
+            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageId ?? ''),
+        }),
+        Cell: (cellProps: CellProps<Loop>) => (
+            <CustomLinkCellWithTextDecoration
+                contentToBeDisplayed={cellProps.value.content.mechnicalCompletionNo}
+                url={cellProps.value.url}
+            />
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
         width: 100,
-    },
-    {
-        id: 'register',
-        Header: 'Register',
-        accessor: (pkg) => pkg.register,
     },
 ];
 type LoopContentProps = {
