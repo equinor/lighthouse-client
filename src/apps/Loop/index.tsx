@@ -22,7 +22,14 @@ export function setup(addApi: ClientApi): void {
             customSidesheetOptions: sidesheetConfig('WorkspaceSideSheet'),
             objectIdentifier: 'checklistId',
         })
-        .registerDataSource({ responseAsync: responseAsync })
+        .registerDataSource({
+            responseAsync: responseAsync,
+            responseParser: async (res) => {
+                const a = JSON.parse(await res.text()) as Loop[];
+                console.log(a);
+                return a;
+            },
+        })
         .registerSearchOptions([
             { name: 'Checklist ID', valueFormatter: (pkg) => pkg.checklistId },
             { name: 'Cmpkg', valueFormatter: (pkg) => pkg.commissioningPackageNo ?? '' },

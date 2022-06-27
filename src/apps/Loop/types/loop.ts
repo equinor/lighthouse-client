@@ -26,11 +26,14 @@ export type Loop = {
     revision: string | null;
     rfC_Planned_Forecast_Date: Date | null;
     rfO_Planned_Forecast_Date: Date | null;
+    isOverdue: boolean | null;
     signedDate: string | null;
     status: string | null;
     system: string | null;
     tagNo: string;
+    tagStatus: string | null;
     verifiedDate: Date | null;
+    loopContentProgress: number | null;
     woPlannedCompletionDate: Date | null;
     woActualCompletionDate: Date | null;
 };
