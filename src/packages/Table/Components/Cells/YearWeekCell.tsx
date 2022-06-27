@@ -36,13 +36,16 @@ const toDate = (date: unknown) => {
         return undefined;
     }
 };
+
 type CustomYearAndWeekCellProps<T extends string | null> = {
     dateString: T;
     cellAttributeFunction?: (content: T) => HTMLAttributes<HTMLElement>;
+    overdue?: boolean;
 };
 const CustomYearAndWeekCell = <T extends string | null>({
     dateString,
     cellAttributeFunction,
+    overdue,
 }: CustomYearAndWeekCellProps<T>) => {
     const dateOrUndefined = toDate(dateString);
     const dateDisplay = dateOrUndefined
@@ -57,7 +60,11 @@ const CustomYearAndWeekCell = <T extends string | null>({
         [cellAttributeFunction, dateString]
     );
 
-    return <div {...attr}>{dateDisplay}</div>;
+    return (
+        <div {...attr}>
+            {dateDisplay} {overdue && <span style={{ color: 'red', fontWeight: 600 }}> !</span>}
+        </div>
+    );
 };
 
 export { CustomYearAndWeekCell, YearWeekCell };

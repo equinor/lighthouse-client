@@ -76,8 +76,19 @@ export const tableConfig: TableOptions<WorkOrder> = {
             Header: 'Planned start',
             Aggregated: () => null,
             aggregate: 'count',
-            accessor: (pkg) => pkg.plannedStartupDate,
-            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
+            accessor: (pkg) => ({
+                content: pkg,
+                currentKey: 'plannedStartupDate',
+                overdue:
+                    new Date(pkg.plannedStartupDate || '').getTime() <
+                    new Date(pkg.actualStartupDate || '').getTime(),
+            }),
+            Cell: (cellProps) => (
+                <CustomYearAndWeekCell
+                    dateString={cellProps.value.content.plannedStartupDate}
+                    overdue={cellProps.value.overdue}
+                />
+            ),
             width: 150,
         },
         {
@@ -85,8 +96,19 @@ export const tableConfig: TableOptions<WorkOrder> = {
             Header: 'Planned finish',
             Aggregated: () => null,
             aggregate: 'count',
-            accessor: (pkg) => pkg.plannedFinishDate,
-            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
+            accessor: (pkg) => ({
+                content: pkg,
+                currentKey: 'plannedFinishDate',
+                overdue:
+                    new Date(pkg.plannedFinishDate || '').getTime() <
+                    new Date(pkg.actualFinishDate || '').getTime(),
+            }),
+            Cell: (cellProps) => (
+                <CustomYearAndWeekCell
+                    dateString={cellProps.value.content.plannedFinishDate}
+                    overdue={cellProps.value.overdue}
+                />
+            ),
             width: 150,
         },
         {
