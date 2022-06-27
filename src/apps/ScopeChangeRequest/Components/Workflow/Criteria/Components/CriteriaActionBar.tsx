@@ -88,13 +88,13 @@ export const CriteriaActionBar = ({
                 isDisabled: !canSign,
             });
 
-            actions.push({
-                label: 'Reject with comment',
-                onClick: setShowRejectWithComment,
-                icon: <Icon name="close_circle_outlined" color={iconGrey} />,
-                isDisabled: !canSign,
-            });
             if (stepOrder !== 0) {
+                actions.push({
+                    label: 'Reject with comment',
+                    onClick: setShowRejectWithComment,
+                    icon: <Icon name="close_circle_outlined" color={iconGrey} />,
+                    isDisabled: !canSign,
+                });
                 actions.push({
                     label: 'Send back with comment',
                     icon: <Icon name="undo" color={iconGrey} />,
