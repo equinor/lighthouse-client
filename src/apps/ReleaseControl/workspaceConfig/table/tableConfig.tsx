@@ -12,13 +12,17 @@ export const tableConfig: TableOptions<ReleaseControl> = {
     hiddenColumns: [
         'id',
         'description',
-        'areas',
         'isVoided',
         'hasComments',
         'hasPendingContributions',
-        'tags',
         'createdBy',
         'modifiedBy',
+        'scopeTags',
+        'scopeHTTags',
+
+        //TODO remove
+        'tags',
+        'areas',
     ],
     columnOrder: ['sequenceNumber', 'title', 'workflowSteps'],
     headers: [
