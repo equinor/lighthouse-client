@@ -7,7 +7,6 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { statusColorMap } from '../../../../../packages/GardenUtils/src';
 import { TagMap, TagOverlay } from '../../../../../packages/ModelViewer/components/tagOverlay';
-import { Message, MessageWrapper } from '../../../../../packages/ModelViewer/ModelViewerStyles';
 import { Loop } from '../../../types';
 import { getLoopContent } from '../../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../../utility/helpers/fam';
@@ -53,7 +52,7 @@ export const ThreeDView = ({ loop }: ThreeDViewProps) => {
             </Center>
         );
     }
-    const newData = data.reduce((acc, curr) => {
+    const tagOverlay = data.reduce((acc, curr) => {
         acc[curr.contentTagNo] = {
             tagNo: curr.contentTagNo,
             status: curr.mechanicalCompletionStatus || '',
@@ -66,7 +65,7 @@ export const ThreeDView = ({ loop }: ThreeDViewProps) => {
         <ThreeDModel>
             <Viewer tags={tags} echoPlantId={echoPlantId} padding={1} platformSectionId="Full-Pro">
                 <TagOverlay
-                    tagOverlay={newData}
+                    tagOverlay={tagOverlay}
                     iconResolver={() => 'tag'}
                     statusResolver={(status) =>
                         status !== ''
