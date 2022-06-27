@@ -1,7 +1,10 @@
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { searchPunchListItems } from '../../api/FAM/searchPunchListItems';
+import { searchTag } from '../../api/FAM/searchTag';
+import { FamTag } from '../../../ReleaseControl/types/releaseControl';
+import { searchHtCable } from '../../api/FAM/searchHtCable';
 
-export type FAMTypes = 'punch';
+export type FAMTypes = 'punch' | 'famtag' | 'htcable';
 
 interface FAMSearch {
     searchFAM: (
@@ -30,6 +33,31 @@ export function useFAMSearch(): FAMSearch {
                         searchValue: punchItemNo.toString(),
                         type: 'punch',
                         value: punchItemNo.toString(),
+                    })
+                );
+            }
+            case 'famtag': {
+                const items = await searchTag(searchValue, signal);
+                return items.map(
+                    (x: FamTag): TypedSelectOption => ({
+                        label: `${x.tagNo}`,
+                        value: x.tagNo,
+                        type: 'famtag',
+                        searchValue: x.tagNo,
+                        object: x,
+                    })
+                );
+            }
+
+            case 'htcable': {
+                const items = await searchHtCable(searchValue, signal);
+                return items.map(
+                    (x: FamTag): TypedSelectOption => ({
+                        label: `${x.tagNo}`,
+                        value: x.tagNo,
+                        type: 'htcable',
+                        searchValue: x.tagNo,
+                        object: x,
                     })
                 );
             }

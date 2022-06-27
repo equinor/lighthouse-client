@@ -82,6 +82,8 @@ export interface CreateReleaseControlStepModel {
     isCompleted?: boolean;
     isCurrent?: boolean;
     tagNumbers?: string[];
+    scopeTags?: FamTag[];
+    scopeHTTags?: FamTag[];
     contributors?: Contributor[];
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
@@ -105,18 +107,16 @@ export interface CriteriaTemplate {
     value?: string;
 }
 
-export interface ReleaseControlTag {
+export interface ReleaseControlDocument {
     id: string;
-    procosysId: number;
-    procosysNumber: string;
+    stidDocumentNumber: string;
+    stidDocumentRevisionNumber: string;
 }
 
-export interface ReleaseControlArea {
+export interface ReleaseControlPunch {
     id: string;
     procosysId: number;
-    procosysCode: string;
 }
-
 export interface ReleaseControl {
     createdAtUtc: Date;
     createdBy: CreatedBy;
@@ -137,8 +137,10 @@ export interface ReleaseControl {
     currentWorkflowStep: ReleaseControlStep;
     workflowSteps: CreateReleaseControlStepModel[];
     editedWorkflowSteps: ReleaseControlStep[];
-    tags: ReleaseControlTag[];
-    areas: ReleaseControlArea[];
+    documents: ReleaseControlDocument[];
+    punchList: ReleaseControlPunch[];
+    scopeTags?: FamTag[];
+    scopeHTTags?: FamTag[];
 }
 
 export interface ReleaseControlWorkflow {
@@ -151,3 +153,65 @@ export interface ReleaseControlWorkflowTemplate {
     isPublished: boolean;
     workflowStepTemplates: CreateReleaseControlStepModel[];
 }
+
+export interface FamTag {
+    facility: string;
+    project: string;
+    tagNo: string;
+    tagId: string;
+    description: string;
+    register: string | null;
+    tagType: string | null;
+    function: string | null;
+    mechanicalCompletionPackageNo: string;
+    mechanicalCompletionPackageId: string;
+    commissioningPackageNo: string;
+    commissioningPackageId: string;
+    packageNo: string | null;
+    callOffNo: string | null;
+    status: string | null;
+    discipline: string | null;
+    functionalSystem: string | null;
+    system: string | null;
+    location: string | null;
+    area: string | null;
+    isVoided: string | null;
+    createdDate: string | null;
+    updatedDate: string | null;
+    mountedOn: string | null;
+    relatedHTCables: string[];
+    openWorkOrders: string[];
+    installedCableLength: string | null;
+    tagHeated: string[];
+}
+
+export type FamTagType = {
+    facility: string;
+    project: string;
+    tagNo: string;
+    tagId: string;
+    description: string;
+    register: string | null;
+    tagType: string | null;
+    function: string | null;
+    mechanicalCompletionPackageNo: string;
+    mechanicalCompletionPackageId: string;
+    commissioningPackageNo: string;
+    commissioningPackageId: string;
+    packageNo: string | null;
+    callOffNo: string | null;
+    status: string | null;
+    discipline: string | null;
+    functionalSystem: string | null;
+    system: string | null;
+    location: string | null;
+    area: string | null;
+    isVoided: string | null;
+    createdDate: string | null;
+    updatedDate: string | null;
+    mountedOn: string | null;
+    relatedHTCables: string[];
+    openWorkOrders: string[];
+    installedCableLength: string | null;
+    tagHeated: string[];
+};
