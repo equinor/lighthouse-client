@@ -84,7 +84,6 @@ const ClientTopBar = (): JSX.Element => {
                     {clientEnv === 'dev' && <GlobalSearch />}
                 </Icons>
             </TopBar.Actions>
-            {/* <SupportButton /> */}
         </TopBarWrapper>
     );
 };

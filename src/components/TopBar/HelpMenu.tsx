@@ -38,9 +38,6 @@ export const HelpMenu = (): JSX.Element => {
                     </Menu.Item>
 
                     <Menu.Section>
-                        <Menu.Item disabled>
-                            <Icon name="comment_more" /> Contact support
-                        </Menu.Item>
                         <Menu.Item onClick={giveFeedback}>
                             <Icon name="thumbs_up_down" /> Give feedback
                         </Menu.Item>
