@@ -62,7 +62,7 @@ function CustomGardenItem({
                     columnStart={columnStart}
                     width={itemWidth}
                     parentRef={parentRef}
-                    popoverTitle={`${data.tagNo}`}
+                    popoverTitle={`${data.loopNo}`}
                 >
                     <PopoverContent loop={data} />
                 </PopoverWrapper>

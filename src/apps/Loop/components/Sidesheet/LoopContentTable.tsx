@@ -57,9 +57,9 @@ type LoopContentProps = {
     loop: Loop;
 };
 export const LoopContentTable = ({ loop }: LoopContentProps) => {
-    const expressions = generateExpressions('loopNo', 'Equals', [loop.tagNo || '']);
+    const expressions = generateExpressions('loopNo', 'Equals', [loop.loopNo || '']);
     const requestArgs = generateFamRequest(loopContentColumnNames, 'Or', expressions);
-    const { data, isLoading, error } = useQuery(['loopcontent', loop.tagNo], ({ signal }) =>
+    const { data, isLoading, error } = useQuery(['loopcontent', loop.loopNo], ({ signal }) =>
         getLoopContent(requestArgs, signal)
     );
 
