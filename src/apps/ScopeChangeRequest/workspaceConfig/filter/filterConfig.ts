@@ -69,8 +69,8 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ disciplineGuesstimates }) =>
             disciplineGuesstimates.length > 0
                 ? calculateGuesstimateHoursGap(
-                    disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
-                )
+                      disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
+                  )
                 : null,
         isQuickFilter: true,
 
