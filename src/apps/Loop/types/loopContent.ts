@@ -1,12 +1,12 @@
 export type LoopContent = {
-    checklistID: string | null;
-    commissioningPackageNo: string | null;
-    contentId: string | null;
-    description: string | null;
+    loopNo: string;
     facility: string | null;
-    loopId: string | null;
-    mechanicalCompletionPackageNo: string | null;
-    mechanicalCompletionStatus: string | null;
-    mechanicalCompletionStatusOrder: number | null;
+    contentTagNo: string;
     register: string | null;
+    mechanicalCompletionStatus: string | null;
+    mechanicalCompletionPackageNo: string | null;
+    mechanicalCompletionPackageId: string | null;
+    commissioningPackageNo: string | null;
+    commissioningPackageId: string | null;
+    description: string | null;
 };

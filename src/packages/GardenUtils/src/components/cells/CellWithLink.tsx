@@ -1,12 +1,14 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { CellProps } from 'react-table';
 import styled from 'styled-components';
 
 const Link = styled.a`
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    color: ${tokens.colors.interactive.primary__resting.hex};
+    text-decoration: none;
+    :hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 `;
 type CellLinkProps<T extends Record<string, number | string>> = {
     content: T;
@@ -25,11 +27,6 @@ export const CellWithLink = <T extends Record<string, number | string>>({
     return (
         <Link href={url} target={'_blank'} rel="noreferrer" title={linkTitle}>
             {content[currentKey]}
-            <Icon
-                size={24}
-                color={tokens.colors.interactive.primary__resting.hex}
-                name="external_link"
-            />
         </Link>
     );
 };

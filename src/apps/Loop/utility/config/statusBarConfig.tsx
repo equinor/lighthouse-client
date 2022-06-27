@@ -1,5 +1,4 @@
 import { StatusItem } from '@equinor/lighthouse-status-bar';
-import { KpiBar } from '../../../../packages/KPI/src';
 import { Loop } from '../../types';
 
 type Kpi = {
@@ -13,7 +12,7 @@ type Kpi = {
 };
 type PartialKpi = Pick<
     Kpi,
-    'ready' | 'overdueChecklists' | 'checklistsSigned' | 'checklistsNotSigned' | 'complete'
+    'ready' | 'overdueChecklists' | 'checklistsSigned' | 'checklistsNotSigned'
 >;
 const getKpis = (loops: Loop[]): Kpi => {
     const uniqueLoops = new Set();
@@ -26,10 +25,13 @@ const getKpis = (loops: Loop[]): Kpi => {
                 acc.checklistsNotSigned += 1;
             }
 
-            if (curr.loopContentStatus === ('PB' || 'OK' || null)) {
+            if (
+                (curr.loopContentStatus === 'PB' ||
+                    curr.loopContentStatus === 'OK' ||
+                    !curr.loopContentStatus) &&
+                !curr.signedDate
+            ) {
                 acc.ready += 1;
-            } else {
-                acc.complete += 1;
             }
 
             return acc;
@@ -39,7 +41,6 @@ const getKpis = (loops: Loop[]): Kpi => {
             checklistsNotSigned: 0,
             ready: 0,
             overdueChecklists: 0,
-            complete: 0,
         } as PartialKpi
     );
 
@@ -47,7 +48,7 @@ const getKpis = (loops: Loop[]): Kpi => {
         ...counts,
         uniqueChecklists: loops.length,
         uniqueLoopTags: uniqueLoops.size,
-        complete: Number(((counts.complete / loops.length) * 100).toFixed(2)),
+        complete: Number(((counts.checklistsSigned / loops.length) * 100).toFixed(2)),
     };
 };
 function numberFormat(number: number): string {

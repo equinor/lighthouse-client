@@ -1,17 +1,17 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { LoopContent } from '../../types';
 import { FamRequest } from '../helpers/fam';
-export const columnNames = [
+export const loopContentColumnNames = [
     'Facility',
-    'LoopId',
-    'ContentId',
+    'LoopNo',
+    'ContentTagNo',
     'Register',
     'MechanicalCompletionStatus',
-    'MechanicalCompletionStatusOrder',
     'MechanicalCompletionPackageNo',
+    'MechanicalCompletionPackageId',
     'CommissioningPackageNo',
+    'CommissioningPackageId',
     'Description',
-    'ChecklistID',
 ];
 export const getLoopContent = async (
     famFilter: FamRequest,

@@ -25,7 +25,7 @@ const JunctionBoxNode = styled.div`
     display: flex;
     flex-direction: horizontal;
     flex: 1;
-    width: 90px;
+    width: 60px;
     border: 1px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 10px;
     padding: 6px;

@@ -1,4 +1,4 @@
-import { Search as EdsSearch } from '@equinor/eds-core-react';
+import { Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -48,8 +48,15 @@ export const FilterQuickSearch = (): JSX.Element => {
     }
     return (
         <>
-            <Search
-                size={50}
+            <SearchPickerDropdown
+                menuItems={[
+                    { title: 'All', onCLick: () => setSearchMode('all') },
+                    { title: 'ID and title (default) ', onCLick: () => setSearchMode('id/desc') },
+                ]}
+            />
+            <EdsSearch
+                hasValue={Boolean(searchText)}
+                size={200}
                 onChange={handleClear}
                 placeholder={getPlaceholderText(searchMode)}
                 onInput={handleInput}
@@ -60,20 +67,11 @@ export const FilterQuickSearch = (): JSX.Element => {
                     }
                 }}
             />
-            <SearchPickerDropdown
-                menuItems={[
-                    { title: 'Id and title', onCLick: () => setSearchMode('id/desc') },
-                    { title: 'All', onCLick: () => setSearchMode('all') },
-                ]}
-            />
         </>
     );
 };
 
-export const Search = styled(EdsSearch)`
-    background: ${tokens.colors.ui.background__light.rgba};
-
-    :focus-within {
-        background: ${tokens.colors.ui.background__default.rgba};
-    }
+const EdsSearch = styled(Search) <{ hasValue: boolean }>`
+    border: ${({ hasValue }) =>
+        hasValue ? `1px solid ${tokens.colors.interactive.primary__resting.hex}` : 'none'};
 `;

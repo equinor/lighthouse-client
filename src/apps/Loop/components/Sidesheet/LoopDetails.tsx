@@ -1,37 +1,28 @@
-import { formatDateString, StringCell, Table } from '@equinor/GardenUtils';
+import { StringCell, Table } from '@equinor/GardenUtils';
+import styled from 'styled-components';
 import { Loop } from '../../types';
-
+const Wrapper = styled.div`
+    height: fit-content;
+`;
 type LoopDetailsProps = {
     loop: Loop;
 };
 export const LoopDetails = ({ loop }: LoopDetailsProps) => {
     return (
-        <div>
+        <Wrapper>
             <h3>Details</h3>
             <Table>
                 <tbody>
                     <tr>
+                        <td>System</td>
+                        <td>
+                            <StringCell value={loop.functionalSystem} />
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Project</td>
                         <td>
                             <StringCell value={loop.project} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Loop</td>
-                        <td>
-                            <StringCell value={loop.tagNo} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Comm pkg</td>
-                        <td>
-                            <StringCell value={loop.commissioningPackageNo} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mc pkg</td>
-                        <td>
-                            <StringCell value={loop.mechanicalCompletionPackageNo} />
                         </td>
                     </tr>
                     <tr>
@@ -41,35 +32,14 @@ export const LoopDetails = ({ loop }: LoopDetailsProps) => {
                         </td>
                     </tr>
                     <tr>
-                        <td>Aggregated MC status</td>
-                        <td>
-                            <StringCell value={loop.loopContentStatus} />
-                        </td>
-                    </tr>
+                        <td>Status</td>
 
-                    <tr>
-                        <td>Planned/Actual MC complete</td>
                         <td>
-                            <StringCell
-                                value={formatDateString(
-                                    loop.woActualCompletionDate
-                                        ? loop.woActualCompletionDate.toString()
-                                        : null
-                                )}
-                            />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Remaning hours</td>
-                        <td>
-                            <StringCell
-                                value={loop.remainingManHours ? `${loop.remainingManHours}` : 'N/A'}
-                            />
+                            <StringCell value={loop.status} />
                         </td>
                     </tr>
                 </tbody>
             </Table>
-        </div>
+        </Wrapper>
     );
 };
