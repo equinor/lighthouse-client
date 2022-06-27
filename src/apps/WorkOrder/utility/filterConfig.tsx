@@ -16,12 +16,6 @@ const progressPriMap: Record<Progress, number> = {
 };
 
 export const filterConfig: FilterOptions<WorkOrder> = [
-    // {
-    //     name: 'Work order',
-    //     valueFormatter: ({ workOrderNumber }) => workOrderNumber,
-    //     defaultHidden: true,
-    // },
-
     {
         name: 'Discipline',
         valueFormatter: ({ disciplineCode }) => disciplineCode,
@@ -54,14 +48,49 @@ export const filterConfig: FilterOptions<WorkOrder> = [
         name: 'Milestone',
         valueFormatter: ({ milestoneCode }) => milestoneCode,
     },
-    // {
-    //     name: 'Planned start',
-    //     valueFormatter: ({ plannedStartDate,   }) => plannedStartDate,
 
+    // {
+    //     name: 'Start date',
+    //     valueFormatter: ({ plannedStartupDate, actualStartupDate, plannedStartDateDiff }) => {
+    //         if (!plannedStartDateDiff) return 'Other';
+    //         const plannedDate = new Date(plannedStartupDate || '');
+    //         const actualDate = new Date(actualStartupDate || '');
+    //         // const dateDiffs = daysDiff(plannedDate);
+
+    //         // If planned start date is a date that has already been
+    //         // and the actual date happened later than the planned or that there is no actual date
+    //         if (
+    //             plannedStartDateDiff.days <= 0 &&
+    //             (actualDate.getTime() > plannedDate.getTime() || !actualStartupDate)
+    //         ) {
+    //             return 'Overdue';
+    //         }
+    //         //If actual start date happened before planned start date
+    //         else if (actualDate.getTime() < plannedDate.getTime()) {
+    //             return 'Other';
+    //         } else {
+    //             return getFilterDateValues(plannedStartDateDiff.days);
+    //         }
+    //     },
     // },
     // {
-    //     name: 'Planned Finish',
-    //     valueFormatter: ({ plannedFinishDate }) => plannedFinishDate,
+    //     name: 'Finish date',
+    //     valueFormatter: ({ plannedFinishDate, actualFinishDate }) => {
+    //         const plannedDate = new Date(plannedFinishDate || '');
+    //         const actualDate = new Date(actualFinishDate || '');
+    //         const dateDiffs = daysDiff(plannedDate);
+
+    //         if (
+    //             dateDiffs.days <= 0 &&
+    //             (actualDate.getTime() > plannedDate.getDate() || !actualFinishDate)
+    //         ) {
+    //             return 'Overdue';
+    //         } else if (actualDate.getTime() < plannedDate.getTime()) {
+    //             return 'Other';
+    //         } else {
+    //             return getFilterDateValues(dateDiffs.days);
+    //         }
+    //     },
     // },
     {
         name: 'Material',
@@ -80,7 +109,7 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     {
         name: 'Progress',
         valueFormatter: ({ projectProgress }): Progress => {
-            const progress = parseFloat(projectProgress);
+            const progress = parseFloat(projectProgress || '');
             if (progress >= 100) {
                 return '100%';
             } else if (progress >= 95) {

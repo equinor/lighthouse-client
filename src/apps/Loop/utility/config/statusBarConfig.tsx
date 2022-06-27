@@ -18,11 +18,14 @@ const getKpis = (loops: Loop[]): Kpi => {
     const uniqueLoops = new Set();
     const counts = loops.reduce(
         (acc, curr) => {
-            uniqueLoops.add(curr.tagNo);
+            uniqueLoops.add(curr.loopNo);
             if (curr.signedDate) {
                 acc.checklistsSigned += 1;
             } else {
                 acc.checklistsNotSigned += 1;
+            }
+            if (curr.isOverdue) {
+                acc.overdueChecklists += 1;
             }
 
             if (

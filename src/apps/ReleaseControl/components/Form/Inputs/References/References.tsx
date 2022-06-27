@@ -11,5 +11,11 @@ const updateReferences = (newVals: TypedSelectOption[]) => {
 export const ReferencesInput = (): JSX.Element => {
     const references = useAtomState((s) => s.references) ?? [];
 
-    return <SearchReferences onChange={updateReferences} references={references} />;
+    return (
+        <SearchReferences
+            onChange={updateReferences}
+            references={references}
+            options={{ referenceTypes: ['punch', 'document'] }}
+        />
+    );
 };

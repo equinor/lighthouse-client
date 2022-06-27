@@ -1,6 +1,6 @@
 // import { AddMenu } from '@equinor/DataFactory';
 import { BookmarkSidesheet } from '@equinor/BookmarksManager';
-import { Avatar, TopBar } from '@equinor/eds-core-react';
+import { TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
@@ -9,13 +9,14 @@ import { GlobalSearch } from '../../Core/GlobalSearh/Components/GlobalSearch';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import { AddMenu } from '../../FusionModules/DataCreatorReact/Components/AddMenu';
 import { useDataCreator } from '../../FusionModules/DataCreatorReact/Hooks/useCreator';
+import { ClickableIcon } from '../../packages/Components/Icon';
 import Icon from '../Icon/Icon';
 import { useMenuContext } from '../Menu';
 import { LocationBreadCrumbs } from './BreadCrumbs/Breadcrumbs';
 import { DevBar } from './DevBar/DevBar';
-import { HelpPage } from './HelpPage/HelpPage';
-import { HelpIcon } from './Icons/Help';
+import { HelpMenu } from './HelpMenu';
 import Logo from './Logo/Logo';
+import { TopBarAvatar } from './TopBarAvatar';
 import { Action, ActionWrapper, Header, Icons, TopBarWrapper } from './TopBarStyle';
 
 const ClientTopBar = (): JSX.Element => {
@@ -25,7 +26,7 @@ const ClientTopBar = (): JSX.Element => {
     const addMenuRef = useRef<HTMLHeadingElement>(null);
 
     const {
-        settings: { userImageUrl, clientEnv },
+        settings: { clientEnv },
     } = useClientContext();
 
     const { toggleMenu } = useMenuContext();
@@ -49,27 +50,20 @@ const ClientTopBar = (): JSX.Element => {
             </TopBar.CustomContent>
             <TopBar.Actions>
                 <Icons>
-                    {!userImageUrl ? (
-                        <Icon name="account_circle" />
-                    ) : (
-                        <Avatar alt="User avatar" src={userImageUrl} />
-                    )}
-                    <Icon name="support" color={tokens.colors.ui.background__medium.rgba} />
+                    <TopBarAvatar />
                     <NotificationBell />
-                    <Action
-                        title="Service Request Form for Johan Castberg Portal"
+                    <HelpMenu />
+
+                    {/* <Action
                         onClick={() => {
-                            window.open('https://forms.office.com/r/GzdEKzkXWY');
-                        }}
-                        onMouseOver={() => {
-                            setIsAddMenuOpen(false);
+                            openSidesheet(BookmarkSidesheet);
                         }}
                     >
-                        <HelpIcon />
-                    </Action>
+                    <Icon name="bookmarks" />
+                </Action> */}
                     {creators.length > 0 && (
                         <ActionWrapper ref={addMenuRef}>
-                            <Action
+                            <div
                                 title={'Add Item'}
                                 onFocus={() => setIsAddMenuOpen((s) => !s)}
                                 onMouseOver={() => {
@@ -77,8 +71,11 @@ const ClientTopBar = (): JSX.Element => {
                                 }}
                                 onBlur={() => setIsAddMenuOpen(false)}
                             >
-                                <Icon name="add" />
-                            </Action>
+                                <Icon
+                                    color={tokens.colors.interactive.primary__resting.hex}
+                                    name="add"
+                                />
+                            </div>
                             <AddMenu
                                 anchorEl={addMenuRef.current}
                                 isOpen={isAddMenuOpen}
@@ -87,19 +84,13 @@ const ClientTopBar = (): JSX.Element => {
                             />
                         </ActionWrapper>
                     )}
-                    <HelpPage />
-
-                    <Action
-                        onClick={() => {
-                            openSidesheet(BookmarkSidesheet);
-                        }}
-                    >
-                        <Icon name="bookmarks" />
-                    </Action>
+                    <ClickableIcon
+                        name="bookmarks"
+                        onClick={() => openSidesheet(BookmarkSidesheet)}
+                    />
                     {clientEnv === 'dev' && <GlobalSearch />}
                 </Icons>
             </TopBar.Actions>
-            {/* <SupportButton /> */}
         </TopBarWrapper>
     );
 };

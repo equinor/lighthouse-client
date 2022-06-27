@@ -37,11 +37,11 @@ const getWorkOrderStatuses = (
     const status = statusMap(data);
     const backgroundColor = colorMap[status];
     const textColor = getTextColorForStatus(status);
-    const size = itemSize(data.estimatedHours);
+    const size = itemSize(Number(data?.estimatedHours));
     const progressBar = `linear-gradient(90deg, #706b6b ${parseInt(
-        data.projectProgress,
+        data?.projectProgress ?? '0',
         10
-    )}%, transparent ${parseInt(data.projectProgress, 10)}%)`;
+    )}%, transparent ${parseInt(data?.projectProgress ?? '0', 10)}%)`;
     return {
         mccrColor,
         matColor,
