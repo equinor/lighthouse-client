@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.7.0
+- [Workorder] Change from Fusion Dataproxy to FAM
+- [Loop] Move loop to test env, update FAM views
+
 ## 1.6.5
 - [Scope change] ATS scope
 - [Scope change] Revisions
