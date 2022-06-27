@@ -1,16 +1,29 @@
+import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { Viewer } from '@equinor/lighthouse-model-viewer';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { statusColorMap } from '../../../../../packages/GardenUtils/src';
 import { TagMap, TagOverlay } from '../../../../../packages/ModelViewer/components/tagOverlay';
+import { Message, MessageWrapper } from '../../../../../packages/ModelViewer/ModelViewerStyles';
 import { Loop } from '../../../types';
 import { getLoopContent } from '../../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../../utility/helpers/fam';
 export const ThreeDModel = styled.div`
     height: ${() => window.innerHeight - 250 + 'px'};
 `;
+
+const Center = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+`;
+
 type ThreeDViewProps = {
     loop: Loop;
 };
@@ -23,11 +36,22 @@ export const ThreeDView = ({ loop }: ThreeDViewProps) => {
         getLoopContent(requestArgs, signal)
     );
     const tags = useMemo(() => data?.map((a) => a.contentTagNo), [data]);
-    if (!data) {
-        return <h2>Loading</h2>;
-    }
+
     if (isLoading) {
-        return <h2>Loading</h2>;
+        return (
+            <Center>
+                <CircularProgress />
+                <div>Fetching loop content</div>
+            </Center>
+        );
+    }
+
+    if (!data || data.length === 0) {
+        return (
+            <Center>
+                <h1>No loop content</h1>
+            </Center>
+        );
     }
     const newData = data.reduce((acc, curr) => {
         acc[curr.contentTagNo] = {
@@ -44,7 +68,11 @@ export const ThreeDView = ({ loop }: ThreeDViewProps) => {
                 <TagOverlay
                     tagOverlay={newData}
                     iconResolver={() => 'tag'}
-                    statusResolver={() => tokens.colors.interactive.primary__resting.rgba}
+                    statusResolver={(status) =>
+                        status !== ''
+                            ? statusColorMap[status]
+                            : tokens.colors.interactive.primary__resting.rgba
+                    }
                 />
             </Viewer>
         </ThreeDModel>

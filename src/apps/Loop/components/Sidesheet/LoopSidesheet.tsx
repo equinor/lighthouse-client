@@ -115,7 +115,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                             </PanelContentWrapper>
                         </Tabs.Panel>
 
-                        <Tabs.Panel>
+                        <Tabs.Panel style={{ height: '100%' }}>
                             {activeTab === 1 && (
                                 <ModelViewerContextProvider>
                                     <ThreeDView loop={item} />
