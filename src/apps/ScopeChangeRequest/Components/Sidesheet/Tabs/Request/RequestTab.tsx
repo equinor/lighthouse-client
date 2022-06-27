@@ -115,8 +115,7 @@ export function RequestTab(): JSX.Element {
                         <SectionWrapper>
                             <RevisionsList />
                         </SectionWrapper>
-                    </InnerSection>
-                    <InnerSection>
+
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>
                             <RelatedObjects
@@ -128,12 +127,10 @@ export function RequestTab(): JSX.Element {
                                 tags={request.tags}
                             />
                         </SectionWrapper>
-                    </InnerSection>
-                    <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
                         <SectionWrapper>
                             {request.attachments.length === 0 && (
-                                <NoAttachments>No attachments has been uploaded.</NoAttachments>
+                                <NoAttachments>No attachments have been uploaded.</NoAttachments>
                             )}
                         </SectionWrapper>
                         {requestAccess.canPatch && <HotUpload />}

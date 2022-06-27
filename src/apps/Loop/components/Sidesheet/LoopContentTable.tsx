@@ -9,7 +9,7 @@ const columns: Column<LoopContent>[] = [
     {
         id: 'checklistID',
         Header: 'Tag',
-        accessor: (pkg) => pkg.checklistID,
+        accessor: (pkg) => pkg.contentTagNo,
         width: 80,
     },
     {
@@ -47,14 +47,19 @@ const columns: Column<LoopContent>[] = [
         accessor: (pkg) => pkg.mechanicalCompletionPackageNo,
         width: 100,
     },
+    {
+        id: 'register',
+        Header: 'Register',
+        accessor: (pkg) => pkg.register,
+    },
 ];
 type LoopContentProps = {
     loop: Loop;
 };
 export const LoopContentTable = ({ loop }: LoopContentProps) => {
-    const expressions = generateExpressions('checklistID', 'Equals', [loop.checklistId || '']);
+    const expressions = generateExpressions('loopNo', 'Equals', [loop.tagNo || '']);
     const requestArgs = generateFamRequest(loopContentColumnNames, 'Or', expressions);
-    const { data, isLoading, error } = useQuery(['loopcontent', loop.checklistId], ({ signal }) =>
+    const { data, isLoading, error } = useQuery(['loopcontent', loop.tagNo], ({ signal }) =>
         getLoopContent(requestArgs, signal)
     );
 
