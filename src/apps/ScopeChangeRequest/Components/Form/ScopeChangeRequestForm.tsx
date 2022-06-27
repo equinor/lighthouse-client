@@ -9,8 +9,10 @@ import { changeSideSheetWidgetManifest } from '../../ScopeChangeRequestApp';
 import { Upload } from '../Attachments/Upload';
 import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
+import { CheckboxWrapper } from '../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
+import { IsATSScopeCheckbox } from './Inputs/AtsScopeCheckbox';
 import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
 import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 import {
@@ -18,7 +20,7 @@ import {
     ButtonContainer,
     FlexColumn,
     FormWrapper,
-    Section
+    Section,
 } from './ScopeChangeForm.styles';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
@@ -40,6 +42,9 @@ export const ScopeChangeRequestForm = (): JSX.Element => {
                 </FlexColumn>
                 <FlexColumn>
                     Disciplines and guesstimates
+                    <CheckboxWrapper>
+                        <IsATSScopeCheckbox />
+                    </CheckboxWrapper>
                     <GuesstimateDiscipline />
                     Materials
                     <MaterialsInput />
