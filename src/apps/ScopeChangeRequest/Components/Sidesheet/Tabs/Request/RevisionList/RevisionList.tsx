@@ -4,10 +4,7 @@ import styled from 'styled-components';
 import { openNewScopeChange } from '../../../../../functions/openNewScopeChange';
 import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { scopeChangeQueries } from '../../../../../keys/queries';
-import {
-    ScopeChangeRequest,
-    ScopeChangeRequestState,
-} from '../../../../../types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../../../../types/scopeChangeRequest';
 import { MetaData } from '../../../../SearchReferences/searchReferences.styles';
 
 export const RevisionsList = (): JSX.Element | null => {
