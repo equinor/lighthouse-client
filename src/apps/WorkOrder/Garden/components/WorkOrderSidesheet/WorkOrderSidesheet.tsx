@@ -1,8 +1,8 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Progress, Tabs } from '@equinor/eds-core-react';
 import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
+import { proCoSysUrls } from '../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';
@@ -13,16 +13,22 @@ interface WorkorderSideSheetProps {
     actions: SidesheetApi;
 }
 
+const Loading = () => {
+    return <Progress.Dots color="primary" />;
+};
+
 export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-    const procosysUrl = isProduction() ? item.url : item.url.replace('procosys', 'procosystest');
+    const workOrderProcosysUrl = proCoSysUrls.getWorkOrderUrl(item.workOrderId ?? '');
 
     useEffect(() => {
-        actions.setTitle(<SidesheetHeaderContent title={item.workOrderNumber} url={procosysUrl} />);
-    }, [item.workOrderNumber, procosysUrl]);
+        actions.setTitle(
+            <SidesheetHeaderContent title={item.workOrderNumber} url={workOrderProcosysUrl} />
+        );
+    }, [item.workOrderNumber, workOrderProcosysUrl]);
 
     const {
         material,
@@ -36,8 +42,10 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <Tabs.List>
                     <Tabs.Tab>Details</Tabs.Tab>
-                    <Tabs.Tab>MCCR ({mccr?.length || 0})</Tabs.Tab>
-                    <Tabs.Tab>Material ({material?.length || 0})</Tabs.Tab>
+                    <Tabs.Tab>MCCR {mccrIsFetching ? <Loading /> : mccr?.length || 0}</Tabs.Tab>
+                    <Tabs.Tab>
+                        Material {materialIsFetching ? <Loading /> : material?.length || 0}
+                    </Tabs.Tab>
                 </Tabs.List>
 
                 <Tabs.Panels>

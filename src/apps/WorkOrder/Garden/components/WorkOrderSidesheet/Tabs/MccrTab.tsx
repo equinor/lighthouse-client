@@ -1,6 +1,6 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from 'react-table';
+import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrderMccr } from '../../../models';
 
 export type MccrTabProps = {
@@ -13,7 +13,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'tagNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: isProduction() ? pkg.tagUrl : pkg.tagUrl.replace('procosys', 'procosystest'),
+            url: proCoSysUrls.getTagUrl(pkg.tagId ?? ''),
             currentKey: 'tagNumber',
         }),
         Header: 'TagNo.',
@@ -27,8 +27,13 @@ const columns: Column<WorkOrderMccr>[] = [
     },
     {
         id: 'mccrType',
-        accessor: 'mccrType',
+        accessor: (pkg) => ({
+            content: pkg,
+            url: proCoSysUrls.getFormTypeUrl(pkg.mccrId ?? ''),
+            currentKey: 'mccrType',
+        }),
         Header: 'Type',
+        Cell: CellWithLink,
     },
     {
         id: 'mccrStatus',
@@ -45,7 +50,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'mcpkgNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: isProduction() ? pkg.mccrUrl : pkg.mccrUrl.replace('procosys', 'procosystest'),
+            url: proCoSysUrls.getMcUrl(pkg.mcPkgId ?? ''),
             currentKey: 'mcpkgNumber',
         }),
         Header: 'McpkgNo.',
@@ -55,9 +60,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'commpkgNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: isProduction()
-                ? pkg.commpkgUrl
-                : pkg.commpkgUrl.replace('procosys', 'procosystest'),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commpkgId || ''),
             currentKey: 'commpkgNumber',
         }),
         Header: 'CommpkgNo.',
