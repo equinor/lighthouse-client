@@ -47,22 +47,18 @@ export function setup(appApi: ClientApi): void {
             },
         ])
         .registerPrefetchQueries(prefetchQueriesOptions)
-        .registerPowerBIOptions(
-            !appApi.isProduction
-                ? {
-                    pages: [
-                        {
-                            pageId: 'ReportSection4a8a96cf641d50747a13',
-                            pageTitle: 'Overview',
-                            default: true,
-                        },
-                        {
-                            pageId: 'ReportSection40a8a70e6f82243888ca',
-                            pageTitle: 'History',
-                        },
-                    ],
-                    reportURI: 'pp-scope-change-analytics',
-                }
-                : (undefined as unknown as PowerBiOptions)
-        );
+        .registerPowerBIOptions({
+            pages: [
+                {
+                    pageId: 'ReportSection4a8a96cf641d50747a13',
+                    pageTitle: 'Overview',
+                    default: true,
+                },
+                {
+                    pageId: 'ReportSection40a8a70e6f82243888ca',
+                    pageTitle: 'History',
+                },
+            ],
+            reportURI: 'pp-scope-change-analytics',
+        });
 }
