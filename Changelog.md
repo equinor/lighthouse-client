@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.6.4
+- [Scope change] Revisions
+- [Filter] Small fixes
+- [ReleaseControl] State handling improvements
+- [PipingAndHeatTrace] Compact circuit diagram
+
 ## 1.6.3
 - [Scope change] Revisions
 - [Workspace] New version of filter
