@@ -24,6 +24,9 @@ const getKpis = (loops: Loop[]): Kpi => {
             } else {
                 acc.checklistsNotSigned += 1;
             }
+            if (curr.isOverdue) {
+                acc.overdueChecklists += 1;
+            }
 
             if (
                 (curr.loopContentStatus === 'PB' ||
