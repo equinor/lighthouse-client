@@ -6,8 +6,8 @@ import {
 import { GardenGroups } from '../../../../components/ParkView/Models/data';
 import { WorkOrder } from '../models';
 import { getFollowUpStatus } from './statusUtils';
-const shouldCountHours = (workOrder: WorkOrder): boolean =>
-    workOrder.plannedStartDate.length &&
+const shouldCountHours = (workOrder: WorkOrder) =>
+    workOrder?.plannedStartupDate?.length &&
     [FollowUpStatuses.MaterialAndWoOk, FollowUpStatuses.MaterialAndWoAvailable].includes(
         getFollowUpStatus(workOrder)
     )
@@ -47,20 +47,23 @@ export const getSubtitleHeader = (
             .filter(
                 (wo) =>
                     parseInt(
-                        getYearAndWeekFromDate(new Date(wo.plannedStartDate)).replace(/\-/gi, ''),
+                        getYearAndWeekFromDate(new Date(wo?.plannedStartupDate || '')).replace(
+                            /\-/gi,
+                            ''
+                        ),
                         10
                     ) -
                         currentWeekAndYearAsInt <=
                     0
             )
-            .map((wo) => wo.remainingHours);
+            .map((wo) => Number(wo.remainingHours));
     } else {
-        hours = items.filter(shouldCountHours).map((wo) => wo.remainingHours) || [0];
+        hours = items.filter(shouldCountHours).map((wo) => Number(wo.remainingHours)) || [0];
     }
 
     if (headerValueIsToday === 0 && columnIsExpanded) {
         const weekHours = (
-            items.filter(shouldCountHours).map((wo) => wo.remainingHours) || [0]
+            items.filter(shouldCountHours).map((wo) => Number(wo.remainingHours) || 0) || [0]
         ).reduce((acc, curr) => (acc += curr), 0);
 
         const totalRemainingHours = hours.reduce((acc, curr) => (acc += curr), 0);
