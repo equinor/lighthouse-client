@@ -20,21 +20,39 @@ const columns: Column<Loop>[] = [
     },
 
     {
-        id: 'description',
-        Header: 'Description',
-        accessor: (pkg) => pkg.description,
-        width: 300,
-    },
-    {
         id: 'Cmpkg',
         Header: 'Cmpkg',
-        accessor: (pkg) => pkg.commissioningPackageNo,
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId ?? ''),
+        }),
+        Cell: (cellProps: CellProps<Loop>) => (
+            <CustomLinkCellWithTextDecoration
+                contentToBeDisplayed={cellProps.value.content.commissioningPackageNo}
+                url={cellProps.value.url}
+            />
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
         width: 100,
     },
     {
         id: 'MCpkg',
         Header: 'MCpkg',
-        accessor: (pkg) => pkg.mechanicalCompletionPackageNo,
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'mechanicalCompletionPackageNo',
+            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageId ?? ''),
+        }),
+        Cell: (cellProps: CellProps<Loop>) => (
+            <CustomLinkCellWithTextDecoration
+                contentToBeDisplayed={cellProps.value.content.mechanicalCompletionPackageNo}
+                url={cellProps.value.url}
+            />
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
         width: 100,
     },
     {
