@@ -17,7 +17,7 @@ import { DevBar } from './DevBar/DevBar';
 import { HelpMenu } from './HelpMenu';
 import Logo from './Logo/Logo';
 import { TopBarAvatar } from './TopBarAvatar';
-import { Action, ActionWrapper, Header, Icons, TopBarWrapper } from './TopBarStyle';
+import { ActionWrapper, Header, Icons, TopBarWrapper } from './TopBarStyle';
 
 const ClientTopBar = (): JSX.Element => {
     // state for open and close add menu and add menu ref for positioning.
