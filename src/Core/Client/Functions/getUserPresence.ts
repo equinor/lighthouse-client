@@ -1,10 +1,9 @@
-import { httpClient, isProduction } from '@equinor/lighthouse-portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 
 export async function getUserPresence(userId: string): Promise<Presence> {
-    const { fusion } = httpClient();
-    fusion.setBaseUrl(`https://pro-s-people-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/`);
+    const { fusionPeople } = httpClient();
 
-    const res = await fusion.fetch(`persons/${userId}/presence`);
+    const res = await fusionPeople.fetch(`persons/${userId}/presence`);
 
     return await res.json();
 }
