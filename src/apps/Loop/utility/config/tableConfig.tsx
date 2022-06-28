@@ -13,7 +13,7 @@ const customColumns: CustomColumn<Loop>[] = [
     {
         id: 'loopTag',
         Header: 'Loop tag',
-        accessor: (pkg) => pkg.tagNo,
+        accessor: (pkg) => pkg.loopNo,
         width: 200,
         Aggregated: () => null,
         aggregate: 'count',
@@ -40,7 +40,7 @@ const customColumns: CustomColumn<Loop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackage_ID || ''),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId || ''),
         }),
         Cell: (cellProps) => {
             return (
@@ -60,7 +60,7 @@ const customColumns: CustomColumn<Loop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'mechanicalCompletionPackageNo',
-            url: proCoSysUrls.getMcUrl(pkg.mcpkgId || ''),
+            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageId || ''),
         }),
         Cell: (cellProps) => {
             return (

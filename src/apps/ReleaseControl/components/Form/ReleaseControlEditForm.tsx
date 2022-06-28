@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
 
 import styled from 'styled-components';
+import { TypedSelectOption } from '../../../ScopeChangeRequest/api/Search/searchType';
 import { disableEditMode } from '../../Atoms/editModeAtom';
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 
@@ -10,7 +11,10 @@ import { useReleaseControlContext } from '../../hooks/useReleaseControlContext';
 import { useReleaseControlMutation } from '../../hooks/useReleaseControlMutation';
 import { useRequestMutations } from '../../hooks/useRequestMutations';
 import { releaseControlMutationKeys } from '../../queries/releaseControlMutationKeys';
+import { FamTag } from '../../types/releaseControl';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
+import { HtCablesInput } from './Inputs/Scope/HtCables';
+import { TagsInput } from './Inputs/Scope/Tags';
 import {
     ActionBar,
     ButtonContainer,
@@ -33,6 +37,26 @@ export const ReleaseControlEditForm = (): JSX.Element => {
         clearState();
         updateAtom({
             ...releaseControl,
+            documentNumbers: releaseControl?.documents?.map((x) => x.id),
+            punchList: releaseControl?.punchList?.map((x) => x.id),
+            tags: releaseControl?.scopeTags?.map(
+                (x: FamTag): TypedSelectOption => ({
+                    label: `${x.tagNo}`,
+                    value: x.tagNo,
+                    type: 'famtag',
+                    searchValue: x.tagNo,
+                    object: x,
+                })
+            ),
+            htCables: releaseControl?.scopeHTTags?.map(
+                (x: FamTag): TypedSelectOption => ({
+                    label: `${x.tagNo}`,
+                    value: x.tagNo,
+                    type: 'htcable',
+                    searchValue: x.tagNo,
+                    object: x,
+                })
+            ),
         });
         return () => {
             clearState();
@@ -49,6 +73,8 @@ export const ReleaseControlEditForm = (): JSX.Element => {
                             <TitleInput />
                             <DescriptionInput />
                             <PlannedDueDateInput />
+                            <TagsInput />
+                            <HtCablesInput />
                             <ReferencesInput />
                         </FlexColumn>
                     )}
