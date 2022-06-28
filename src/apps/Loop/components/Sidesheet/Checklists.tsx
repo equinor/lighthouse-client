@@ -47,7 +47,7 @@ const columns: Column<Loop>[] = [
         }),
         Cell: (cellProps: CellProps<Loop>) => (
             <CustomLinkCellWithTextDecoration
-                contentToBeDisplayed={cellProps.value.content.mechnicalCompletionNo}
+                contentToBeDisplayed={cellProps.value.content.mechanicalCompletionPackageNo}
                 url={cellProps.value.url}
             />
         ),

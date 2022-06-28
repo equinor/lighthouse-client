@@ -15,7 +15,21 @@ const columns: Column<LoopContent>[] = [
     {
         id: 'contentTagNo',
         Header: 'Tag',
-        accessor: (pkg) => pkg.contentTagNo,
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'contentTagNo',
+            url: proCoSysUrls.getTagUrl(pkg.contentTagId),
+        }),
+        Cell: (cellProps) => {
+            return (
+                <CustomLinkCellWithTextDecoration
+                    contentToBeDisplayed={cellProps.value.content.contentTagNo}
+                    url={cellProps.value.url}
+                />
+            );
+        },
+        Aggregated: () => null,
+        aggregate: 'count',
         width: 120,
     },
 
