@@ -30,10 +30,21 @@ export const getMccrStatusColor = (workOrder: WorkOrder): string => {
     return statusColorMap[status];
 };
 
+export const getMccrStatusColorByStatus = (mccrStatus: string): string => {
+    return statusColorMap[mccrStatus];
+};
+
 export const getMatStatusColor = (workOrder: WorkOrder): string => {
+    if (workOrder?.materialStatus === null) {
+        return statusColorMap.OS;
+    }
     const materialStatus = materialPackageStatusMap[workOrder.materialStatus];
     return materialColorMap[materialStatus] || statusColorMap.OS;
 };
 
-export const getMatStatus = (workOrder: WorkOrder) =>
-    materialPackageStatusMap[workOrder.materialStatus];
+export const getMatStatusColorByStatus = (matStatus: string): string => {
+    const materialStatus = materialPackageStatusMap[matStatus];
+    return materialColorMap[materialStatus] || statusColorMap.OS;
+};
+export const getMatStatus = (workOrder: WorkOrder): string =>
+    materialPackageStatusMap[workOrder?.materialStatus ?? 'M4'];

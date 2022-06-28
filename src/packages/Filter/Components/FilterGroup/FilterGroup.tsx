@@ -91,7 +91,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                         />
                     </Case>
                     <Case when={true}>
-                        <Title>{filterGroup.name}</Title>
+                        <Title hasFilters={hasAnyActiveFilters}>{filterGroup.name}</Title>
                         {isSearchable && (
                             <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
                                 <Icon name={'search'} id={'search'} />

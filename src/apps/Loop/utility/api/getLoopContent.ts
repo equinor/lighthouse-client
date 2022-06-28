@@ -4,6 +4,7 @@ import { FamRequest } from '../helpers/fam';
 export const loopContentColumnNames = [
     'Facility',
     'LoopNo',
+    'ContentTagId',
     'ContentTagNo',
     'Register',
     'MechanicalCompletionStatus',

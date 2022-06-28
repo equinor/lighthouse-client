@@ -20,6 +20,7 @@ export const ItemWrapper = styled.div<ItemProps>`
     background: ${(props) => props.backgroundColor};
     color: ${tokens.colors.text.static_icons__default.rgba};
     cursor: pointer;
+    border: 1px solid #ededed;
     height: 100%;
     border-radius: 5px;
     font-weight: 500;
@@ -28,24 +29,6 @@ export const ItemWrapper = styled.div<ItemProps>`
     padding-right: 2px;
     outline: ${(props) => (props.isSelected ? '2px dashed green' : '')};
     outline-offset: ${(props) => (props.isSelected ? '2px' : '')};
-`;
-type SizesProps = {
-    size: 'small' | 'medium' | 'large';
-    color: string;
-};
-export const Sizes = styled.div<SizesProps>`
-    position: absolute;
-    top: 0px;
-    left: 4px;
-    width: 10px;
-    height: 2px;
-    border-radius: 2px;
-    box-shadow: ${(props) =>
-        props.size === 'large'
-            ? `0px 5px 0px 0px ${props.color}, 0px 11px 0px 0px ${props.color}, 0px 17px 0px 0px ${props.color}`
-            : props.size === 'medium'
-            ? `0px 11px 0px 0px ${props.color}, 0px 17px 0px 0px ${props.color}`
-            : ` 0px 17px 0px 0px ${props.color}`};
 `;
 
 export const ItemText = styled.div`
@@ -66,25 +49,25 @@ export const StatusCircles = styled.div<StatusCirclesProps>`
     align-items: center;
 
     ::before {
-        width: 12px;
-        height: 12px;
+        width: ${(props) => (props.mcColor ? '12px' : '13px')};
+        height: ${(props) => (props.mcColor ? '12px' : '13px')};
         border: ${(props) => (props.mcColor ? '1px solid white' : `none`)};
         background-color: ${(props) => props.mcColor ?? 'white'};
         border-radius: 50%;
         margin: 0px 1px;
-        outline: ${(props) =>
-            props.mcColor ? 'none' : `2px dashed ${tokens.colors.ui.background__medium.hex}`};
+        outline: ${(props) => (props.mcColor ? 'none' : `1px dashed gray`)};
+        outline-offset: -1px;
         content: ' ';
     }
     ::after {
-        width: 12px;
-        height: 12px;
+        width: ${(props) => (props.commColor ? '12px' : '13px')};
+        height: ${(props) => (props.commColor ? '12px' : '13px')};
         border: ${(props) => (props.commColor ? '1px solid white' : `none`)};
         background-color: ${(props) => props.commColor ?? 'white'};
         border-radius: 50%;
         margin: 0px 1px;
-        outline: ${(props) =>
-            props.commColor ? 'none' : `2px dashed ${tokens.colors.ui.background__medium.hex}`};
+        outline: ${(props) => (props.commColor ? 'none' : `1px dashed gray`)};
+        outline-offset: -2px;
         content: ' ';
     }
 `;
