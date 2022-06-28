@@ -138,13 +138,9 @@ export interface ReleaseControl {
     workflowSteps: CreateReleaseControlStepModel[];
     editedWorkflowSteps: ReleaseControlStep[];
     documents: ReleaseControlDocument[];
-    punchList: ReleaseControlPunch[];
+    punchListItems: ReleaseControlPunch[];
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
-
-    //TODO remove
-    tags?: string[];
-    areas?: string[];
 }
 
 export interface ReleaseControlWorkflow {
@@ -183,10 +179,11 @@ export interface FamTag {
     createdDate: string | null;
     updatedDate: string | null;
     mountedOn: string | null;
-    relatedHTCables: string[];
-    openWorkOrders: string[];
+    relatedHTCables: string | null;
+    openWorkOrders: string | null;
     installedCableLength: string | null;
-    tagHeated: string[];
+    tagHeated: string | null;
+    checklistIds: string | null;
 }
 
 export type FamTagType = {
@@ -214,8 +211,9 @@ export type FamTagType = {
     createdDate: string | null;
     updatedDate: string | null;
     mountedOn: string | null;
-    relatedHTCables: string[];
-    openWorkOrders: string[];
+    relatedHTCables: string | null;
+    openWorkOrders: string | null;
     installedCableLength: string | null;
-    tagHeated: string[];
+    tagHeated: string | null;
+    checklistIds: string | null;
 };
