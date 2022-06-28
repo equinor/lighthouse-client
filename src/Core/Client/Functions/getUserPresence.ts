@@ -14,5 +14,11 @@ interface Presence {
     id: string;
 }
 
-export type Availability = 'Busy' | 'Available' | 'Offline' | 'Away' | 'BeRightBack';
+export type Availability =
+    | 'Busy'
+    | 'Available'
+    | 'Offline'
+    | 'Away'
+    | 'BeRightBack'
+    | 'DoNotDisturb';
 export type Activity = 'Busy' | 'Available' | 'OffWork' | 'Offline' | 'Away' | 'BeRightBack';
