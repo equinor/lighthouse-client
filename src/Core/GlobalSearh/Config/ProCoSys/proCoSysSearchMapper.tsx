@@ -1,4 +1,4 @@
-import { SearchResult } from '../../Service/SearchApi';
+import { SearchDescription, SearchResult } from '../../Service/SearchApi';
 import { McPkg, SearchResponse, Tag } from './types';
 import { searchPushItem } from './utils';
 
@@ -20,16 +20,18 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
                 mapper: (item) => {
                     const { tagNo, commPkgNo, mcPkgNo, disciplineDescription, description } =
                         item.tag;
+
+                    const descriptions: SearchDescription[] = [];
+                    commPkgNo && descriptions.push({ value: commPkgNo, label: 'Comm Pkg' });
+                    mcPkgNo && descriptions.push({ value: mcPkgNo, label: 'MC Pkg' });
+                    disciplineDescription &&
+                        descriptions.push({ value: disciplineDescription, label: 'Discipline' });
+
                     return {
                         key: item.key,
                         id: tagNo,
-                        title: tagNo,
-                        description: [
-                            { value: commPkgNo, label: 'Comm Pkg' },
-                            { value: mcPkgNo, label: 'MC Pkg' },
-                            { value: disciplineDescription, label: 'Discipline' },
-                            { value: description, label: 'Description' },
-                        ],
+                        title: description ? `${tagNo}, ${description}` : tagNo,
+                        description: descriptions,
                         objects: item.tag,
                     };
                 },
@@ -45,16 +47,18 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
                 },
 
                 mapper: (item) => {
-                    const { mcPkgNo, commPkgNo, discipline } = item.mcPkg;
+                    const { mcPkgNo, commPkgNo, discipline, description } = item.mcPkg;
+
+                    const descriptions: SearchDescription[] = [];
+                    commPkgNo && descriptions.push({ value: commPkgNo, label: 'Comm Pkg' });
+                    discipline && descriptions.push({ value: discipline, label: 'Discipline' });
+
                     return {
                         key: item.key,
                         id: mcPkgNo,
-                        title: mcPkgNo,
 
-                        description: [
-                            { value: commPkgNo, label: 'Comm Pkg' },
-                            { value: discipline, label: 'Discipline' },
-                        ],
+                        title: description ? `${mcPkgNo}, ${description}` : mcPkgNo,
+                        description: descriptions,
                         objects: item.tag,
                     };
                 },
@@ -70,12 +74,19 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
                     window.location.hash = `handoverDetails/${id}`;
                 },
                 mapper: (item) => {
-                    const { commPkgNo, description } = item.commPkg;
+                    const { commPkgNo, description, responsible, area, remark } = item.commPkg;
+
+                    const descriptions: SearchDescription[] = [];
+                    responsible && descriptions.push({ value: responsible, label: 'Responsible' });
+                    remark && descriptions.push({ value: remark, label: 'Remark' });
+                    area && descriptions.push({ value: area, label: 'Area' });
+
                     return {
                         key: item.key,
                         id: commPkgNo,
-                        title: commPkgNo,
-                        description: [{ value: description, label: 'Description' }],
+
+                        title: description ? `${commPkgNo}, ${description}` : commPkgNo,
+                        description: descriptions,
                         objects: item.tag,
                     };
                 },
@@ -92,15 +103,17 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
 
                 mapper: (item) => {
                     const { punchItemNo, tagNo, category, responsible } = item.punchItem;
+
+                    const descriptions: SearchDescription[] = [];
+                    tagNo && descriptions.push({ value: tagNo, label: 'TagNo' });
+                    category && descriptions.push({ value: category, label: 'Category' });
+                    responsible && descriptions.push({ value: responsible, label: 'Responsible' });
+
                     return {
                         key: item.key,
                         id: punchItemNo,
                         title: punchItemNo,
-                        description: [
-                            { value: tagNo, label: 'TagNo' },
-                            { value: category, label: 'Category' },
-                            { value: responsible, label: 'Responsible' },
-                        ],
+                        description: descriptions,
                         objects: item.tag,
                     };
                 },

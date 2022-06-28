@@ -68,7 +68,7 @@ export const SearchResultItem = ({
                                             ? getHighlightedText(value || '', searchText)
                                             : description}
                                     </b>
-                                    {i !== description.length - 1 && <Divider>|</Divider>}
+                                    {i < description.length - 1 && <Divider>|</Divider>}
                                 </Description>
                             );
                         })}
@@ -78,3 +78,4 @@ export const SearchResultItem = ({
         </Wrapper>
     );
 };
+6;

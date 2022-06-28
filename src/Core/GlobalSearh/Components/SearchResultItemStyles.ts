@@ -24,8 +24,10 @@ export const Title = styled(Typography)`
 export const Description = styled(Typography)`
     font-style: normal;
     font-weight: 500;
-    font-size: 12px !important
+    font-size: 12px !important;
     line-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 export const DescriptionWrapper = styled.div`
