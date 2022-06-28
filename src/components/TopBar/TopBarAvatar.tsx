@@ -51,10 +51,10 @@ export const TopBarAvatar = (): JSX.Element | null => {
                         <div>
                             <InfoText>Signed in as</InfoText>
                             <UserName>{user.displayName}</UserName>
-                            <div style={{ display: 'flex', gap: '0.2em', alignItems: 'center' }}>
+                            <Presence>
                                 <div>{presenceInfo.icon} </div>
                                 <div>{presenceInfo.status}</div>
-                            </div>
+                            </Presence>
                         </div>
 
                         <Meta>
@@ -78,7 +78,6 @@ function getPresenceInfo(status: Availability | undefined): PresenceInfo {
 
     switch (status) {
         case 'Available':
-            // icon: <StatusCircle color="#4bb748" />,
             return {
                 icon: <StatusCircle color="#4bb748" />,
                 status: 'Available',
@@ -109,6 +108,12 @@ function getPresenceInfo(status: Availability | undefined): PresenceInfo {
             };
     }
 }
+
+const Presence = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+`;
 
 const StatusCircle = styled.div<{ color: string }>`
     width: 12px;
