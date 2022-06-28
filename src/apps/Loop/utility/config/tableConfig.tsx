@@ -1,3 +1,4 @@
+import { Atom, deref, swap } from '@dbeining/react-atom';
 import { statusColorMap } from '@equinor/GardenUtils';
 import {
     CustomColumn,
@@ -8,7 +9,7 @@ import {
 import { TableOptions } from '@equinor/WorkSpace';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types/loop';
-
+const remainingHoursMaxAtom = Atom.of<number>(-1);
 const customColumns: CustomColumn<Loop>[] = [
     {
         id: 'loopTag',
@@ -209,12 +210,18 @@ const customColumns: CustomColumn<Loop>[] = [
         Header: 'Rem mhrs',
         accessor: (pkg) => pkg.remainingManHours,
         Cell: (cellProps) => {
-            const maxCount = Math.max(
-                ...cellProps.cell.column.filteredRows.map((val) => {
-                    return Number(val.original?.remainingManHours);
-                })
-            );
-            return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
+            if (deref(remainingHoursMaxAtom) === -1) {
+                const maxCount = Math.max(
+                    ...cellProps.cell.column.filteredRows.map((val) =>
+                        Number(val.original?.remainingManHours)
+                    )
+                );
+                swap(remainingHoursMaxAtom, () => maxCount);
+            }
+
+            const highestRemaining = deref(remainingHoursMaxAtom);
+
+            return <EstimateBar current={Number(cellProps.value)} max={highestRemaining} />;
         },
 
         width: 100,
