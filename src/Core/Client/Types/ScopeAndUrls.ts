@@ -15,6 +15,7 @@ export interface Scope {
     fusionDataproxy: string;
     fusionBookmarks: string;
     fusionContext: string;
+    fusionPeople: string;
 }
 export interface Urls {
     appConfig: string;
@@ -33,4 +34,5 @@ export interface Urls {
     fusionDataproxy: string;
     fusionBookmarks: string;
     fusionContext: string;
+    fusionPeople: string;
 }

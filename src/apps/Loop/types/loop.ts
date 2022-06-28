@@ -2,7 +2,7 @@ export type Loop = {
     callOffNo: string | null;
     checklistId: string;
     commissioningPackageNo: string | null;
-    commissioningPackage_ID: string | null;
+    commissioningPackageId: string | null;
     description: string | null;
     facility: string | null;
     formularGroup: string | null;
@@ -13,8 +13,10 @@ export type Loop = {
     location: string | null;
     loopContentStatus: string | null;
     loopId: string | null;
-    mcpkgId: string | null;
+    loopNo: string;
+    needDate: Date | null;
     mechanicalCompletionPackageNo: string | null;
+    mechanicalCompletionPackageId: string | null;
     packageNo: string | null;
     priority1: string | null;
     priority2: string | null;
@@ -26,11 +28,13 @@ export type Loop = {
     revision: string | null;
     rfC_Planned_Forecast_Date: Date | null;
     rfO_Planned_Forecast_Date: Date | null;
+    isOverdue: number | null;
     signedDate: string | null;
     status: string | null;
     system: string | null;
-    tagNo: string;
+    tagStatus: string | null;
     verifiedDate: Date | null;
+    loopContentProgress: number | null;
     woPlannedCompletionDate: Date | null;
     woActualCompletionDate: Date | null;
 };
