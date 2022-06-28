@@ -2,21 +2,20 @@ import { Search as EdsSearch } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ hasFocus: boolean }>`
     position: relative;
-    min-width: 250px;
-    width: 30vw;
-    max-width: 500px;
+    width: ${({ hasFocus }) => (hasFocus ? '480px' : '200px')};
+    transition: width 0.2s;
 `;
 export const SearchResult = styled.div`
-    position: absolute;
-    top: 36px;
-    width: auto;
+    position: fixed;
+    top: 48px;
+    right: 0px;
+    width: 690px;
     background: white;
-    box-shadow: 0 4px 4px rgb(0 0 0 / 15%);
+    box-shadow: -5px 5px 10px 0 rgb(0 0 0 / 15%);
     max-height: 90vh;
     overflow-y: auto;
-    max-width: 600px;
 `;
 
 export const NoResult = styled.div`
@@ -30,6 +29,9 @@ export const Search = styled(EdsSearch)<{ isSearching: boolean }>`
     padding-top: 4px;
     padding-right: 6px;
     padding-bottom: 4px;
+    :hover {
+        cursor: pointer;
+    }
     > div {
         display: ${({ isSearching }) => (isSearching ? 'none' : 'flex')};
     }

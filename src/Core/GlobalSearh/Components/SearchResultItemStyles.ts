@@ -24,7 +24,7 @@ export const Title = styled(Typography)`
 export const Description = styled(Typography)`
     font-style: normal;
     font-weight: 500;
-    font-size: 10px;
+    font-size: 12px !important
     line-height: 16px;
 `;
 

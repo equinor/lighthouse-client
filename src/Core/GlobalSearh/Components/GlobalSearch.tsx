@@ -54,7 +54,10 @@ export const GlobalSearch = (): JSX.Element => {
     let keyNavigationIndex = 0;
 
     return (
-        <Wrapper>
+        <Wrapper
+            hasFocus={placeHolderText == SEARCH_FOCUS || searchInput.length > 0}
+            title={placeHolderText}
+        >
             <ArrowNavigation>
                 <Search
                     ref={searchRef}
