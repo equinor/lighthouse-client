@@ -12,6 +12,8 @@ import { CreateReleaseControlStepModel } from '../../types/releaseControl';
 import { disciplineReleaseControlFactoryContext } from '../Factory/FactoryComponent';
 import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
+import { HtCablesInput } from './Inputs/Scope/HtCables';
+import { TagsInput } from './Inputs/Scope/Tags';
 import {
     ActionBar,
     ButtonContainer,
@@ -29,7 +31,6 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
     const step = useAtomState(({ step }) => step ?? 'scope');
-
     const { workflowsQuery, workflowTemplateQuery } = releaseControlQueries;
 
     const [value, setValue] = useState<string | null>(null);
@@ -61,6 +62,8 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         <DescriptionInput />
                         <PlannedDueDateInput />
                         <PhaseSelect />
+                        <TagsInput />
+                        <HtCablesInput />
                         <ReferencesInput />
                     </FlexColumn>
                 )}
