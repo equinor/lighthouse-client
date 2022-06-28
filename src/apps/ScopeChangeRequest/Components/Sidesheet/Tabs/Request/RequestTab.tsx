@@ -23,6 +23,7 @@ import { OriginLink } from '../../../DetailView/OriginLink';
 import { Checkbox } from '@equinor/eds-core-react';
 import { CheckboxWrapper } from '../../../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
 import { RevisionsList } from './RevisionList/RevisionList';
+import { AtsDetailCheckbox } from '../../../AtsScopeCheckbox/AtsCheckbox';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -54,6 +55,7 @@ export function RequestTab(): JSX.Element {
                         <SectionHeading>Disciplines and guesstimates</SectionHeading>
                         <SectionWrapper>
                             <SubSectionText>
+                                <AtsDetailCheckbox />
                                 {request.disciplineGuesstimates.length > 0 && (
                                     <GuesstimatesList>
                                         <GuesstimateRow>
@@ -113,8 +115,7 @@ export function RequestTab(): JSX.Element {
                         <SectionWrapper>
                             <RevisionsList />
                         </SectionWrapper>
-                    </InnerSection>
-                    <InnerSection>
+
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>
                             <RelatedObjects
@@ -126,12 +127,10 @@ export function RequestTab(): JSX.Element {
                                 tags={request.tags}
                             />
                         </SectionWrapper>
-                    </InnerSection>
-                    <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
                         <SectionWrapper>
                             {request.attachments.length === 0 && (
-                                <NoAttachments>No attachments has been uploaded.</NoAttachments>
+                                <NoAttachments>No attachments have been uploaded.</NoAttachments>
                             )}
                         </SectionWrapper>
                         {requestAccess.canPatch && <HotUpload />}

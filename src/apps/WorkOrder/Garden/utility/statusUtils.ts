@@ -77,9 +77,9 @@ const woHasMaterialStatus = (workOrder: WorkOrder, ...statuses: MaterialStatus[]
     const materialStatuses = statuses
         .map((status) => prepareMaterialStatus(status))
         .reduce((all, current) => all.concat(current), []);
-    const woMaterialStatus = workOrder.materialStatus.toLowerCase();
+    const woMaterialStatus = workOrder?.materialStatus?.toLowerCase();
     return materialStatuses.filter(
-        (materialStatus) => woMaterialStatus.indexOf(materialStatus) === 0
+        (materialStatus) => woMaterialStatus?.indexOf(materialStatus) === 0
     ).length;
 };
 const materialOk = (workOrder: WorkOrder) => woHasMaterialStatus(workOrder, 'M12', 'M13', 'MN');
@@ -96,7 +96,7 @@ export const getFollowUpStatus = (workOrder: WorkOrder) => {
     const status = getWoStatus(workOrder);
     const statusIndex = orderedProCoSysStatuses.indexOf(status);
 
-    if (workOrder.projectProgress.toString() === '100') {
+    if (workOrder?.projectProgress === '100') {
         return FollowUpStatuses.WOFinished;
     } else if (materialOk(workOrder) && [4, 5, 6, 7, 8, 9, 10].indexOf(statusIndex) > -1) {
         return FollowUpStatuses.MaterialAndWoOk;

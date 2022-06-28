@@ -2,11 +2,13 @@ import { Tabs } from '@equinor/eds-core-react';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
+import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
 import { workorderColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 import { Status } from '../Status';
+import { ThreeDView } from './3D/3dView';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
 import { Checklists } from './Checklists';
@@ -31,8 +33,8 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
         setActiveTab(index);
     };
     useEffect(() => {
-        actions.setTitle(`${item.tagNo}, ${item.description}`);
-    }, [item.tagNo, item.description]);
+        actions.setTitle(`${item.loopNo}, ${item.description}`);
+    }, [item.loopNo, item.description]);
     const workorderExpressions = generateExpressions('checklistID', 'Equals', [
         item.checklistId || '',
     ]);
@@ -70,9 +72,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                         item.commissioningPackageNo ? (
                             <ItemLink
                                 target="_blank"
-                                href={proCoSysUrls.getCommPkgUrl(
-                                    item.commissioningPackage_ID ?? ''
-                                )}
+                                href={proCoSysUrls.getCommPkgUrl(item.commissioningPackageId ?? '')}
                             >
                                 {item.commissioningPackageNo}
                             </ItemLink>
@@ -87,7 +87,9 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                         item.mechanicalCompletionPackageNo ? (
                             <ItemLink
                                 target="_blank"
-                                href={proCoSysUrls.getMcUrl(item.mcpkgId ?? '')}
+                                href={proCoSysUrls.getMcUrl(
+                                    item.mechanicalCompletionPackageId ?? ''
+                                )}
                             >
                                 {item.mechanicalCompletionPackageNo}
                             </ItemLink>
@@ -113,7 +115,13 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                             </PanelContentWrapper>
                         </Tabs.Panel>
 
-                        <Tabs.Panel>3D</Tabs.Panel>
+                        <Tabs.Panel style={{ height: '100%' }}>
+                            {activeTab === 1 && (
+                                <ModelViewerContextProvider>
+                                    <ThreeDView loop={item} />
+                                </ModelViewerContextProvider>
+                            )}
+                        </Tabs.Panel>
                     </SidesheetPanels>
                 </SidesheetTabs>
             </TabsWrapper>

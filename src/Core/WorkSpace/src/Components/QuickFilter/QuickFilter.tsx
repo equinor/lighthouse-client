@@ -49,7 +49,7 @@ export const QuickFilter = (): JSX.Element => {
         );
 
     return (
-        <div>
+        <Wrapper>
             <CompactFilterWrapper>
                 <SearchLine>
                     <LeftSection>
@@ -96,16 +96,15 @@ export const QuickFilter = (): JSX.Element => {
                     </RightSection>
                 </SearchLine>
             </CompactFilterWrapper>
-            {isFilterExpanded && (
-                <FilterView
-                    setVisibleFilterGroups={setVisibleFilterGroups}
-                    visibleFilterGroups={visibleFilterGroups}
-                    groups={filterGroups}
-                />
-            )}
-        </div>
+            {isFilterExpanded && <FilterView visibleFilterGroups={visibleFilterGroups} />}
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    width: 100%;
+    overflow: scroll;
+`;
 
 interface OtherFiltersAppliedInfoProps {
     activeFilters: number;

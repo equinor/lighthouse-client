@@ -15,6 +15,7 @@ export interface ScopeChangeCreateEditModel {
     originSourceId?: string;
     originSource: OriginType;
 
+    potentialAtsScope: boolean;
     //Revision id
     originatorId?: string | null;
     /**Attachments id to duplicate */
@@ -64,6 +65,7 @@ export interface ScopeChangeBaseModel {
     changeCategory: ChangeCategory;
     estimatedChangeHours: number;
     originSourceId?: string;
+    potentialAtsScope: boolean;
     hasPendingContributions: boolean;
     originSource: OriginType;
     actualChangeHours: number;

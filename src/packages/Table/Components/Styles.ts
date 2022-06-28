@@ -31,9 +31,34 @@ export const TableRow = styled.div<{ selected?: boolean }>`
         `}
 `;
 
+export const HeaderActions = styled.div`
+    display: flex;
+`;
+
+export const HeaderItem = styled.div`
+    padding-right: 0.5rem;
+
+    opacity: 1;
+    height: 60%;
+
+    :hover {
+        opacity: 0.5;
+    }
+`;
+
 export const TableHeadCell = styled.div<{ align?: string }>`
     padding: 0px 0px 0px 10px;
     flex-direction: row;
+
+    &:hover {
+        ${HeaderItem} {
+            visibility: visible;
+        }
+    }
+
+    ${HeaderItem} {
+        visibility: hidden;
+    }
 
     font-size: 13px;
     height: 32px;
@@ -112,18 +137,4 @@ export const HeaderCellMenuButton = styled.div`
     :hover {
         opacity: 0.8;
     }
-`;
-export const HeaderItem = styled.div`
-    padding-right: 0.5rem;
-
-    opacity: 1;
-    height: 60%;
-
-    :hover {
-        opacity: 0.5;
-    }
-`;
-
-export const HeaderActions = styled.div`
-    display: flex;
 `;

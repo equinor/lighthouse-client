@@ -7,9 +7,11 @@ import { RevisionAttachments } from '../../Attachments/RevisionAttachments';
 import { ScopeChangeBaseForm } from '../../Form/BaseForm/ScopeChangeBaseForm';
 import { GuesstimateDiscipline } from '../../Form/DisciplineGuesstimate/DisciplineGuesstimate';
 import { FormBanner } from '../../Form/FormBanner/FormBanner';
+import { IsATSScopeCheckbox } from '../../Form/Inputs/AtsScopeCheckbox';
 import { MaterialsInput } from '../../Form/Inputs/MaterialsInput/MaterialsInput';
 import { ScopeChangeReferences } from '../../Form/Inputs/ScopeChangeReferences/ScopeChangeReferences';
 import { Section } from '../../Form/ScopeChangeForm.styles';
+import { CheckboxWrapper } from '../../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
 import { RevisionSubmitBar } from './RevisionSubmitBar';
 import { FormWrapper, FlexColumn } from './SidesheetWrapper.styles';
 import { WarningRevisionBanner } from './WarningCreateRevisionBanner';
@@ -19,9 +21,10 @@ interface RevisionFormProps {
 }
 
 export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
-    const request = useScopeChangeContext(({ request }) => request);
+    const { actions, request } = useScopeChangeContext();
 
     useEffect(() => {
+        actions.setHasUnsavedChanges(true);
         const { clearState, updateAtom } = scopeChangeFormAtomApi;
         clearState();
         updateAtom({
@@ -36,6 +39,7 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
             ),
         });
         return () => {
+            actions.setHasUnsavedChanges(false);
             clearState();
         };
     }, []);
@@ -52,6 +56,9 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
                             Request
                             <ScopeChangeBaseForm />
                             Disciplines and guesstimates
+                            <CheckboxWrapper>
+                                <IsATSScopeCheckbox />
+                            </CheckboxWrapper>
                             <GuesstimateDiscipline />
                             Materials
                             <MaterialsInput />

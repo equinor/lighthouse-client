@@ -35,7 +35,7 @@ export const LoopDetails = ({ loop }: LoopDetailsProps) => {
                         <td>Status</td>
 
                         <td>
-                            <StringCell value={loop.status} />
+                            <StringCell value={loop.tagStatus} />
                         </td>
                     </tr>
                 </tbody>

@@ -42,7 +42,7 @@ export const fieldSettings: FieldSettings<Loop, ExtendedGardenFields> = {
         getKey: getDateKey,
         getColumnSort: sortByNumber,
     },
-    tagNo: {
+    loopNo: {
         label: '@LOOP tag',
     },
 };
@@ -95,17 +95,17 @@ export const getItemWidth = (
             const titleLength = itemColumnString
                 ? itemColumnString.replace('@LOOP-', '').length
                 : 0;
-            return titleLength >= item.tagNo.length
+            return titleLength >= item.loopNo.length
                 ? titleLength
-                : item.tagNo.replace('@LOOP-', '').length;
+                : item.loopNo.replace('@LOOP-', '').length;
         })
     );
-    return Math.max(longestKey * 8 + 80, minWidth);
+    return Math.max(longestKey * 8 + 50, minWidth);
 };
 
 export const gardenConfig: GardenOptions<Loop> = {
     gardenKey: 'RFC' as keyof Loop,
-    itemKey: 'tagNo',
+    itemKey: 'loopNo',
     objectIdentifier: 'checklistId',
     customGroupByKeys,
     fieldSettings,

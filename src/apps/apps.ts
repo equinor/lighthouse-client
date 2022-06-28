@@ -403,7 +403,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: loopSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
     },
 
     {

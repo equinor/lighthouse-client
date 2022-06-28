@@ -43,7 +43,7 @@ export const RelatedObjects = ({
                 systems.length === 0 &&
                 documents.length === 0 &&
                 punch.length === 0 &&
-                areas.length === 0 && <NoReferences>No references has been linked.</NoReferences>}
+                areas.length === 0 && <NoReferences>No references have been linked.</NoReferences>}
             {tags && tags.length > 0 && (
                 <ReferenceWrapper
                     count={tags.length}
