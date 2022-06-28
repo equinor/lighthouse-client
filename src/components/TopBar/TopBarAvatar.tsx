@@ -103,11 +103,25 @@ function getPresenceInfo(status: Availability | undefined): PresenceInfo {
                 status: 'Busy',
             };
 
+        case 'DoNotDisturb': {
+            return {
+                icon: <StatusCircle color="#eb0000" />,
+                status: 'Do not disturb',
+            };
+        }
+
         case 'Offline':
             return {
                 icon: <StatusCircle color="#bfbfbf" />,
                 status: 'Offline',
             };
+
+        default: {
+            return {
+                icon: <StatusCircle color="grey" />,
+                status: 'Unknown',
+            };
+        }
     }
 }
 
