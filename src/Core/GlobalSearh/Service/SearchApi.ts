@@ -26,9 +26,8 @@ export interface SearchResult {
     title: string;
     color: string;
     count?: number;
-    // descriptionProps?: Record<string, any>;
-    // descriptionComponent?: React.FC<Record<string, any> & { searchText: string }>;
     action(id: string, item: SearchItem, navigate: NavigateFunction): void;
+    appAction?(id: string, navigate: NavigateFunction): void;
     items: SearchItem[];
 }
 

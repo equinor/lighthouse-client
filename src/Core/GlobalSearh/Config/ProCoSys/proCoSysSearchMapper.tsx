@@ -1,5 +1,6 @@
+import { NavigateFunction } from 'react-router';
 import { SearchDescription, SearchResult } from '../../Service/SearchApi';
-import { McPkg, SearchResponse, Tag } from './types';
+import { SearchResponse } from './types';
 import { searchPushItem } from './utils';
 
 export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] {
@@ -7,7 +8,7 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
 
     return response.items.reduce((acc, item) => {
         if (item.tag) {
-            return searchPushItem<Tag>(acc, item, {
+            return searchPushItem(acc, item, {
                 type: 'tag',
                 title: 'Tags',
                 color: '#0084C4',
@@ -38,14 +39,16 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
             });
         }
         if (item.mcPkg) {
-            return searchPushItem<McPkg>(acc, item, {
+            return searchPushItem(acc, item, {
                 type: 'mcPkg',
                 title: 'McPkgs',
                 color: '#0084C4',
                 action: (id: string) => {
                     window.location.hash = `mcDetails/${id}`;
                 },
-
+                appAction: (id: string, navigate: NavigateFunction) => {
+                    navigate(`ConstructionAndCommissioning/mc#mcDetails/${id}`);
+                },
                 mapper: (item) => {
                     const { mcPkgNo, commPkgNo, discipline, description } = item.mcPkg;
 
@@ -56,7 +59,7 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
                     return {
                         key: item.key,
                         id: mcPkgNo,
-
+                        group: 'ConstructionAndCommissioning',
                         title: description ? `${mcPkgNo}, ${description}` : mcPkgNo,
                         description: descriptions,
                         objects: item.tag,
@@ -72,6 +75,9 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
                 color: '#0084C4',
                 action: (id: string) => {
                     window.location.hash = `handoverDetails/${id}`;
+                },
+                appAction: (id: string, navigate: NavigateFunction) => {
+                    navigate(`ConstructionAndCommissioning/handover#handoverDetails/${id}`);
                 },
                 mapper: (item) => {
                     const { commPkgNo, description, responsible, area, remark } = item.commPkg;

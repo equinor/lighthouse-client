@@ -18,6 +18,12 @@ export const GlobalSearch = (): JSX.Element => {
     const [searchInput, setSearchInput] = useState('');
     const [placeHolderText, setPlaceholderText] = useState(SEARCH_BLUR);
     const searchRef = useRef<HTMLInputElement>(null);
+    const [isNavigationOpen, setIsNavigationOpen] = useState<boolean>(false);
+
+    function handleSetNavigation(value: boolean) {
+        setIsNavigationOpen(value);
+    }
+
     const navigate = useNavigate();
 
     const { searchResult, search, isSearching, registerSearchItem } = useGlobalSearch();
@@ -89,6 +95,8 @@ export const GlobalSearch = (): JSX.Element => {
                                             keyNavigationIndex++;
                                             return (
                                                 <SearchResultItem
+                                                    isNavigationOpen={isNavigationOpen}
+                                                    handleNavigationOpen={handleSetNavigation}
                                                     index={keyNavigationIndex}
                                                     {...searchType}
                                                     {...item}
