@@ -1,35 +1,40 @@
 import styled from 'styled-components';
-import { ReleaseControlArea, ReleaseControlTag } from '../../types/releaseControl';
 import { ChevronList } from '../ChevronList/ChevronList';
-import { Tag as TagComp } from './Tag';
-import { Area as AreaComp } from './Area';
+import { ReleaseControlDocument, ReleaseControlPunch } from '../../types/releaseControl';
+import { Document } from './Document';
+import { Punch } from './Punch';
 
 interface RelatedObjectsProps {
-    tags: ReleaseControlTag[];
-    areas: ReleaseControlArea[];
+    documents: ReleaseControlDocument[];
+    punchList: ReleaseControlPunch[];
 }
 
-export const ReferencesList = ({ tags = [], areas = [] }: RelatedObjectsProps): JSX.Element => {
+export const ReferencesList = ({
+    documents = [],
+    punchList = [],
+}: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
-            {tags.length === 0 && areas.length === 0 && (
+            {documents.length === 0 && punchList.length === 0 && (
                 <NoReferences>No references has been linked.</NoReferences>
             )}
-            {tags && tags.length > 0 && (
-                <ChevronList title={`Tags (${tags?.length})`}>
+            {documents && documents.length > 0 && (
+                <ChevronList title={`Documents (${documents?.length})`}>
                     <>
-                        {tags.map((x) => (
-                            <TagComp key={x.id} tag={x} />
-                        ))}
+                        {documents &&
+                            documents.length > 0 &&
+                            documents.map((x) => (
+                                <Document key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
+                            ))}
                     </>
                 </ChevronList>
             )}
 
-            {areas && areas.length > 0 && (
-                <ChevronList title={`Areas (${areas.length})`}>
+            {punchList && punchList.length > 0 && (
+                <ChevronList title={`Punch list items (${punchList.length})`}>
                     <>
-                        {areas.map((x) => (
-                            <AreaComp key={x.id} area={x} />
+                        {punchList.map((x) => (
+                            <Punch key={x.id} punch={x} />
                         ))}
                     </>
                 </ChevronList>
