@@ -1,6 +1,6 @@
 import { Avatar, Icon, Popover } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useClientContext } from '@equinor/lighthouse-portal-client';
+import { useAuthProvider, useClientContext } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
@@ -22,13 +22,12 @@ export const TopBarAvatar = (): JSX.Element | null => {
         settings: { userImageUrl, user },
     } = useClientContext();
 
+    const { getCurrentUser } = useAuthProvider();
+
     const { data: presence } = useQuery(
         PresenceQueryKey,
         async () => {
-            if (!user || !user.id) {
-                throw 'No user logged in';
-            }
-            return await getUserPresence(user.id);
+            return await getUserPresence(getCurrentUser()?.localAccountId.split('.')[0] ?? '');
         },
         {
             refetchInterval: isOpen ? 1000 * 60 : 5000 * 60,
