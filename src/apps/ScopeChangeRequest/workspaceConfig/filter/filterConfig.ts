@@ -15,6 +15,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Category',
         valueFormatter: ({ changeCategory }) => changeCategory.name,
+        isQuickFilter: true,
     },
     {
         name: 'State',
@@ -27,7 +28,6 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ currentWorkflowStep }) =>
             currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
             null,
-        isQuickFilter: true,
     },
     {
         name: 'Origin',
