@@ -43,7 +43,6 @@ const DEFAULT_REFERENCE_TYPES: ReferenceType[] = [
     'tag',
     'system',
     'punch',
-    'famtag',
 ];
 
 export const SearchReferences = ({
