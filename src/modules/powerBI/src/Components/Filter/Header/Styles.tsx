@@ -17,8 +17,8 @@ export const Container = styled.div`
     }
 `;
 
-export const Title = styled.div`
-    font-weight: 600;
+export const Title = styled.div<{ hasActiveFilters: boolean }>`
+    font-weight: ${({ hasActiveFilters }) => (hasActiveFilters ? '700' : '400')};
     margin-right: 2rem;
 `;
 
