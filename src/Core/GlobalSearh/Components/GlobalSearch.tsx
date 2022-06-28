@@ -7,7 +7,7 @@ import { procosysConfig } from '../Config/ProCoSys';
 import { SearchResponse } from '../Config/ProCoSys/types';
 import { useGlobalSearch } from '../Service/GlobalSearch';
 import { SearchItem } from '../Service/SearchApi';
-import { Search, SearchResult, Wrapper } from './GlobalSearchStyles';
+import { NoResult, Search, SearchResult, Wrapper } from './GlobalSearchStyles';
 import { SearchResultHeading } from './SearchResultHeading';
 import { SearchResultItem } from './SearchResultItem';
 
@@ -72,36 +72,42 @@ export const GlobalSearch = (): JSX.Element => {
                         <DotProgress color="primary" />
                     </div>
                 )}
-                {search.length > 0 && (
+                {searchInput.length > 0 && search.length > 0 && (
                     <SearchResult>
-                        <>
-                            {searchResult.map((searchType) => (
-                                <div key={searchType.type}>
-                                    <SearchResultHeading
-                                        typeTitle={searchType.title}
-                                        color={searchType.color}
-                                    />
-                                    {searchType.items.slice(0, 5).map((item) => {
-                                        keyNavigationIndex++;
-                                        return (
-                                            <SearchResultItem
-                                                index={keyNavigationIndex}
-                                                {...searchType}
-                                                {...item}
-                                                key={item.key}
-                                                description={item.description}
-                                                searchText={searchInput}
-                                                shouldHighlightDescription={!item.group}
-                                                action={(id: string) => {
-                                                    searchType.action(id, item, navigate);
-                                                    setSearchInput('');
-                                                }}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            ))}
-                        </>
+                        {searchResult.length > 0 ? (
+                            <>
+                                {searchResult.map((searchType) => (
+                                    <div key={searchType.type}>
+                                        <SearchResultHeading
+                                            typeTitle={searchType.title}
+                                            color={searchType.color}
+                                        />
+                                        {searchType.items.slice(0, 5).map((item) => {
+                                            keyNavigationIndex++;
+                                            return (
+                                                <SearchResultItem
+                                                    index={keyNavigationIndex}
+                                                    {...searchType}
+                                                    {...item}
+                                                    key={item.key}
+                                                    description={item.description}
+                                                    searchText={searchInput}
+                                                    shouldHighlightDescription={!item.group}
+                                                    action={(id: string) => {
+                                                        searchType.action(id, item, navigate);
+                                                        setSearchInput('');
+                                                    }}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            !isSearching && (
+                                <NoResult>Sorry, Could not find what you are looking for.</NoResult>
+                            )
+                        )}
                     </SearchResult>
                 )}
             </ArrowNavigation>

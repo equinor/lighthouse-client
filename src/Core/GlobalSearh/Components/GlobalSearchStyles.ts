@@ -11,11 +11,17 @@ export const Wrapper = styled.div`
 export const SearchResult = styled.div`
     position: absolute;
     top: 36px;
-    width: 500px;
+    width: auto;
     background: white;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 4px rgb(0 0 0 / 15%);
     max-height: 90vh;
     overflow-y: auto;
+    max-width: 600px;
+`;
+
+export const NoResult = styled.div`
+    padding: 1rem;
+    text-align: left;
 `;
 
 export const Search = styled(EdsSearch)<{ isSearching: boolean }>`

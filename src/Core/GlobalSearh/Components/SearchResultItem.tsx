@@ -62,7 +62,7 @@ export const SearchResultItem = ({
                             if (!value) return <></>;
                             return (
                                 <Description title={`${label} - ${value}`} key={label}>
-                                    <span> {label} </span>
+                                    <span> {label}: </span>
                                     <b>
                                         {shouldHighlightDescription
                                             ? getHighlightedText(value || '', searchText)
