@@ -52,7 +52,7 @@ export const ReleaseControlSidesheet = ({
     return editMode ? (
         <ReleaseControlEditForm />
     ) : (
-        <div>
+        <Wrapper>
             <ReleaseControlSidesheetBanner></ReleaseControlSidesheetBanner>
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
@@ -73,7 +73,7 @@ export const ReleaseControlSidesheet = ({
                     </Tab>
                 </TabList>
             </Tabs>
-        </div>
+        </Wrapper>
     );
 };
 
@@ -91,4 +91,11 @@ const Tab = styled(Tabs.Panel)`
     overflow-x: hidden;
     height: 100%;
     padding-bottom: 50px;
+`;
+
+const Wrapper = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: scroll;
+    height: 100%;
 `;

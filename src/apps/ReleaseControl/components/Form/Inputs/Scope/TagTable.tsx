@@ -7,12 +7,19 @@ import { RemoveTagCell } from './RemoveTagCell';
 
 interface TagTableProps {
     tags: FamTagType[];
+    editMode: boolean;
 }
 
-export const TagTable = ({ tags }: TagTableProps): JSX.Element => {
+export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
     if (tags.length === 0) return <></>;
 
-    return <Table data={tags} columns={columns} height={35 + tags.length * 32} />;
+    return (
+        <Table
+            data={tags}
+            columns={editMode ? columns : columns.slice(0, columns.length - 1)}
+            height={35 + tags.length * 32}
+        />
+    );
 };
 const columns: Column<FamTagType>[] = [
     {
