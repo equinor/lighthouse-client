@@ -41,6 +41,11 @@ export const QuickFilter = (): JSX.Element => {
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
+    const toggleFilterIsExpanded = () => {
+        setIsFilterExpanded((s) => !s);
+        setFilterGroupOpen(null);
+    };
+
     const calculateHiddenFiltersApplied = () =>
         filterOptions.reduce(
             (acc, curr) =>
@@ -89,7 +94,7 @@ export const QuickFilter = (): JSX.Element => {
 
                             <RefreshButton />
 
-                            <div onClick={() => setIsFilterExpanded((s) => !s)}>
+                            <div onClick={toggleFilterIsExpanded}>
                                 {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
                             </div>
                         </div>
