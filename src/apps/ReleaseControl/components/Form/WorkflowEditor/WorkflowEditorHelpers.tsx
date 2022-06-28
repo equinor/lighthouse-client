@@ -210,14 +210,25 @@ export function getWorkflowStepMenuActions(
     return actions;
 }
 
-export function setCriteriaTemplates(
-    releaseControl: ReleaseControl | undefined
-): ReleaseControl | undefined {
+export function setData(releaseControl: ReleaseControl | undefined): ReleaseControl | undefined {
     if (releaseControl === undefined) {
         return undefined;
     }
     const editedSteps = releaseControl.workflowSteps;
     editedSteps.forEach((x) => (x.criteriaTemplates = packCriterias(x.criterias)));
+
+    releaseControl?.scopeTags?.forEach((x) => {
+        x.functionalSystem = x.system;
+        x.location = x.area;
+        x.register = x.tagType;
+    });
+
+    releaseControl?.scopeHTTags?.forEach((x) => {
+        x.functionalSystem = x.system;
+        x.location = x.area;
+        x.register = x.tagType;
+    });
+
     return releaseControl;
 }
 

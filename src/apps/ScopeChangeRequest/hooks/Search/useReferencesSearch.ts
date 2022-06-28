@@ -41,7 +41,12 @@ export function useReferencesSearch(): ReferenceSearch {
                 case 'punch': {
                     return await searchFAM(searchValue, type, signal);
                 }
-
+                case 'famtag': {
+                    return await searchFAM(searchValue, type, signal);
+                }
+                case 'htcable': {
+                    return await searchFAM(searchValue, type, signal);
+                }
                 default: {
                     return await searchPCS(searchValue, type, signal);
                 }
