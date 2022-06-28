@@ -43,7 +43,7 @@ export const Header = ({
                     />
                 </Case>
                 <Case when={true}>
-                    <Title>{title}</Title>
+                    <Title hasActiveFilters={hasActiveFilters}>{title}</Title>
                     {searchEnabled && (
                         <SearchButton
                             onClick={() => setIsSearchActive((s) => !s)}
