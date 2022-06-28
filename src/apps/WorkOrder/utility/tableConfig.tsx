@@ -1,3 +1,4 @@
+import { Atom, deref, swap } from '@dbeining/react-atom';
 import { tokens } from '@equinor/eds-tokens';
 import {
     CellProps,
@@ -12,6 +13,10 @@ import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspace
 import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../Garden/models';
 import { getMatStatusColorByStatus, getMccrStatusColorByStatus } from '../Garden/utility';
+const remainingHoursMaxAtom = Atom.of<number>(-1);
+const estimateHoursMaxAtom = Atom.of<number>(-1);
+const actualHoursMaxAtom = Atom.of<number>(-1);
+
 export const tableConfig: TableOptions<WorkOrder> = {
     objectIdentifierKey: 'workOrderNumber',
     preventAutoGenerateColumns: true,
@@ -161,13 +166,20 @@ export const tableConfig: TableOptions<WorkOrder> = {
                 if (!cellProps.value) {
                     return null;
                 }
-                const maxCount = Math.max(
-                    ...cellProps.cell.column.filteredRows.map((val) =>
-                        Number(val.original?.estimatedHours)
-                    )
-                );
+                if (deref(estimateHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cellProps.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.estimatedHours)
+                        )
+                    );
+                    swap(estimateHoursMaxAtom, () => maxCount);
+                }
 
-                return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
+                const highestEstimatedHours = deref(estimateHoursMaxAtom);
+
+                return (
+                    <EstimateBar current={Number(cellProps.value)} max={highestEstimatedHours} />
+                );
             },
             width: 100,
         },
@@ -181,17 +193,22 @@ export const tableConfig: TableOptions<WorkOrder> = {
                 if (!cellProps.value) {
                     return null;
                 }
-                const maxCount = Math.max(
-                    ...cellProps.cell.column.filteredRows.map((val) =>
-                        Number(val.original?.expendedHours)
-                    )
-                );
+                if (deref(actualHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cellProps.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.expendedHours)
+                        )
+                    );
+                    swap(actualHoursMaxAtom, () => maxCount);
+                }
+
+                const highestExpendedHours = deref(actualHoursMaxAtom);
 
                 return (
                     <ExpendedProgressBar
                         actual={Number(cellProps.value.content.expendedHours)}
                         estimate={Number(cellProps.value.content.estimatedHours)}
-                        highestExpended={maxCount}
+                        highestExpended={highestExpendedHours}
                     />
                 );
             },
@@ -207,12 +224,18 @@ export const tableConfig: TableOptions<WorkOrder> = {
                 if (!cellProps.value) {
                     return null;
                 }
-                const maxCount = Math.max(
-                    ...cellProps.cell.column.filteredRows.map((val) =>
-                        Number(val.original?.remainingHours)
-                    )
-                );
-                return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
+                if (deref(remainingHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cellProps.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.remainingHours)
+                        )
+                    );
+                    swap(remainingHoursMaxAtom, () => maxCount);
+                }
+
+                const highestRemaining = deref(remainingHoursMaxAtom);
+
+                return <EstimateBar current={Number(cellProps.value)} max={highestRemaining} />;
             },
             width: 100,
         },
