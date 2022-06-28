@@ -15,6 +15,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Category',
         valueFormatter: ({ changeCategory }) => changeCategory.name,
+        isQuickFilter: true,
     },
     {
         name: 'State',
@@ -27,7 +28,6 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ currentWorkflowStep }) =>
             currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
             null,
-        isQuickFilter: true,
     },
     {
         name: 'Origin',
@@ -36,6 +36,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Step',
         valueFormatter: ({ currentWorkflowStep }) => currentWorkflowStep?.name ?? null,
+        isQuickFilter: true,
     },
     {
         name: 'Has comments',
@@ -69,10 +70,9 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ disciplineGuesstimates }) =>
             disciplineGuesstimates.length > 0
                 ? calculateGuesstimateHoursGap(
-                      disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
-                  )
+                    disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
+                )
                 : null,
-        isQuickFilter: true,
 
         sort: (a) =>
             a.sort((a, b) => {
