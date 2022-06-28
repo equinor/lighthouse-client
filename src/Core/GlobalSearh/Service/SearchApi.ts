@@ -1,10 +1,14 @@
 import { NavigateFunction } from 'react-router';
 
+export interface SearchDescription {
+    label: string;
+    value: string;
+}
 export interface SearchItem {
     key: string;
     id: string;
     title: string;
-    description?: string;
+    description?: string | SearchDescription[];
     uri?: string;
     group?: string;
     objects?: any;
@@ -22,8 +26,8 @@ export interface SearchResult {
     title: string;
     color: string;
     count?: number;
-    descriptionProps?: Record<string, any>;
-    descriptionComponent?: React.FC<Record<string, any> & { searchText: string }>;
+    // descriptionProps?: Record<string, any>;
+    // descriptionComponent?: React.FC<Record<string, any> & { searchText: string }>;
     action(id: string, item: SearchItem, navigate: NavigateFunction): void;
     items: SearchItem[];
 }

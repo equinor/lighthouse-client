@@ -1,14 +1,10 @@
 import { KeyboardEventHandler } from 'react';
 import { useArrowNavigationWithFocusState } from 'react-arrow-navigation';
 import { getHighlightedText } from '../Functions/getHiglight';
-import { Description, Title, Wrapper } from './SearchResultItemStyles';
+import { SearchItem } from '../Service/SearchApi';
+import { Description, DescriptionWrapper, Divider, Title, Wrapper } from './SearchResultItemStyles';
 
-interface SearchResultItemProps {
-    id: string;
-    title: string;
-    description?: string;
-    descriptionProps?: Record<string, any>;
-    descriptionComponent?: React.FC<Record<string, any> & { searchText: string }>;
+interface SearchResultItemProps extends SearchItem {
     searchText: string;
     action: (id: string) => void;
     index: number;
@@ -23,8 +19,6 @@ export const SearchResultItem = ({
     searchText,
     index,
     shouldHighlightDescription,
-    descriptionProps,
-    descriptionComponent: DescriptionComponent,
 }: SearchResultItemProps): JSX.Element => {
     const {
         selected,
@@ -55,17 +49,32 @@ export const SearchResultItem = ({
             <Title variant="h6" title={title}>
                 {getHighlightedText(title, searchText)}
             </Title>
-            {DescriptionComponent ? (
-                <Description>
-                    <DescriptionComponent searchText={searchText} {...descriptionProps} />
-                </Description>
-            ) : (
-                <Description title={description}>
-                    {shouldHighlightDescription
-                        ? getHighlightedText(description || '', searchText)
-                        : description}
-                </Description>
-            )}
+            <DescriptionWrapper>
+                {typeof description === 'string' ? (
+                    <Description title={description}>
+                        {shouldHighlightDescription
+                            ? getHighlightedText(description || '', searchText)
+                            : description}
+                    </Description>
+                ) : (
+                    <>
+                        {description?.map(({ value, label }, i) => {
+                            if (!value) return <></>;
+                            return (
+                                <Description title={`${label} - ${value}`} key={label}>
+                                    <span> {label} </span>
+                                    <b>
+                                        {shouldHighlightDescription
+                                            ? getHighlightedText(value || '', searchText)
+                                            : description}
+                                    </b>
+                                    {i !== description.length - 1 && <Divider>|</Divider>}
+                                </Description>
+                            );
+                        })}
+                    </>
+                )}
+            </DescriptionWrapper>
         </Wrapper>
     );
 };

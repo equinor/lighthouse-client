@@ -26,7 +26,14 @@ export const Description = styled(Typography)`
     font-weight: 500;
     font-size: 10px;
     line-height: 16px;
+`;
+
+export const DescriptionWrapper = styled.div`
+    display: flex;
     overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    text-overflow: ellipsis;
+`;
+export const Divider = styled.span`
+    padding: 0.25rem;
 `;
