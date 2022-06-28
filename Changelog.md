@@ -10,6 +10,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Filter] Small visual changes
 - [Portal] Topbar avatar now clickable
 - [Portal] Reduced number of icons in topbar 
+- [ReleaseControl] Release control scope with tags and ht cables
 
 ## 1.6.5
 - [Scope change] ATS scope
