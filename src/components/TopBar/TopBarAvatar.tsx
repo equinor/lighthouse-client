@@ -2,7 +2,9 @@ import { Avatar, Icon, Popover } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { Availability, getUserPresence } from '../../Core/Client/Functions/getUserPresence';
 
 export const TopBarAvatar = (): JSX.Element | null => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +15,21 @@ export const TopBarAvatar = (): JSX.Element | null => {
     const {
         settings: { userImageUrl, user },
     } = useClientContext();
+
+    const { data: presence } = useQuery(
+        ['Presence', isOpen],
+        async () => {
+            if (!user || !user.id) {
+                throw 'No user logged in';
+            }
+            return await getUserPresence(user.id);
+        },
+        {
+            refetchInterval: 1000 * 60,
+        }
+    );
+
+    const presenceInfo = getPresenceInfo(presence?.availability);
 
     if (!user) return null;
 
@@ -34,6 +51,10 @@ export const TopBarAvatar = (): JSX.Element | null => {
                         <div>
                             <InfoText>Signed in as</InfoText>
                             <UserName>{user.displayName}</UserName>
+                            <Presence>
+                                <div>{presenceInfo.icon} </div>
+                                <div>{presenceInfo.status}</div>
+                            </Presence>
                         </div>
 
                         <Meta>
@@ -46,6 +67,60 @@ export const TopBarAvatar = (): JSX.Element | null => {
         </div>
     );
 };
+
+interface PresenceInfo {
+    status: string;
+    icon: JSX.Element;
+}
+
+function getPresenceInfo(status: Availability | undefined): PresenceInfo {
+    if (!status) return { icon: <Icon name="help" />, status: 'Unknown' };
+
+    switch (status) {
+        case 'Available':
+            return {
+                icon: <StatusCircle color="#4bb748" />,
+                status: 'Available',
+            };
+
+        case 'Away':
+            return {
+                icon: <StatusCircle color="#fbca36" />,
+                status: 'Away',
+            };
+
+        case 'BeRightBack':
+            return {
+                icon: <StatusCircle color="#fbca36" />,
+                status: 'Be right back',
+            };
+
+        case 'Busy':
+            return {
+                icon: <StatusCircle color="#eb0000" />,
+                status: 'Busy',
+            };
+
+        case 'Offline':
+            return {
+                icon: <StatusCircle color="#bfbfbf" />,
+                status: 'Offline',
+            };
+    }
+}
+
+const Presence = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+`;
+
+const StatusCircle = styled.div<{ color: string }>`
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: ${({ color }) => color};
+`;
 
 const InfoText = styled.div`
     font-size: 12px;
