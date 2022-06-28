@@ -31,7 +31,7 @@ export const TopBarAvatar = (): JSX.Element | null => {
             return await getUserPresence(user.id);
         },
         {
-            refetchInterval: 1000 * 60,
+            refetchInterval: isOpen ? 1000 * 60 : 5000 * 60,
         }
     );
 
