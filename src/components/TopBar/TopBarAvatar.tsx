@@ -15,7 +15,6 @@ export const TopBarAvatar = (): JSX.Element | null => {
     const open = () => {
         setIsOpen(true);
         queryClient.invalidateQueries(PresenceQueryKey);
-        queryClient.refetchQueries(PresenceQueryKey);
     };
     const close = () => setIsOpen(false);
     const {
@@ -26,9 +25,7 @@ export const TopBarAvatar = (): JSX.Element | null => {
 
     const { data: presence } = useQuery(
         PresenceQueryKey,
-        async () => {
-            return await getUserPresence(getCurrentUser()?.localAccountId.split('.')[0] ?? '');
-        },
+        async () => await getUserPresence(getCurrentUser()?.localAccountId.split('.')[0] ?? ''),
         {
             refetchInterval: isOpen ? 1000 * 60 : 5000 * 60,
         }
