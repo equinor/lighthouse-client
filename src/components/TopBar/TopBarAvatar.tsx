@@ -80,39 +80,39 @@ function getPresenceInfo(status: Availability | undefined): PresenceInfo {
         case 'Available':
             // icon: <StatusCircle color="#4bb748" />,
             return {
-                icon: <Icon name="check" />,
+                icon: <StatusCircle color="#4bb748" />,
                 status: 'Available',
             };
 
         case 'Away':
             return {
-                icon: <Icon name="close" />,
+                icon: <StatusCircle color="#fbca36" />,
                 status: 'Away',
             };
 
         case 'BeRightBack':
             return {
-                icon: <Icon name="close" />,
+                icon: <StatusCircle color="#fbca36" />,
                 status: 'Be right back',
             };
 
         case 'Busy':
             return {
-                icon: <Icon name="close" />,
+                icon: <StatusCircle color="#eb0000" />,
                 status: 'Busy',
             };
 
         case 'Offline':
             return {
-                icon: <Icon name="close_circle_outl" />,
+                icon: <StatusCircle color="#bfbfbf" />,
                 status: 'Offline',
             };
     }
 }
 
 const StatusCircle = styled.div<{ color: string }>`
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background-color: ${({ color }) => color};
 `;
