@@ -2,10 +2,11 @@ import { Button, Checkbox } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const Title = styled.h4`
+export const Title = styled.h4<{ hasFilters: boolean }>`
     margin: 0.2rem;
     white-space: nowrap;
     font-size: 14px;
+    font-weight: ${({ hasFilters }) => (hasFilters ? '700' : '400')};
 `;
 
 export const Wrapper = styled.div`

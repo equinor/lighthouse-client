@@ -1,4 +1,6 @@
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
+import { HtCableTable } from '../../../Form/Inputs/Scope/HtCableTable';
+import { TagTable } from '../../../Form/Inputs/Scope/TagTable';
 import { ReferencesList } from '../../../RelatedObjects/ReferencesList';
 import {
     FlexColumn,
@@ -12,12 +14,14 @@ import {
 } from '../sidesheetStyles';
 
 export const ScopeTab = (): JSX.Element => {
-    const { description, dueDate, tags, areas } = useReleaseControlContext(
+    const { description, dueDate, tags, htCables, documents, punchList } = useReleaseControlContext(
         ({ releaseControl }) => ({
             dueDate: new Date(releaseControl.plannedDueDate),
             description: releaseControl.description,
-            tags: releaseControl.tags,
-            areas: releaseControl.areas,
+            tags: releaseControl.scopeTags,
+            htCables: releaseControl.scopeHTTags,
+            documents: releaseControl.documents,
+            punchList: releaseControl.punchList,
         })
     );
 
@@ -37,10 +41,24 @@ export const ScopeTab = (): JSX.Element => {
                             <SubSectionText>{dueDate.toLocaleDateString('en-gb')}</SubSectionText>
                         </SectionWrapper>
 
+                        <SectionHeading>Scope</SectionHeading>
+                        <SectionWrapper>
+                            <SubSectionText>
+                                <SubSectionTitle>
+                                    Tags involved in this release control scope
+                                </SubSectionTitle>
+                                <TagTable tags={tags ?? []} />
+                            </SubSectionText>
+                            <SubSectionText>
+                                <SubSectionTitle>Related HT cables</SubSectionTitle>
+                                <HtCableTable htCables={htCables ?? []} />
+                            </SubSectionText>
+                        </SectionWrapper>
+
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>
                             <SubSectionText>
-                                <ReferencesList areas={areas} tags={tags} />{' '}
+                                <ReferencesList documents={documents} punchList={punchList} />
                             </SubSectionText>
                         </SectionWrapper>
                     </InnerSection>

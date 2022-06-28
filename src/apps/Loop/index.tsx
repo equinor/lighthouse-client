@@ -22,9 +22,11 @@ export function setup(addApi: ClientApi): void {
             customSidesheetOptions: sidesheetConfig('WorkspaceSideSheet'),
             objectIdentifier: 'checklistId',
         })
-        .registerDataSource({ responseAsync: responseAsync })
+        .registerDataSource({
+            responseAsync: responseAsync,
+        })
         .registerSearchOptions([
-            { name: 'Loop tag', valueFormatter: (pkg) => pkg.tagNo },
+            { name: 'Loop tag', valueFormatter: (pkg) => pkg.loopNo },
             { name: 'Cmpkg', valueFormatter: (pkg) => pkg.commissioningPackageNo ?? '' },
             { name: 'MCpkg', valueFormatter: (pkg) => pkg.mechanicalCompletionPackageNo ?? '' },
         ])

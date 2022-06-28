@@ -5,7 +5,7 @@ export const checklistColumnNames = [
     'Facility',
     'Project',
     'LoopId',
-    'TagNo',
+    'LoopNo',
     'Description',
     'MechanicalCompletionPackageNo',
     'MechanicalCompletionPackageId',
