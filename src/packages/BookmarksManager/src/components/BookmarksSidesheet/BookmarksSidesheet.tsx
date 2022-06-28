@@ -15,12 +15,12 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
         actions.setTitle('Bookmarks');
     }, []);
 
+    const { appGroups } = useRegistry();
     if (isLoading) return <div>Loading</div>;
     if (error) return <div>{error.message}</div>;
     if (!bookmarks || bookmarks.length === 0)
         return <h1 style={{ textAlign: 'center' }}>No bookmarks</h1>;
     const bookmarksBySubsystemAppKey = groupBookmarksBySubSystemAppkey(bookmarks);
-    const { appGroups } = useRegistry();
     return (
         <SidesheetContent>
             {Object.keys(bookmarksBySubsystemAppKey).map((subSystemKey) => {

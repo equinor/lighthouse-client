@@ -1,4 +1,3 @@
-import { Checkbox } from '@equinor/eds-core-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
 import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../Types';
@@ -49,14 +48,7 @@ export const FilterItems = ({
             searchedFilterItems.map((s) => s.value)
         );
     };
-    const allSearchedFilterValues = searchedFilterItems.map((x) => x.value);
-    const checked = useMemo(
-        () =>
-            allSearchedFilterValues.every((visibleFilterValue) =>
-                activeFilters[group.type]?.includes(visibleFilterValue)
-            ),
-        [allSearchedFilterValues.length, activeFilters, group.type]
-    );
+
     const rowLength = useMemo(() => searchedFilterItems.length, [searchedFilterItems]);
     const rowVirtualizer = useVirtual({
         size: rowLength,
