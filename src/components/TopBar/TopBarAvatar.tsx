@@ -2,22 +2,28 @@ import { Avatar, Icon, Popover } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { Availability, getUserPresence } from '../../Core/Client/Functions/getUserPresence';
+
+const PresenceQueryKey = ['Presence'];
 
 export const TopBarAvatar = (): JSX.Element | null => {
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
-
-    const open = () => setIsOpen(true);
+    const queryClient = useQueryClient();
+    const open = () => {
+        setIsOpen(true);
+        queryClient.invalidateQueries(PresenceQueryKey);
+        queryClient.refetchQueries(PresenceQueryKey);
+    };
     const close = () => setIsOpen(false);
     const {
         settings: { userImageUrl, user },
     } = useClientContext();
 
     const { data: presence } = useQuery(
-        ['Presence', isOpen],
+        PresenceQueryKey,
         async () => {
             if (!user || !user.id) {
                 throw 'No user logged in';
