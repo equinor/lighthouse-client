@@ -12,7 +12,7 @@ export function DumpsterFireDialog({
     buttons,
 }: DumpsterFireDialogProps): JSX.Element {
     return (
-        <Dialog style={{ width: '600px' }}>
+        <Dialog style={{ width: '600px' }} open>
             <Dialog.Title>{title}</Dialog.Title>
             <Dialog.CustomContent>
                 <Typography variant="body_short">{text}</Typography>
