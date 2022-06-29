@@ -34,7 +34,6 @@ export interface FilterController {
 
 interface PowerBIFilterOptions {
     defaultFilterGroupVisible?: string[];
-    hasFilter?: (hasFilter: boolean) => void;
 }
 
 type PowerBIFilterProps = {
@@ -127,8 +126,6 @@ export const PowerBIFilter = ({
             }
             const filters =
                 newConditions.length === 0 ? [] : createAdvancedPbiFilter(filter, newConditions);
-
-            options?.hasFilter && options.hasFilter(newConditions.length > 0);
 
             await group.slicer?.setSlicerState({
                 filters,
