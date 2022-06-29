@@ -1,4 +1,3 @@
-import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { FilterClearIcon } from '../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
 import { FilterCollapseIcon } from '../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterCollapsIcon';

@@ -1,6 +1,8 @@
+import { Atom, deref, swap } from '@dbeining/react-atom';
 import { tokens } from '@equinor/eds-tokens';
 import {
     CellProps,
+    CustomLinkCellWithTextDecoration,
     CustomProgressCell,
     CustomYearAndWeekCell,
     EstimateBar,
@@ -8,8 +10,13 @@ import {
     StatusCustomCell,
 } from '@equinor/Table';
 import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../Garden/models';
 import { getMatStatusColorByStatus, getMccrStatusColorByStatus } from '../Garden/utility';
+const remainingHoursMaxAtom = Atom.of<number>(-1);
+const estimateHoursMaxAtom = Atom.of<number>(-1);
+const actualHoursMaxAtom = Atom.of<number>(-1);
+
 export const tableConfig: TableOptions<WorkOrder> = {
     objectIdentifierKey: 'workOrderNumber',
     preventAutoGenerateColumns: true,
@@ -18,7 +25,19 @@ export const tableConfig: TableOptions<WorkOrder> = {
         {
             id: 'workOrderNumber',
             Header: 'Workorder',
-            accessor: (pkg) => pkg.workOrderNumber,
+            accessor: (pkg) => ({
+                content: pkg,
+                currentKey: 'workOrderNumber',
+                url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderId || ''),
+            }),
+            Cell: (cellProps) => {
+                return (
+                    <CustomLinkCellWithTextDecoration
+                        contentToBeDisplayed={cellProps.value.content.workOrderNumber}
+                        url={cellProps.value.url}
+                    />
+                );
+            },
             Aggregated: () => null,
             aggregate: 'count',
             width: 200,
@@ -48,14 +67,6 @@ export const tableConfig: TableOptions<WorkOrder> = {
             width: 100,
         },
         {
-            id: 'jobStatus',
-            Header: 'Job status',
-            Aggregated: () => null,
-            aggregate: 'count',
-            accessor: (pkg) => pkg.jobStatus,
-            width: 150,
-        },
-        {
             id: 'responsibleCode',
             Header: 'Responsible',
             Aggregated: () => null,
@@ -72,105 +83,12 @@ export const tableConfig: TableOptions<WorkOrder> = {
             width: 150,
         },
         {
-            id: 'plannedStartupDate',
-            Header: 'Planned start',
+            id: 'jobStatus',
+            Header: 'Job status',
             Aggregated: () => null,
             aggregate: 'count',
-            accessor: (pkg) => pkg.plannedStartupDate,
-            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
+            accessor: (pkg) => pkg.jobStatus,
             width: 150,
-        },
-        {
-            id: 'plannedFinishDate',
-            Header: 'Planned finish',
-            Aggregated: () => null,
-            aggregate: 'count',
-            accessor: (pkg) => pkg.plannedFinishDate,
-            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
-            width: 150,
-        },
-        {
-            id: 'estimatedHours',
-            Header: 'Est mhr',
-            Aggregated: () => null,
-            aggregate: 'count',
-            accessor: (pkg) => pkg.estimatedHours,
-            Cell: (cellProps: CellProps<WorkOrder>) => {
-                if (!cellProps.value || Math.round(Number(cellProps.value)) === 0) {
-                    return null;
-                }
-                const maxCount = Math.max(
-                    ...cellProps.cell.column.filteredRows.map((val) =>
-                        Number(val.original?.estimatedHours)
-                    )
-                );
-
-                return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
-            },
-            width: 100,
-        },
-        {
-            id: 'expendedHours',
-            Header: 'Exp mhr',
-            Aggregated: () => null,
-            aggregate: 'count',
-            accessor: (pkg) => ({ content: pkg, currentKey: 'expendedHours' }),
-            Cell: (cellProps: CellProps<WorkOrder>) => {
-                if (
-                    !cellProps.value ||
-                    Math.round(Number(cellProps.value.content.expendedHours)) === 0
-                ) {
-                    return null;
-                }
-                const maxCount = Math.max(
-                    ...cellProps.cell.column.filteredRows.map((val) =>
-                        Number(val.original?.expendedHours)
-                    )
-                );
-
-                return (
-                    <ExpendedProgressBar
-                        actual={Number(cellProps.value.content.expendedHours)}
-                        estimate={Number(cellProps.value.content.estimatedHours)}
-                        highestExpended={maxCount}
-                    />
-                );
-            },
-            width: 100,
-        },
-        {
-            id: 'remaningHours',
-            Header: 'Rem mhr',
-            Aggregated: () => null,
-            aggregate: 'count',
-            accessor: (pkg) => pkg.remainingHours,
-            Cell: (cellProps: CellProps<WorkOrder>) => {
-                if (!cellProps.value || Math.round(Number(cellProps.value)) === 0) {
-                    return null;
-                }
-                const maxCount = Math.max(
-                    ...cellProps.cell.column.filteredRows.map((val) =>
-                        Number(val.original?.remainingHours)
-                    )
-                );
-                return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
-            },
-            width: 100,
-        },
-        {
-            id: 'projectProgress',
-            Header: 'Progress',
-            accessor: (pkg) => pkg.projectProgress,
-            Aggregated: () => null,
-            aggregate: 'count',
-            Cell: (cellProps: CellProps<WorkOrder>) => {
-                if (!cellProps.value || Number(cellProps.value) === 0) {
-                    return null;
-                }
-
-                return <CustomProgressCell progress={cellProps.value} />;
-            },
-            width: 100,
         },
         {
             id: 'materialStatus',
@@ -219,6 +137,124 @@ export const tableConfig: TableOptions<WorkOrder> = {
             },
             width: 100,
         },
+
+        {
+            id: 'plannedStartupDate',
+            Header: 'Planned start',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.plannedStartupDate,
+            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
+            width: 150,
+        },
+        {
+            id: 'plannedFinishDate',
+            Header: 'Planned finish',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.plannedFinishDate,
+            Cell: (cellProps) => <CustomYearAndWeekCell dateString={cellProps.value} />,
+            width: 150,
+        },
+        {
+            id: 'estimatedHours',
+            Header: 'Est mhr',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.estimatedHours,
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value) {
+                    return null;
+                }
+                if (deref(estimateHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cellProps.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.estimatedHours)
+                        )
+                    );
+                    swap(estimateHoursMaxAtom, () => maxCount);
+                }
+
+                const highestEstimatedHours = deref(estimateHoursMaxAtom);
+
+                return (
+                    <EstimateBar current={Number(cellProps.value)} max={highestEstimatedHours} />
+                );
+            },
+            width: 100,
+        },
+        {
+            id: 'expendedHours',
+            Header: 'Exp mhr',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => ({ content: pkg, currentKey: 'expendedHours' }),
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value) {
+                    return null;
+                }
+                if (deref(actualHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cellProps.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.expendedHours)
+                        )
+                    );
+                    swap(actualHoursMaxAtom, () => maxCount);
+                }
+
+                const highestExpendedHours = deref(actualHoursMaxAtom);
+
+                return (
+                    <ExpendedProgressBar
+                        actual={Number(cellProps.value.content.expendedHours)}
+                        estimate={Number(cellProps.value.content.estimatedHours)}
+                        highestExpended={highestExpendedHours}
+                    />
+                );
+            },
+            width: 100,
+        },
+        {
+            id: 'remaningHours',
+            Header: 'Rem mhr',
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (pkg) => pkg.remainingHours,
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value) {
+                    return null;
+                }
+                if (deref(remainingHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cellProps.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.remainingHours)
+                        )
+                    );
+                    swap(remainingHoursMaxAtom, () => maxCount);
+                }
+
+                const highestRemaining = deref(remainingHoursMaxAtom);
+
+                return <EstimateBar current={Number(cellProps.value)} max={highestRemaining} />;
+            },
+            width: 100,
+        },
+        {
+            id: 'projectProgress',
+            Header: 'Progress',
+            accessor: (pkg) => pkg.projectProgress,
+            Aggregated: () => null,
+            aggregate: 'count',
+            Cell: (cellProps: CellProps<WorkOrder>) => {
+                if (!cellProps.value || Number(cellProps.value) === 0) {
+                    return null;
+                }
+
+                return <CustomProgressCell progress={cellProps.value} />;
+            },
+            width: 100,
+        },
+
         {
             id: 'mccrStatus',
             Header: 'MC',

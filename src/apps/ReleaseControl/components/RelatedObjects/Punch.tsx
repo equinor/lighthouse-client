@@ -6,7 +6,7 @@ import { ReleaseControlPunch } from '../../types/releaseControl';
 import { Link, TextWrapper, Wrapper, MainText } from './WrapperStyles';
 
 interface PunchProps {
-    punch: ReleaseControlPunch;
+    punchListItem: ReleaseControlPunch;
 }
 
 export interface PunchListItem {
@@ -14,7 +14,7 @@ export interface PunchListItem {
     description: string;
 }
 
-export const Punch = ({ punch: { procosysId } }: PunchProps): JSX.Element => {
+export const Punch = ({ punchListItem: { procosysId } }: PunchProps): JSX.Element => {
     const { getPunchListItemByNo } = FAMQueries;
 
     const { data } = useQuery<unknown, unknown, PunchListItem>(getPunchListItemByNo(procosysId));

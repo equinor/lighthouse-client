@@ -14,6 +14,7 @@ type HeaderProps = {
     controller: FilterController;
     deselectAllValues: () => Promise<void>;
     hasActiveFilters: boolean;
+    searchValue: string | undefined;
 };
 
 export const Header = ({
@@ -21,6 +22,7 @@ export const Header = ({
     onSearch,
     searchEnabled,
     handleEnterPress,
+    searchValue,
     hasActiveFilters,
     deselectAllValues,
 }: HeaderProps): JSX.Element => {
@@ -33,6 +35,7 @@ export const Header = ({
                         autoFocus={isSearchActive}
                         id="search-normal"
                         placeholder="Search"
+                        value={searchValue}
                         aria-label="filter group"
                         onKeyPress={(e) => e.key === 'Enter' && handleEnterPress()}
                         onChange={(e) => onSearch(e.target.value)}
@@ -43,7 +46,12 @@ export const Header = ({
                     />
                 </Case>
                 <Case when={true}>
-                    <Title>{title}</Title>
+                    <Title
+                        onClick={() => searchEnabled && setIsSearchActive(true)}
+                        hasActiveFilters={hasActiveFilters}
+                    >
+                        {title}
+                    </Title>
                     {searchEnabled && (
                         <SearchButton
                             onClick={() => setIsSearchActive((s) => !s)}

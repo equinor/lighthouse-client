@@ -1,6 +1,7 @@
 export type LoopContent = {
     loopNo: string;
     facility: string | null;
+    contentTagId: string;
     contentTagNo: string;
     register: string | null;
     mechanicalCompletionStatus: string | null;
