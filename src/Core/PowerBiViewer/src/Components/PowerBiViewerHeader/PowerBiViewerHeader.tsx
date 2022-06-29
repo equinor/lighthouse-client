@@ -1,9 +1,6 @@
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
-import { Icon } from '@equinor/eds-core-react';
-import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { usePowerBiViewer } from '../../Api/powerBiViewerState';
 import { Page } from '../../Types/State';
-import { HeaderButton } from '../HeaderButton/HeaderButton';
 import {
     Divider,
     HeaderContent,
@@ -17,28 +14,20 @@ import {
     Wrap,
 } from './PowerBiViewerHeaderStyles';
 
-type HandleFilter = () => void;
-
 interface PowerBiViewerHeaderProps {
     title: string;
     shortName: string;
     groupName: string;
     activePage?: Page;
-    handleFilter: HandleFilter;
     handleSetActivePage(page: Page): void;
-    activeFilter: boolean;
-    hasFilter: boolean;
 }
 
 export const PowerBiViewerHeader = ({
     title,
     shortName,
     groupName,
-    handleFilter,
-    activeFilter,
     activePage,
     handleSetActivePage,
-    hasFilter,
 }: PowerBiViewerHeaderProps): JSX.Element => {
     const { reports } = usePowerBiViewer(shortName);
 
@@ -72,10 +61,6 @@ export const PowerBiViewerHeader = ({
                     <Divider />
 
                     <BookmarkDropdown appKey={shortName} subSystem={groupName} />
-
-                    <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
-                        {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
-                    </HeaderButton>
                 </RightSection>
             </HeaderContent>
         </HeaderWrapper>
