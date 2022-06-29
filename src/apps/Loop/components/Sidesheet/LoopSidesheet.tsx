@@ -16,6 +16,7 @@ import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
 import {
     ItemLink,
+    OverviewPanel,
     PanelContentWrapper,
     SidesheetPanels,
     SidesheetTabList,
@@ -107,13 +108,13 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
                     <SidesheetPanels>
-                        <Tabs.Panel>
+                        <OverviewPanel>
                             <PanelContentWrapper>
                                 <LoopDetails loop={item} />
                                 <Checklists loopId={item.loopId!} />
                                 <LoopContentDetails item={item} />
                             </PanelContentWrapper>
-                        </Tabs.Panel>
+                        </OverviewPanel>
 
                         <Tabs.Panel style={{ height: '100%' }}>
                             {activeTab === 1 && (

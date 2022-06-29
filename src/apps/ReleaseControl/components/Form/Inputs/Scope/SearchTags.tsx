@@ -68,6 +68,7 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                                 .filter(({ type }) => type === 'famtag')
                                 .map((s) => s.object) as FamTagType[]
                         }
+                        editMode={true}
                     />
                 </div>
             </Section>

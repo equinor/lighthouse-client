@@ -6,6 +6,7 @@ import {
     FlexColumn,
     FormWrapper,
     InnerSection,
+    NoScope,
     SectionHeading,
     SectionWrapper,
     SubSectionText,
@@ -14,16 +15,15 @@ import {
 } from '../sidesheetStyles';
 
 export const ScopeTab = (): JSX.Element => {
-    const { description, dueDate, tags, htCables, documents, punchList } = useReleaseControlContext(
-        ({ releaseControl }) => ({
+    const { description, dueDate, tags, htCables, documents, punchListItems } =
+        useReleaseControlContext(({ releaseControl }) => ({
             dueDate: new Date(releaseControl.plannedDueDate),
             description: releaseControl.description,
             tags: releaseControl.scopeTags,
             htCables: releaseControl.scopeHTTags,
             documents: releaseControl.documents,
-            punchList: releaseControl.punchList,
-        })
-    );
+            punchListItems: releaseControl.punchListItems,
+        }));
 
     return (
         <Wrapper>
@@ -43,22 +43,33 @@ export const ScopeTab = (): JSX.Element => {
 
                         <SectionHeading>Scope</SectionHeading>
                         <SectionWrapper>
+                            {tags?.length === 0 && htCables?.length === 0 && (
+                                <NoScope>
+                                    Nothing has been added to the scope of this release control
+                                </NoScope>
+                            )}
                             <SubSectionText>
                                 <SubSectionTitle>
-                                    Tags involved in this release control scope
+                                    {tags?.length !== 0 &&
+                                        'Tags involved in this release control scope'}
                                 </SubSectionTitle>
-                                <TagTable tags={tags ?? []} />
+                                <TagTable tags={tags ?? []} editMode={false} />
                             </SubSectionText>
                             <SubSectionText>
-                                <SubSectionTitle>Related HT cables</SubSectionTitle>
-                                <HtCableTable htCables={htCables ?? []} />
+                                <SubSectionTitle>
+                                    {htCables?.length !== 0 && 'HT cables'}
+                                </SubSectionTitle>
+                                <HtCableTable htCables={htCables ?? []} editMode={false} />
                             </SubSectionText>
                         </SectionWrapper>
 
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>
                             <SubSectionText>
-                                <ReferencesList documents={documents} punchList={punchList} />
+                                <ReferencesList
+                                    documents={documents}
+                                    punchListItems={punchListItems}
+                                />
                             </SubSectionText>
                         </SectionWrapper>
                     </InnerSection>

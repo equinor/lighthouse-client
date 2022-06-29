@@ -1,13 +1,16 @@
+import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { useGetAllBookmarks } from '../..';
 import { AppGroup } from './AppGroup';
-import { SidesheetContent } from './BookmarksSidesheet.styles';
+import { Center, InfoText, SidesheetContent } from './BookmarksSidesheet.styles';
 import { groupBookmarksBySubSystemAppkey } from './groupBookmarksBySubSystemAppKey';
 type BookmarksSidesheetProps = {
     actions: SidesheetApi;
 };
+
 export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
     const { bookmarks, isLoading, error } = useGetAllBookmarks();
 
@@ -16,10 +19,25 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
     }, []);
 
     const { appGroups } = useRegistry();
-    if (isLoading) return <div>Loading</div>;
+    if (isLoading)
+        return (
+            <Center>
+                <Icon
+                    name="info_circle"
+                    size={40}
+                    color={tokens.colors.interactive.primary__resting.hsla}
+                />
+                <InfoText>No bookmarks</InfoText>
+            </Center>
+        );
     if (error) return <div>{error.message}</div>;
     if (!bookmarks || bookmarks.length === 0)
-        return <h1 style={{ textAlign: 'center' }}>No bookmarks</h1>;
+        return (
+            <Center>
+                <Icon name="info_circle" size={32} />
+                <InfoText>No bookmarks</InfoText>
+            </Center>
+        );
     const bookmarksBySubsystemAppKey = groupBookmarksBySubSystemAppkey(bookmarks);
     return (
         <SidesheetContent>

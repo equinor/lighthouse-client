@@ -93,3 +93,8 @@ export const BannerWarningTriangle = styled.div`
     margin-top: 3px;
     margin-left: 3px;
 `;
+
+export const NoScope = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;

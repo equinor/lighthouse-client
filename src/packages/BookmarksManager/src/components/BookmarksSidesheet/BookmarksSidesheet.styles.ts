@@ -68,3 +68,15 @@ export const BookmarkLink = styled(Link)`
         text-decoration: underline;
     }
 `;
+export const Center = styled.div`
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+`;
+
+export const InfoText = styled.div`
+    font-size: 24px;
+`;
