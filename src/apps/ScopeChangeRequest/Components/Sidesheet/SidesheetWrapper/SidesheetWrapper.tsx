@@ -1,5 +1,5 @@
 import { useAtom } from '@dbeining/react-atom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -20,7 +20,6 @@ import { updateContext } from './Utils/updateContext';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
 import { Case, Switch } from '@equinor/JSX-Switch';
-import { RevisionForm } from './RevisionForm';
 import { ScopeChangeDetailView } from './ScopeChangeDetailView';
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -28,18 +27,18 @@ interface SidesheetWrapperProps {
 }
 
 export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.Element {
-    const [revisionMode, setRevisionMode] = useState(false);
+    // const [revisionMode, setRevisionMode] = useState(false);
     useScopeChangeMutationWatcher(item.id);
     useOctopusErrorHandler();
     useGetScopeChangeRequest(item.id, item);
     useScopeChangeAccess(item.id);
-    useSidesheetEffects(actions, toggleEditMode, item.id, () => setRevisionMode(true));
+    useSidesheetEffects(actions, toggleEditMode, item.id);
 
     const editMode = useAtom(sideSheetEditModeAtom);
 
     useEffect(() => {
         disableEditMode();
-        setRevisionMode(false);
+        // setRevisionMode(false);
         updateContext(item, actions);
     }, [item?.id]);
 
@@ -55,9 +54,9 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                 <Case when={editMode}>
                     <ScopeChangeRequestEditForm />
                 </Case>
-                <Case when={revisionMode}>
+                {/* <Case when={revisionMode}>
                     <RevisionForm cancel={() => setRevisionMode(false)} />
-                </Case>
+                </Case> */}
                 <Case when={true}>
                     <ScopeChangeDetailView />
                 </Case>

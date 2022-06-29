@@ -60,11 +60,11 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
             disciplineGuesstimates.map(({ discipline }) => discipline.procosysCode),
         isQuickFilter: true,
     },
-    {
-        name: 'Has revisions',
-        valueFormatter: ({ revisionNumber }) => booleanToHumanReadable(revisionNumber > 1),
-        sort: (s) => s.sort(sortOnYesNo),
-    },
+    // {
+    //     name: 'Has revisions',
+    //     valueFormatter: ({ revisionNumber }) => booleanToHumanReadable(revisionNumber > 1),
+    //     sort: (s) => s.sort(sortOnYesNo),
+    // },
     {
         name: 'Guesstimate',
         valueFormatter: ({ disciplineGuesstimates }) =>
