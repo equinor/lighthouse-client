@@ -12,6 +12,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [ReleaseControl] Removed "X" in table when not editing
 - [ReleaseControl] Removed HT from tag search
 - [ReleaseControl] Various small improvements and bugfixes
+- [PowerBI] Remove filter icon
 ## 1.7.1
 - [Workorder] Performance improvements
 - [Loop] Performance improvements
