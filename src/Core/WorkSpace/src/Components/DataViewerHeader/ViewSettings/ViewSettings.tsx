@@ -34,6 +34,7 @@ export const ViewSettings = ({ tabs }: ViewSettingsProps): JSX.Element | null =>
                 <Popover
                     open={isOpen}
                     anchorEl={ref.current}
+                    itemID={`ViewSettingsID`}
                     placement="bottom"
                     onClose={() => setIsOpen(false)}
                     id="viewsettings-workspace-dropdown"
