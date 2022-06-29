@@ -5,14 +5,12 @@ import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
 import { LogTabTitle, LogTab } from '../Tabs/Log';
 import { RequestTabTitle, RequestTab } from '../Tabs/Request';
 import { WorkOrderTabTitle, WorkOrderTab } from '../Tabs/WorkOrders';
-import { NotLatestRevisionWarningBanner } from './NotLatestRevisionBanner';
 import { SidesheetTabList } from './SidesheetWrapper.styles';
 
 export const ScopeChangeDetailView = (): JSX.Element => {
     const { activeTab, handleChange } = useEdsTabs();
     return (
         <div>
-            <NotLatestRevisionWarningBanner />
             <SidesheetBanner />
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
