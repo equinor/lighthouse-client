@@ -7,12 +7,19 @@ import { RemoveHtCableCell } from './RemoveHtCableCell';
 
 interface HtCableTableProps {
     htCables: FamTagType[];
+    editMode: boolean;
 }
 
-export const HtCableTable = ({ htCables }: HtCableTableProps): JSX.Element => {
+export const HtCableTable = ({ htCables, editMode }: HtCableTableProps): JSX.Element => {
     if (htCables.length === 0) return <></>;
 
-    return <Table data={htCables} columns={columns} height={35 + htCables.length * 32} />;
+    return (
+        <Table
+            data={htCables}
+            columns={editMode ? columns : columns.slice(0, columns.length - 1)}
+            height={35 + htCables.length * 32}
+        />
+    );
 };
 const columns: Column<FamTagType>[] = [
     {

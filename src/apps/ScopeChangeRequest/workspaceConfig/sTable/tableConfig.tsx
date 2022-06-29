@@ -104,7 +104,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 s.disciplineGuesstimates
                     .map(({ discipline: { procosysCode } }) => procosysCode)
                     .toString(),
-            width: 180,
+            width: 90,
         }),
         defineColumn({
             header: 'Guess Mhrs',

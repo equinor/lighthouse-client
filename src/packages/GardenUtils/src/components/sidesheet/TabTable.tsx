@@ -1,10 +1,21 @@
+import { Icon, Progress } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { Column, defaultGroupByFn, Table } from '@equinor/Table';
 import styled from 'styled-components';
 export const NoResourceData = styled.div`
     text-align: center;
     padding: 20px;
-    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
 `;
+
+export const InfoText = styled.h3`
+    margin: 0;
+`;
+
 type TabTableProps<T extends Record<string | number, unknown>> = {
     packages: T[] | undefined;
     columns: Column<T>[];
@@ -20,9 +31,24 @@ export const TabTable = <T extends Record<string | number, unknown>>(
     props: TabTableProps<T>
 ): JSX.Element => {
     const { packages, columns, error, isFetching, resourceName, height } = props;
-    if (isFetching) return <NoResourceData>{`Fetching ${resourceName}`}</NoResourceData>;
+    if (isFetching)
+        return (
+            <NoResourceData>
+                <Progress.Circular />
+                <InfoText>{`Fetching ${resourceName}`}</InfoText>
+            </NoResourceData>
+        );
     if (error || packages === undefined || packages.length === 0) {
-        return <NoResourceData>{`No ${resourceName}`}</NoResourceData>;
+        return (
+            <NoResourceData>
+                <Icon
+                    name="info_circle"
+                    size={40}
+                    color={tokens.colors.interactive.primary__resting.hsla}
+                />
+                <InfoText>{`No ${resourceName}`}</InfoText>
+            </NoResourceData>
+        );
     }
     return (
         <Table

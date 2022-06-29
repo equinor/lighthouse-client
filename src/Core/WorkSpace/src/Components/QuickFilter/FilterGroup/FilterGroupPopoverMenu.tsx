@@ -56,6 +56,8 @@ export const FilterGroupPopoverMenu = ({
                 values: valuesMatchingSearch,
             },
         ]);
+        setSearchText('');
+        onClick();
     };
 
     return (

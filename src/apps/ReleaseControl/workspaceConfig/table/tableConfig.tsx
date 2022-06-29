@@ -19,10 +19,8 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         'modifiedBy',
         'scopeTags',
         'scopeHTTags',
-
-        //TODO remove
-        'tags',
-        'areas',
+        'documents',
+        'punchListItems',
     ],
     columnOrder: ['sequenceNumber', 'title', 'workflowSteps'],
     headers: [
