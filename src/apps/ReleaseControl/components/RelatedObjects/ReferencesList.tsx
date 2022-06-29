@@ -6,16 +6,16 @@ import { Punch } from './Punch';
 
 interface RelatedObjectsProps {
     documents: ReleaseControlDocument[];
-    punchList: ReleaseControlPunch[];
+    punchListItems: ReleaseControlPunch[];
 }
 
 export const ReferencesList = ({
     documents = [],
-    punchList = [],
+    punchListItems = [],
 }: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
-            {documents.length === 0 && punchList.length === 0 && (
+            {documents.length === 0 && punchListItems.length === 0 && (
                 <NoReferences>No references has been linked.</NoReferences>
             )}
             {documents && documents.length > 0 && (
@@ -30,11 +30,11 @@ export const ReferencesList = ({
                 </ChevronList>
             )}
 
-            {punchList && punchList.length > 0 && (
-                <ChevronList title={`Punch list items (${punchList.length})`}>
+            {punchListItems && punchListItems.length > 0 && (
+                <ChevronList title={`Punch list items (${punchListItems.length})`}>
                     <>
-                        {punchList.map((x) => (
-                            <Punch key={x.id} punch={x} />
+                        {punchListItems.map((x) => (
+                            <Punch key={x.id} punchListItem={x} />
                         ))}
                     </>
                 </ChevronList>

@@ -3,6 +3,7 @@ import { generateExpressions, generateFamRequest } from '../../functions/FAM/gen
 
 export async function searchTag(value: string, signal?: AbortSignal): Promise<any[]> {
     const { FAM } = httpClient();
+    const noHtExpression = generateExpressions('Register', 'NotEquals', ['HEAT_TRACING_CABLE']);
     const tagNoExpression = generateExpressions('TagNo', 'Like', [value]);
     const request = generateFamRequest(
         [
@@ -11,21 +12,23 @@ export async function searchTag(value: string, signal?: AbortSignal): Promise<an
             'TagNo',
             'Register',
             'Function',
+            'FunctionalSystem',
             'CommissioningPackageNo',
             'CommissioningPackageId',
             'MechanicalCompletionPackageNo',
             'MechanicalCompletionPackageId',
             'Location',
             'TagId',
-            'MountedOn',
-            'RelatedHTCables',
+            'ChecklistIds',
             'OpenWorkOrders',
             'Status',
             'InstalledCableLength',
+            'MountedOn',
+            'RelatedHTCables',
             'TagHeated',
         ],
         'And',
-        tagNoExpression
+        [...noHtExpression, ...tagNoExpression]
     );
     const res = await FAM.fetch('v0.1/dynamic/completion/custom_scope_tag/JCA', {
         body: JSON.stringify(request),

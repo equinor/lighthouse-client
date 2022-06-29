@@ -172,14 +172,13 @@ export const SubmitButtonBar = (): JSX.Element => {
                         <Button disabled={!isValid} onClick={() => onMutate(false)}>
                             Submit
                         </Button>
-                        {/* TODO - fix and clarify use of saving as draft */}
-                        {/* <Button
+                        <Button
                             disabled={!isValid}
                             onClick={() => onMutate(true)}
                             variant="outlined"
                         >
                             Save
-                        </Button> */}
+                        </Button>
                     </>
                 )}
             </ButtonContainer>
