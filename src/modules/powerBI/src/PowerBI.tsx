@@ -166,7 +166,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                             isLoaded={isLoaded}
                             isFilterExpanded={isFilterExpanded}
                             setIsFilterExpanded={setIsFilterExpanded}
-                            options={{ hasFilter: options?.hasFilter }}
                         />
                     )}
                 </TopBar>

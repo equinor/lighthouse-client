@@ -86,12 +86,19 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                                             ),
                                         },
                                     ]);
+                                    setFilterSearchValue('');
+                                    setSearchActive(false);
                                 }
                             }}
                         />
                     </Case>
                     <Case when={true}>
-                        <Title hasFilters={hasAnyActiveFilters}>{filterGroup.name}</Title>
+                        <Title
+                            onClick={() => isSearchable && handleSearchButtonClick()}
+                            hasFilters={hasAnyActiveFilters}
+                        >
+                            {filterGroup.name}
+                        </Title>
                         {isSearchable && (
                             <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
                                 <Icon name={'search'} id={'search'} />
