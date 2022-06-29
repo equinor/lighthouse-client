@@ -46,6 +46,7 @@ export const PowerBiGroupPopoverMenu = ({
 
         await controller.handleOnSelectAll(group, values[0], searchResults);
         setSearchText('');
+        onCloseMenu();
     };
 
     const getValuesMatchingSearchText = useCallback(
