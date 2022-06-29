@@ -24,8 +24,6 @@ type PowerBiViewerProps = Omit<ViewState, 'reports'>;
  */
 export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
     const [activePage, setActivePage] = useState<Page>();
-    const [isFilterActive, setIsFilterActive] = useState(false);
-    const [hasFilter, setHasFilter] = useState(false);
     const [activeReport, setActiveReport] = useState<FusionPowerBiOptions>();
 
     const { reports } = usePowerBiViewer(props.shortName);
@@ -43,13 +41,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
             setActiveReport(newReport);
         }
     };
-    function handleHasFilter(hasFilter: boolean) {
-        setHasFilter(hasFilter);
-    }
 
-    function handleFilter() {
-        setIsFilterActive((s) => !s);
-    }
     const pageManager = (bookmark: PowerBIBookmarkPayload) => {
         if (isDifferentPage(activePage, bookmark)) {
             const report = getReportByPage(
@@ -119,9 +111,6 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                 groupName={props.groupe}
                 activePage={activePage}
                 handleSetActivePage={handleSetActivePage}
-                activeFilter={isFilterActive}
-                handleFilter={handleFilter}
-                hasFilter={hasFilter}
             />
             <ContentWrapper>
                 {activeReport && activePage && (
@@ -132,7 +121,6 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                             ...activeReport.options,
                             activePage: activePage.pageId,
                             activePageDisplayName: activePage.pageTitle,
-                            hasFilter: handleHasFilter,
                             persistPayload: handleSaveBookmarks,
                             applyBookmark: handleApplyingBookmark,
                         }}
