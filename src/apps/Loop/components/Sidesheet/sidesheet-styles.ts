@@ -17,16 +17,17 @@ export const PanelContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
 `;
-export const SidesheetPanels = styled(Tabs.Panels)`
-    padding: 1em;
-    height: 83%;
-    overflow-y: auto;
-    overflow-x: hidden;
-`;
+export const SidesheetPanels = styled(Tabs.Panels)``;
 export const SidesheetTabs = styled(Tabs)`
     display: grid;
     grid-template-rows: auto 1fr;
     height: 100%;
+`;
+export const OverviewPanel = styled(Tabs.Panel)`
+    padding: 1em;
+    height: 83%;
+    overflow-y: auto;
+    overflow-x: hidden;
 `;
 export const SidesheetTabList = styled(Tabs.List)`
     background-color: ${tokens.colors.ui.background__light.hex};

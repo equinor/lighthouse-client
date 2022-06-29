@@ -4,42 +4,13 @@ import { setupWorkspaceSidesheet } from '../../../../Core/WorkSpace/src/WorkSpac
 
 import { LoopSidesheet } from '../../components';
 import { Loop } from '../../types';
+import { checklistColumnNames } from '../api';
 import { generateExpressions, generateFamRequest } from '../helpers/fam';
 
-const columnNames: string[] = [
-    'ChecklistId',
-    'Facility',
-    'Project',
-    'TagNo',
-    'MechanicalCompletionPackageNo',
-    'CommissioningPackageNo',
-    'FormularType',
-    'FormularGroup',
-    'Responsible',
-    'Status',
-    'Revision',
-    'SignedDate',
-    'VerifiedDate',
-    'RFC_Planned_Forecast_Date',
-    'RFO_Planned_Forecast_Date',
-    'WOPlannedCompletionDate',
-    'System',
-    'FunctionalSystem',
-    'Priority1',
-    'Priority2',
-    'Priority3',
-    'Location',
-    'IsVoided',
-    'PackageNo',
-    'CallOffNo',
-    'Register',
-    'Function',
-    'LoopContentStatus',
-];
 const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();
     const expressions = generateExpressions('checklistId', 'Equals', [id]);
-    const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
+    const requestArgs = generateFamRequest(checklistColumnNames, 'Or', expressions);
     const res = await FAM.post('v0.1/dynamic/completion/custom_loopmccr/JCA', {
         body: JSON.stringify(requestArgs),
     });

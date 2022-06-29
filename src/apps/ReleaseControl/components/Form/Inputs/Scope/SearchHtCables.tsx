@@ -68,6 +68,7 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
                                 .filter(({ type }) => type === 'htcable')
                                 .map((s) => s.object) as FamTagType[]
                         }
+                        editMode={true}
                     />
                 </div>
             </Section>

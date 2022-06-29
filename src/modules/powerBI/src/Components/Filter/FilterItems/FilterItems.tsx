@@ -47,6 +47,7 @@ export const FilterItems = ({
             filterValues[0],
             searchedFilterItems.map((s) => s.value)
         );
+        handleOnSearchChange('');
     };
 
     const rowLength = useMemo(() => searchedFilterItems.length, [searchedFilterItems]);
@@ -59,6 +60,7 @@ export const FilterItems = ({
     return (
         <FilterGroupContainer>
             <Header
+                searchValue={searchValue}
                 handleEnterPress={handleEnterPress}
                 title={group.type}
                 hasActiveFilters={Boolean(activeFilters[group.type].length)}
@@ -68,13 +70,6 @@ export const FilterItems = ({
                 searchEnabled={group.filterVals.length > 7}
             />
             <CheckboxWrap ref={parentRef}>
-                {/* <Checkbox
-                    onChange={async () =>
-                        await handleOnSelectAll(group, filterValues[0], allSearchedFilterValues)
-                    }
-                    checked={checked}
-                    label="Select all"
-                /> */}
                 <VirtualFilterItemWrapper style={{ height: `${rowVirtualizer.totalSize}px` }}>
                     {rowVirtualizer.virtualItems.map((virtualItem) => {
                         const filter = searchedFilterItems[virtualItem.index];

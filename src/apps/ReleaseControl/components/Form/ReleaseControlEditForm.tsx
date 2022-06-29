@@ -25,6 +25,7 @@ import {
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
+import { useUnpackReferences } from '../../hooks/useUnpackReferences';
 
 export const ReleaseControlEditForm = (): JSX.Element => {
     const { useAtomState } = DRCFormAtomApi;
@@ -38,7 +39,7 @@ export const ReleaseControlEditForm = (): JSX.Element => {
         updateAtom({
             ...releaseControl,
             documentNumbers: releaseControl?.documents?.map((x) => x.id),
-            punchList: releaseControl?.punchList?.map((x) => x.id),
+            punchListItemIds: releaseControl?.punchListItems?.map((x) => x.id),
             tags: releaseControl?.scopeTags?.map(
                 (x: FamTag): TypedSelectOption => ({
                     label: `${x.tagNo}`,
@@ -62,6 +63,8 @@ export const ReleaseControlEditForm = (): JSX.Element => {
             clearState();
         };
     }, []);
+
+    useUnpackReferences({ releaseControl });
 
     return (
         <>
@@ -165,8 +168,15 @@ const SubmitActionBar = (): JSX.Element => {
                             <Button variant="outlined" onClick={disableEditMode}>
                                 Cancel
                             </Button>
-                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
+                            <Button
+                                disabled={!isValid}
+                                onClick={() => handleSave(false)}
+                                variant="outlined"
+                            >
                                 Save
+                            </Button>
+                            <Button disabled={!isValid} onClick={() => handleSave(true)}>
+                                Submit
                             </Button>
                         </>
                     )}

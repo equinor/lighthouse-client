@@ -7,13 +7,9 @@ import { CreateReleaseControlStepModel, FamTag } from '../types/releaseControl';
 
 interface ReleaseControlReferencesAndScope {
     documentNumbers: string[];
-    punch: string[];
+    punchListItemIds: string[];
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
-
-    //TODO remove
-    areaCodes: string[];
-    tagNumbers: string[];
 }
 
 interface ReleaseControlPackedSteps {
@@ -29,7 +25,7 @@ export interface DRCCreateModel {
     phase?: string;
     allowContributors?: boolean;
     documentNumbers?: string[];
-    punchList?: string[];
+    punchListItemIds?: string[];
     references?: TypedSelectOption[];
     tags?: TypedSelectOption[];
     htCables?: TypedSelectOption[];
@@ -38,10 +34,6 @@ export interface DRCCreateModel {
     workflowSteps?: CreateReleaseControlStepModel[];
     editedWorkflowSteps?: CreateReleaseControlStepModel[];
     signedWorkflowSteps?: CreateReleaseControlStepModel[];
-
-    //TODO - remove when backend updated
-    tagNumbers?: string[];
-    areaCodes?: string[];
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -62,7 +54,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             description: undefined,
             allowContributors: true,
             documentNumbers: [],
-            punchList: [],
+            punchListItemIds: [],
             plannedDueDate: '',
             workflowSteps: [],
             title: undefined,
@@ -76,10 +68,6 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             htCables: [],
             scopeTags: [],
             scopeHTTags: [],
-
-            //TODO remove
-            tagNumbers: [],
-            areaCodes: [],
         }),
 }));
 
@@ -118,12 +106,8 @@ function unPackReferencesAndScope(
     return {
         scopeTags: tags,
         scopeHTTags: htCables,
-        punch: unpackByType(references, 'punch'),
+        punchListItemIds: unpackByType(references, 'punch'),
         documentNumbers: unpackByType(references, 'document'),
-
-        //TODO remove
-        tagNumbers: [],
-        areaCodes: [],
     };
 }
 
@@ -179,13 +163,11 @@ function checkFormState(
         if (request.workflowSteps?.some((step) => step.name === null || step.name === '')) {
             return false;
         }
-        //Do not allow empty responsible (except initiate)
+        //Do not allow empty responsible
         if (
             request.workflowSteps?.some((step) =>
                 step.criteriaTemplates.some(
-                    (criteria) =>
-                        step.name !== 'Initiate' &&
-                        (criteria.value === null || criteria.value === '')
+                    (criteria) => criteria.value === null || criteria.value === ''
                 )
             )
         ) {
