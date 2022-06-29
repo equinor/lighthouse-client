@@ -3,7 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
-
+# 1.7.2
+- [Loop] Fix sidesheet resolver and change env to prod
+- [General] Styling fixes
+- [Filter] Finishing styling fixes
+- [Release control] Bugfixes, imporvements, punch/document fix, scrollbars
 ## 1.7.1
 - [Workorder] Performance improvements
 - [Loop] Performance improvements
