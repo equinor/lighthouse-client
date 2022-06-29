@@ -445,10 +445,17 @@
     "@babel/plugin-syntax-jsx" "^7.17.12"
     "@babel/types" "^7.17.12"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.14.8", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.7":
   version "7.17.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.2.tgz#66f68591605e59da47523c631416b18508779941"
   integrity sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.14.8", "@babel/runtime@^7.17.9":
+  version "7.18.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.18.6.tgz#6a1ef59f838debd670421f8c7f2cbb8da9751580"
+  integrity sha512-t9wi7/AW6XtKahAe20Yw0/mMljKq0B1r2fPdvaAdV/KPDZewFXdaaa6K7lxmZBZ8FBNpCiAT6iHPmd6QO9bKfQ==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -712,32 +719,48 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@equinor/eds-core-react@^0.14.2":
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/@equinor/eds-core-react/-/eds-core-react-0.14.3.tgz#ddced0884d56a782852c3d25dec11a418d362eee"
-  integrity sha512-NEk9h4yRJA41TtD6EZ0U7fDXFxXRMCWOUQl+ytf3kzimhYivW31vxyLSncREO4x9zKafa1d5vdqnIWyVf7PwXw==
+"@equinor/eds-core-react@^0.20.4":
+  version "0.20.4"
+  resolved "https://registry.yarnpkg.com/@equinor/eds-core-react/-/eds-core-react-0.20.4.tgz#ca6294cd879d73202516fba0c582e2d09ae28b29"
+  integrity sha512-bDSX+vn4zd8KA+T1Od3e65EfYRHMGTnVdKO4H4DCe4VaVoIywjk4HO+7bI/LDAAOqM3ynfzBKxpUpw0mdmqQMg==
   dependencies:
-    "@equinor/eds-icons" "0.8.0"
-    "@equinor/eds-tokens" "0.7.0"
+    "@babel/runtime" "^7.17.9"
+    "@equinor/eds-icons" "0.11.0"
+    "@equinor/eds-tokens" "0.7.1"
+    "@equinor/eds-utils" "0.2.3"
     "@popperjs/core" "2.9.2"
     downshift "^6.1.7"
     react-fast-compare "3.2.0"
-    react-popper "2.2.5"
 
-"@equinor/eds-icons@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@equinor/eds-icons/-/eds-icons-0.8.0.tgz#349ecd6f8d30755fd235118edb4d79977d3f6c6f"
-  integrity sha512-ck9+mrgezpx4TIHls4hFuDqcz7tDVqkNbzwKa/W3hZMLZ/VDvQZZ+8JeMzx45w+/OMgqMMWiRVMkdmWh1oFqfw==
+"@equinor/eds-icons@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@equinor/eds-icons/-/eds-icons-0.11.0.tgz#0490314faef96479553d2c481e9f3030ae20d104"
+  integrity sha512-KNyq/2HN88oDTRUpBUJpq5FFYroS8YthpKaQP75ncGBC3iAsuN7VkpmfTorlMDGYTDZa62FLHTCTqBRXuPd32A==
 
 "@equinor/eds-icons@^0.10.0":
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@equinor/eds-icons/-/eds-icons-0.10.0.tgz#3e3227d07b26bba4732feab34af2f4c5f2858032"
   integrity sha512-oYnbMtBLiwp30TzN8Q/MEJdqhyAQs87oD/x/mHFQ+BpFGlbbrcsWeTOD+rNY6JhxtJl5qfi9mAhJQgRMtauXsA==
 
-"@equinor/eds-tokens@0.7.0", "@equinor/eds-tokens@^0.7.0":
+"@equinor/eds-tokens@0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@equinor/eds-tokens/-/eds-tokens-0.7.1.tgz#332ce42ad8b2cae0926dc5840b90c01ba650c936"
+  integrity sha512-1IRJzf0Vf9t7MeG/NI9AmSi9YddyQc8ev5fax5IYSNLggE88X8EuYej52BMpJ6IJc7oEVvCQPC7JYD2XeyYJ1Q==
+
+"@equinor/eds-tokens@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@equinor/eds-tokens/-/eds-tokens-0.7.0.tgz#e6fe587e414c7470183b8778bf826aaf909766ba"
   integrity sha512-QdlX1Ndz6CmgdLMVHAZi+4GBEfU5OOnNGtXX1m7aTQbzWDTdxB6e7c5XxT/UnJHue1i5vT3RKMBDAhE2YjiXYA==
+
+"@equinor/eds-utils@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@equinor/eds-utils/-/eds-utils-0.2.3.tgz#76ce51df65539a5db38b6cceffe1e00c48dd7189"
+  integrity sha512-5IpoxmfUbGDpxqQ/wf8KQue3iaXPe7e//Rn9mqySDFS4lhb3iYU4oH6baGrUbiGaRbd/aVXHSKhQs7n8biGjug==
+  dependencies:
+    "@babel/runtime" "^7.17.9"
+    "@equinor/eds-tokens" "0.7.1"
+    "@popperjs/core" "2.11.5"
+    react-popper "2.3.0"
 
 "@equinor/eslint-config-fusion@^0.1.2":
   version "0.1.3"
@@ -1213,6 +1236,11 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
+
+"@popperjs/core@2.11.5":
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
+  integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
 "@popperjs/core@2.9.2":
   version "2.9.2"
@@ -5236,10 +5264,10 @@ react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-popper@2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.2.5.tgz#1214ef3cec86330a171671a4fbcbeeb65ee58e96"
-  integrity sha512-kxGkS80eQGtLl18+uig1UIf9MKixFSyPxglsgLBxlYnyDf65BiY9B3nZSc6C9XUNDgStROB0fMQlTEz1KxGddw==
+react-popper@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.3.0.tgz#17891c620e1320dce318bad9fede46a5f71c70ba"
+  integrity sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==
   dependencies:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
@@ -6087,10 +6115,15 @@ tslib@^1.8.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0:
+tslib@^2.0.3, tslib@^2.1.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+
+tslib@^2.3.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tsutils@^3.21.0:
   version "3.21.0"

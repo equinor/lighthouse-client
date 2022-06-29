@@ -11,14 +11,14 @@ import {
     HeaderLink,
     MenuColumn,
     MenuRow,
-    MenuScrim
+    MenuScrim,
 } from './ExpandedMenuStyles';
 
 export const ExpandedMenu = (): JSX.Element => {
     const [searchValue, setSearchValue] = useState('');
     const { registry } = useClientContext();
 
-    const { toggleMenu, setCompactMenuActive } = useMenuContext();
+    const { toggleMenu, setCompactMenuActive, menuActive } = useMenuContext();
 
     const { apps, appGroups } = registry;
     const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
@@ -58,7 +58,7 @@ export const ExpandedMenu = (): JSX.Element => {
         });
 
     return (
-        <MenuScrim onClick={() => toggleMenu()}>
+        <MenuScrim onClick={() => toggleMenu()} open={menuActive}>
             <FullscreenMenuWrapper>
                 <MenuRow>
                     <Search
