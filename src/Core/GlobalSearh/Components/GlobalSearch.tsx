@@ -104,6 +104,18 @@ export const GlobalSearch = (): JSX.Element => {
                                                     description={item.description}
                                                     searchText={searchInput}
                                                     shouldHighlightDescription={!item.group}
+                                                    appAction={
+                                                        searchType.appAction
+                                                            ? (id: string) => {
+                                                                  searchType.appAction &&
+                                                                      searchType.appAction(
+                                                                          id,
+                                                                          navigate
+                                                                      );
+                                                                  setSearchInput('');
+                                                              }
+                                                            : undefined
+                                                    }
                                                     action={(id: string) => {
                                                         searchType.action(id, item, navigate);
                                                         setSearchInput('');

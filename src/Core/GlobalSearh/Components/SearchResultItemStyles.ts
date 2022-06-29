@@ -10,6 +10,7 @@ export const Wrapper = styled.div<{ isSelected: boolean }>`
     align-items: center;
     flex-direction: row;
     height: 48px;
+    /* width: 100%; */
     cursor: pointer;
     background: ${({ isSelected }) =>
         isSelected ? tokens.colors.interactive.text_highlight.hex : 'none'};
@@ -17,6 +18,11 @@ export const Wrapper = styled.div<{ isSelected: boolean }>`
         background: ${tokens.colors.interactive.text_highlight.hex};
     }
 `;
+
+export const SearchItemWrapper = styled.div`
+    width: 620px;
+`;
+
 export const Title = styled(Typography)`
     font-style: normal;
     font-weight: 500;
@@ -39,11 +45,12 @@ export const DescriptionWrapper = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    /* width: 100%; */
 `;
 export const Divider = styled.span`
     padding: 0.25rem;
 `;
 
-export const VerticalMenu = styled.div`
+export const VerticalMenu = styled.div<{ isVisible?: boolean }>`
     padding: 0.5rem;
 `;

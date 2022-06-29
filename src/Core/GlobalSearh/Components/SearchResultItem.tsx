@@ -1,14 +1,14 @@
 import { Menu } from '@equinor/eds-core-react';
 import { Icon } from '@equinor/lighthouse-components';
-import { KeyboardEventHandler, useRef, useState } from 'react';
-import { useArrowNavigationWithFocusState } from 'react-arrow-navigation';
-import { useNavigate } from 'react-router';
+import { KeyboardEventHandler, useState } from 'react';
+import { ArrowNavigation, useArrowNavigationWithFocusState } from 'react-arrow-navigation';
 import { getHighlightedText } from '../Functions/getHiglight';
 import { SearchItem, SearchResult } from '../Service/SearchApi';
 import {
     Description,
     DescriptionWrapper,
     Divider,
+    SearchItemWrapper,
     Title,
     VerticalMenu,
     Wrapper
@@ -17,6 +17,7 @@ import {
 interface SearchResultItemProps extends SearchItem, SearchResult {
     searchText: string;
     action: (id: string) => void;
+    appAction?: (id: string) => void;
     index: number;
     shouldHighlightDescription?: boolean;
     isNavigationOpen: boolean;
@@ -37,8 +38,7 @@ export const SearchResultItem = ({
     handleNavigationOpen,
 }: SearchResultItemProps): JSX.Element => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
-    const navigation = useNavigate();
-    const anchorEl = useRef<HTMLDivElement>(null);
+    const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
     const {
         selected,
@@ -57,6 +57,10 @@ export const SearchResultItem = ({
             onClick();
         }
     };
+    const handleCleanup = () => {
+        handleNavigationOpen(false);
+        setShowMenu(false);
+    };
 
     return (
         <Wrapper
@@ -65,6 +69,12 @@ export const SearchResultItem = ({
             onKeyDown={handleOnEnterKeyPress}
             ref={ref}
             tabIndex={tabIndex}
+            onFocus={() => {
+                setShowMenu(true);
+            }}
+            onBlur={() => {
+                setShowMenu(false);
+            }}
             onMouseOver={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -73,46 +83,51 @@ export const SearchResultItem = ({
             onMouseLeave={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+
                 setShowMenu(false);
             }}
         >
-            <div>
+            <SearchItemWrapper>
                 <Title variant="h6" title={title}>
                     {getHighlightedText(title, searchText)}
                 </Title>
-                <DescriptionWrapper>
-                    {typeof description === 'string' ? (
-                        <Description title={description}>
-                            {shouldHighlightDescription
-                                ? getHighlightedText(description || '', searchText)
-                                : description}
-                        </Description>
-                    ) : (
-                        <>
-                            {description &&
-                                description.length > 0 &&
-                                description.map(({ value, label }, i) => {
-                                    return (
-                                        <Description title={`${label} - ${value}`} key={label}>
-                                            <span> {label}: </span>
-                                            <b>{getHighlightedText(value || '', searchText)}</b>
-                                            {i < description.length - 1 && <Divider>|</Divider>}
-                                        </Description>
-                                    );
-                                })}
-                        </>
-                    )}
-                </DescriptionWrapper>
-            </div>
+                {description && (
+                    <DescriptionWrapper>
+                        {typeof description === 'string' ? (
+                            <Description title={description}>
+                                {shouldHighlightDescription
+                                    ? getHighlightedText(description || '', searchText)
+                                    : description}
+                            </Description>
+                        ) : (
+                            <>
+                                {description.length > 0 &&
+                                    description.map(({ value, label }, i) => {
+                                        return (
+                                            <Description title={`${label} - ${value}`} key={label}>
+                                                <span> {label}: </span>
+                                                <b>{getHighlightedText(value || '', searchText)}</b>
+                                                {i < description.length - 1 && <Divider>|</Divider>}
+                                            </Description>
+                                        );
+                                    })}
+                            </>
+                        )}
+                    </DescriptionWrapper>
+                )}
+            </SearchItemWrapper>
             <div>
-                {type !== 'apps' && appAction && showMenu ? (
+                {type !== 'apps' && showMenu && (
                     <>
                         <VerticalMenu
-                            ref={anchorEl}
-                            id="search-item-menu"
-                            aria-controls="menu-complex"
+                            ref={setAnchorEl}
+                            id={`search-item-menu-${index}`}
+                            aria-controls="menu-compact"
                             aria-haspopup="true"
                             aria-expanded={isNavigationOpen}
+                            onFocus={() => {
+                                setShowMenu(true);
+                            }}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -123,37 +138,42 @@ export const SearchResultItem = ({
                         >
                             <Icon name="more_vertical" />
                         </VerticalMenu>
-                        <Menu
-                            open={isNavigationOpen}
-                            id="menu-default"
-                            aria-labelledby="anchor-default"
-                            anchorEl={anchorEl.current}
-                        >
-                            <Menu.Item
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    handleNavigationOpen(false);
-                                    action(id);
-                                    setShowMenu(false);
-                                }}
+
+                        <ArrowNavigation>
+                            <Menu
+                                open={isNavigationOpen}
+                                id="menu-default"
+                                aria-labelledby={`search-item-menu-${index}`}
+                                anchorEl={anchorEl}
                             >
-                                Open Sidesheet
-                            </Menu.Item>
-                            <Menu.Item
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    handleNavigationOpen(false);
-                                    appAction(id, navigation);
-                                    setShowMenu(false);
-                                }}
-                            >
-                                App with Sidesheet
-                            </Menu.Item>
-                        </Menu>
+                                <Menu.Item
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+
+                                        action(id);
+                                        handleCleanup();
+                                    }}
+                                >
+                                    Open in Sidesheet
+                                </Menu.Item>
+
+                                <Menu.Item
+                                    disabled={!appAction}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+
+                                        appAction && appAction(id);
+                                        handleCleanup();
+                                    }}
+                                >
+                                    App with Sidesheet
+                                </Menu.Item>
+                            </Menu>
+                        </ArrowNavigation>
                     </>
-                ) : null}
+                )}
             </div>
         </Wrapper>
     );

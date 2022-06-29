@@ -15,6 +15,7 @@ export const SearchResult = styled.div`
     background: white;
     box-shadow: -5px 5px 10px 0 rgb(0 0 0 / 15%);
     max-height: 90vh;
+    overflow-x: hidden;
     overflow-y: auto;
 `;
 
