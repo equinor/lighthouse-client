@@ -137,12 +137,12 @@ function getPresenceInfo(status: Availability | undefined): PresenceInfo {
 const Presence = styled.div`
     display: flex;
     align-items: center;
-    gap: 0.2em;
+    gap: 0.35em;
 `;
 
 const StatusCircle = styled.div<{ color: string }>`
-    width: 12px;
-    height: 12px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background-color: ${({ color }) => color};
 `;
