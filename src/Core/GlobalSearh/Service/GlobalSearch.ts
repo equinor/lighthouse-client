@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Search, SearchConfig, SearchResult } from './SearchApi';
 
 export const globalSearch = new Search();
@@ -19,6 +19,11 @@ export function useGlobalSearch(): {
         globalSearch.search(searchText);
     }, []);
 
+    const isSearching = useMemo(() => {
+        const loadingStatus = Object.values(searchLoadingStatus);
+        return loadingStatus.length > 0 && loadingStatus.every((i) => i === true);
+    }, [searchLoadingStatus]);
+
     useEffect(() => {
         const searchInstance = globalSearch.registerSubscriber(
             setSearchResult,
@@ -32,9 +37,7 @@ export function useGlobalSearch(): {
     return {
         searchResult,
         search,
-        isSearching:
-            Object.values(searchLoadingStatus).length > 0 &&
-            Object.values(searchLoadingStatus).every((i) => i === true),
+        isSearching,
         registerSearchItem: globalSearch.registerSearchItem,
     };
 }

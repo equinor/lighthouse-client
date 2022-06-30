@@ -1,18 +1,9 @@
-import { Menu } from '@equinor/eds-core-react';
-import { Icon } from '@equinor/lighthouse-components';
 import { KeyboardEventHandler, useState } from 'react';
-import { ArrowNavigation, useArrowNavigationWithFocusState } from 'react-arrow-navigation';
-import { getHighlightedText } from '../Functions/getHiglight';
+import { useArrowNavigationWithFocusState } from 'react-arrow-navigation';
 import { SearchItem, SearchResult } from '../Service/SearchApi';
-import {
-    Description,
-    DescriptionWrapper,
-    Divider,
-    SearchItemWrapper,
-    Title,
-    VerticalMenu,
-    Wrapper
-} from './SearchResultItemStyles';
+import { SearchContent } from './SearchResultItemContent';
+import { SearchItemResultMenu } from './SearchResultItemMenu';
+import { Wrapper } from './SearchResultItemStyles';
 
 interface SearchResultItemProps extends SearchItem, SearchResult {
     searchText: string;
@@ -38,7 +29,6 @@ export const SearchResultItem = ({
     handleNavigationOpen,
 }: SearchResultItemProps): JSX.Element => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
-    const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
     const {
         selected,
@@ -57,9 +47,11 @@ export const SearchResultItem = ({
             onClick();
         }
     };
-    const handleCleanup = () => {
-        handleNavigationOpen(false);
-        setShowMenu(false);
+    const handleShowMenu = (val: boolean, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setShowMenu(val);
     };
 
     return (
@@ -76,106 +68,29 @@ export const SearchResultItem = ({
                 setShowMenu(false);
             }}
             onMouseOver={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setShowMenu(true);
+                handleShowMenu(true, e);
             }}
             onMouseLeave={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                setShowMenu(false);
+                handleShowMenu(false, e);
             }}
         >
-            <SearchItemWrapper>
-                <Title variant="h6" title={title}>
-                    {getHighlightedText(title, searchText)}
-                </Title>
-                {description && (
-                    <DescriptionWrapper>
-                        {typeof description === 'string' ? (
-                            <Description title={description}>
-                                {shouldHighlightDescription
-                                    ? getHighlightedText(description || '', searchText)
-                                    : description}
-                            </Description>
-                        ) : (
-                            <>
-                                {description.length > 0 &&
-                                    description.map(({ value, label }, i) => {
-                                        return (
-                                            <Description title={`${label} - ${value}`} key={label}>
-                                                <span> {label}: </span>
-                                                <b>{getHighlightedText(value || '', searchText)}</b>
-                                                {i < description.length - 1 && <Divider>|</Divider>}
-                                            </Description>
-                                        );
-                                    })}
-                            </>
-                        )}
-                    </DescriptionWrapper>
-                )}
-            </SearchItemWrapper>
-            <div>
-                {type !== 'apps' && showMenu && (
-                    <>
-                        <VerticalMenu
-                            ref={setAnchorEl}
-                            id={`search-item-menu-${index}`}
-                            aria-controls="menu-compact"
-                            aria-haspopup="true"
-                            aria-expanded={isNavigationOpen}
-                            onFocus={() => {
-                                setShowMenu(true);
-                            }}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                isNavigationOpen
-                                    ? handleNavigationOpen(false)
-                                    : handleNavigationOpen(true);
-                            }}
-                        >
-                            <Icon name="more_vertical" />
-                        </VerticalMenu>
-
-                        <ArrowNavigation>
-                            <Menu
-                                open={isNavigationOpen}
-                                id="menu-default"
-                                aria-labelledby={`search-item-menu-${index}`}
-                                anchorEl={anchorEl}
-                            >
-                                <Menu.Item
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-
-                                        action(id);
-                                        handleCleanup();
-                                    }}
-                                >
-                                    Open in Sidesheet
-                                </Menu.Item>
-
-                                <Menu.Item
-                                    disabled={!appAction}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-
-                                        appAction && appAction(id);
-                                        handleCleanup();
-                                    }}
-                                >
-                                    App with Sidesheet
-                                </Menu.Item>
-                            </Menu>
-                        </ArrowNavigation>
-                    </>
-                )}
-            </div>
+            <SearchContent
+                title={title}
+                description={description}
+                searchText={searchText}
+                shouldHighlightDescription={shouldHighlightDescription}
+            />
+            <SearchItemResultMenu
+                id={id}
+                type={type}
+                index={index}
+                showMenu={showMenu}
+                setShowMenu={setShowMenu}
+                isNavigationOpen={isNavigationOpen}
+                handleNavigationOpen={handleNavigationOpen}
+                action={action}
+                appAction={appAction}
+            />
         </Wrapper>
     );
 };
-6;
