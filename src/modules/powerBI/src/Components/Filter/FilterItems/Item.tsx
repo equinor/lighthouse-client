@@ -33,6 +33,7 @@ const FilterItem = ({
     }, [activeFilters, filter.value]);
     return (
         <CheckboxItem
+            title={filter.value}
             style={{
                 transform: `translateY(${virtualItemStart}px)`,
                 height: `${virtualItemSize}px`,
