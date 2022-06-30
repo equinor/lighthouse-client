@@ -97,6 +97,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             header: 'State',
             accessor: (s) => (s.isVoided ? 'Voided' : s.state),
             width: 80,
+            render: stateRender,
         }),
         defineColumn({
             header: 'Disciplines',
@@ -228,6 +229,46 @@ const ExpMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
         />
     );
 };
+
+function stateRender(item: ScopeChangeRequest, value: any) {
+    return (
+        <div style={{ display: 'flex', gap: '0.4em', alignItems: 'center' }}>
+            <div>{getStateIcon(value)}</div>
+            <div>{value}</div>
+        </div>
+    );
+}
+
+function getStateIcon(state: 'Draft' | 'Open' | 'Voided' | 'Closed') {
+    switch (state) {
+        case 'Closed': {
+            return <StateCircle color="#4BB748" />;
+        }
+
+        case 'Open': {
+            return <StateCircle color="#A8C8DE" />;
+        }
+
+        case 'Draft': {
+            return <StateCircle color="#DCDCDC" />;
+        }
+
+        case 'Voided': {
+            return <StateCircle color="#EB0000" />;
+        }
+
+        default: {
+            return <StateCircle color="white" />;
+        }
+    }
+}
+
+const StateCircle = styled.div<{ color: string }>`
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: ${({ color }) => color};
+`;
 
 interface PendingContributionsProps {
     hasPending: boolean;
