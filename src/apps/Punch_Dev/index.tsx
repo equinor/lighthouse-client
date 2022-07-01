@@ -4,6 +4,7 @@ import {
     analyticsConfig,
     filterConfig,
     gardenConfig,
+    sidesheetConfig,
     statusBarConfig,
     tableConfig,
 } from './utility/config';
@@ -20,6 +21,7 @@ export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<Punch>({
             objectIdentifier: 'punchItemNo',
+            customSidesheetOptions: sidesheetConfig('WorkspaceSideSheet'),
         })
         .registerDataSource({ responseAsync: responseAsync })
         .registerTableOptions(tableConfig)

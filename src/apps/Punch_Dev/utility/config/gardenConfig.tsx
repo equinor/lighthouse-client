@@ -3,11 +3,17 @@ import {
     getYearAndWeekFromDate,
     sortByNumber,
 } from '@equinor/GardenUtils';
-import { FieldSettings, GardenOptions } from '@equinor/ParkView';
+import {
+    FieldSettings,
+    GardenGroups,
+    GardenOptions,
+    getGardenItems,
+    isSubGroup,
+} from '@equinor/ParkView';
 import { CustomGardenItem, PunchGroupBySelect } from '../../components';
 import { CustomGroupByKeys } from '../../types';
 import { Punch } from '../../types/punch';
-import { getDate, getDateKey } from '../helpers';
+import { getDate, getDateKey, getFieldKeyBasedOnPlannedForecast } from '../helpers';
 export type ExtendedGardenFields = 'RFC' | 'RFO';
 
 export const fieldSettings: FieldSettings<Punch, ExtendedGardenFields> = {
@@ -72,11 +78,13 @@ const getHighlightedColumn = (groupByKey, customGroupByKeys) => {
             return undefined;
     }
 };
+
 export const gardenConfig: GardenOptions<Punch> = {
     gardenKey: 'RFC' as keyof Punch,
     itemKey: 'punchItemNo',
     objectIdentifier: 'punchItemNo',
-    itemWidth: () => 135,
+    itemWidth: () => 139,
+    rowHeight: 30,
     customGroupByKeys,
     customViews: {
         customGroupByView: PunchGroupBySelect,
