@@ -58,7 +58,7 @@ const columns: Column<Loop>[] = [
     {
         id: 'mcStatus',
         Header: 'MC status',
-        accessor: (pkg) => pkg.loopContentStatus,
+        accessor: (pkg) => pkg.status,
         Cell: (cellProps: CellProps<Loop>) => {
             if (!cellProps.value) return null;
             return (

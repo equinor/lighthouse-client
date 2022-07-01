@@ -1,6 +1,7 @@
 import { Menu, Button, Search } from '@equinor/eds-core-react';
 import { Switch, Case } from '@equinor/JSX-Switch';
-import { useState, useCallback, useMemo } from 'react';
+import { EventHub } from '@equinor/lighthouse-utils';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import {
     SearchHolder,
@@ -35,6 +36,15 @@ export const PowerBiGroupPopoverMenu = ({
         controller.deselectAllValues(group, filter);
 
     const [searchText, setSearchText] = useState('');
+
+    useEffect(() => {
+        const ev = new EventHub();
+
+        const unsub = ev.registerListener('PBIClicked', onCloseMenu);
+        return () => {
+            unsub();
+        };
+    }, []);
 
     const handleInput = (e) => {
         const value = e.target.value;
