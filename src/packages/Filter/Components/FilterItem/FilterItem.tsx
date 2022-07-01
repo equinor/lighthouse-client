@@ -44,6 +44,7 @@ export const FilterItem = ({
     );
     return (
         <FilterItemWrap
+            title={typeof filterItem === 'string' ? filterItem : '(Blank)'}
             style={{
                 position: 'absolute',
                 top: 0,

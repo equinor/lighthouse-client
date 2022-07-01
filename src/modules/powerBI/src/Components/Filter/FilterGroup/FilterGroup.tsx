@@ -27,7 +27,7 @@ export const PowerBiFilterGroup = ({
         activeFilters.length === 0 || activeFilters.length === group.filterVals.length;
     return (
         <div>
-            <FilterGroupWrapper onClick={() => setIsOpen(true)} ref={anchorEl}>
+            <FilterGroupWrapper onClick={() => setIsOpen((s) => !s)} ref={anchorEl}>
                 <div>
                     {getFilterHeaderText(
                         isAllChecked,

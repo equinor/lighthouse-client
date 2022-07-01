@@ -37,7 +37,7 @@ export const TopBarAvatar = (): JSX.Element | null => {
 
     return (
         <div>
-            <div ref={ref} onClick={open}>
+            <div style={{ position: 'relative' }} ref={ref} onClick={open}>
                 {!userImageUrl ? (
                     <Icon
                         color={tokens.colors.interactive.primary__resting.hex}
@@ -46,6 +46,7 @@ export const TopBarAvatar = (): JSX.Element | null => {
                 ) : (
                     <Avatar alt="User avatar" src={userImageUrl} />
                 )}
+                <StatusIconOverAvatar>{presenceInfo.icon}</StatusIconOverAvatar>
             </div>
             <Popover anchorEl={ref.current} open={isOpen} onClose={close}>
                 <Popover.Content>
@@ -69,6 +70,14 @@ export const TopBarAvatar = (): JSX.Element | null => {
         </div>
     );
 };
+
+const StatusIconOverAvatar = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+`;
 
 interface PresenceInfo {
     status: string;
@@ -128,12 +137,12 @@ function getPresenceInfo(status: Availability | undefined): PresenceInfo {
 const Presence = styled.div`
     display: flex;
     align-items: center;
-    gap: 0.2em;
+    gap: 0.35em;
 `;
 
 const StatusCircle = styled.div<{ color: string }>`
-    width: 12px;
-    height: 12px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background-color: ${({ color }) => color};
 `;
