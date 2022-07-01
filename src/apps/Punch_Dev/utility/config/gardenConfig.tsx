@@ -4,22 +4,13 @@ import {
     sortByNumber,
 } from '@equinor/GardenUtils';
 import { FieldSettings, GardenOptions } from '@equinor/ParkView';
-import { PunchGroupBySelect } from '../../components';
+import { CustomGardenItem, PunchGroupBySelect } from '../../components';
 import { CustomGroupByKeys } from '../../types';
 import { Punch } from '../../types/punch';
-import { getDateKey } from '../helpers';
+import { getDate, getDateKey } from '../helpers';
 export type ExtendedGardenFields = 'RFC' | 'RFO';
 
 export const fieldSettings: FieldSettings<Punch, ExtendedGardenFields> = {
-    responsible: {
-        label: 'Responsible',
-    },
-    functionalSystem: {
-        label: 'System',
-    },
-    formularType: {
-        label: 'Form type',
-    },
     RFC: {
         label: 'RFC',
         getKey: getDateKey,
@@ -30,11 +21,33 @@ export const fieldSettings: FieldSettings<Punch, ExtendedGardenFields> = {
         getKey: getDateKey,
         getColumnSort: sortByNumber,
     },
-    punchListSorting: {
-        label: 'PL Sorting',
+    verifiedAtDate: {
+        label: 'Verified',
+        getKey: getDate,
+        getColumnSort: sortByNumber,
     },
-    punchListType: {
-        label: 'PL Type',
+    clearedAtDate: {
+        label: 'Cleared',
+        getKey: getDate,
+        getColumnSort: sortByNumber,
+    },
+    clearingByOrganization: {
+        label: 'Clearing by',
+    },
+    materialRequired: {
+        label: 'Material required',
+        getKey: (item) =>
+            item.materialRequired === null
+                ? '(Blank)'
+                : item.materialRequired === false
+                ? 'False'
+                : 'True',
+    },
+    commissioningPackageNo: {
+        label: 'Compack',
+    },
+    functionalSystem: {
+        label: 'System',
     },
 };
 
@@ -49,6 +62,8 @@ const getHighlightedColumn = (groupByKey, customGroupByKeys) => {
     switch (groupByKey) {
         case 'RFO':
         case 'RFC':
+        case 'clearedAtDate':
+        case 'verifiedAtDate':
             return weeklyDaily === 'Daily'
                 ? getYearAndWeekAndDayFromString(new Date().toString())
                 : getYearAndWeekFromDate(new Date());
@@ -61,9 +76,11 @@ export const gardenConfig: GardenOptions<Punch> = {
     gardenKey: 'RFC' as keyof Punch,
     itemKey: 'punchItemNo',
     objectIdentifier: 'punchItemNo',
+    itemWidth: () => 135,
     customGroupByKeys,
     customViews: {
         customGroupByView: PunchGroupBySelect,
+        customItemView: CustomGardenItem,
     },
     fieldSettings,
     highlightColumn: getHighlightedColumn,

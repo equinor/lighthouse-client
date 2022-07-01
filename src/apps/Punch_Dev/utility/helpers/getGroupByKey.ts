@@ -35,3 +35,8 @@ export const getDateKey: GetKeyFunction<Punch> = (item, key, groupBy) => {
     const fieldKey = getFieldKeyBasedOnPlannedForecast(key, plannedForecast);
     return getColumnDateKey(fieldKey, weeklyDaily, item);
 };
+
+export const getDate: GetKeyFunction<Punch> = (item, key, groupBy) => {
+    const { weeklyDaily } = groupBy as CustomGroupByKeys;
+    return getColumnDateKey(key as keyof Punch, weeklyDaily, item);
+};

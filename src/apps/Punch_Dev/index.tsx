@@ -29,5 +29,6 @@ export function setup(appApi: ClientApi): void {
         .registerPowerBIOptions(analyticsConfig)
         .registerSearchOptions([
             { name: 'Punch No', valueFormatter: (punch) => punch.punchItemNo },
+            { name: 'Compack', valueFormatter: (punch) => punch.commissioningPackageNo || '' },
         ]);
 }
