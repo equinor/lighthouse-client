@@ -3,9 +3,9 @@ import { Workorder } from '../../types';
 import { FamRequest } from '../helpers/fam';
 export const workorderColumnNames = [
     'WorkOrderId',
-    'ChecklistID',
-    'LoopId',
     'WorkOrderNo',
+    'LoopId',
+    'LoopNo',
     'Facility',
     'Project',
     'HoldBy',
