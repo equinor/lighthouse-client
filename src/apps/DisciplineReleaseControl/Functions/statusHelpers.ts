@@ -534,15 +534,17 @@ export const getYearAndWeekFromString = (dateString: string, removeDays = 0): st
 export function getPipetestCompletionStatus(pipetest: Pipetest): PipetestCompletionStatus {
     const pipetestStepStatus = getPipetestStatus(pipetest);
 
-    if (
+    if (pipetest.checkLists.some((x) => x.status === CheckListStatus.Outstanding)) {
+        return PipetestCompletionStatus.Outstanding;
+    } else if (pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchAError)) {
+        return PipetestCompletionStatus.PunchAError;
+    } else if (
         pipetestStepStatus === PipetestStep.Complete &&
         pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchBError)
     ) {
         return PipetestCompletionStatus.PunchBError;
     } else if (pipetestStepStatus === PipetestStep.Complete) {
         return PipetestCompletionStatus.Complete;
-    } else if (pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchAError)) {
-        return PipetestCompletionStatus.PunchAError;
     } else {
         return PipetestCompletionStatus.Outstanding;
     }
