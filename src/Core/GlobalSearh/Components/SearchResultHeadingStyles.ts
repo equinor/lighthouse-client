@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 
 export const Title = styled(Typography)`
     margin: 0.5rem 0.5rem 0rem 0.5rem;
+    font-size: 14px;
 `;
 export const Color = styled.div<{ color: string }>`
     height: 32px;

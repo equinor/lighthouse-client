@@ -30,6 +30,7 @@ export const VirtualFilterItemCheckbox = ({
 }: VirtualFilterItemCheckboxProps): JSX.Element => {
     return (
         <FilterItemWrap
+            title={typeof filterValue === 'string' ? filterValue : '(Blank)'}
             style={{
                 transform: `translateY(${virtualItem.start}px)`,
                 height: `${virtualItem.size}px`,
@@ -89,7 +90,10 @@ export const FilterItemCheckbox = ({
     ValueRender,
 }: FilterItemCheckboxProps): JSX.Element => {
     return (
-        <FilterItemWrap key={filterValue}>
+        <FilterItemWrap
+            title={typeof filterValue === 'string' ? filterValue : '(Blank)'}
+            key={filterValue}
+        >
             <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />

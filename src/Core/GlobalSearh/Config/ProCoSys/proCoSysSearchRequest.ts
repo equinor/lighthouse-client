@@ -2,7 +2,8 @@ import { getClientContext, httpClient } from '@equinor/lighthouse-portal-client'
 import { SearchResponse } from './types';
 
 export async function proCoSysSearchRequest(
-    searchText: string
+    searchText: string,
+    signal: AbortSignal
 ): Promise<SearchResponse | undefined> {
     const { procosysPlantId } = getClientContext();
     const { customHttpClient } = httpClient({
@@ -11,7 +12,8 @@ export async function proCoSysSearchRequest(
 
     try {
         const result = await customHttpClient.fetch(
-            `https://search-test.pcs-dev.net/Search?query=${searchText}&preview=true&plant=${procosysPlantId}`
+            `https://search-test.pcs-dev.net/Search?query=${searchText}&preview=true&plant=${procosysPlantId}`,
+            { signal }
         );
 
         if (result.ok) {

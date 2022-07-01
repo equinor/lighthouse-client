@@ -17,7 +17,7 @@ export function appsSearchRequest(searchString: string): SearchItem[] {
         .map((app) => ({
             key: app.shortName,
             title: app.title,
-            description: app.tags.length > 0 ? `Tags: ${app.tags.toString()}` : undefined,
+            description: app.uri ? 'External application' : 'Internal application',
             id: app.shortName,
             uri: app.uri && app.uri(isProduction()),
             group: app.groupe,
