@@ -1,8 +1,9 @@
 import { ApplyEventArgs, SaveEventArgs, useBookmarkEvents } from '@equinor/BookmarksManager';
+import { EventHub } from '@equinor/lighthouse-utils';
 import { Embed, Report } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { PBIWrapper, TopBar, Wrapper } from '../PowerBI.styles';
 import { PowerBIFilter } from './Components';
@@ -18,6 +19,8 @@ interface PowerBiProps {
     filterOptions?: Filter[];
     options?: PBIOptions;
 }
+
+const ev = new EventHub();
 
 export const PowerBI = (props: PowerBiProps): JSX.Element => {
     const { reportUri, filterOptions, options } = props;
@@ -126,13 +129,15 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
         [
             'selectionChanged',
             function () {
-                //selectionChanged Events
+                ev.publish('PBIClicked', 's');
             },
         ],
         [
             'visualClicked',
             function (e) {
+                ev.publish('PBIClicked', 's');
                 /**
+                 *
                  * Chiclet slicers are visuals inside the report that will have an impact
                  * on what filters are to be shown if they are clicked, so an update is needed..
                  */
@@ -186,6 +191,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                                     );
                                     window['report'] = embedObject;
                                 }
+
                                 setReport(embedObject as Report);
                             }}
                             cssClassName="pbiEmbed"
