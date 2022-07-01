@@ -150,14 +150,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
-    const testRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!testRef.current) return;
-
-        testRef.current.onclick = () => console.log('Science');
-    }, [testRef.current]);
-
     if (error) {
         return (
             <ReportErrorMessage
@@ -182,17 +174,13 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                         />
                     )}
                 </TopBar>
-                <PBIWrapper
-                    height={getFilterHeight(isFilterExpanded)}
-                    onClick={() => ev.publish('PBIClicked', 's')}
-                >
+                <PBIWrapper height={getFilterHeight(isFilterExpanded)}>
                     <div
                         style={{
                             height: `${width * aspectRatio}px`,
                         }}
                     >
                         <PowerBIEmbed
-                            ref={testRef}
                             embedConfig={config}
                             eventHandlers={eventHandlersMap}
                             getEmbeddedComponent={(embedObject: Embed) => {
