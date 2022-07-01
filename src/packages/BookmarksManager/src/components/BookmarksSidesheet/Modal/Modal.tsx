@@ -19,8 +19,8 @@ type ModalProps = {
 };
 export const Modal = ({ title, content }: ModalProps) => {
     return (
-        <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
-            <DialogContainer>
+        <Scrim isDismissable={false} style={{ zIndex: 1000 }} open>
+            <DialogContainer open>
                 <DialogPadding>
                     <TitleSection>{title}</TitleSection>
                     {content}

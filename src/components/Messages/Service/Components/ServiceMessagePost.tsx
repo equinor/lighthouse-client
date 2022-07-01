@@ -71,6 +71,7 @@ export function ServiceMessagePost(): JSX.Element | null {
                     onClose={() => {
                         setIsActive(false);
                     }}
+                    open={isActive}
                 >
                     <ScrimContainer>
                         <Container>
