@@ -1,7 +1,7 @@
 import { models } from 'powerbi-client';
 import { IS_BLANK } from './constants';
 import { ActiveFilter, PowerBiFilterItem } from '../Types';
-import { convertFromNullToBlank } from './transformData';
+import { convertFilterVal, convertFromNullToBlank } from './transformData';
 
 /**
  * Will return true if all visible filters
@@ -32,7 +32,7 @@ export const createAdvancedPbiFilter = (
     const hasBlank = newFilters.includes(IS_BLANK);
     const values: (string | number | boolean | null)[] = [];
     newFilters.forEach((filterValue) => {
-        filterValue !== IS_BLANK && values.push(filterValue);
+        filterValue !== IS_BLANK && values.push(convertFilterVal(filterValue));
     });
     hasBlank && values.push(null);
     const basicFilter: models.IBasicFilter = {
