@@ -57,3 +57,17 @@ export const transformData = (data: string): { type: string; values: string[] } 
 export const convertFromNullToBlank = (activeFilter: ActiveFilter): string | number | boolean => {
     return activeFilter === null ? IS_BLANK : activeFilter;
 };
+
+/**
+ * Converts filter value to string, boolean, number
+ * @param filterVal The filter value that was chosen
+ */
+export const convertFilterVal = (filterVal: ActiveFilter): ActiveFilter => {
+    if (filterVal === 'true') {
+        return (filterVal = true);
+    } else if (filterVal === 'false') {
+        return (filterVal = false);
+    } else {
+        return filterVal;
+    }
+};
