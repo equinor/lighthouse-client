@@ -1,0 +1,25 @@
+export type ChecklistForLoop = {
+    checklistId: string;
+    facility: string | null;
+    project: string | null;
+    tagId: string | null;
+    tagNo: string | null;
+    formularGroup: string | null;
+    formularType: string | null;
+    pipingRevisionMechanicalCompletionPackageNo: string | null;
+    responsible: string | null;
+    status: string | null;
+    createdDate: string | null;
+    updatedDate: string | null;
+    signedDate: string | null;
+    verifiedDate: string | null;
+    callOffNo: string | null;
+    packageNo: string | null;
+    isVoided: boolean | null;
+    description: string | null;
+    register: string | null;
+    mechanicalCompletionPackageNo: string | null;
+    mechanicalCompletionPackageId: string | null;
+    commissioningPackageNo: string | null;
+    commissioningPackageId: string | null;
+};
