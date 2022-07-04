@@ -9,7 +9,7 @@ const Description = styled.div`
     text-overflow: ellipsis;
 `;
 
-export const DescriptionCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
+const DescriptionCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {
         value: { content, currentKey, cellAttributeFn },
     } = props;
@@ -27,3 +27,11 @@ export const DescriptionCell = <T extends TableData>(props: CellProps<T, CellRen
         </Description>
     );
 };
+type CustomDescriptionCellProps = {
+    description: string | null;
+};
+const CustomDescriptionCell = ({ description }: CustomDescriptionCellProps) => {
+    return <Description title={description || ''}>{description || ''}</Description>;
+};
+
+export { DescriptionCell, CustomDescriptionCell };

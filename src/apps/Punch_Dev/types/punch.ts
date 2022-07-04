@@ -11,7 +11,8 @@ export type Punch = {
     punchListSorting: string | null;
     estimate: string | null;
     workOrderNo: string | null;
-    materialRequired: string | null;
+    workOrderId: string | null;
+    materialRequired: boolean | null;
     materialEstimatedTimeOfArrival: string | null;
     externalMaterialNo: string | null;
     clearedAtDate: Date | null;
@@ -21,9 +22,12 @@ export type Punch = {
     responsible: string | null;
     formularType: string | null;
     tagNo: string | null;
+    tagId: string | null;
     callOffNo: string | null;
     mechanicalCompletionPackageNo: string | null;
+    mechanicalCompletionPackageId: string | null;
     commissioningPackageNo: string | null;
+    commissioningPackageId: string | null;
     functionalSystem: string | null;
     c01PlannedDate: Date | null;
     c01ForecastDate: Date | null;

@@ -2,7 +2,7 @@ import { getYearAndWeekAndDayFromString, getYearAndWeekFromString } from '@equin
 import { GetKeyFunction } from '@equinor/ParkView';
 import { CustomGroupByKeys, Punch } from '../../types';
 import { ExtendedGardenFields } from '../config';
-const getFieldKeyBasedOnPlannedForecast = (
+export const getFieldKeyBasedOnPlannedForecast = (
     groupBy: ExtendedGardenFields | string,
     plannedForecast: CustomGroupByKeys['plannedForecast']
 ): keyof Punch => {
@@ -34,4 +34,9 @@ export const getDateKey: GetKeyFunction<Punch> = (item, key, groupBy) => {
     const { plannedForecast, weeklyDaily } = groupBy as CustomGroupByKeys;
     const fieldKey = getFieldKeyBasedOnPlannedForecast(key, plannedForecast);
     return getColumnDateKey(fieldKey, weeklyDaily, item);
+};
+
+export const getDate: GetKeyFunction<Punch> = (item, key, groupBy) => {
+    const { weeklyDaily } = groupBy as CustomGroupByKeys;
+    return getColumnDateKey(key as keyof Punch, weeklyDaily, item);
 };

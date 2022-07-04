@@ -2,29 +2,33 @@ import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
-    actionCenterSidesheetWidgetManifest
+    actionCenterSidesheetWidgetManifest,
 } from '../components/ActionCenter/ActionCenterSidesheet';
 import {
     htSidesheetWidgetComponent,
     htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetManifest
+    ReleaseControlSidesheetWidgetManifest,
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
+import {
+    punchSidesheetWidgetManifest,
+    punchidesheetWidgetComponent,
+} from './Punch_Dev/utility/config';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
-    releaseCreatorManifest
+    releaseCreatorManifest,
 } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import {
     changeSideSheetWidgetComponent,
-    changeSideSheetWidgetManifest
+    changeSideSheetWidgetManifest,
 } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import {
     changeCreatorComponent,
-    changeCreatorManifest
+    changeCreatorManifest,
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
 import { tagWidgetComponent, tagWidgetManifest } from './Tags';
@@ -44,6 +48,7 @@ const _widgets: WidgetManifest[] = [
 
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
+    punchSidesheetWidgetManifest,
     tagWidgetManifest,
 ];
 
@@ -63,6 +68,7 @@ const _widgetComponents: ComponentManifest[] = [
     mcCreatorComponent,
     tagWidgetComponent,
     loopSidesheetWidgetComponent,
+    punchidesheetWidgetComponent,
 ];
 
 export async function getCreators(): Promise<CreatorManifest[]> {
