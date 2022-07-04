@@ -2,6 +2,7 @@ import { Atom, deref, swap } from '@dbeining/react-atom';
 import { statusColorMap } from '@equinor/GardenUtils';
 import {
     CustomColumn,
+    CustomDateCell,
     CustomLinkCellWithTextDecoration,
     EstimateBar,
     StatusCustomCell,
@@ -87,9 +88,13 @@ const customColumns: CustomColumn<Loop>[] = [
         id: 'rfC_Planned_Forecast_Date',
         Header: 'Planned/Forecast RFC',
         accessor: (pkg) => pkg.rfC_Planned_Forecast_Date,
-        Cell: (cellProps) => (
-            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
-        ),
+        Cell: (cellProps) => {
+            if (!cellProps.value) {
+                return null;
+            }
+
+            return <CustomDateCell dateString={cellProps.value} />;
+        },
         width: 160,
         Aggregated: () => null,
         aggregate: 'count',
@@ -98,9 +103,13 @@ const customColumns: CustomColumn<Loop>[] = [
         id: 'rfO_Planned_Forecast_Date',
         Header: 'Planned/Forecast RFO',
         accessor: (pkg) => pkg.rfO_Planned_Forecast_Date,
-        Cell: (cellProps) => (
-            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
-        ),
+        Cell: (cellProps) => {
+            if (!cellProps.value) {
+                return null;
+            }
+
+            return <CustomDateCell dateString={cellProps.value} />;
+        },
         width: 160,
         Aggregated: () => null,
         aggregate: 'count',
@@ -149,9 +158,13 @@ const customColumns: CustomColumn<Loop>[] = [
         id: 'signedDate',
         Header: 'Signed',
         accessor: (pkg) => pkg.signedDate,
-        Cell: (cellProps) => (
-            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
-        ),
+        Cell: (cellProps) => {
+            if (!cellProps.value) {
+                return null;
+            }
+
+            return <CustomDateCell dateString={cellProps.value} />;
+        },
         width: 100,
         Aggregated: () => null,
         aggregate: 'count',
@@ -160,9 +173,13 @@ const customColumns: CustomColumn<Loop>[] = [
         id: 'verifiedDate',
         Header: 'Verified',
         accessor: (pkg) => pkg.verifiedDate,
-        Cell: (cellProps) => (
-            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
-        ),
+        Cell: (cellProps) => {
+            if (!cellProps.value) {
+                return null;
+            }
+
+            return <CustomDateCell dateString={cellProps.value} />;
+        },
         width: 100,
         Aggregated: () => null,
         aggregate: 'count',
@@ -187,9 +204,13 @@ const customColumns: CustomColumn<Loop>[] = [
         id: 'plannedCompletionDate',
         Header: 'Planned MC complete',
         accessor: (pkg) => pkg.woPlannedCompletionDate,
-        Cell: (cellProps) => (
-            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
-        ),
+        Cell: (cellProps) => {
+            if (!cellProps.value) {
+                return null;
+            }
+
+            return <CustomDateCell dateString={cellProps.value} />;
+        },
         width: 150,
         Aggregated: () => null,
         aggregate: 'count',
@@ -198,9 +219,13 @@ const customColumns: CustomColumn<Loop>[] = [
         id: 'actualCompletionDate',
         Header: 'Actual MC complete',
         accessor: (pkg) => pkg.woActualCompletionDate,
-        Cell: (cellProps) => (
-            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
-        ),
+        Cell: (cellProps) => {
+            if (!cellProps.value) {
+                return null;
+            }
+
+            return <CustomDateCell dateString={cellProps.value} />;
+        },
         width: 150,
         Aggregated: () => null,
         aggregate: 'count',
