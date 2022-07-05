@@ -60,8 +60,8 @@ const customColumns: CustomColumn<McPackage>[] = [
             return (
                 <StatusCustomCell
                     contentToBeDisplayed={cellProps.value}
-                    cellAttributeFunction={(item) => {
-                        const mcColor = statusColorMap[item.mcStatus];
+                    cellAttributeFunction={(status) => {
+                        const mcColor = statusColorMap[status];
                         return {
                             style: {
                                 backgroundColor: mcColor,
