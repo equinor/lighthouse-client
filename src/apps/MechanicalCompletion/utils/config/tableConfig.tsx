@@ -1,223 +1,203 @@
 import { TableOptions } from '@equinor/WorkSpace';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { McPackage } from '../../types';
-import { CustomLinkCellWithTextDecoration } from '@equinor/Table';
+import {
+    CustomColumn,
+    CustomDescriptionCell,
+    CustomLinkCellWithTextDecoration,
+    CustomYearAndWeekCell,
+    StatusCustomCell,
+} from '@equinor/Table';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 
-const hiddenColumns: (keyof McPackage)[] = [
-    'commPkgId',
-    'commPkgNumber',
-    'commPkgStatus',
-    'remark',
-    'subsystem',
-    'url',
-    'tacIsAccepted',
-    'tacForecastDate',
-    'tacIsShipped',
-    'tacPlannedDate',
-    'tagVolume',
-    'createdDate',
-    'siteCodes',
-    'updatedDate',
-    'projectIdentifier',
-    'projectDescription',
-    'mcPkgNumber',
-    'mcPkgId',
-    'disciplineDescription',
-    'finalPunchForecastDate',
-    'punchAcceptActualDate',
-    'rfocForecastDate',
-    'rfocActualDate',
-    'rfocPlannedDate',
-    'rfocIsShipped',
-    'rfocIsRejected',
-    'rfocIsAccepted',
-    'rfccForecastDate',
-    'rfccIsShipped',
-    'rfccIsAccepted',
-    'rfccIsRejected',
-    'rfccShippedDate',
-    'certificateNumber',
-    'priorityDescription',
-    'priority2Description',
-    'priority3Description',
-    'date',
-    'order',
-    'rowKey',
-    'isVoided',
+const customColumns: CustomColumn<McPackage>[] = [
+    {
+        id: 'mcPkgNumber',
+        Header: 'McpkgNo',
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'mcPkgNumber',
+            url: proCoSysUrls.getMcUrl(pkg.mcPkgId),
+        }),
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 100,
+        Cell: (cellProps) => {
+            return (
+                <CustomLinkCellWithTextDecoration
+                    contentToBeDisplayed={cellProps.value.content.mcPkgNumber}
+                    url={cellProps.value.url}
+                />
+            );
+        },
+    },
+    {
+        id: 'description',
+        Header: 'Description',
+        accessor: (pkg) => pkg.description,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 300,
+        Cell: (cellProps) => {
+            return <CustomDescriptionCell description={cellProps.value} />;
+        },
+    },
+    {
+        id: 'discipline',
+        Header: 'Discipline',
+        accessor: (pkg) => pkg.discipline,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 100,
+    },
+    {
+        id: 'mcStatus',
+        Header: 'MC Status',
+        accessor: (pkg) => pkg.mcStatus,
+        Aggregated: () => null,
+        aggregate: 'count',
+        Cell: (cellProps) => {
+            return (
+                <StatusCustomCell
+                    contentToBeDisplayed={cellProps.value}
+                    cellAttributeFunction={(status) => {
+                        const mcColor = statusColorMap[status];
+                        return {
+                            style: {
+                                backgroundColor: mcColor,
+                            },
+                        };
+                    }}
+                />
+            );
+        },
+        width: 100,
+    },
+    {
+        id: 'responsible',
+        Header: 'Responsible',
+        accessor: (pkg) => pkg.responsible,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 150,
+    },
+    {
+        id: 'phase',
+        Header: 'Phase',
+        accessor: (pkg) => pkg.phase,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 150,
+    },
+    {
+        id: 'area',
+        Header: 'Area',
+        accessor: (pkg) => pkg.area,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 150,
+    },
+    {
+        id: 'commPkgNumber',
+        Header: 'Comm. package',
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'commPkgNo',
+            url: proCoSysUrls.getCommPkgUrl(pkg.commPkgId),
+        }),
+        Aggregated: () => null,
+        aggregate: 'count',
+        Cell: (cellProps) => {
+            return (
+                <CustomLinkCellWithTextDecoration
+                    contentToBeDisplayed={cellProps.value.content.commPkgNumber}
+                    url={cellProps.value.url}
+                />
+            );
+        },
+        width: 120,
+    },
+    {
+        id: 'system',
+        Header: 'System',
+        accessor: (pkg) => pkg.system,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 100,
+    },
+    {
+        id: 'finalPunchPlannedDate',
+        Header: 'Planned M-01 Final Punch',
+        accessor: (pkg) => pkg.finalPunchPlannedDate,
+        Aggregated: () => null,
+        aggregate: 'count',
+        Cell: (cellProps) => {
+            return <CustomYearAndWeekCell dateString={cellProps.value} />;
+        },
+        width: 200,
+    },
+    {
+        id: 'finalPunchActualDate',
+        Header: 'Actual M-01 Actual Date',
+        accessor: (pkg) => pkg.finalPunchActualDate,
+        Aggregated: () => null,
+        aggregate: 'count',
+        Cell: (cellProps) => {
+            return <CustomYearAndWeekCell dateString={cellProps.value} />;
+        },
+        width: 200,
+    },
+    {
+        id: 'rfccPlannedDate',
+        Header: 'Planned M-03 RFC',
+        accessor: (pkg) => pkg.rfccPlannedDate,
+        Aggregated: () => null,
+        aggregate: 'count',
+        Cell: (cellProps) => {
+            return <CustomYearAndWeekCell dateString={cellProps.value} />;
+        },
+        width: 150,
+    },
+    {
+        id: 'rfccActualDate',
+        Header: 'Actual M-03 RFC',
+        accessor: (pkg) => pkg.rfccActualDate,
+        Aggregated: () => null,
+        aggregate: 'count',
+        Cell: (cellProps) => {
+            return <CustomYearAndWeekCell dateString={cellProps.value} />;
+        },
+        width: 150,
+    },
+    {
+        id: 'priority',
+        Header: 'Comm Pri1',
+        accessor: (pkg) => pkg.priority,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 100,
+    },
+    {
+        id: 'priority2',
+        Header: 'Comm Pri2',
+        accessor: (pkg) => pkg.priority2,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 100,
+    },
+    {
+        id: 'priority3',
+        Header: 'Comm Pri3',
+        accessor: (pkg) => pkg.priority3,
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 100,
+    },
 ];
 
 export const tableConfig: TableOptions<McPackage> = {
     objectIdentifierKey: 'mcPkgId',
-    hiddenColumns,
+    preventAutoGenerateColumns: true,
     itemSize: 32,
-
-    columnOrder: [
-        'mcPkgNumberUrl',
-        'description',
-        'discipline',
-        'mcStatus',
-        'responsible',
-        'phase',
-        'area',
-        'commPkgNoUrl',
-        'system',
-        'finalPunchForecastDate',
-        'finalPunchPlannedDate',
-        'finalPunchActualDate',
-        'rfccPlannedDate',
-        'rfccActualDate',
-        'priority',
-        'priority2',
-        'priority3',
-    ],
-    headers: [
-        {
-            key: 'description',
-            title: 'Description',
-            width: 300,
-        },
-        {
-            key: 'system',
-            title: 'System',
-            width: 100,
-        },
-        {
-            key: 'responsible',
-            title: 'Responsible',
-            width: 150,
-        },
-        {
-            key: 'phase',
-            title: 'Phase',
-        },
-        {
-            key: 'discipline',
-            title: 'Discipline',
-            width: 100,
-        },
-        {
-            key: 'mcStatus',
-            title: 'MC Status',
-            width: 100,
-        },
-        {
-            key: 'area',
-            title: 'Area',
-            width: 150,
-        },
-
-        {
-            key: 'finalPunchPlannedDate',
-            title: 'Forecast M-01 Final Punch',
-            width: 200,
-        },
-
-        {
-            key: 'finalPunchActualDate',
-            title: 'Actual M-01 Actual Date',
-            width: 200,
-        },
-        {
-            key: 'rfccPlannedDate',
-            title: 'Forecast M-03 RFC',
-            width: 150,
-        },
-        {
-            key: 'rfccActualDate',
-            title: 'Actual M-03 RFC',
-            width: 150,
-        },
-        {
-            key: 'priority',
-            title: 'Comm Pri1',
-            width: 100,
-        },
-        {
-            key: 'priority2',
-            title: 'Comm Pri2',
-            width: 100,
-        },
-        {
-            key: 'priority3',
-            title: 'Comm Pri3',
-            width: 100,
-        },
-    ],
-    customCellView: [
-        {
-            key: 'description',
-            type: 'Description',
-        },
-        {
-            key: 'mcStatus',
-            type: 'Status',
-            cellAttributeFn: (item) => {
-                const mcColor = statusColorMap[item.mcStatus];
-                return {
-                    style: {
-                        backgroundColor: mcColor,
-                    },
-                };
-            },
-        },
-        {
-            key: 'rfccActualDate',
-            type: 'YearAndWeek',
-        },
-        {
-            key: 'rfccPlannedDate',
-            type: 'YearAndWeek',
-        },
-        {
-            key: 'finalPunchActualDate',
-            type: 'YearAndWeek',
-        },
-        {
-            key: 'finalPunchPlannedDate',
-            type: 'YearAndWeek',
-        },
-    ],
-    customColumns: [
-        {
-            id: 'mcPkgNumberUrl',
-            Header: 'MCpkgno',
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 100,
-            accessor: (pkg) => ({
-                content: pkg,
-                currentKey: 'mcPkgNumber',
-                url: proCoSysUrls.getMcUrl(pkg.mcPkgId),
-            }),
-            Cell: (cellProps) => {
-                return (
-                    <CustomLinkCellWithTextDecoration
-                        contentToBeDisplayed={cellProps.value.content.mcPkgNumber}
-                        url={cellProps.value.url}
-                    />
-                );
-            },
-        },
-        {
-            id: 'commPkgNoUrl',
-            Header: 'Comm. package',
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 120,
-            accessor: (pkg) => ({
-                content: pkg,
-                currentKey: 'commPkgNumber',
-                url: proCoSysUrls.getCommPkgUrl(pkg.commPkgId),
-            }),
-            Cell: (cellProps) => {
-                return (
-                    <CustomLinkCellWithTextDecoration
-                        contentToBeDisplayed={cellProps.value.content.commPkgNumber}
-                        url={cellProps.value.url}
-                    />
-                );
-            },
-        },
-    ],
+    customColumns,
 };
