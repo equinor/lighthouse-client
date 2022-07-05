@@ -168,16 +168,14 @@ const SubmitActionBar = (): JSX.Element => {
                             <Button variant="outlined" onClick={disableEditMode}>
                                 Cancel
                             </Button>
-                            <Button
-                                disabled={!isValid}
-                                onClick={() => handleSave(false)}
-                                variant="outlined"
-                            >
+                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 Save
                             </Button>
-                            <Button disabled={!isValid} onClick={() => handleSave(true)}>
-                                Submit
-                            </Button>
+                            {releaseControl.state === 'Draft' && (
+                                <Button disabled={!isValid} onClick={() => handleSave(true)}>
+                                    Submit
+                                </Button>
+                            )}
                         </>
                     )}
                 </>
