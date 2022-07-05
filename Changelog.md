@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.7.4
+- [MechanicalCompletion] Remove new column from API and prevent auto columns
+- [MechanicalCompletion] Remove prod check on PBI tab
+- [PowerBI] Add check for true/false string values and change to bool type
+- [ReleaseControl] No submit button in edit mode without draft state 
+- [PipingAndHeattrace] Completion status bugfix 
+
 # 1.7.3
 
 -   [Scopechange] State icon for table
