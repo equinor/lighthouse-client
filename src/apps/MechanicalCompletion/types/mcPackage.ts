@@ -55,4 +55,5 @@ export type McPackage = {
     rowKey: string;
     order: number;
     date: string;
+    mccrOutstandingOrSignedAfterFinalPunchActualDateCount: number;
 };

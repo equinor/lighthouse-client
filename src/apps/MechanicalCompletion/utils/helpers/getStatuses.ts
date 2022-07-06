@@ -17,6 +17,8 @@ export const getCommissioningStatus = (mcPackage: McPackage): CommissioningStatu
         return 'RFCC Rejected';
     } else if (mcPackage.rfccIsShipped) {
         return 'RFCC Sent';
+    } else if (mcPackage.mccrOutstandingOrSignedAfterFinalPunchActualDateCount > 0) {
+        return 'OS';
     } else if (mcPackage.punchAcceptActualDate) {
         return 'Punch status accepted';
     } else if (mcPackage.finalPunchActualDate) {
