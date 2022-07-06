@@ -34,9 +34,6 @@ export async function getWorkOrderByIds(ids: string[]): Promise<WorkOrder[]> {
     if (!Array.isArray(workOrders)) {
         throw 'Invalid response';
     }
-    if (workOrders.length !== ids.length) {
-        throw 'Failed to load some work orders';
-    }
 
     return workOrders;
 }
