@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.7.5
+- [Workspace] Use ResizeObserver to fix table height when opening/closing filter panel
+- [ScopeChangeRequest] Show workorders with info text if SC workorders length does not equal FAM workorders
+  
 ## 1.7.4
 - [MechanicalCompletion] Remove new column from API and prevent auto columns
 - [MechanicalCompletion] Remove prod check on PBI tab
