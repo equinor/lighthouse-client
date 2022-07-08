@@ -7,3 +7,4 @@ export * from './edsTabs/useEdsTabs';
 export * from './useTimeoutWithCancel/useTimeooutWithCancel';
 export * from './useOutsideClick';
 export * from './useLocationKey/useLocationKey';
+export * from './useResizeObserver';

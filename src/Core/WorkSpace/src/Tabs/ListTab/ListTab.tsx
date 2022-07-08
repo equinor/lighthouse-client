@@ -1,17 +1,23 @@
+import { useResizeObserver } from '@equinor/hooks';
 import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
 import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
-import { useElementData } from '../../../../../packages/Utils/Hooks/useElementData';
 import { WorkspaceFilter } from '../../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../../Context/DataProvider';
 import { tabApis } from '../../Context/LocationProvider';
 import { useWorkspaceBookmarks } from '../../Util/bookmarks/hooks';
-
+const COLUMN_HEADER_HEIGHT = 32;
+const Container = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+`;
 const Wrapper = styled.section`
     margin: 16px;
-    overflow-y: auto;
+    overflow-y: hidden;
+    overflow-x: scroll;
 `;
 
 export type GetTableApi = () => TableAPI;
@@ -26,7 +32,8 @@ export const ListTab = (): JSX.Element => {
 
     useWorkspaceBookmarks();
 
-    const [ref, { awaitableHeight }] = useElementData();
+    const ref = useRef<HTMLDivElement>(null);
+    const [_width, height] = useResizeObserver(ref);
 
     const columns = useColumns(data[0], Boolean(tableOptions?.preventAutoGenerateColumns), {
         customCellView: tableOptions?.customCellView,
@@ -72,7 +79,7 @@ export const ListTab = (): JSX.Element => {
     );
 
     return (
-        <>
+        <Container>
             <WorkspaceFilter />
 
             <Wrapper ref={ref}>
@@ -81,10 +88,10 @@ export const ListTab = (): JSX.Element => {
                     columns={options.columns}
                     onTableReady={initApi}
                     options={options}
-                    height={awaitableHeight - 58}
+                    height={height - COLUMN_HEADER_HEIGHT}
                     itemSize={tableOptions?.itemSize}
                 />
             </Wrapper>
-        </>
+        </Container>
     );
 };
