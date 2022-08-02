@@ -138,7 +138,7 @@ function checkFormState(
                 return false;
         }
 
-        if (request.originSource !== 'NotApplicable') {
+        if (request.originSource !== 'Not Applicable') {
             if (checkString(request.originSourceId)) {
                 return false;
             }
