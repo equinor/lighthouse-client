@@ -385,11 +385,11 @@ export function isCheckListStepsInRightOrder(
         PipetestStatusOrder.BoxInsulation > checkListStep && insulationBoxes.length !== 0;
 
     const groupedArrays = checkLists.reduce(function (r, a) {
-        r[a.formularType] = r[a.formularType] || [];
-        r[a.formularType].push(a);
+        //Use substring(0, 7) to make tests of formularType ELE19.1xxx and ELE19.2xxx match each other
+        r[a.formularType.substring(0, 7)] = r[a.formularType.substring(0, 7)] || [];
+        r[a.formularType.substring(0, 7)].push(a);
         return r;
     }, Object.create(null));
-
     for (const key in groupedArrays) {
         const array = groupedArrays[key];
         if (
