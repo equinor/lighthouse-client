@@ -40,7 +40,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
 
     return (
         <EditFormWrapper>
-            <FormBanner />
+            <FormBanner state={request.state} />
             <Wrapper>
                 <FormWrapper>
                     <FlexColumn>
