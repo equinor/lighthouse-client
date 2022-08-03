@@ -43,7 +43,7 @@ export const WorkflowCustomEditor = (): JSX.Element => {
                 <WorkflowStep
                     key={workflowStep.item.order}
                     step={workflowStep.item}
-                    steps={undragableSteps.map(({ item }) => item)}
+                    steps={workflowSteps.map(({ item }) => item)}
                     functionalRoles={functionalRoles}
                 />
             ))}
