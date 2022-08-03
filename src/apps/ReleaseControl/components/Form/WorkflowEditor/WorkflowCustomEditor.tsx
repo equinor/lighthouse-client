@@ -18,32 +18,53 @@ export const WorkflowCustomEditor = (): JSX.Element => {
     }));
     const { procosysPlantId } = useFacility();
 
-    const setList = (workflowSteps: DraggableReleaseControlStep[]) =>
+    const setList = (workflowSteps: DraggableReleaseControlStep[]) => {
+        undragableSteps
+            .slice()
+            .reverse()
+            .forEach((x) => workflowSteps.unshift(x));
         updateAtom({ workflowSteps: workflowSteps.map(({ item }) => item) });
+    };
 
     const { getFunctionalRolesQuery } = ProCoSysQueries;
     const { data: functionalRoles } = useQuery<unknown, unknown, FunctionalRole[]>(
         getFunctionalRolesQuery(procosysPlantId, 'RELEASECONTROL')
     );
 
+    const dragableSteps = workflowSteps.filter(
+        (x) => !x.item.isCompleted && x.item.name !== 'Initiate'
+    );
+    const undragableSteps = workflowSteps.filter(
+        (x) => x.item.isCompleted || x.item.name === 'Initiate'
+    );
     return (
-        <ReactSortable<DraggableReleaseControlStep>
-            animation={200}
-            handle={`.${DraggableHandleSelector}`}
-            list={workflowSteps}
-            setList={setList}
-            onEnd={() => {
-                setList(workflowSteps);
-            }}
-        >
-            {workflowSteps.map((dragItem) => (
+        <>
+            {undragableSteps.map((workflowStep) => (
                 <WorkflowStep
-                    key={dragItem.item.order}
-                    step={dragItem.item}
+                    key={workflowStep.item.order}
+                    step={workflowStep.item}
                     steps={workflowSteps.map(({ item }) => item)}
                     functionalRoles={functionalRoles}
                 />
             ))}
-        </ReactSortable>
+            <ReactSortable<DraggableReleaseControlStep>
+                animation={200}
+                handle={`.${DraggableHandleSelector}`}
+                list={dragableSteps}
+                setList={setList}
+                onEnd={() => {
+                    setList(dragableSteps);
+                }}
+            >
+                {dragableSteps.map((dragItem) => (
+                    <WorkflowStep
+                        key={dragItem.item.order}
+                        step={dragItem.item}
+                        steps={workflowSteps.map(({ item }) => item)}
+                        functionalRoles={functionalRoles}
+                    />
+                ))}
+            </ReactSortable>
+        </>
     );
 };

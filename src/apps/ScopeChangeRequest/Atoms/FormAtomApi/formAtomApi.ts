@@ -98,6 +98,9 @@ function prepareRequest(): ScopeChangeCreateEditModel {
     newReq.changeCategoryId = newReq?.changeCategory?.id;
     newReq.disciplineGuesstimates =
         newReq.disciplineGuesstimates?.filter(({ disciplineCode }) => disciplineCode !== '') ?? [];
+    if (newReq.originSource === 'Not Applicable') {
+        newReq.originSource = 'NotApplicable';
+    }
     return newReq as ScopeChangeCreateEditModel;
 }
 
@@ -138,7 +141,7 @@ function checkFormState(
                 return false;
         }
 
-        if (request.originSource !== 'NotApplicable') {
+        if (request.originSource !== 'Not Applicable') {
             if (checkString(request.originSourceId)) {
                 return false;
             }
