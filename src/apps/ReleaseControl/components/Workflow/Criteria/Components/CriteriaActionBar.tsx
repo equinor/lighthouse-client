@@ -30,11 +30,13 @@ export const CriteriaActionBar = ({
     stepOrder,
     setShowAddContributor,
 }: CriteriaActionBarProps): JSX.Element => {
-    const { requestId, isCurrentStep } = useReleaseControlContext(({ releaseControl }) => ({
-        requestId: releaseControl.id,
-        isCurrentStep: releaseControl.currentWorkflowStep?.id === stepId,
-    }));
-
+    const { requestId, isCurrentStep, isPreviousStep } = useReleaseControlContext(
+        ({ releaseControl }) => ({
+            requestId: releaseControl.id,
+            isCurrentStep: releaseControl.currentWorkflowStep?.id === stepId,
+            isPreviousStep: releaseControl.currentWorkflowStep?.order === stepOrder + 1,
+        })
+    );
     const { canAddContributorQuery } = releaseControlQueries.workflowQueries;
 
     const { data: isAllowedToAddContributor } = useQuery(canAddContributorQuery(requestId, stepId));
@@ -125,7 +127,7 @@ export const CriteriaActionBar = ({
                 isDisabled: !canReassign,
             });
         }
-        if (canUnsign) {
+        if (canUnsign && isPreviousStep) {
             actions.push({
                 label: 'Unsign',
                 onClick: () =>
