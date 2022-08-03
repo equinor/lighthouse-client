@@ -75,7 +75,7 @@ export const OriginLink = ({
                     </Link>
                 );
             }
-            case 'NotApplicable': {
+            case 'Not Applicable': {
                 return <div>Not applicable</div>;
             }
         }

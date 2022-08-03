@@ -47,7 +47,7 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
     useUnpackRelatedObjects({ request });
     return (
         <RevisionFormStyledWrapper>
-            <FormBanner />
+            <FormBanner state={request.state} />
             <WarningRevisionBanner />
             <Wrapper>
                 <div>

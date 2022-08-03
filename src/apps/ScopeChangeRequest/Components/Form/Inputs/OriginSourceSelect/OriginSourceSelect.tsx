@@ -9,7 +9,7 @@ export const OriginSourceSelect = (): JSX.Element => {
 
     return (
         <SingleSelect
-            items={['NCR', 'Punch', 'Query', /**'SWCR',**/ 'NotApplicable', 'DCR']}
+            items={['NCR', 'Punch', 'Query', /**'SWCR',**/ 'Not Applicable', 'DCR']}
             label={'Change origin'}
             meta="(Required)"
             value={originSource}
