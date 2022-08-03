@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.7.6
+
+- [ReleaseControl] Bugfix: Made it impossible to drag unsigned steps before historic steps
+- [ReleaseControl] Bugfix: Fixed so you can only unsign the previous step in a workflow (not all past signed steps)
+- [PipingAndHeattrace] Bugfix: Fixed warning triangles sometimes showing up when they shouldn't
+- [ScopeChangeRequest] Bugfix: Fixed state in edit/revision mode showing "Draft" when it is not draft
+- [ScopeChangeRequest] Bugfix: NotApplicable -> Not Applicable
+
 ## 1.7.5
 - [Workspace] Use ResizeObserver to fix table height when opening/closing filter panel
 - [ScopeChangeRequest] Show workorders with info text if SC workorders length does not equal FAM workorders
