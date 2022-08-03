@@ -11,7 +11,7 @@ export interface DisciplineReleaseControlFormModel extends DisciplineReleaseCont
     //workflow
 }
 
-export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
+export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'Not Applicable' | 'DCN';
 export type WorkflowStatus = 'Complete' | 'Active' | 'Inactive' | 'Failed';
 
 export interface Origin {
@@ -56,7 +56,6 @@ export interface DisciplineReleaseControl extends DisciplineReleaseControlBaseMo
     pipetest: Pipetest;
     //workflow
 }
-
 
 export interface Discipline {
     id: string;
