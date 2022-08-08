@@ -132,11 +132,11 @@ export const SubmitButtonBar = (): JSX.Element => {
     });
 
     const onMutate = (draft: boolean) => {
-        const { prepareRequest } = DRCFormAtomApi;
+        const { prepareReleaseControl } = DRCFormAtomApi;
         disciplineReleaseControlFactoryContext.readAtomValue().setHasUnsavedChanges(false);
         mutate({
             draft: draft,
-            model: prepareRequest(),
+            model: prepareReleaseControl(),
         });
     };
 
