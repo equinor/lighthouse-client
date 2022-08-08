@@ -3,11 +3,29 @@ import { ClientApi } from '@equinor/lighthouse-portal-client';
 export function setup(appApi: ClientApi): void {
     appApi.createPowerBiViewer().registerFusionPowerBi({
         reportURI: 'pp-punch-analytics',
+        //options: { pageLoad: true },
         pages: [
-            { pageTitle: 'Overview', pageId: 'ReportSectionb937310a77e18f67ff37', default: true },
-            { pageTitle: 'Details', pageId: 'ReportSectiond274d4c19774cb67678e' },
-            { pageTitle: 'Browser', pageId: 'ReportSection324db9254a87a5d98229' },
-            { pageTitle: 'History', pageId: 'ReportSection154e415914510b3eb1b1' },
+            {
+                pageTitle: 'Overview',
+                pageId: 'ReportSection',
+                default: true,
+            },
+            {
+                pageTitle: 'Details',
+                pageId: 'ReportSection43401c24820f8881635c',
+            },
+            {
+                pageTitle: 'Browser',
+                pageId: 'ReportSection97c25bc44148e1cacb66',
+            },
+            {
+                pageTitle: 'History',
+                pageId: 'ReportSectionaba81600abac15ec319d',
+            },
+            {
+                pageTitle: 'Look ahead',
+                pageId: 'ReportSection4c3b20decb1700dd509b',
+            },
         ],
     });
 }
