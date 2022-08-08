@@ -10,7 +10,7 @@ import {
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus
+    sortPackagesByStatus,
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
 import { statusBarConfig } from './utility/config/statusBarConfig';
@@ -74,16 +74,22 @@ export function setup(appApi: ClientApi): void {
             reportURI: 'pp-handover-analytics',
             pages: [
                 {
-                    pageTitle: 'RFO Overview',
-                    pageId: 'ReportSectionb937310a77e18f67ff37',
-                    default: true,
+                    pageTitle: 'RFC Overview',
+                    pageId: 'ReportSection',
                 },
-                { pageTitle: 'RFC overview', pageId: 'ReportSectionda03508103eaf565faf8' },
-                { pageTitle: 'Browser', pageId: 'ReportSection272f7d54d84d16689496' },
+                {
+                    pageTitle: 'RFC plan',
+                    pageId: 'ReportSection458b2ed2c450a616bd66',
+                },
+                {
+                    pageTitle: 'RFO Overview',
+                    pageId: 'ReportSection78ce886528303462053a',
+                },
+                {
+                    pageTitle: 'RFO plan',
+                    pageId: 'ReportSection552211d6b260006a6411',
+                },
             ],
-            options: {
-                pageLoad: true,
-            },
         });
 }
 
