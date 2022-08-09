@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.7.7
+
+- [Workspace] Changed bookmark icon in workspace
+- [ReleaseControl/ScopeChangeRequest] No default selected reference type
+- [ReleaseControl] Added completedStatusName for workflow steps
+- [Portal] Favorited menu icons visible without hovering
+- [Checklist] Update report pages
+- [SWCR] Update report pages
+- [Handover] Update report pages
+- [Punch] Update report pages
+
 ## 1.7.6
 
 - [ReleaseControl] Bugfix: Made it impossible to drag unsigned steps before historic steps
