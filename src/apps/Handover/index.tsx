@@ -76,6 +76,7 @@ export function setup(appApi: ClientApi): void {
                 {
                     pageTitle: 'RFC Overview',
                     pageId: 'ReportSection',
+                    default: true,
                 },
                 {
                     pageTitle: 'RFC plan',
