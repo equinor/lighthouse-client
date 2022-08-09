@@ -10,6 +10,10 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [ReleaseControl/ScopeChangeRequest] No default selected reference type
 - [ReleaseControl] Added completedStatusName for workflow steps
 - [Portal] Favorited menu icons visible without hovering
+- [Checklist] Update report pages
+- [SWCR] Update report pages
+- [Handover] Update report pages
+- [Punch] Update report pages
 
 ## 1.7.6
 
