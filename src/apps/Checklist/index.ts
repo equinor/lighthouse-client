@@ -7,7 +7,10 @@ export function setup(appApi: ClientApi): void {
             {
                 pageTitle: 'Overview',
                 pageId: 'ReportSection',
-                default: true,
+            },
+            {
+                pageTitle: 'Details',
+                pageId: 'ReportSection7d89d280053cabea0305',
             },
             {
                 pageTitle: 'Browser',
