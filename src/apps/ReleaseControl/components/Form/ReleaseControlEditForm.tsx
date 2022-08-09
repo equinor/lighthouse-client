@@ -128,9 +128,9 @@ const SubmitActionBar = (): JSX.Element => {
     );
 
     const handleSave = (setAsOpen: boolean) => {
-        const { prepareRequest } = DRCFormAtomApi;
+        const { prepareReleaseControl } = DRCFormAtomApi;
         mutate({
-            model: prepareRequest(),
+            model: prepareReleaseControl(),
             setAsOpen: setAsOpen,
         });
     };

@@ -34,7 +34,7 @@ export const BookmarkDropdown = ({
                     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                     aria-selected={isPopoverOpen}
                 >
-                    <ClickableIcon name="bookmarks" />
+                    <ClickableIcon name="bookmark_outlined" />
                 </TabButton>
             </div>
 
