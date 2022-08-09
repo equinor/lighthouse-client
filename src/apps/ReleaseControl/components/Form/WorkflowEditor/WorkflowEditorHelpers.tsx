@@ -5,6 +5,7 @@ import {
     Criteria,
     CriteriaTemplate,
     ReleaseControl,
+    ReleaseControlStepNames,
 } from '../../../types/releaseControl';
 import { InsertAfter } from './InsertAfter';
 import { InsertBefore } from './InsertBefore';
@@ -24,6 +25,7 @@ export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
             order: 1,
             name: 'Initiate',
             allowContributors: true,
+            completedStatusName: 'Initiated',
             criteriaTemplates: [
                 {
                     type: 'RequireProcosysUserSignature',
@@ -44,7 +46,60 @@ export function updateStepName(
 ): CreateReleaseControlStepModel[] {
     const index = steps.findIndex((x) => x.order === step.order);
     steps[index].name = stepName;
+    steps[index] = getStatusNamesForStep(steps[index]);
     return [...steps];
+}
+
+export function getStatusNamesForStep(
+    step: CreateReleaseControlStepModel
+): CreateReleaseControlStepModel {
+    switch (step.name) {
+        case ReleaseControlStepNames.Coordinator:
+            step.completedStatusName = 'Coordinated';
+            break;
+        case ReleaseControlStepNames.Engineering:
+            step.completedStatusName = 'Engineering completed';
+            break;
+        case ReleaseControlStepNames.Material:
+            step.completedStatusName = 'Material completed';
+            break;
+        case ReleaseControlStepNames.WorkPrep:
+            step.completedStatusName = 'Work prep completed';
+            break;
+        case ReleaseControlStepNames.Scaffolding:
+            step.completedStatusName = 'Scaffolding completed';
+            break;
+        case ReleaseControlStepNames.CircuitIsolation:
+            step.completedStatusName = 'Circuit isolation completed';
+            break;
+        case ReleaseControlStepNames.DemountISO:
+            step.completedStatusName = 'Isolation demounted';
+            break;
+        case ReleaseControlStepNames.CheckHT:
+            step.completedStatusName = 'Check/demount HT completed';
+            break;
+        case ReleaseControlStepNames.DemountMech:
+            step.completedStatusName = 'Demount Mech./Piping completed';
+            break;
+        case ReleaseControlStepNames.ATest:
+            step.completedStatusName = 'A-test completed';
+            break;
+        case ReleaseControlStepNames.RemountISO:
+            step.completedStatusName = 'Isolation completed';
+            break;
+        case ReleaseControlStepNames.BTest:
+            step.completedStatusName = 'B-test completed';
+            break;
+        case ReleaseControlStepNames.CircuitPowerUp:
+            step.completedStatusName = 'Circuit power-up completed';
+            break;
+        case ReleaseControlStepNames.CTest:
+            step.completedStatusName = 'C-test completed';
+            break;
+        default:
+            step.completedStatusName = 'Completed';
+    }
+    return step;
 }
 
 export function updateStepResponsible(
@@ -245,157 +300,6 @@ export function packCriterias(criterias: Criteria[]): CriteriaTemplate[] {
         return criteriaTemplate;
     });
     return criteriaTemplates;
-}
-
-//TODO - get from backend
-export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
-    const fullReleaseControlTemplate: CreateReleaseControlStepModel[] = [
-        {
-            order: 1,
-            name: 'Initiate',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysUserSignature',
-                    assignToCreator: true,
-                    value: '',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 2,
-            name: 'Coordinator',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'HTISO - Coordinator',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 3,
-            name: 'Work prep',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Work prep.',
-                },
-            ],
-            criterias: [],
-        },
-
-        {
-            order: 4,
-            name: 'Circuit isolation',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Comm. Electro',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 5,
-            name: 'Demount ISO',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Insulation',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 6,
-            name: 'Check/demount HT',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Electrical',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 7,
-            name: 'Remount (or new) HT/A-test',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Electrical',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 8,
-            name: 'Remount (or new) ISO',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Insulation',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 9,
-            name: 'Remount (or new) HT/B-test',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Electrical',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 10,
-            name: 'Circuit power-up',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Comm. Electro',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 11,
-            name: 'Remount (or new) HT/C-test',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Electrical',
-                },
-            ],
-            criterias: [],
-        },
-    ];
-    return fullReleaseControlTemplate;
 }
 
 export const updateStep = (stepName: 'scope' | 'workflow') => {

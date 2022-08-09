@@ -217,3 +217,20 @@ export type FamTagType = {
     tagHeated: string | null;
     checklistIds: string | null;
 };
+
+export enum ReleaseControlStepNames {
+    Coordinator = 'Coordinator',
+    Engineering = 'Engineering',
+    Material = 'Material',
+    WorkPrep = 'Work prep',
+    Scaffolding = 'Scaffolding',
+    CircuitIsolation = 'Circuit isolation',
+    DemountISO = 'Demount ISO',
+    CheckHT = 'Check/demount HT',
+    DemountMech = 'Demount Mech./Piping',
+    ATest = 'Remount (or new) HT/A-test',
+    RemountISO = 'Remount (or new) ISO',
+    BTest = 'Recheck (or new) HT/B-test',
+    CircuitPowerUp = 'Circuit power-up',
+    CTest = 'Recheck (or new) HT/C-test',
+}

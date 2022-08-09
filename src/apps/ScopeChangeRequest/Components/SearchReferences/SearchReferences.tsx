@@ -56,9 +56,7 @@ export const SearchReferences = ({
     const referenceTypes: ReferenceType[] = options?.referenceTypes ?? DEFAULT_REFERENCE_TYPES;
     const advancedSearchReferenceTypes = options?.referenceTypesAdvanced ?? referenceTypes;
 
-    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>(
-        referenceTypes[0]
-    );
+    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>(undefined);
 
     const addRelatedObject = (value: TypedSelectOption | TypedSelectOption[]) => {
         const newValues = Array.isArray(value) ? value : [value];
@@ -107,6 +105,7 @@ export const SearchReferences = ({
                                 label="Reference type"
                                 items={referenceTypes}
                                 value={referenceType}
+                                placeholder={'Select reference'}
                                 handleSelectedItemChange={(change) => {
                                     if (!change.selectedItem) {
                                         setReferenceType(undefined);

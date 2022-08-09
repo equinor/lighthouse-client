@@ -65,10 +65,17 @@ export function setup(appApi: ClientApi): void {
             pages: [
                 {
                     pageTitle: 'Overview',
-                    pageId: 'ReportSectionb937310a77e18f67ff37',
+                    pageId: 'ReportSectionc7857a891a15a2090c40',
                     default: true,
                 },
-                { pageTitle: 'History', pageId: 'ReportSection0cb62244235c033e5151' },
+                {
+                    pageTitle: 'History',
+                    pageId: 'ReportSection714382f95324b00dce04',
+                },
+                {
+                    pageTitle: 'Look ahead',
+                    pageId: 'ReportSection272124b48fe5f7f78190',
+                },
             ],
         });
 }
