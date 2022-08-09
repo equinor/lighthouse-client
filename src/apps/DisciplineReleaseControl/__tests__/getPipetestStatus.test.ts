@@ -5,7 +5,7 @@ import { Pipetest } from '../Types/pipetest';
 describe('getPipetestStatus', () => {
     it('should return pressure test as status', () => {
         const data = testData;
-        expect(getPipetestStatus(data)).toStrictEqual('test1');
+        expect(getPipetestStatus(data)).toStrictEqual(PipetestStep.PressureTest);
     });
 });
 
