@@ -10,6 +10,10 @@ export function setup(appApi: ClientApi): void {
                 default: true,
             },
             {
+                pageTitle: 'Details',
+                pageId: 'ReportSection7d89d280053cabea0305',
+            },
+            {
                 pageTitle: 'Browser',
                 pageId: 'ReportSectionc240c3a6d43e1c6eaa5d',
             },
