@@ -7,6 +7,7 @@ export function setup(appApi: ClientApi): void {
             {
                 pageTitle: 'Overview',
                 pageId: 'ReportSection',
+                default: true,
             },
             {
                 pageTitle: 'Details',
