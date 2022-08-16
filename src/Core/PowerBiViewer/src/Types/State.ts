@@ -8,14 +8,13 @@ export interface ViewState {
     title: string;
     shortName: string;
     groupe: string;
-    reports: FusionPowerBiOptions[];
+    report: FusionPowerBiOptions;
 }
 
 export interface FusionPowerBiOptions {
     reportURI: string;
     filter?: Filter[];
     options?: PBIOptions;
-    pages: Page[];
 }
 
 export interface Page {
