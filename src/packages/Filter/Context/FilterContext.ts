@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 import { FilterApi } from '../Hooks/useFilterApi';
 
-export const FilterApiContext = React.createContext({} as FilterApi<unknown>);
+export const FilterApiContext = createContext({} as FilterApi<unknown>);
