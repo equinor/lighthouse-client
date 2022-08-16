@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
 import {
     fetchAndChewPipetestDataFromApi,
-    sortCheckListsForTable
+    sortCheckListsForTable,
 } from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';

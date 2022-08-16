@@ -1,4 +1,4 @@
-import { httpClient } from '../../../../Core/Client/Functions';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { Pipetest } from '../../Types/pipetest';
 
 export async function getPipetests(): Promise<Pipetest[]> {

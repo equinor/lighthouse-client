@@ -8,10 +8,11 @@ export interface EleNetwork {
 
 export interface EleNetworkCircuit {
     eleNetId: number;
-    parentEleNetId: number;
+    parentEleNetId: number | null;
     tagNo: string;
     eleSymbolCode: string;
-    circuitSymbolCode: string;
+    circuitSymbolCode: string | null;
+    circuitUsage: string | null;
 }
 
 export interface EleNetworkCable {
@@ -21,7 +22,7 @@ export interface EleNetworkCable {
     estimatedCableLength: string;
     installedCableLength: string;
     pulledDate: string;
-    releasedDate: string;
+    releasedDate: string | null;
     terminatedFromDate: string;
     terminatedToDate: string;
     testedDate: string;
