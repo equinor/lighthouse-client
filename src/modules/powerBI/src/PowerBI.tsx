@@ -3,13 +3,12 @@ import { EventHub } from '@equinor/lighthouse-utils';
 import { Embed, Report } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { PBIWrapper, TopBar, Wrapper } from '../PowerBI.styles';
 import { PowerBIFilter } from './Components';
 import { ReportErrorMessage } from './Components/ReportErrorMessage/ReportErrorMessage';
 import { usePowerBI } from './Hooks';
-import { useGetPages } from './Hooks/useGetPages';
 import './style.css';
 import { PBIOptions, PowerBIBookmarkPayload } from './Types';
 import { Filter } from './Types/filter';
@@ -18,6 +17,7 @@ interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
     options?: PBIOptions;
+    onReportLoad?: (report: Report | undefined) => void;
 }
 
 const ev = new EventHub();
@@ -74,16 +74,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     // Registering custom events for saving and applying bookmarks. Functions that are passed as arguments will
     // run once the events are fired.
     useBookmarkEvents({ saveFn: captureAndPersistBookmark, applyFn: applyBookmark });
-
-    // Used for printing pages to console in development can be controlled by option parameters.
-    useGetPages(report, options?.pageLoad);
-    useEffect(() => {
-        const setActivePageByName = (name: string) => {
-            report?.setPage(name);
-        };
-
-        options?.activePage && setActivePageByName(options.activePage);
-    }, [options?.activePage, report]);
 
     const eventHandlersMap = new Map([
         [
@@ -193,6 +183,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                                 }
 
                                 setReport(embedObject as Report);
+                                props?.onReportLoad && props.onReportLoad(embedObject as Report);
                             }}
                             cssClassName="pbiEmbed"
                         />

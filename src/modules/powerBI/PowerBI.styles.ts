@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 export const Wrapper = styled.div`
     overflow: hidden;
@@ -6,6 +7,7 @@ export const Wrapper = styled.div`
     height: 100%;
     display: grid;
     grid-template-rows: auto 1fr;
+    background-color: ${tokens.colors.ui.background__light.hsla};
 `;
 
 export const TopBar = styled.div<{ height: number }>`

@@ -36,16 +36,5 @@ export function setup(addApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerPowerBIOptions({
             reportURI: 'pp-loop-analytics',
-            pages: [
-                {
-                    pageTitle: 'MCCR overview',
-                    pageId: 'ReportSection32a24477ad9f4a9aaa2f',
-                    default: true,
-                },
-                {
-                    pageTitle: 'History',
-                    pageId: 'ReportSection80f235578613a69873e1',
-                },
-            ],
         });
 }
