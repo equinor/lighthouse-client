@@ -66,7 +66,7 @@ export const PowerBiViewerContext = ({ children }: PropsWithChildren<{}>) => {
                     };
                 });
             } catch {
-                console.error('Nope');
+                console.error('Cannot set PBI report');
             }
         });
     };
