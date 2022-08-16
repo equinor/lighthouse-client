@@ -25,7 +25,7 @@ import {
 } from '../Types/drcEnums';
 
 describe('statusHelpers tests', () => {
-    it('should return pressure test as status', () => {
+    it('should return pressure test as status because it is the current step', () => {
         expect(getPipetestStatus(testData1)).toStrictEqual(PipetestStep.PressureTest);
     });
     it('should return specific value as htCableRfc', () => {
@@ -33,7 +33,7 @@ describe('statusHelpers tests', () => {
             '2022-11-10T00:00:00+00:00'
         );
     });
-    it('should return c-test sort value', () => {
+    it('should return b-test sort value from ELE19.2 checklists', () => {
         expect(
             getChecklistSortValue(
                 testData1.checkLists.filter((x) => x.formularType === 'ELE19.2JCA')[0]

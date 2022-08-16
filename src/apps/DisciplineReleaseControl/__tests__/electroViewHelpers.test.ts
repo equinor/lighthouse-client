@@ -28,7 +28,7 @@ describe('electroViewHelpers tests', () => {
         expect(result.length).toBe(1);
         expect(result[0].tagNo).toStrictEqual('PT201609A');
     });
-    it('should return ok as status', () => {
+    it('should return ok as status because all checklists are OK or PB', () => {
         expect(getNodeStatus(eleTestData.checkLists, '82EL065-409-B01')).toStrictEqual('OK');
     });
 
