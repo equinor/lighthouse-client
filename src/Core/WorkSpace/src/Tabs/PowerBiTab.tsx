@@ -23,7 +23,7 @@ export const PowerBiTab = (): JSX.Element | null => {
                 <PowerBI
                     reportUri={powerBiOptions?.reportURI}
                     filterOptions={powerBiOptions.filter}
-                    onReportLoad={async (report) => {
+                    onReportLoad={(report) => {
                         setPbiReport(report);
                     }}
                     options={{

@@ -37,7 +37,7 @@ const PbiViewer = (props: PowerBiViewerProps) => {
                 <PowerBI
                     reportUri={configReport.reportURI}
                     filterOptions={configReport.filter}
-                    onReportLoad={async (report) => {
+                    onReportLoad={(report) => {
                         setReport(report);
                     }}
                     options={{
