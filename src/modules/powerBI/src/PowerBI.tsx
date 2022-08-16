@@ -138,16 +138,11 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     ]);
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+
     useEffect(() => {
-        (async () => {
-            if (options?.activePage) {
-                const activePage = await report?.getActivePage();
-                if (options.activePage !== activePage?.name) {
-                    report?.setPage(options.activePage);
-                }
-            }
-        })();
+        options?.activePage && report?.setPage(options.activePage);
     }, [options?.activePage, report]);
+
     if (error) {
         return (
             <ReportErrorMessage
