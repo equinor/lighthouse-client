@@ -1,6 +1,6 @@
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
-import { usePowerBiViewer } from '../../Api/powerBiViewerState';
-import { Page } from '../../Types/State';
+import { useGetPages } from '@equinor/lighthouse-powerbi';
+import { usePowerBiContext } from '../../Context/PbiContext';
 import {
     Divider,
     HeaderContent,
@@ -18,43 +18,48 @@ interface PowerBiViewerHeaderProps {
     title: string;
     shortName: string;
     groupName: string;
-    activePage?: Page;
-    handleSetActivePage(page: Page): void;
 }
 
 export const PowerBiViewerHeader = ({
     title,
     shortName,
     groupName,
-    activePage,
-    handleSetActivePage,
 }: PowerBiViewerHeaderProps): JSX.Element => {
-    const { reports } = usePowerBiViewer(shortName);
+    const { report, activePage, setActivePage } = usePowerBiContext();
+    const { pages } = useGetPages(report);
 
     return (
         <HeaderWrapper>
             <Title variant="h3">{title}</Title>
             <HeaderContent>
                 <LeftSection>
-                    <Wrap>
-                        {Object.values(reports).map((report) => {
-                            return report.pages.map((page) => {
+                    {pages && (
+                        <Wrap>
+                            {pages.map((page) => {
+                                const isPageActive =
+                                    page.name === activePage?.pageId
+                                        ? true
+                                        : page.displayName === activePage?.pageTitle
+                                        ? true
+                                        : false;
                                 return (
                                     <HeaderTab
-                                        active={
-                                            activePage &&
-                                            page.pageId === activePage.pageId &&
-                                            page.pageTitle === page.pageTitle
+                                        key={page.name}
+                                        onClick={() =>
+                                            setActivePage({
+                                                pageId: page.name,
+                                                pageTitle: page.displayName,
+                                            })
                                         }
-                                        key={`pages-${report.reportURI}-${page.pageId}`}
-                                        onClick={() => handleSetActivePage(page)}
+                                        active={isPageActive}
+                                        style={{ overflowX: 'visible' }}
                                     >
-                                        <TabTitle>{page.pageTitle}</TabTitle>
+                                        <TabTitle>{page.displayName}</TabTitle>
                                     </HeaderTab>
                                 );
-                            });
-                        })}
-                    </Wrap>
+                            })}
+                        </Wrap>
+                    )}
                 </LeftSection>
                 <RightSection>
                     <Line />

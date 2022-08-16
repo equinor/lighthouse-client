@@ -1,4 +1,5 @@
 import { PBIOptions } from '@equinor/lighthouse-powerbi';
+import { Report } from 'powerbi-client';
 import {
     createContext,
     PropsWithChildren,
@@ -10,8 +11,8 @@ import {
 import { useDataContext } from './DataProvider';
 
 interface ViewState {
+    pbiReport?: Report | undefined;
     hasPowerBi: boolean;
-    pages: Page[];
     activePage?: Page;
     hasActiveFilters: boolean;
     pbiOptions?: PBIOptions;
@@ -28,6 +29,7 @@ interface ViewContext extends ViewState {
     setActivePage(pages: Page, options?: PBIOptions): void;
     resetState(): void;
     setHasActiveFilters(isActive: boolean): void;
+    setPbiReport(pbiReport: Report | undefined): void;
 }
 
 const Context = createContext({} as ViewContext);
@@ -42,19 +44,6 @@ const INIT_STATE = {
 export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
     const [state, setState] = useState<ViewState>(INIT_STATE);
     const { powerBiOptions } = useDataContext();
-
-    useEffect(() => {
-        if (powerBiOptions !== undefined) {
-            setState((s) => ({
-                ...s,
-                hasPowerBi: true,
-                pages: powerBiOptions.pages,
-                activePage: powerBiOptions.pages.find((p) => p.default),
-            }));
-        } else {
-            setState(INIT_STATE);
-        }
-    }, [powerBiOptions]);
 
     const registerPages = useCallback((pages: Page[]) => {
         setState((s) => {
@@ -78,6 +67,36 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
         setState(INIT_STATE);
     }, []);
 
+    const setPbiReport = (report: Report | undefined) => {
+        report?.on('loaded', async () => {
+            try {
+                const active = await report.getActivePage();
+                setState((s) => {
+                    return {
+                        ...s,
+                        activePage: {
+                            pageId: active.name,
+                            pageTitle: active.displayName,
+                        },
+                        pbiReport: report,
+                    };
+                });
+            } catch {
+                console.error('Cannot set report');
+            }
+        });
+    };
+
+    useEffect(() => {
+        if (powerBiOptions !== undefined) {
+            setState((s) => ({
+                ...s,
+                hasPowerBi: true,
+            }));
+        } else {
+            setState(INIT_STATE);
+        }
+    }, [powerBiOptions]);
     return (
         <Context.Provider
             value={{
@@ -86,6 +105,7 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
                 setActivePage,
                 resetState,
                 setHasActiveFilters,
+                setPbiReport,
             }}
         >
             {children}
