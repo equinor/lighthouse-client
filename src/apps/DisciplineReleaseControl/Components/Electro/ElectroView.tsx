@@ -12,7 +12,7 @@ import {
     ElectroViewNodeText,
     ElectroViewRow,
     SwitchBoardBorderContainer,
-    SwitchBoardContainer
+    SwitchBoardContainer,
 } from './styles';
 
 interface ElectroViewProps {

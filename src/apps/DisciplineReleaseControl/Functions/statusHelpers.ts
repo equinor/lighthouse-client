@@ -83,9 +83,9 @@ export function getHTCableRfc(checkLists: CheckList[]): string {
         const commDate = checkList.c01Forecast || checkList.c01Planned;
 
         if (mcDate !== null) {
-            dates.push(mcDate);
+            dates.push(mcDate ?? '');
         } else if (commDate !== null) {
-            dates.push(commDate);
+            dates.push(commDate ?? '');
         }
     });
 

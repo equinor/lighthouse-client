@@ -1,4 +1,4 @@
-import { getActiveFilterGroupArray } from '../Utils';
+import { getActiveFilterGroupArray } from '../Utils/getActiveFilterGroups';
 const activeFilters = {
     'Work type': [],
     'Tag test': [],

@@ -101,10 +101,12 @@ export interface Criteria {
     signedState: CriteriaSignState | null;
 }
 export interface CriteriaTemplate {
+    id?: string;
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
     assignToCreator: boolean;
     //I.E functional role name or azure oid
     value?: string;
+    valueDescription?: string;
 }
 
 export interface ReleaseControlDocument {
