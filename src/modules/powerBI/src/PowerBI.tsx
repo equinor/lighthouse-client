@@ -3,7 +3,7 @@ import { EventHub } from '@equinor/lighthouse-utils';
 import { Embed, Report } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { PBIWrapper, TopBar, Wrapper } from '../PowerBI.styles';
 import { PowerBIFilter } from './Components';
@@ -26,7 +26,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     const { reportUri, filterOptions, options } = props;
     // Default Options
     const aspectRatio = useMemo(() => options?.aspectRatio || 0.41, [options?.aspectRatio]);
-
+    console.log('active page', options?.activePage);
     const [ref, { width }] = useElementData();
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
 
@@ -108,6 +108,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
             'pageChanged',
             function () {
                 setIsLoaded(false);
+                console.log('eeee');
             },
         ],
         [
@@ -139,7 +140,16 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     ]);
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
-
+    useEffect(() => {
+        (async () => {
+            if (options?.activePage) {
+                const activePage = await report?.getActivePage();
+                if (options.activePage !== activePage?.name) {
+                    report?.setPage(options.activePage);
+                }
+            }
+        })();
+    }, [options?.activePage, report]);
     if (error) {
         return (
             <ReportErrorMessage
