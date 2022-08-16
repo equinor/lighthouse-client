@@ -26,7 +26,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     const { reportUri, filterOptions, options } = props;
     // Default Options
     const aspectRatio = useMemo(() => options?.aspectRatio || 0.41, [options?.aspectRatio]);
-    console.log('active page', options?.activePage);
     const [ref, { width }] = useElementData();
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
 
@@ -108,7 +107,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
             'pageChanged',
             function () {
                 setIsLoaded(false);
-                console.log('eeee');
             },
         ],
         [
