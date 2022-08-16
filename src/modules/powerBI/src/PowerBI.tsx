@@ -173,7 +173,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                         <PowerBIEmbed
                             embedConfig={config}
                             eventHandlers={eventHandlersMap}
-                            getEmbeddedComponent={async (embedObject: Embed) => {
+                            getEmbeddedComponent={(embedObject: Embed) => {
                                 if (options?.pageLoad) {
                                     // eslint-disable-next-line no-console
                                     console.log(
