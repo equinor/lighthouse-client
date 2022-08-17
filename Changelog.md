@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.8.0
+[PowerBI] Automatically load PowerBI pages. 
+[PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
+[Workspace] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and pageTitle is allowed anymore.
+[PowerBIViewer] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and pageTitle is allowed anymore.
+[Apps] Remove PowerBI pages config in all apps that uses PowerBI
 ## 1.7.7
 
 - [Workspace] Changed bookmark icon in workspace
