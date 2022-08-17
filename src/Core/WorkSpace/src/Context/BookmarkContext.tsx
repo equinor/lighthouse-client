@@ -61,7 +61,8 @@ export const BookmarkContextWrapper = ({
         if (activeTab !== 'analytics') {
             setActivePage(
                 {
-                    pageId: bookmark?.mainPage || bookmark.name,
+                    pageId:
+                        bookmark.name !== bookmark?.mainPage ? bookmark.name : bookmark.mainPage,
                     pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
                 },
                 {
@@ -73,7 +74,7 @@ export const BookmarkContextWrapper = ({
             return;
         } else {
             setActivePage({
-                pageId: bookmark?.mainPage || bookmark.name,
+                pageId: bookmark.name !== bookmark?.mainPage ? bookmark.name : bookmark?.mainPage,
                 pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
             });
             if (isRedirect) {
