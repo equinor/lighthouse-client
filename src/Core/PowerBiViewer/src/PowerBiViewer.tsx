@@ -43,7 +43,7 @@ const PbiViewer = (props: PowerBiViewerProps) => {
                     options={{
                         ...pbiOptions,
                         activePage: activePage?.pageId,
-                        defaultPage: activePage?.pageId,
+                        defaultPage: pbiOptions?.defaultPage || activePage?.pageId,
                         bookmark: pbiOptions?.bookmark,
                         activePageDisplayName: activePage?.pageTitle,
                         applyBookmark: handleApplyingBookmark,

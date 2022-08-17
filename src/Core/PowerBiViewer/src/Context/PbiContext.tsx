@@ -90,13 +90,9 @@ export const PowerBiViewerContext = ({ children }: PropsWithChildren<{}>) => {
                 setReady(false);
                 setState((s) => ({
                     ...s,
-                    activePage: {
-                        pageId: bookmark?.mainPage || bookmark.name,
-                        pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
-                    },
                     pbiOptions: {
                         bookmark: { state: bookmark.bookmarkState },
-                        defaultPage: bookmark?.mainPage || bookmark.name,
+                        defaultPage: bookmark?.name || bookmark.name,
                     },
                 }));
 
