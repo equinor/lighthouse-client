@@ -14,9 +14,8 @@ export const PowerBiPages = (): JSX.Element => {
                         <TabButton
                             width={`${page.displayName.length * 10}px`}
                             aria-selected={
-                                (activePage?.pageId &&
-                                    page.name === activePage.pageId &&
-                                    page.displayName === activePage.pageTitle) ||
+                                (activePage?.pageId && page.name === activePage.pageId) ||
+                                page.displayName === activePage?.pageTitle ||
                                 false
                             }
                             key={`pages-${page.name}`}
