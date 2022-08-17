@@ -39,29 +39,6 @@ export function setup(appApi: ClientApi): void {
             !appApi.isProduction
                 ? {
                       reportURI: 'pp-pipetest-analytics',
-                      pages: [
-                          {
-                              pageId: 'ReportSection',
-                              pageTitle: 'Piping',
-                              default: true,
-                          },
-                          {
-                              pageId: 'ReportSectionc67bd7a96a9bd5b9c037',
-                              pageTitle: 'Piping handover',
-                          },
-                          {
-                              pageId: 'ReportSectionfea0083e762e0a19043e',
-                              pageTitle: 'HT and insulation',
-                          },
-                          {
-                              pageId: 'ReportSectionbe3007f9d330ed4572b0',
-                              pageTitle: 'HT and insulation handover',
-                          },
-                          {
-                              pageId: 'ReportSectionc4bf0e016576ca5eb4ac',
-                              pageTitle: 'Boxes',
-                          },
-                      ],
                   }
                 : (undefined as unknown as PowerBiOptions)
         );
