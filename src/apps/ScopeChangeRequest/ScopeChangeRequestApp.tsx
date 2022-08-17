@@ -48,17 +48,6 @@ export function setup(appApi: ClientApi): void {
         ])
         .registerPrefetchQueries(prefetchQueriesOptions)
         .registerPowerBIOptions({
-            pages: [
-                {
-                    pageId: 'ReportSection4a8a96cf641d50747a13',
-                    pageTitle: 'Overview',
-                    default: true,
-                },
-                {
-                    pageId: 'ReportSection40a8a70e6f82243888ca',
-                    pageTitle: 'History',
-                },
-            ],
             reportURI: 'pp-scope-change-analytics',
         });
 }

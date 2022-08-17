@@ -26,6 +26,7 @@ const InfoChip = styled(Chip)`
     color: ${tokens.colors.text.static_icons__default.hex};
     font-weight: 500;
     font-size: 12px;
+    z-index: 1;
 `;
 
 const calculateHiddenFilters = (

@@ -46,7 +46,7 @@ export const BookmarkContextWrapper = ({
     } = useFilterApiContext();
 
     const { activeTab, handleSetActiveTab } = useLocationContext();
-    const { setActivePage } = useViewerContext();
+    const { setActivePage, pbiReport } = useViewerContext();
     const user = useCurrentUser();
 
     const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
@@ -55,12 +55,13 @@ export const BookmarkContextWrapper = ({
     const favourite = useBookmarkMutations(favouriteBookmark);
 
     const handlePowerBiApply = (
-        bookmark: PowerBIBookmarkPayload
+        bookmark: PowerBIBookmarkPayload,
+        isRedirect?: boolean
     ): PowerBIBookmarkPayload | void => {
         if (activeTab !== 'analytics') {
             setActivePage(
                 {
-                    pageId: bookmark?.mainPage || bookmark.name,
+                    pageId: bookmark.name,
                     pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
                 },
                 {
@@ -72,9 +73,14 @@ export const BookmarkContextWrapper = ({
             return;
         } else {
             setActivePage({
-                pageId: bookmark?.mainPage || bookmark.name,
+                pageId: bookmark.name,
                 pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
             });
+            if (isRedirect) {
+                pbiReport && pbiReport.bookmarksManager.applyState(bookmark.bookmarkState);
+                return;
+            }
+
             return bookmark;
         }
     };
@@ -149,7 +155,7 @@ export const BookmarkContextWrapper = ({
                     if (isWorkspaceBookmark(bookmark)) {
                         handleWorkspaceApply(bookmark);
                     } else {
-                        return handlePowerBiApply(bookmark);
+                        return handlePowerBiApply(bookmark, true);
                     }
                 }
             })();

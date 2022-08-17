@@ -25,7 +25,7 @@ export function createPowerBiViewer({
                 groupe: state[viewerId]?.groupe,
                 title,
                 shortName: viewerId,
-                reports: [],
+                report: state[viewerId]?.report,
             },
         };
     });
@@ -33,16 +33,14 @@ export function createPowerBiViewer({
     const powerBiViewerApi = {
         registerFusionPowerBi(options: FusionPowerBiOptions) {
             dispatch(getContext(), (state: CoreViewState) => {
-                const reports: FusionPowerBiOptions[] =
-                    state[viewerId].reports.length > 0
-                        ? [...state[viewerId].reports, options]
-                        : [options];
-
+                const report: FusionPowerBiOptions = state[viewerId].report
+                    ? { ...state[viewerId].report, ...options }
+                    : options;
                 return {
                     ...state,
                     [viewerId]: {
                         ...state[viewerId],
-                        reports,
+                        report,
                     },
                 };
             });

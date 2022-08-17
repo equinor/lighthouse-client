@@ -1,112 +1,97 @@
-import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/types/scopeChangeRequest";
-import { generateFilterValues } from "../functions/generateFilterValues"
-import { FilterGroup } from "../Hooks/useFilterApi";
-import { FilterOptions } from "../Types";
-
-
+import { ScopeChangeRequest } from '../../../apps/ScopeChangeRequest/types/scopeChangeRequest';
+import { generateFilterValues } from '../functions/generateFilterValues';
+import { FilterGroup } from '../Hooks/useFilterApi';
+import { FilterOptions } from '../Types';
 
 enum FilterNames {
-    Origin = "origin",
-    Category = "category"
+    Origin = 'origin',
+    Category = 'category',
 }
-
 
 const filterOptions: FilterOptions<ScopeChangeRequest> = [
     {
         name: FilterNames.Origin,
-        valueFormatter: ({ originSource }) => originSource
+        valueFormatter: ({ originSource }) => originSource,
     },
     {
         name: FilterNames.Category,
-        valueFormatter: ({ changeCategory }) => changeCategory.name
-    }
-]
-
-
+        valueFormatter: ({ changeCategory }) => changeCategory.name,
+    },
+];
 
 const expectedOutput: FilterGroup[] = [
     {
         name: FilterNames.Origin,
-        values: ["DCN", "NCR"]
+        values: ['DCN', 'NCR'],
     },
     {
         name: FilterNames.Category,
-        values: ["Hidden Carry Over", "Quality"]
-    }
-]
+        values: ['Hidden Carry Over', 'Quality'],
+    },
+];
 
 const mockData: ScopeChangeRequest[] = [
     {
-        changeCategory: { id: "1", name: "Hidden Carry Over" },
-        originSource: "NCR"
+        changeCategory: { id: '1', name: 'Hidden Carry Over' },
+        originSource: 'NCR',
     },
     {
-        changeCategory: { id: "2", name: "Hidden Carry Over" },
-        originSource: "DCN"
+        changeCategory: { id: '2', name: 'Hidden Carry Over' },
+        originSource: 'DCN',
     },
     {
-        changeCategory: { id: "3", name: "Quality" },
-        originSource: "DCN"
-    }
-] as ScopeChangeRequest[]
-
+        changeCategory: { id: '3', name: 'Quality' },
+        originSource: 'DCN',
+    },
+] as ScopeChangeRequest[];
 
 /**
  * //TODO: Fix
- *  Very sensitive to order and sorting 
-*/
-describe("Should create expected filter values", () => {
-    it("Should create filter items matching output", () => {
+ *  Very sensitive to order and sorting
+ */
+describe('Should create expected filter values', () => {
+    it('Should create filter items matching output', () => {
         const result = generateFilterValues(filterOptions, mockData);
-        expect(result).toStrictEqual(expectedOutput)
-    })
-})
-
-
+        expect(result).toStrictEqual(expectedOutput);
+    });
+});
 
 interface Mock {
-    names: string[]
+    names: string[];
 }
 
 const mockArrayData: Mock[] = [
     {
-        names: ["John", "Cena", "Jonas"]
+        names: ['John', 'Cena', 'Jonas'],
     },
     {
-        names: ["Jane", "Doe", "John"]
+        names: ['Jane', 'Doe', 'John'],
     },
     {
-        names: ["Krista", "Doe", "John"]
+        names: ['Krista', 'Doe', 'John'],
     },
     {
-        names: []
-    }
-]
+        names: [],
+    },
+];
 
 const filterArrayOptions: FilterOptions<Mock> = [
     {
-        name: "Name",
-        valueFormatter: ({ names }) => names
-    }
-]
+        name: 'Name',
+        valueFormatter: ({ names }) => names,
+    },
+];
 
 const expectedArrayOutput: FilterGroup[] = [
     {
-        name: "Name",
-        values: [null, "Cena", "Doe", "Jane", "John", "Jonas", "Krista"]
-    }
-]
+        name: 'Name',
+        values: ['Cena', 'Doe', 'Jane', 'John', 'Jonas', 'Krista'],
+    },
+];
 
-
-
-describe("Create filter items from array", () => {
-    it("Should not have duplicates", () => {
-        const result = generateFilterValues(filterArrayOptions, mockArrayData)
-        expect(result).toStrictEqual(expectedArrayOutput)
-    })
-})
-
-
-
-
-
+describe('Create filter items from array', () => {
+    it('Should not have duplicates', () => {
+        const result = generateFilterValues(filterArrayOptions, mockArrayData);
+        expect(result).toEqual(expectedArrayOutput);
+    });
+});

@@ -72,25 +72,6 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerPowerBIOptions({
             reportURI: 'pp-handover-analytics',
-            pages: [
-                {
-                    pageTitle: 'RFC Overview',
-                    pageId: 'ReportSection',
-                    default: true,
-                },
-                {
-                    pageTitle: 'RFC plan',
-                    pageId: 'ReportSection458b2ed2c450a616bd66',
-                },
-                {
-                    pageTitle: 'RFO Overview',
-                    pageId: 'ReportSection78ce886528303462053a',
-                },
-                {
-                    pageTitle: 'RFO plan',
-                    pageId: 'ReportSection552211d6b260006a6411',
-                },
-            ],
         });
 }
 

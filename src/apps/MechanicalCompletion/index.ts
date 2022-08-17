@@ -63,16 +63,5 @@ export function setup(addApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerPowerBIOptions({
             reportURI: 'pp-mc-analytics',
-            pages: [
-                {
-                    pageTitle: 'RFC overview',
-                    pageId: 'ReportSection',
-                    default: true,
-                },
-                {
-                    pageTitle: 'RFO overview',
-                    pageId: 'ReportSection694be20a69e6e527702c',
-                },
-            ],
         });
 }

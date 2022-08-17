@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 
 export const PowerBiTab = (): JSX.Element | null => {
     const { powerBiOptions } = useDataContext();
-    const { activePage, pbiOptions } = useViewerContext();
+    const { activePage, pbiOptions, setPbiReport } = useViewerContext();
     const { applyBookmark, saveBookmark } = useBookmarkContext<PowerBIBookmarkPayload>();
     if (powerBiOptions) {
         return (
@@ -23,6 +23,9 @@ export const PowerBiTab = (): JSX.Element | null => {
                 <PowerBI
                     reportUri={powerBiOptions?.reportURI}
                     filterOptions={powerBiOptions.filter}
+                    onReportLoad={(report) => {
+                        setPbiReport(report);
+                    }}
                     options={{
                         ...powerBiOptions.options,
                         activePage: activePage?.pageId,
