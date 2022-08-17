@@ -11,6 +11,7 @@ export const checklistColumnNames = [
     'MechanicalCompletionStatus',
     'CommissioningPackageNo',
     'CommissioningPackageId',
+    'Responsible',
 ];
 export const getChecklistsForLoop = async (famFilter: FamRequest, signal?: AbortSignal) => {
     const { FAM } = httpClient();
