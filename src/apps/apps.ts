@@ -18,12 +18,12 @@ import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import {
     BusinessCaseReport,
-    LCIReport,
-    MDRReport,
     NonConformityReport,
     QualityDeviationReport,
     SafetyPerformanceReport,
 } from './PowerBI';
+import { setup as MDRSetup } from './MDR';
+import { setup as LCISetup } from './LCI';
 import { setup as punchSetup } from './Punch';
 import { setup as querySetup } from './Query';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
@@ -227,8 +227,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Engineering,
         icon: '',
         app: {
-            appType: 'PowerBI',
-            component: LCIReport,
+            appType: 'PowerBIViewer',
+            setup: LCISetup,
         },
         tags: ['PowerBI'],
 
@@ -249,8 +249,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Engineering,
         icon: '',
         app: {
-            appType: 'PowerBI',
-            component: MDRReport,
+            appType: 'PowerBIViewer',
+            setup: MDRSetup,
         },
         tags: ['PowerBI'],
 
