@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 1.8.1
+[LCI] Update to use PowerBIViewer
+[MDR] Update to use PowerBIViewer
+
 ## 1.8.0
 [PowerBI] Automatically load PowerBI pages. 
 [PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
