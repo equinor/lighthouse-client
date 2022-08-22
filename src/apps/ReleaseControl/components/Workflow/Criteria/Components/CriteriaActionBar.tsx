@@ -1,8 +1,8 @@
 import { swap } from '@dbeining/react-atom';
-import { Icon } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from 'react-query';
-import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
+import { IconMenu, MiniMenuButton, MenuItem } from '@equinor/overlay-menu';
 
 import { CriteriaActions } from '../../Types/actions';
 
@@ -109,6 +109,26 @@ export const CriteriaActionBar = ({
         return actions;
     }
 
+    function getSignButton(): JSX.Element | null {
+        if (canSign) {
+            return (
+                <Button
+                    id="anchor-complex"
+                    aria-controls="menu-complex"
+                    aria-haspopup="true"
+                    onClick={() => {
+                        signMutation({ action: 'Approved', comment: '' });
+                    }}
+                    disabled={!canSign}
+                >
+                    {'Sign'}
+                </Button>
+            );
+        } else {
+            return null;
+        }
+    }
+
     const { criteriaUnsignKey } = releaseControlMutationKeys(requestId).workflowKeys;
 
     const { mutate: unSignMutation } = useReleaseControlMutation(
@@ -152,9 +172,8 @@ export const CriteriaActionBar = ({
 
     return (
         <ButtonContainer>
-            {makeSignOptions().length > 0 && (
-                <MenuButton items={makeSignOptions()} buttonText="Sign" />
-            )}
+            {getSignButton()}
+            {makeSignOptions().length > 0 && <MiniMenuButton items={makeSignOptions()} />}
             {makeMoreActions().length > 0 && <IconMenu items={makeMoreActions()} />}
         </ButtonContainer>
     );

@@ -6,6 +6,13 @@ export const Wrapper = styled.div`
     flex-direction: column;
 `;
 
+export const MiniWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    max-width: 30px;
+    margin-left: 2px;
+`;
+
 export const MenuText = styled(Typography)`
     font-size: 16px;
 `;
