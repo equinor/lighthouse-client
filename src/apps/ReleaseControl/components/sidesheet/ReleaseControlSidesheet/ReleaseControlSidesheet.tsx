@@ -13,16 +13,23 @@ import {
 } from '../../../Atoms/editModeAtom';
 import { useGetReleaseControl } from '../../../hooks/useGetReleaseControl';
 import { useReleaseControlAccess } from '../../../hooks/useReleaseControlAccess';
-import { getReleaseControlSnapshot } from '../../../hooks/useReleaseControlContext';
+import {
+    getReleaseControlSnapshot,
+    useReleaseControlContext,
+} from '../../../hooks/useReleaseControlContext';
 import { useReleaseControlMutationWatcher } from '../../../hooks/useReleaseControlMutationWatcher';
 import { useSidesheetEffects } from '../../../hooks/useSidesheetEffects';
-import { ReleaseControl } from '../../../types/releaseControl';
-import { ReleaseControlEditForm } from '../../Form/ReleaseControlEditForm';
+import { FamTag, ReleaseControl } from '../../../types/releaseControl';
 import { ScopeTab } from './Tabs/ScopeTab';
 import { HistoryTab } from './Tabs/HistoryTab';
 import { updateContext } from './updateContext';
 import { WorkflowTab } from './Tabs/WorkflowTab';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
+import { EditWorkflowTab } from './EditTabs/EditWorkflowTab';
+import { EditScopeTab } from './EditTabs/EditScopeTab';
+import { TypedSelectOption } from '../../../../ScopeChangeRequest/api/Search/searchType';
+import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
+import { useUnpackReferences } from '../../../hooks/useUnpackReferences';
 
 interface ReleaseControlSidesheetProps {
     item: ReleaseControl;
@@ -38,20 +45,46 @@ export const ReleaseControlSidesheet = ({
     useSidesheetEffects(actions, toggleEditMode, item.id);
 
     const { activeTab, handleChange } = useEdsTabs();
+    const releaseControl = useReleaseControlContext(({ releaseControl }) => releaseControl);
+    const { clearState, updateAtom } = DRCFormAtomApi;
+
+    updateAtom({
+        ...releaseControl,
+        documentNumbers: releaseControl?.documents?.map((x) => x.id),
+        punchListItemIds: releaseControl?.punchListItems?.map((x) => x.id),
+        tags: releaseControl?.scopeTags?.map(
+            (x: FamTag): TypedSelectOption => ({
+                label: `${x.tagNo}`,
+                value: x.tagNo,
+                type: 'famtag',
+                searchValue: x.tagNo,
+                object: x,
+            })
+        ),
+        htCables: releaseControl?.scopeHTTags?.map(
+            (x: FamTag): TypedSelectOption => ({
+                label: `${x.tagNo}`,
+                value: x.tagNo,
+                type: 'htcable',
+                searchValue: x.tagNo,
+                object: x,
+            })
+        ),
+    });
 
     const editMode = useAtom(sideSheetEditModeAtom);
     useEffect(() => {
         disableEditMode();
+        clearState();
         updateContext(item, actions);
     }, [item?.id]);
+
+    useUnpackReferences({ releaseControl });
 
     if (Object.keys(getReleaseControlSnapshot().releaseControl).length < 2) {
         return <></>;
     }
-
-    return editMode ? (
-        <ReleaseControlEditForm />
-    ) : (
+    return (
         <Wrapper>
             <ReleaseControlSidesheetBanner></ReleaseControlSidesheetBanner>
             <Tabs activeTab={activeTab} onChange={handleChange}>
@@ -61,13 +94,8 @@ export const ReleaseControlSidesheet = ({
                     <HeaderTab>History</HeaderTab>
                 </SidesheetTabList>
                 <TabList>
-                    <Tab>
-                        <ScopeTab />
-                    </Tab>
-                    <Tab>
-                        <WorkflowTab />
-                    </Tab>
-
+                    <Tab>{editMode ? <EditScopeTab /> : <ScopeTab />}</Tab>
+                    <Tab>{editMode ? <EditWorkflowTab /> : <WorkflowTab />}</Tab>
                     <Tab>
                         <HistoryTab />
                     </Tab>
