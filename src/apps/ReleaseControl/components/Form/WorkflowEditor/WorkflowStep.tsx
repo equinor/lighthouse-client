@@ -98,7 +98,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                     <Selections>
                         <SingleSelect
                             items={Object.values(ReleaseControlStepNames)}
-                            label="Step"
+                            label=""
                             size={30}
                             selectedOption={step.name}
                             handleSelectedItemChange={(change) =>
@@ -113,7 +113,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                         />
                         <SingleSelect
                             items={functionalRoleNames ?? []}
-                            label="Responsible"
+                            label=""
                             size={25}
                             selectedOption={step?.criteriaTemplates?.[0]?.value}
                             handleSelectedItemChange={(change) =>
@@ -162,7 +162,6 @@ const CompletedCriteria = styled.div`
 const Selections = styled.div`
     display: flex;
     flex-direction: row;
-    margin-bottom: 20px;
     gap: 0.5em;
 `;
 
