@@ -1,5 +1,5 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { CellProps, Column, DescriptionCell, ProgressCell } from '@equinor/Table';
+import { Column, CustomProgressCell, DescriptionCell } from '@equinor/Table';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Workorder } from '../../types';
 
@@ -9,7 +9,7 @@ const columns: Column<Workorder>[] = [
         Header: 'WO Number',
         accessor: (pkg) => ({
             content: pkg,
-            url: proCoSysUrls.getWorkOrderUrl(pkg.workorderId),
+            url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderId),
             currentKey: 'workOrderNo',
         }),
         Cell: CellWithLink,
@@ -40,8 +40,14 @@ const columns: Column<Workorder>[] = [
     {
         id: 'projectProgress',
         Header: 'Progress',
-        accessor: (wo) => ({ content: wo, currentKey: 'projectProgress' }),
-        Cell: ProgressCell,
+        accessor: (wo) => wo.projectProgress,
+        Cell: (cellProps) => {
+            if (!cellProps.value) {
+                return null;
+            }
+
+            return <CustomProgressCell progress={cellProps.value} />;
+        },
         Aggregated: () => null,
         aggregate: 'count',
     },
