@@ -46,7 +46,7 @@ export const PunchTab = ({ packages, isFetching }: TabProps): JSX.Element => {
             columns={columns}
             packages={packages}
             isFetching={isFetching}
-            resourceName="Punch Packages"
+            resourceName="Punches"
             error={null}
         />
     );
