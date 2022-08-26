@@ -1,11 +1,11 @@
 import {
     DescriptionInput,
+    HtCablesInput,
     PlannedDueDateInput,
     ReferencesInput,
+    TagsInput,
     TitleInput,
 } from '../../../Form/Inputs';
-import { HtCablesInput } from '../../../Form/Inputs/Scope/HtCables';
-import { TagsInput } from '../../../Form/Inputs/Scope/Tags';
 import { FlexColumn, FormWrapper } from '../../../Form/releaseControlProcessForm.styles';
 
 import { EditButtonBar } from './EditButtonBar';

@@ -5,20 +5,11 @@ import { tokens } from '@equinor/eds-tokens';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
 import {
     disableEditMode,
     sideSheetEditModeAtom,
     toggleEditMode,
 } from '../../../Atoms/editModeAtom';
-import { useGetReleaseControl } from '../../../hooks/useGetReleaseControl';
-import { useReleaseControlAccess } from '../../../hooks/useReleaseControlAccess';
-import {
-    getReleaseControlSnapshot,
-    useReleaseControlContext,
-} from '../../../hooks/useReleaseControlContext';
-import { useReleaseControlMutationWatcher } from '../../../hooks/useReleaseControlMutationWatcher';
-import { useSidesheetEffects } from '../../../hooks/useSidesheetEffects';
 import { FamTag, ReleaseControl } from '../../../types/releaseControl';
 import { ScopeTab } from './Tabs/ScopeTab';
 import { HistoryTab } from './Tabs/HistoryTab';
@@ -29,7 +20,16 @@ import { EditWorkflowTab } from './EditTabs/EditWorkflowTab';
 import { EditScopeTab } from './EditTabs/EditScopeTab';
 import { TypedSelectOption } from '../../../../ScopeChangeRequest/api/Search/searchType';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { useUnpackReferences } from '../../../hooks/useUnpackReferences';
+import {
+    getReleaseControlSnapshot,
+    useGetReleaseControl,
+    useReleaseControlAccess,
+    useReleaseControlContext,
+    useReleaseControlMutationWatcher,
+    useSidesheetEffects,
+    useUnpackReferences,
+} from '../../../hooks';
+import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
 
 interface ReleaseControlSidesheetProps {
     item: ReleaseControl;
@@ -50,24 +50,24 @@ export const ReleaseControlSidesheet = ({
 
     updateAtom({
         ...releaseControl,
-        documentNumbers: releaseControl?.documents?.map((x) => x.id),
-        punchListItemIds: releaseControl?.punchListItems?.map((x) => x.id),
+        documentNumbers: releaseControl?.documents?.map((document) => document.id),
+        punchListItemIds: releaseControl?.punchListItems?.map((punchListItem) => punchListItem.id),
         tags: releaseControl?.scopeTags?.map(
-            (x: FamTag): TypedSelectOption => ({
-                label: `${x.tagNo}`,
-                value: x.tagNo,
+            (famTag: FamTag): TypedSelectOption => ({
+                label: `${famTag.tagNo}`,
+                value: famTag.tagNo,
                 type: 'famtag',
-                searchValue: x.tagNo,
-                object: x,
+                searchValue: famTag.tagNo,
+                object: famTag,
             })
         ),
         htCables: releaseControl?.scopeHTTags?.map(
-            (x: FamTag): TypedSelectOption => ({
-                label: `${x.tagNo}`,
-                value: x.tagNo,
+            (famTag: FamTag): TypedSelectOption => ({
+                label: `${famTag.tagNo}`,
+                value: famTag.tagNo,
                 type: 'htcable',
-                searchValue: x.tagNo,
-                object: x,
+                searchValue: famTag.tagNo,
+                object: famTag,
             })
         ),
     });

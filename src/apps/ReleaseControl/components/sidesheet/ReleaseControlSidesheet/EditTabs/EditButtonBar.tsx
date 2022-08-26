@@ -1,9 +1,11 @@
 import { Button, Progress } from '@equinor/eds-core-react';
 import { disableEditMode } from '../../../../Atoms/editModeAtom';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
-import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
-import { useReleaseControlMutation } from '../../../../hooks/useReleaseControlMutation';
-import { useRequestMutations } from '../../../../hooks/useRequestMutations';
+import {
+    useReleaseControlContext,
+    useReleaseControlMutation,
+    useRequestMutations,
+} from '../../../../hooks';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
 import { ActionBar, ButtonContainer } from '../../../Form/releaseControlProcessForm.styles';
 
