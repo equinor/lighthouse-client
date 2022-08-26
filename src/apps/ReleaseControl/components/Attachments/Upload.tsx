@@ -2,9 +2,9 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
-import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 import { Attachments } from './Attachments';
+import { AttachmentsList, Inline, UploadWrapper } from './attachments.styles';
 
 export const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const Upload = (): JSX.Element => {
@@ -37,7 +37,7 @@ export const Upload = (): JSX.Element => {
     );
 
     return (
-        <Wrapper>
+        <UploadWrapper>
             <Attachments onDrop={onDrop} maxSizeInBytes={MAX_SIZE_IN_BYTES} />
             {attachments.map((attachment, i) => {
                 return (
@@ -71,35 +71,15 @@ export const Upload = (): JSX.Element => {
             {rejectedFiles && rejectedFiles.length > 0 && (
                 <div style={{ color: 'red' }}>
                     The following files could not be added
-                    {rejectedFiles.map((x) => {
+                    {rejectedFiles.map((rejectedFile) => {
                         return (
                             <div
-                                key={x.file.name}
-                            >{`${x.file.name} - Reason:  ${x.errors[0].code}`}</div>
+                                key={rejectedFile.file.name}
+                            >{`${rejectedFile.file.name} - Reason:  ${rejectedFile.errors[0].code}`}</div>
                         );
                     })}
                 </div>
             )}
-        </Wrapper>
+        </UploadWrapper>
     );
 };
-
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
-`;
-
-const AttachmentsList = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 0.5em 0em;
-    font-size: 16px;
-    align-items: center;
-`;
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: -webkit-fill-available;
-`;

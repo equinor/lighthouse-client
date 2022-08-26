@@ -1,7 +1,14 @@
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { Icon, Progress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
+import {
+    AttachmentsContainer,
+    DropHere,
+    Highlight,
+    TextWrapper,
+    UploadText,
+    Wrapper,
+} from './attachments.styles';
 
 interface AttachmentsProps {
     onDrop: (acceptedFiles: File[], fileRejections: FileRejection[]) => Promise<void>;
@@ -41,43 +48,3 @@ export function Attachments({ maxSizeInBytes, onDrop, isLoading }: AttachmentsPr
         </Wrapper>
     );
 }
-
-const TextWrapper = styled.div`
-    display: flex;
-    gap: 0.7em;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const UploadText = styled.div`
-    display: flex;
-    font-size: 16px;
-    gap: 0.2em;
-`;
-
-const Highlight = styled.div`
-    color: ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-const Wrapper = styled.div`
-    display: flex;
-    min-width: 300px;
-    flex-direction: column;
-`;
-
-const AttachmentsContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 96px;
-    width: -webkit-fill-available;
-    cursor: pointer;
-    border: 2px dotted ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-const DropHere = styled.div`
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-`;

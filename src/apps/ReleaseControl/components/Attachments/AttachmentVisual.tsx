@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 import { ClickableIcon } from '../../../../packages/Components/Icon';
+import { AttachmentVisualStyle } from './attachments.styles';
 
 interface AttachmentVisualProps {
     name: string;
@@ -30,12 +30,3 @@ export const AttachmentVisual = ({
         </AttachmentVisualStyle>
     );
 };
-
-const AttachmentVisualStyle = styled.div`
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    align-items: center;
-    gap: 0.5em;
-    font-size: 16px;
-    color: ${tokens.colors.text.static_icons__default.hex};
-`;

@@ -1,11 +1,11 @@
 import { Banner } from '@equinor/eds-core-react';
 import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
-import styled from 'styled-components';
 import { uploadAttachment } from '../../api/releaseControl/Request';
 import { useReleaseControlContext, useReleaseControlMutation } from '../../hooks';
 import { releaseControlMutationKeys } from '../../queries/releaseControlMutationKeys';
 import { Attachments } from './Attachments';
+import { HotUploadWrapper } from './attachments.styles';
 
 const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
@@ -38,26 +38,20 @@ export const HotUpload = (): JSX.Element => {
     );
 
     return (
-        <Wrapper>
+        <HotUploadWrapper>
             <Attachments onDrop={onDrop} maxSizeInBytes={MAX_SIZE_IN_BYTES} isLoading={isLoading} />
 
             {rejectedFiles && rejectedFiles.length > 0 && (
                 <>
-                    {rejectedFiles.map((x) => {
+                    {rejectedFiles.map((rejectedFile) => {
                         return (
-                            <Banner key={x.file.name}>
-                                <Banner.Message>{`${x.file.name} could not be added, reason: ${x.errors[0].code}`}</Banner.Message>
+                            <Banner key={rejectedFile.file.name}>
+                                <Banner.Message>{`${rejectedFile.file.name} could not be added, reason: ${rejectedFile.errors[0].code}`}</Banner.Message>
                             </Banner>
                         );
                     })}
                 </>
             )}
-        </Wrapper>
+        </HotUploadWrapper>
     );
 };
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: -webkit-fill-available;
-`;

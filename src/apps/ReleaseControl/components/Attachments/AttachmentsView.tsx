@@ -1,7 +1,6 @@
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
 import { Attachment } from '../../types/releaseControl';
+import { AttachmentsName, AttachmentsSize, Link, ViewWrapper } from './attachments.styles';
 
 interface AttachmentProps {
     attachments: Attachment[];
@@ -36,8 +35,8 @@ const onClickDownloadAttachment = async (
             link.setAttribute('download', fileName);
 
             // Append to html link element page
+            link.style.display = 'none';
             document.body.appendChild(link);
-
             // Start download
             link.click();
 
@@ -52,7 +51,7 @@ export const Attachments = ({ attachments, releaseControlId }: AttachmentProps):
             {attachments &&
                 attachments.map((attachment) => {
                     return (
-                        <Wrapper key={attachment.id}>
+                        <ViewWrapper key={attachment.id}>
                             <Link
                                 onClick={() => {
                                     onClickDownloadAttachment(
@@ -69,34 +68,9 @@ export const Attachments = ({ attachments, releaseControlId }: AttachmentProps):
                             <AttachmentsSize>
                                 {Math.round(attachment.fileSize / 1000 ** 2)} MB
                             </AttachmentsSize>
-                        </Wrapper>
+                        </ViewWrapper>
                     );
                 })}
         </div>
     );
 };
-
-const AttachmentsSize = styled.div`
-    font-size: 16px;
-    line-height: 20px;
-    color: ${tokens.colors.text.static_icons__tertiary.hex};
-    text-decoration: underline;
-`;
-
-const AttachmentsName = styled.div`
-    font-size: 16px;
-`;
-
-export const Wrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-export const Link = styled.a`
-    display: flex;
-    color: ${tokens.colors.interactive.primary__resting.rgba};
-    cursor: pointer;
-    text-decoration: underline;
-    padding: 8px 0px;
-`;
