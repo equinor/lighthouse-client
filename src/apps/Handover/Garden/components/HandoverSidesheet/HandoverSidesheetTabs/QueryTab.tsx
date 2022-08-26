@@ -42,7 +42,7 @@ export const QueryTab = ({ packages, isFetching }: TabProps): JSX.Element => {
             columns={columns}
             packages={packages}
             isFetching={isFetching}
-            resourceName="Query Packages"
+            resourceName="Queries"
             error={null}
         />
     );
