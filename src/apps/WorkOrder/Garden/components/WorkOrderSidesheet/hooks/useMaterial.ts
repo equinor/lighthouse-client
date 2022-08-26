@@ -8,8 +8,10 @@ export const useMaterial = (
 ): { material: WorkOrderMaterial[] | undefined; isFetching: boolean; error: Error | null } => {
     const { FAM } = useHttpClient();
 
-    const fetch = useCallback(async (id: string) => {
-        const response = await FAM.fetch(`v0.1/procosys/workorder/JCA/material/${id}`);
+    const fetch = useCallback(async (id: string, signal?: AbortSignal) => {
+        const response = await FAM.fetch(`v0.1/procosys/workorder/JCA/material/${id}`, {
+            signal,
+        });
 
         return JSON.parse(await response.text()) as WorkOrderMaterial[];
     }, []);
