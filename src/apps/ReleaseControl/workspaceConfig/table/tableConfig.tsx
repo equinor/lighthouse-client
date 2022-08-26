@@ -21,6 +21,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         'scopeHTTags',
         'documents',
         'punchListItems',
+        'attachments',
     ],
     columnOrder: ['sequenceNumber', 'title', 'workflowSteps'],
     headers: [

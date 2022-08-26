@@ -143,6 +143,7 @@ export interface ReleaseControl {
     punchListItems: ReleaseControlPunch[];
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
+    attachments: Attachment[];
 }
 
 export interface ReleaseControlWorkflow {
@@ -219,6 +220,17 @@ export type FamTagType = {
     tagHeated: string | null;
     checklistIds: string | null;
 };
+
+export interface Attachment {
+    blobPath: string;
+    createdAtUtc: string;
+    createdBy: Person;
+    fileName: string;
+    id: string;
+    modifiedAtUtc: string | null;
+    modifiedBy: string | null;
+    fileSize: number;
+}
 
 export enum ReleaseControlStepNames {
     Coordinator = 'Coordinator',
