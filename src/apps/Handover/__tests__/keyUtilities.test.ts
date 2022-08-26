@@ -1,9 +1,5 @@
-import {
-    getFieldKeyBasedOnPlannedForecast,
-    getYearAndWeekAndDayFromString,
-    getYearAndWeekFromDate,
-    getYearAndWeekFromString,
-} from '../Garden/utility';
+import { getDateKey, getFieldKeyBasedOnPlannedForecast } from '../Garden/utility';
+import { handoverPackage } from './mockData';
 
 describe('Get key functions', () => {
     test('getFieldKeyBasedOnPlannedForecast should return plannedFinishDate when no valid parameter', () => {
@@ -38,43 +34,20 @@ describe('Get key functions', () => {
         expect(rfrcPlanned).toEqual('demolitionPlannedFinishDate');
     });
 
-    test('getYearAndWeekAndDayFromString should return given date in correct format', () => {
-        const dateString = 'Wed Aug 24 2022';
-        const expected = '2022-8-24';
+    test('getDateKey should return N/A when given invalid arguments', () => {
+        const invalidKey = getDateKey(handoverPackage, 'invalid', {
+            plannedForecast: 'Planned',
+            weeklyDaily: 'Weekly',
+        });
 
-        const result = getYearAndWeekAndDayFromString(dateString);
-        expect(result).toEqual(expected);
+        expect(invalidKey).toEqual('N/A');
     });
 
-    test('getYearAndWeekAndDayFromString should return N/A when given date is invalid', () => {
-        const invalidDate = '';
-        const expected = 'N/A';
-
-        const result = getYearAndWeekAndDayFromString(invalidDate);
-        expect(result).toEqual(expected);
-    });
-
-    test('getYearAndWeekFromDate should return given date in correct format', () => {
-        const inputDate = new Date(
-            'Wed Aug 24 2022 10:34:33 GMT+0200 (Central European Summer Time)'
-        );
-        const expected = '2022-34';
-
-        const result = getYearAndWeekFromDate(inputDate);
-        expect(result).toEqual(expected);
-    });
-
-    test('getYearANdWeekFromString should return given date in correct format', () => {
-        const inputDate = 'Wed Aug 24 2022 10:34:33 GMT+0200 (Central European Summer Time)';
-        const expected = '2022-34';
-        const result = getYearAndWeekFromString(inputDate);
-        expect(result).toEqual(expected);
-    });
-
-    test('getYearAndWeekFromString should return N/A if given date is invalid', () => {
-        const invalidDate = '';
-        const expected = 'N/A';
-        const result = getYearAndWeekAndDayFromString(invalidDate);
-        expect(result).toEqual(expected);
+    test('getDateKey should return correct date when given valid grouping key as argument', () => {
+        const result = getDateKey(handoverPackage, 'RFCC', {
+            plannedForecast: 'Forecast',
+            weeklyDaily: 'Weekly',
+        });
+        expect(result).toEqual('2022-52');
     });
 });

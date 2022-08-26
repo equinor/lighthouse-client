@@ -1,4 +1,4 @@
-import { HandoverPackage } from '../Garden/models';
+import { HandoverPackage, HandoverWorkOrder } from '../Garden/models';
 
 export const handoverPackage: HandoverPackage = {
     siteCode: 'JCA',
@@ -75,4 +75,16 @@ export const handoverPackage: HandoverPackage = {
     rfocActualDate: '',
     rfocShippedDate: '',
     rowKey: '9101-H04',
+};
+
+export const handoverWorkorder: HandoverWorkOrder = {
+    commpkgId: '1',
+    description: '',
+    materialStatus: '',
+    materialStatusDescription: '',
+    projectProgress: '1',
+    url: '',
+    workOrderNumber: '1',
+    workOrderStatus: '',
+    workOrderStatusDescription: '',
 };
