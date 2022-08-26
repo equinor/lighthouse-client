@@ -7,15 +7,17 @@ import { IconMenu, MiniMenuButton, MenuItem } from '@equinor/overlay-menu';
 import { CriteriaActions } from '../../Types/actions';
 
 import { ButtonContainer } from '../../Contributor/contributor.styles';
-import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { releaseControlQueries } from '../../../../queries/queries';
 import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scopeChangeRequest';
 import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
-import { useWorkflowSigning } from '../../../../hooks/useWorkflowSigning';
 import { unsignCriteria } from '../../../../api/releaseControl/Workflow';
-import { useWorkflowCriteriaOptions } from '../../../../hooks/useWorkflowCriteriaOptions';
-import { useReleaseControlMutation } from '../../../../hooks/useReleaseControlMutation';
+import {
+    useReleaseControlContext,
+    useReleaseControlMutation,
+    useWorkflowCriteriaOptions,
+    useWorkflowSigning,
+} from '../../../../hooks';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
