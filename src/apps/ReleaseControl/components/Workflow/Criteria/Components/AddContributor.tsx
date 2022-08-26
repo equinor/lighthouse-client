@@ -5,11 +5,10 @@ import { Button, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
-import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
 import { addContributor } from '../../../../api/releaseControl/Workflow';
 import { PCSPersonSearch } from '../../../../../ScopeChangeRequest/Components/PersonRoleSearch/PCSPersonSearch';
-import { useReleaseControlMutation } from '../../../../hooks/useReleaseControlMutation';
+import { useReleaseControlContext, useReleaseControlMutation } from '../../../../hooks';
 
 interface AddContributorProps {
     stepId: string;

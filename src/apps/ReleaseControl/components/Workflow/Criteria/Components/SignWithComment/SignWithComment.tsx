@@ -1,8 +1,8 @@
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { CriteriaSignState } from '../../../../../../ScopeChangeRequest/types/scopeChangeRequest';
-import { useReleaseControlContext } from '../../../../../hooks/useReleaseControlContext';
-import { useWorkflowSigning } from '../../../../../hooks/useWorkflowSigning';
+import { useReleaseControlContext, useWorkflowSigning } from '../../../../../hooks';
+
 import { resetSigningAtom } from '../../../Atoms/signingAtom';
 import { ButtonsContainer } from './signWithComment.styles';
 
