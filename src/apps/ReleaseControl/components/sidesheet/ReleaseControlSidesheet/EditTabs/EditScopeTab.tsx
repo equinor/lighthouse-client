@@ -9,7 +9,6 @@ import {
     TitleInput,
 } from '../../../Form/Inputs';
 import { FlexColumn, FormWrapper } from '../../../Form/releaseControlProcessForm.styles';
-
 import { EditButtonBar } from './EditButtonBar';
 
 export const EditScopeTab = (): JSX.Element => {
