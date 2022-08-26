@@ -60,7 +60,12 @@ export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Ele
                     >
                         <Icon
                             size={16}
-                            style={{ opacity: showIcon && isActive ? 1 : 0 }}
+                            style={{
+                                opacity:
+                                    hasFavorite(manifest.shortName) || (showIcon && isActive)
+                                        ? 1
+                                        : 0,
+                            }}
                             name={hasFavorite(manifest.shortName) ? 'star_filled' : 'star_outlined'}
                         />
                     </IconButton>

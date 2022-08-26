@@ -11,10 +11,14 @@ export function WorkOrderTab(): JSX.Element {
     const woNumbers =
         useScopeChangeContext((s) => s.request.workOrders?.map(({ jobNumber }) => jobNumber)) ?? [];
 
-    const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers), {
-        cacheTime: 5 * 1000 * 60,
-        staleTime: 5 * 1000 * 60,
-    });
+    const { data, error, isLoading } = useQuery(
+        ['WO', ...woNumbers],
+        () => getWorkOrderByIds(woNumbers),
+        {
+            cacheTime: 5 * 1000 * 60,
+            staleTime: 5 * 1000 * 60,
+        }
+    );
 
     const ref = useRef<null | HTMLDivElement>(null);
     const { width } = useParentSize(ref);
@@ -22,7 +26,7 @@ export function WorkOrderTab(): JSX.Element {
     if (error) {
         return (
             <Loading>
-                <div>Failed to load workorders!</div>
+                <div>Failed to load work orders!</div>
             </Loading>
         );
     }
@@ -35,8 +39,17 @@ export function WorkOrderTab(): JSX.Element {
         );
     }
 
+    if (isLoading) {
+        return (
+            <Loading>
+                <div>Loading work orders</div>
+            </Loading>
+        );
+    }
+
     return (
         <Wrapper>
+            {data?.length !== woNumbers.length && <i>* Some work orders did not load correctly</i>}
             <div ref={ref}>
                 {width > 960 ? (
                     <WorkOrderTable workOrders={data ?? []} />

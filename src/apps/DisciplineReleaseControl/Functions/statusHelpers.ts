@@ -83,9 +83,9 @@ export function getHTCableRfc(checkLists: CheckList[]): string {
         const commDate = checkList.c01Forecast || checkList.c01Planned;
 
         if (mcDate !== null) {
-            dates.push(mcDate);
+            dates.push(mcDate ?? '');
         } else if (commDate !== null) {
-            dates.push(commDate);
+            dates.push(commDate ?? '');
         }
     });
 
@@ -385,11 +385,11 @@ export function isCheckListStepsInRightOrder(
         PipetestStatusOrder.BoxInsulation > checkListStep && insulationBoxes.length !== 0;
 
     const groupedArrays = checkLists.reduce(function (r, a) {
-        r[a.formularType] = r[a.formularType] || [];
-        r[a.formularType].push(a);
+        //Use substring(0, 7) to make tests of formularType ELE19.1xxx and ELE19.2xxx match each other
+        r[a.formularType.substring(0, 7)] = r[a.formularType.substring(0, 7)] || [];
+        r[a.formularType.substring(0, 7)].push(a);
         return r;
     }, Object.create(null));
-
     for (const key in groupedArrays) {
         const array = groupedArrays[key];
         if (
@@ -534,15 +534,17 @@ export const getYearAndWeekFromString = (dateString: string, removeDays = 0): st
 export function getPipetestCompletionStatus(pipetest: Pipetest): PipetestCompletionStatus {
     const pipetestStepStatus = getPipetestStatus(pipetest);
 
-    if (
+    if (pipetest.checkLists.some((x) => x.status === CheckListStatus.Outstanding)) {
+        return PipetestCompletionStatus.Outstanding;
+    } else if (pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchAError)) {
+        return PipetestCompletionStatus.PunchAError;
+    } else if (
         pipetestStepStatus === PipetestStep.Complete &&
         pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchBError)
     ) {
         return PipetestCompletionStatus.PunchBError;
     } else if (pipetestStepStatus === PipetestStep.Complete) {
         return PipetestCompletionStatus.Complete;
-    } else if (pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchAError)) {
-        return PipetestCompletionStatus.PunchAError;
     } else {
         return PipetestCompletionStatus.Outstanding;
     }

@@ -5,7 +5,10 @@ import { IconMenu } from '@equinor/overlay-menu';
 import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { FunctionalRole } from '../../../types/functionalRole';
-import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
+import {
+    CreateReleaseControlStepModel,
+    ReleaseControlStepNames,
+} from '../../../types/releaseControl';
 import { CriteriaRender } from '../../Workflow/Criteria';
 import { getCriteriaStatus } from '../../Workflow/Utils/getCriteriaStatus';
 import { DraggableIcon } from './DraggableIcon';
@@ -53,7 +56,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                     <NumberCircle>{step.order}</NumberCircle>
                     <Selections>
                         <SingleSelect
-                            items={stepNames}
+                            items={Object.values(ReleaseControlStepNames)}
                             label="Step"
                             size={30}
                             selectedOption={step.name}
@@ -94,8 +97,8 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                     <NumberCircle>{step.order}</NumberCircle>
                     <Selections>
                         <SingleSelect
-                            items={stepNames}
-                            label="Step"
+                            items={Object.values(ReleaseControlStepNames)}
+                            label=""
                             size={30}
                             selectedOption={step.name}
                             handleSelectedItemChange={(change) =>
@@ -110,7 +113,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                         />
                         <SingleSelect
                             items={functionalRoleNames ?? []}
-                            label="Responsible"
+                            label=""
                             size={25}
                             selectedOption={step?.criteriaTemplates?.[0]?.value}
                             handleSelectedItemChange={(change) =>
@@ -159,7 +162,6 @@ const CompletedCriteria = styled.div`
 const Selections = styled.div`
     display: flex;
     flex-direction: row;
-    margin-bottom: 20px;
     gap: 0.5em;
 `;
 
@@ -176,20 +178,3 @@ const HiddenDragIcon = styled.div`
     width: 24px;
     height: 24px;
 `;
-
-const stepNames = [
-    'Coordinator',
-    'Engineering',
-    'Material',
-    'Work prep',
-    'Scaffolding',
-    'Circuit isolation',
-    'Demount ISO',
-    'Check/demount HT',
-    'Demount Mech./Piping',
-    'Remount (or new) HT/A-test',
-    'Remount (or new) ISO',
-    'Recheck (or new) HT/B-test',
-    'Circuit power-up',
-    'Recheck (or new) HT/C-test',
-];

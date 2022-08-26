@@ -7,11 +7,11 @@ import {
 } from '@equinor/Table';
 import { useQuery } from 'react-query';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
-import { Loop } from '../../types';
+import { ChecklistForLoop } from '../../types';
 import { checklistColumnNames, getChecklistsForLoop } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 
-const columns: Column<Loop>[] = [
+const columns: Column<ChecklistForLoop>[] = [
     {
         id: 'formularGroup',
         Header: 'Group',
@@ -27,7 +27,7 @@ const columns: Column<Loop>[] = [
             currentKey: 'commissioningPackageNo',
             url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId ?? ''),
         }),
-        Cell: (cellProps: CellProps<Loop>) => (
+        Cell: (cellProps: CellProps<ChecklistForLoop>) => (
             <CustomLinkCellWithTextDecoration
                 contentToBeDisplayed={cellProps.value.content.commissioningPackageNo}
                 url={cellProps.value.url}
@@ -45,7 +45,7 @@ const columns: Column<Loop>[] = [
             currentKey: 'mechanicalCompletionPackageNo',
             url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageId ?? ''),
         }),
-        Cell: (cellProps: CellProps<Loop>) => (
+        Cell: (cellProps: CellProps<ChecklistForLoop>) => (
             <CustomLinkCellWithTextDecoration
                 contentToBeDisplayed={cellProps.value.content.mechanicalCompletionPackageNo}
                 url={cellProps.value.url}
@@ -58,8 +58,8 @@ const columns: Column<Loop>[] = [
     {
         id: 'mcStatus',
         Header: 'MC status',
-        accessor: (pkg) => pkg.loopContentStatus,
-        Cell: (cellProps: CellProps<Loop>) => {
+        accessor: (pkg) => pkg.mechanicalCompletionStatus,
+        Cell: (cellProps: CellProps<ChecklistForLoop>) => {
             if (!cellProps.value) return null;
             return (
                 <StatusCustomCell
@@ -78,9 +78,9 @@ const columns: Column<Loop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'formularType',
-            url: proCoSysUrls.getFormTypeUrl(pkg.checklistId),
+            url: proCoSysUrls.getFormTypeUrl(pkg.checklistID),
         }),
-        Cell: (cellProps: CellProps<Loop>) => (
+        Cell: (cellProps: CellProps<ChecklistForLoop>) => (
             <CustomLinkCellWithTextDecoration
                 contentToBeDisplayed={cellProps.value.content.formularType}
                 url={cellProps.value.url}
@@ -98,12 +98,12 @@ const columns: Column<Loop>[] = [
     },
 ];
 type ChecklistsProps = {
-    loopId: string;
+    checklistId: string;
 };
-export const Checklists = ({ loopId }: ChecklistsProps) => {
-    const expressions = generateExpressions('loopId', 'Equals', [loopId]);
+export const Checklists = ({ checklistId }: ChecklistsProps) => {
+    const expressions = generateExpressions('checklistID', 'Equals', [checklistId]);
     const requestArgs = generateFamRequest(checklistColumnNames, 'Or', expressions);
-    const { data, isLoading, error } = useQuery(['checklists', loopId], ({ signal }) =>
+    const { data, isLoading, error } = useQuery(['checklists', checklistId], ({ signal }) =>
         getChecklistsForLoop(requestArgs, signal)
     );
     return (

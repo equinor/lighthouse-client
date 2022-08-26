@@ -8,7 +8,6 @@ import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
-import { Page } from '../Context/ViewProvider';
 import {
     DataSource,
     DataViewerProps,
@@ -110,10 +109,9 @@ export interface PowerBiOptions {
     reportURI: string;
     filter?: Filter[];
     options?: PBIOptions;
-    pages: Page[];
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

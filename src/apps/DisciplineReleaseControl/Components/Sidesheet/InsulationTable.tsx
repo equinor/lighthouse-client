@@ -41,7 +41,7 @@ export const InsulationTable = ({
         },
         {
             id: 'objectStatusName',
-            Header: 'Status',
+            Header: 'Status name',
             accessor: (item) => item.objectStatusName,
             width: 200,
         },

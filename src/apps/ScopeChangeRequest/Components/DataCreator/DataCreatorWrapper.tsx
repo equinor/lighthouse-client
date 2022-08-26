@@ -9,8 +9,6 @@ import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
 import { FormBanner } from '../Form/FormBanner/FormBanner';
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 
-
-
 interface ScopeChangeCreateFormProps {
     actions: SidesheetApi;
 }
@@ -33,7 +31,7 @@ export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): 
     return (
         <>
             <ScopeChangeErrorBanner />
-            <FormBanner />
+            <FormBanner state={undefined} />
             <Wrapper>
                 <ScopeChangeRequestForm />
             </Wrapper>

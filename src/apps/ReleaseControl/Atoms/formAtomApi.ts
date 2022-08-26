@@ -42,13 +42,13 @@ interface FormAtomApi extends DefaultAtomAPI<DRCFormModel> {
     unPackReferencesAndScope: () => ReleaseControlReferencesAndScope;
     useIsValid: () => boolean;
     clearState: () => void;
-    prepareRequest: () => DRCFormModel;
+    prepareReleaseControl: () => DRCFormModel;
 }
 
 export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) => ({
     unPackReferencesAndScope: () => unPackReferencesAndScope(api),
     useIsValid: () => useIsValid(api),
-    prepareRequest: () => prepareRequest(),
+    prepareReleaseControl: () => prepareReleaseControl(),
     clearState: () =>
         api.updateAtom({
             description: undefined,
@@ -127,45 +127,49 @@ function unpackByType(
     return list.filter(({ type }) => type === referenceType).map(({ value }) => value);
 }
 
-function prepareRequest(): DRCFormModel {
+function prepareReleaseControl(): DRCFormModel {
     const { readAtomValue, unPackReferencesAndScope } = DRCFormAtomApi;
 
-    const newReq: DRCCreateModel = {
+    const newRC: DRCCreateModel = {
         ...readAtomValue(),
         ...unPackReferencesAndScope(),
         ...packWorkflowSteps(DRCFormAtomApi),
     };
-    return newReq as DRCFormModel;
+    return newRC as DRCFormModel;
 }
 
 function checkFormState(
-    request: Pick<
+    releaseControl: Pick<
         DRCFormModel,
         'title' | 'description' | 'plannedDueDate' | 'phase' | 'workflowSteps'
     >
 ): boolean {
-    if (MANDATORY_PROPERTIES.every((k) => Object.keys(request).includes(k))) {
+    if (MANDATORY_PROPERTIES.every((k) => Object.keys(releaseControl).includes(k))) {
         /** Validate content */
         switch (true) {
-            case checkString(request.title):
+            case checkString(releaseControl.title):
                 return false;
-
-            case checkString(request.description):
+            case checkString(releaseControl.phase):
                 return false;
-            case checkString(request.plannedDueDate):
+            case checkString(releaseControl.description):
+                return false;
+            case checkString(releaseControl.plannedDueDate):
                 return false;
         }
         //Do not allow empty workflowSteps
-        if (request.workflowSteps === undefined || request.workflowSteps.length === 0) {
+        if (
+            releaseControl.workflowSteps === undefined ||
+            releaseControl.workflowSteps.length === 0
+        ) {
             return false;
         }
         //Do not allow empty steps
-        if (request.workflowSteps?.some((step) => step.name === null || step.name === '')) {
+        if (releaseControl.workflowSteps?.some((step) => step.name === null || step.name === '')) {
             return false;
         }
         //Do not allow empty responsible
         if (
-            request.workflowSteps?.some((step) =>
+            releaseControl.workflowSteps?.some((step) =>
                 step.criteriaTemplates.some(
                     (criteria) => criteria.value === null || criteria.value === ''
                 )

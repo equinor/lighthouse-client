@@ -29,16 +29,16 @@ export interface CheckList {
     formularType: string;
     formularGroup: string;
     status: string;
-    revision: string;
-    test: string;
-    isHeatTrace: boolean;
-    workflowStepText: string | undefined;
-    stepName: string;
-    c01Planned: string;
-    c01Forecast: string;
-    m03Planned: string;
-    m03Forecast: string;
-    m04Actual: string;
+    revision?: string;
+    test?: string;
+    isHeatTrace?: boolean;
+    workflowStepText?: string | undefined;
+    stepName?: string;
+    c01Planned?: string;
+    c01Forecast?: string;
+    m03Planned?: string;
+    m03Forecast?: string;
+    m04Actual?: string;
     underline?: string;
 }
 
@@ -65,10 +65,10 @@ export type CheckListType = {
     formularType: string;
     formularGroup: string;
     status: string;
-    revision: string;
-    test: string;
-    isHeatTrace: boolean;
-    workflowStepText: string | undefined;
+    revision?: string;
+    test?: string;
+    isHeatTrace?: boolean;
+    workflowStepText?: string | undefined;
 };
 
 export type InsulationBoxType = {

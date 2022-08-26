@@ -1,4 +1,5 @@
 import { ApplyEventArgs, SaveEventArgs, useBookmarkEvents } from '@equinor/BookmarksManager';
+import { EventHub } from '@equinor/lighthouse-utils';
 import { Embed, Report } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
@@ -8,7 +9,6 @@ import { PBIWrapper, TopBar, Wrapper } from '../PowerBI.styles';
 import { PowerBIFilter } from './Components';
 import { ReportErrorMessage } from './Components/ReportErrorMessage/ReportErrorMessage';
 import { usePowerBI } from './Hooks';
-import { useGetPages } from './Hooks/useGetPages';
 import './style.css';
 import { PBIOptions, PowerBIBookmarkPayload } from './Types';
 import { Filter } from './Types/filter';
@@ -17,13 +17,15 @@ interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
     options?: PBIOptions;
+    onReportLoad?: (report: Report | undefined) => void;
 }
+
+const ev = new EventHub();
 
 export const PowerBI = (props: PowerBiProps): JSX.Element => {
     const { reportUri, filterOptions, options } = props;
     // Default Options
     const aspectRatio = useMemo(() => options?.aspectRatio || 0.41, [options?.aspectRatio]);
-
     const [ref, { width }] = useElementData();
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
 
@@ -72,16 +74,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     // run once the events are fired.
     useBookmarkEvents({ saveFn: captureAndPersistBookmark, applyFn: applyBookmark });
 
-    // Used for printing pages to console in development can be controlled by option parameters.
-    useGetPages(report, options?.pageLoad);
-    useEffect(() => {
-        const setActivePageByName = (name: string) => {
-            report?.setPage(name);
-        };
-
-        options?.activePage && setActivePageByName(options.activePage);
-    }, [options?.activePage, report]);
-
     const eventHandlersMap = new Map([
         [
             'loaded',
@@ -126,13 +118,15 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
         [
             'selectionChanged',
             function () {
-                //selectionChanged Events
+                ev.publish('PBIClicked', 's');
             },
         ],
         [
             'visualClicked',
             function (e) {
+                ev.publish('PBIClicked', 's');
                 /**
+                 *
                  * Chiclet slicers are visuals inside the report that will have an impact
                  * on what filters are to be shown if they are clicked, so an update is needed..
                  */
@@ -144,6 +138,10 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     ]);
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+
+    useEffect(() => {
+        options?.activePage && report?.setPage(options.activePage);
+    }, [options?.activePage, report]);
 
     if (error) {
         return (
@@ -186,7 +184,9 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                                     );
                                     window['report'] = embedObject;
                                 }
+
                                 setReport(embedObject as Report);
+                                props?.onReportLoad && props.onReportLoad(embedObject as Report);
                             }}
                             cssClassName="pbiEmbed"
                         />

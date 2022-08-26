@@ -62,14 +62,6 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
             reportURI: 'pp-swcr-analytics',
-            pages: [
-                {
-                    pageTitle: 'Overview',
-                    pageId: 'ReportSectionb937310a77e18f67ff37',
-                    default: true,
-                },
-                { pageTitle: 'History', pageId: 'ReportSection0cb62244235c033e5151' },
-            ],
         });
 }
 

@@ -18,12 +18,12 @@ import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import {
     BusinessCaseReport,
-    LCIReport,
-    MDRReport,
     NonConformityReport,
     QualityDeviationReport,
     SafetyPerformanceReport,
 } from './PowerBI';
+import { setup as MDRSetup } from './MDR';
+import { setup as LCISetup } from './LCI';
 import { setup as punchSetup } from './Punch';
 import { setup as querySetup } from './Query';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
@@ -34,6 +34,7 @@ import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
 import { setup as loopSetup } from './Loop';
 import { setup as punchDevSetup } from './Punch_Dev';
+import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -227,8 +228,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Engineering,
         icon: '',
         app: {
-            appType: 'PowerBI',
-            component: LCIReport,
+            appType: 'PowerBIViewer',
+            setup: LCISetup,
         },
         tags: ['PowerBI'],
 
@@ -249,8 +250,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Engineering,
         icon: '',
         app: {
-            appType: 'PowerBI',
-            component: MDRReport,
+            appType: 'PowerBIViewer',
+            setup: MDRSetup,
         },
         tags: ['PowerBI'],
 
@@ -335,6 +336,20 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
         helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Installation.aspx',
     },
+    {
+        title: 'Commissioning Analytics',
+        shortName: 'commissioning-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: commissioningAnalyticsSetup,
+        },
+        appEnv: 'prod',
+    },
+
     {
         title: 'Piping and Heat trace',
         shortName: 'piping-and-ht',

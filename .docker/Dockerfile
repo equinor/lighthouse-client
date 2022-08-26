@@ -7,6 +7,7 @@ COPY . /app
 
 # Build 
 RUN yarn install
+RUN yarn test
 RUN yarn build 
 
 # Production environment

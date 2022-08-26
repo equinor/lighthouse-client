@@ -41,7 +41,14 @@ export interface DisciplineGuesstimate {
     guesstimateHours: number | null;
 }
 
-export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCR';
+export type OriginType =
+    | 'NCR'
+    | 'Punch'
+    | 'SWCR'
+    | 'Query'
+    | 'Not Applicable'
+    | 'NotApplicable'
+    | 'DCR';
 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
