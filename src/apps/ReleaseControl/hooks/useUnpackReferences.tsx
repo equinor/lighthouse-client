@@ -46,7 +46,7 @@ export function useUnpackReferences({ releaseControl }: UseUnpackReferencesParam
         const appendReferences = (x: TypedSelectOption) =>
             handleReferencesChanged([...(readAtomValue().references ?? []), x]);
 
-        releaseControl.punchListItems.forEach(async (x) => {
+        releaseControl.punchListItems?.forEach(async (x) => {
             const punchSelectedOption: TypedSelectOption = {
                 label: `${x.procosysId}`,
                 object: x,
@@ -68,7 +68,7 @@ export function useUnpackReferences({ releaseControl }: UseUnpackReferencesParam
             });
         });
 
-        releaseControl.documents.forEach(async (x) => {
+        releaseControl.documents?.forEach(async (x) => {
             const documentSelectOption: TypedSelectOption = {
                 label: `${x.stidDocumentNumber}`,
                 value: x.stidDocumentNumber,

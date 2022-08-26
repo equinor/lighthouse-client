@@ -16,7 +16,7 @@ export const ReferencesList = ({
     return (
         <Wrapper>
             {documents.length === 0 && punchListItems.length === 0 && (
-                <NoReferences>No references has been linked.</NoReferences>
+                <NoReferences>No references have been linked.</NoReferences>
             )}
             {documents && documents.length > 0 && (
                 <ChevronList title={`Documents (${documents?.length})`}>
