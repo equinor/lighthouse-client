@@ -1,3 +1,5 @@
+import { HotUpload } from '../../../Attachments/HotUpload';
+import { RequestAttachmentsList } from '../../../Attachments/RequestAttachmentsList/RequestAttachmentsList';
 import {
     DescriptionInput,
     HtCablesInput,
@@ -22,6 +24,9 @@ export const EditScopeTab = (): JSX.Element => {
                     <TagsInput />
                     <HtCablesInput />
                     <ReferencesInput />
+                    Attachments
+                    <HotUpload />
+                    <RequestAttachmentsList />
                 </FlexColumn>
             </FormWrapper>
             <EditButtonBar />

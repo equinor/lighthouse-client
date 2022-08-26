@@ -34,6 +34,7 @@ export interface DRCCreateModel {
     workflowSteps?: CreateReleaseControlStepModel[];
     editedWorkflowSteps?: CreateReleaseControlStepModel[];
     signedWorkflowSteps?: CreateReleaseControlStepModel[];
+    newAttachments?: File[];
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -68,6 +69,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             htCables: [],
             scopeTags: [],
             scopeHTTags: [],
+            newAttachments: [],
         }),
 }));
 
