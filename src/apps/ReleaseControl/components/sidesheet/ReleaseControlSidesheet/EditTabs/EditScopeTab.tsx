@@ -1,3 +1,5 @@
+import { HotUpload } from '../../../Attachments/HotUpload';
+import { RequestAttachmentsList } from '../../../Attachments/RequestAttachmentsList/RequestAttachmentsList';
 import {
     DescriptionInput,
     HtCablesInput,
@@ -7,7 +9,6 @@ import {
     TitleInput,
 } from '../../../Form/Inputs';
 import { FlexColumn, FormWrapper } from '../../../Form/releaseControlProcessForm.styles';
-
 import { EditButtonBar } from './EditButtonBar';
 
 export const EditScopeTab = (): JSX.Element => {
@@ -22,6 +23,9 @@ export const EditScopeTab = (): JSX.Element => {
                     <TagsInput />
                     <HtCablesInput />
                     <ReferencesInput />
+                    Attachments
+                    <HotUpload />
+                    <RequestAttachmentsList />
                 </FlexColumn>
             </FormWrapper>
             <EditButtonBar />
