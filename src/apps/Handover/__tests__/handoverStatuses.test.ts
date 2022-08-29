@@ -1,5 +1,5 @@
 import { getStatus } from '../Garden/utility';
-import { handoverPackage } from './mockData';
+import { handoverPackage } from '../Mock/mockData';
 
 describe('Handover Package status utility getStatus', () => {
     it('should return RFOC Accepted when having equal counts of mcPkgsCount and mcPkgsRFOCSigned > 0', () => {

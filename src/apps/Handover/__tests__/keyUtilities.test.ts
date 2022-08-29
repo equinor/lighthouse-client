@@ -1,5 +1,5 @@
 import { getDateKey, getFieldKeyBasedOnPlannedForecast } from '../Garden/utility';
-import { handoverPackage } from './mockData';
+import { handoverPackage } from '../Mock/mockData';
 
 describe('Get key functions', () => {
     test('getFieldKeyBasedOnPlannedForecast should return plannedFinishDate when no valid parameter', () => {

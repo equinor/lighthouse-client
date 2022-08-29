@@ -4,7 +4,7 @@ import {
     workOrderAvailable,
     workOrderOk,
 } from '../Garden/components/HandoverSidesheet';
-import { handoverWorkorder } from './mockData';
+import { handoverWorkorder } from '../Mock/mockData';
 
 describe('materialOk function', () => {
     it('should return length 1 when Handover WO has materialStatus = MN', () => {
