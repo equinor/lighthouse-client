@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
+import { useGetWorkorders } from '../../hooks';
 import { Loop } from '../../types';
 import { getWorkorders, workorderColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
@@ -33,25 +34,17 @@ type LoopSidesheetProps = {
 };
 export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     const [activeTab, setActiveTab] = useState<number>(0);
+
+    const { isLoadingWorkorders, workorderError, workorders } = useGetWorkorders(item.loopNo);
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
+
     useEffect(() => {
         actions.setTitle(`${item.loopNo}, ${item.description}`);
     }, [item.loopNo, item.description]);
-    const workorderExpressions = generateExpressions('loopNo', 'Equals', [item.loopNo || '']);
-    const workorderRequestArgs = generateFamRequest(
-        workorderColumnNames,
-        'Or',
-        workorderExpressions
-    );
-    const {
-        data: workorders,
-        isLoading: isLoadingWorkorders,
-        error: workorderError,
-    } = useQuery(['workorder', item.checklistId], ({ signal }) =>
-        getWorkorders(workorderRequestArgs, signal)
-    );
+
     return (
         <div style={{ height: '100%' }}>
             <Banner padding="0 1.2em">
