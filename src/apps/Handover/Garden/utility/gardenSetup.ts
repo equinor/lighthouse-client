@@ -48,7 +48,10 @@ export const getItemWidth = (
     const longestKey = Math.max.apply(
         Math,
         gardenItemList.map((item) => {
-            const titleLength = item[columnName] ? item[columnName]!.toString().length : 0;
+            let titleLength = 0;
+            if (item[columnName]) {
+                titleLength = item[columnName]?.toString().length ?? titleLength;
+            }
             return titleLength >= item.commpkgNo.length ? titleLength : item.commpkgNo.length;
         })
     );
