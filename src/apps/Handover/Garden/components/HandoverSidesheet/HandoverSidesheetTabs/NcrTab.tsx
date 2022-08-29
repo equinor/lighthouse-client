@@ -31,7 +31,7 @@ export const NcrTab = ({ packages, isFetching }: TabProps): JSX.Element => {
             columns={columns}
             packages={packages}
             isFetching={isFetching}
-            resourceName="NCr Packages"
+            resourceName="NCR"
             error={null}
         />
     );
