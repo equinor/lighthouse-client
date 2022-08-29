@@ -29,46 +29,6 @@ export const fieldSettings: FieldSettings<HandoverPackage, ExtendedGardenFields>
     priority3: { label: 'Commissioning Priority 3' },
 };
 
-export const removedFilterOptions: (keyof HandoverPackage)[] = [
-    'createdDate',
-    'tacActualDate',
-    'plannedTacDate',
-    'rfocActualDate',
-    'actualStartDate',
-    'rfccShippedDate',
-    'rfocPlannedDate',
-    'rfocShippedDate',
-    'actualFinishDate',
-    'plannedStartDate',
-    'rfocForecastDate',
-    'forecastStartDate',
-    'forecastTacDate',
-    'plannedFinishDate',
-    'forecastFinishDate',
-    'demolitionActualStartDate',
-    'demolitionDCCAcceptedDate',
-    'demolitionRFRCShippedDate',
-    'demolitionActualFinishDate',
-    'demolitionActualStartDate',
-    'demolitionPlannedStartDate',
-    'demolitionPlannedFinishDate',
-    'demolitionForecastStartDate',
-    'demolitionForecastFinishDate',
-    'projectDescription',
-    'priority1Description',
-    'priority2Description',
-    'priority3Description',
-    'url',
-    'id',
-    'volume',
-    'mcPkgsCount',
-    'mcPkgsRFCCShippedCount',
-    'mcPkgsRFCCSigned',
-    'mcPkgsRFOCShipped',
-    'mcPkgsRFOCSigned',
-    'rowKey',
-];
-
 export const getItemWidth = (
     garden: GardenGroups<HandoverPackage>,
     groupByKey: string,
@@ -88,7 +48,10 @@ export const getItemWidth = (
     const longestKey = Math.max.apply(
         Math,
         gardenItemList.map((item) => {
-            const titleLength = item[columnName] ? item[columnName]?.toString().length : 0;
+            let titleLength = 0;
+            if (item[columnName]) {
+                titleLength = item[columnName]?.toString().length ?? titleLength;
+            }
             return titleLength >= item.commpkgNo.length ? titleLength : item.commpkgNo.length;
         })
     );

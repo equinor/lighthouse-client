@@ -70,17 +70,18 @@ export const materialOk = (workOrder: HandoverWorkOrder): number =>
 export const materialAvailable = (workOrder: HandoverWorkOrder): number =>
     woHasMaterialStatus(workOrder, 'm7', 'm9', 'm10', 'm11', 'mn');
 
-export const workOrderOk = (workOrder: HandoverWorkOrder): boolean =>
-    Boolean(
-        workOrder.workOrderStatus.replace('-', '') ===
-            ('W04' || 'W05' || 'W06' || 'W07' || 'W08' || 'W09' || 'W10')
-    );
+export const workOrderOk = (workOrder: HandoverWorkOrder): boolean => {
+    const okStatuses = ['W04', 'W05', 'W06', 'W07', 'W08', 'W09', 'W10'];
+    const workOrderStatus = workOrder.workOrderStatus.replace('-', '');
+    return okStatuses.includes(workOrderStatus);
+};
 
-export const workOrderAvailable = (workOrder: HandoverWorkOrder): boolean =>
-    Boolean(
-        workOrder.workOrderStatus.replace('-', '') ===
-            ('W03' || 'W04' || 'W05' || 'W06' || 'W07' || 'W08' || 'W09' || 'W10')
-    );
+export const workOrderAvailable = (workOrder: HandoverWorkOrder): boolean => {
+    const availableStatuses = ['W03', 'W04', 'W05', 'W06', 'W07', 'W08', 'W09', 'W10'];
+    const workOrderStatus = workOrder.workOrderStatus.replace('-', '');
+
+    return availableStatuses.includes(workOrderStatus);
+};
 
 export const getHandoverWorkOrderStatus = (workOrder: HandoverWorkOrder): FollowUpStatuses => {
     if (workOrder.projectProgress.toString() === '100') return 'WO Finished';
