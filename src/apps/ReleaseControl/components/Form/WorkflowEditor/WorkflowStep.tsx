@@ -1,8 +1,7 @@
 import { SingleSelect } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
-import styled from 'styled-components';
+import { PCSPersonRoleSearch } from '../../../../ScopeChangeRequest/Components/PersonRoleSearch/PCSPersonRoleSearch';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { FunctionalRole } from '../../../types/functionalRole';
 import {
@@ -12,6 +11,16 @@ import {
 import { CriteriaRender } from '../../Workflow/Criteria';
 import { getCriteriaStatus } from '../../Workflow/Utils/getCriteriaStatus';
 import { DraggableIcon } from './DraggableIcon';
+import {
+    CompletedCriteria,
+    DraggableIconWrapper,
+    HiddenDragIcon,
+    Line,
+    NumberCircle,
+    ResponsibleSelect,
+    Selections,
+    StepSelect,
+} from './workflow.styles';
 import { DraggableHandleSelector } from './WorkflowCustomEditor';
 import {
     getWorkflowStepMenuActions,
@@ -27,9 +36,6 @@ interface WorkflowStepProps {
 }
 
 export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps): JSX.Element => {
-    const functionalRoleNames = functionalRoles?.map((role) => {
-        return role.Code;
-    });
     const { updateAtom } = DRCFormAtomApi;
     return (
         <Line>
@@ -55,37 +61,42 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                     <HiddenDragIcon />
                     <NumberCircle>{step.order}</NumberCircle>
                     <Selections>
-                        <SingleSelect
-                            items={Object.values(ReleaseControlStepNames)}
-                            label="Step"
-                            size={30}
-                            selectedOption={step.name}
-                            readOnly={true}
-                            handleSelectedItemChange={(change) =>
-                                updateAtom({
-                                    workflowSteps: updateStepName(
-                                        step,
-                                        steps,
-                                        !change.selectedItem ? '' : change.selectedItem
-                                    ),
-                                })
-                            }
-                        />
-                        <SingleSelect
-                            items={functionalRoleNames ?? []}
-                            label="Responsible"
-                            size={25}
-                            selectedOption={step?.criteriaTemplates?.[0]?.value}
-                            handleSelectedItemChange={(change) =>
-                                updateAtom({
-                                    workflowSteps: updateStepResponsible(
-                                        step,
-                                        steps,
-                                        !change.selectedItem ? '' : change.selectedItem
-                                    ),
-                                })
-                            }
-                        />
+                        <StepSelect>
+                            <SingleSelect
+                                items={Object.values(ReleaseControlStepNames)}
+                                label="Step"
+                                size={30}
+                                selectedOption={step.name}
+                                readOnly={true}
+                                handleSelectedItemChange={(change) =>
+                                    updateAtom({
+                                        workflowSteps: updateStepName(
+                                            step,
+                                            steps,
+                                            !change.selectedItem ? '' : change.selectedItem
+                                        ),
+                                    })
+                                }
+                            />
+                        </StepSelect>
+                        <ResponsibleSelect>
+                            <PCSPersonRoleSearch
+                                onSelect={(value) => {
+                                    if (!value) return;
+                                    updateAtom({
+                                        workflowSteps: updateStepResponsible(
+                                            step,
+                                            steps,
+                                            !value ? '' : value.value,
+                                            value.type
+                                        ),
+                                    });
+                                }}
+                                classification="RELEASECONTROL"
+                                value={step?.criteriaTemplates?.[0]?.valueDescription}
+                                defaultResult={functionalRoles}
+                            />
+                        </ResponsibleSelect>
                     </Selections>
                     <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
                 </>
@@ -96,36 +107,41 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                     </DraggableIconWrapper>
                     <NumberCircle>{step.order}</NumberCircle>
                     <Selections>
-                        <SingleSelect
-                            items={Object.values(ReleaseControlStepNames)}
-                            label=""
-                            size={30}
-                            selectedOption={step.name}
-                            handleSelectedItemChange={(change) =>
-                                updateAtom({
-                                    workflowSteps: updateStepName(
-                                        step,
-                                        steps,
-                                        !change.selectedItem ? '' : change.selectedItem
-                                    ),
-                                })
-                            }
-                        />
-                        <SingleSelect
-                            items={functionalRoleNames ?? []}
-                            label=""
-                            size={25}
-                            selectedOption={step?.criteriaTemplates?.[0]?.value}
-                            handleSelectedItemChange={(change) =>
-                                updateAtom({
-                                    workflowSteps: updateStepResponsible(
-                                        step,
-                                        steps,
-                                        !change.selectedItem ? '' : change.selectedItem
-                                    ),
-                                })
-                            }
-                        />
+                        <StepSelect>
+                            <SingleSelect
+                                items={Object.values(ReleaseControlStepNames)}
+                                label=""
+                                size={30}
+                                selectedOption={step.name}
+                                handleSelectedItemChange={(change) =>
+                                    updateAtom({
+                                        workflowSteps: updateStepName(
+                                            step,
+                                            steps,
+                                            !change.selectedItem ? '' : change.selectedItem
+                                        ),
+                                    })
+                                }
+                            />
+                        </StepSelect>
+                        <ResponsibleSelect>
+                            <PCSPersonRoleSearch
+                                onSelect={(value) => {
+                                    if (!value) return;
+                                    updateAtom({
+                                        workflowSteps: updateStepResponsible(
+                                            step,
+                                            steps,
+                                            !value ? '' : value.value,
+                                            value.type
+                                        ),
+                                    });
+                                }}
+                                classification="RELEASECONTROL"
+                                value={step?.criteriaTemplates?.[0]?.valueDescription}
+                                defaultResult={functionalRoles}
+                            />
+                        </ResponsibleSelect>
                     </Selections>
                     <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
                     <div style={{ marginTop: '10px' }}>
@@ -143,38 +159,3 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
         </Line>
     );
 };
-
-const DraggableIconWrapper = styled.div`
-    cursor: grab;
-`;
-
-const Line = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 0.25em;
-    align-items: center;
-`;
-
-const CompletedCriteria = styled.div`
-    margin-left: 30px;
-`;
-
-const Selections = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 0.5em;
-`;
-
-const NumberCircle = styled.div`
-    text-align: center;
-    border: 2px solid ${tokens.colors.ui.background__medium.hex};
-    border-radius: 50%;
-    width: 25px;
-    height: 20px;
-    margin-bottom: 7px;
-`;
-
-const HiddenDragIcon = styled.div`
-    width: 24px;
-    height: 24px;
-`;
