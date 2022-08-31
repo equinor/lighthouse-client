@@ -105,12 +105,17 @@ export function getStatusNamesForStep(
 export function updateStepResponsible(
     step: CreateReleaseControlStepModel,
     steps: CreateReleaseControlStepModel[],
-    responsible: string
+    responsible: string,
+    responsibleType: string
 ): CreateReleaseControlStepModel[] {
     const index = steps.findIndex((x) => x.order === step.order);
     steps[index].criteriaTemplates[0].value = responsible;
-    steps[index].criteriaTemplates[0].type = 'RequireProcosysFunctionalRoleSignature';
     steps[index].criteriaTemplates[0].assignToCreator = false;
+
+    steps[index].criteriaTemplates[0].type =
+        responsibleType === 'functionalRole'
+            ? 'RequireProcosysFunctionalRoleSignature'
+            : 'RequireProcosysUserSignature';
 
     return [...steps];
 }
@@ -288,12 +293,13 @@ export function setData(releaseControl: ReleaseControl | undefined): ReleaseCont
 }
 
 export function packCriterias(criterias: Criteria[]): CriteriaTemplate[] {
-    const criteriaTemplates = criterias.map((c: Criteria) => {
+    const criteriaTemplates = criterias.map((criteria: Criteria) => {
         const criteriaTemplate: CriteriaTemplate = {
             assignToCreator: false,
-            value: c.valueDescription,
+            value: criteria.value,
+            valueDescription: criteria.valueDescription,
             type:
-                c.type === 'RequireProcosysFunctionalRoleSignature'
+                criteria.type === 'RequireProcosysFunctionalRoleSignature'
                     ? 'RequireProcosysFunctionalRoleSignature'
                     : 'RequireProcosysUserSignature',
         };
