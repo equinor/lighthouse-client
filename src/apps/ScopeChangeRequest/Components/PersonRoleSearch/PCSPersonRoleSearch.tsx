@@ -64,8 +64,10 @@ export const PCSPersonRoleSearch = ({
             await refetch();
         }
         if (data) {
-            const matches = data.filter((x) =>
-                x.Code.toLowerCase().startsWith(inputValue.toLowerCase())
+            const matches = data.filter(
+                (x) =>
+                    x.Code.toLowerCase().startsWith(inputValue.toLowerCase()) ||
+                    x.Code.toLowerCase().includes(inputValue.toLowerCase())
             );
             matches.forEach((x) => {
                 const selectOption: TypedSelectOption = {
