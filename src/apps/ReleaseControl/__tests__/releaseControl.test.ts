@@ -21,7 +21,12 @@ describe('electroViewHelpers tests', () => {
     it('should update responsible', () => {
         const steps = testSteps;
         expect(
-            updateStepResponsible(steps[1], steps, 'RC - Insulation')[1].criteriaTemplates[0].value
+            updateStepResponsible(
+                steps[1],
+                steps,
+                'RC - Insulation',
+                'RequireProcosysFunctionalRoleSignature'
+            )[1].criteriaTemplates[0].value
         ).toStrictEqual('RC - Insulation');
     });
     it('should add empty step after and at the right position', () => {
