@@ -47,6 +47,12 @@ export function useReferencesSearch(): ReferenceSearch {
                 case 'htcable': {
                     return await searchFAM(searchValue, type, signal);
                 }
+                case 'famtagno': {
+                    return await searchFAM(searchValue, type, signal);
+                }
+                case 'htcabletagno': {
+                    return await searchFAM(searchValue, type, signal);
+                }
                 default: {
                     return await searchPCS(searchValue, type, signal);
                 }
