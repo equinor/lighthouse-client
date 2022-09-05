@@ -170,4 +170,4 @@ declare module 'react-table' {
             UseExpandedState<D> {}
 }
 
-export type { TableOptions, Cell, TableInstance, CellProps } from 'react-table';
+export type { TableOptions, Cell, TableInstance, CellProps, Row } from 'react-table';
