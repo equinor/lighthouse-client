@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import React, {
+import {
     PropsWithChildren,
     useCallback,
     useEffect,
@@ -78,6 +78,7 @@ export function Table<TData extends TableData = TableData>({
         setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
             setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
         getColumns: () => allColumns,
+        getRows: () => rows,
     });
 
     useEffect(() => {
@@ -183,11 +184,11 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                             {cell.isGrouped ? (
                                 <GroupCell row={row} cell={cell} />
                             ) : cell.isAggregated &&
-                                cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
-                                    // For cells with repeated values, render null
-                                    // Otherwise, just render the regular cell
-                                    cell.render('Cell')
-                                )}
+                              cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
+                                // For cells with repeated values, render null
+                                // Otherwise, just render the regular cell
+                                cell.render('Cell')
+                            )}
                         </span>
                     </TableCell>
                 );

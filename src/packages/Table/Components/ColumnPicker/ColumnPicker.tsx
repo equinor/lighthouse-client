@@ -4,30 +4,29 @@ import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { TableAPI, TableData } from '@equinor/Table';
 import { ColumnInstance } from 'react-table';
 
-import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 
-export const DraggableHandleSelector = 'globalDraggableHandle';
+const DraggableHandleSelector = 'globalDraggableHandle';
 
 interface ColumnMenuPickerProps {
     getApi: () => TableAPI;
+    hiddenColumns?: string[];
 }
 
-export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element | null => {
-    const { tableOptions } = useWorkSpace();
-
+export const ColumnMenuPicker = ({
+    getApi,
+    hiddenColumns,
+}: ColumnMenuPickerProps): JSX.Element | null => {
     const tableApi = getApi();
     const updateList = (workflowSteps: ColumnInstance<TableData, TableData>[]) => {
         tableApi.setColumnOrder(workflowSteps.map((s) => s.id));
     };
 
-    const hiddenCols = tableOptions?.hiddenColumns ?? ([] as string[]);
+    const hiddenCols = hiddenColumns ?? ([] as string[]);
     const [list, setList] = useState<ColumnInstance<TableData, TableData>[]>(
         tableApi.getColumns().filter((s) => !hiddenCols?.includes(s.id ?? ''))
     );
-
-    if (!tableOptions) return null;
 
     return (
         <>
