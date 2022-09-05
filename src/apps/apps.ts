@@ -35,6 +35,7 @@ import { setup as workPreparationSetup } from './workPreparation';
 import { setup as loopSetup } from './Loop';
 import { setup as punchDevSetup } from './Punch_Dev';
 import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
+import { setup as preservationAnalyticsSetup } from './Preservation';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -391,6 +392,19 @@ export const apps: AppManifest[] = [
                 isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/Preservation`,
         tags: ['link', 'procosys'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Preservation analytics',
+        shortName: 'preservation-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: preservationAnalyticsSetup,
+        },
         appEnv: 'prod',
     },
     {
