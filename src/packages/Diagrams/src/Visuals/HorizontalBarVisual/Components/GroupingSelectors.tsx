@@ -21,7 +21,7 @@ export const GroupingSelectors = <T extends unknown>(props: GroupingSelectorsPro
             <SingleSelect
                 items={options}
                 label="Group by"
-                value={`${groupByKey}`}
+                value={String(groupByKey)}
                 handleSelectedItemChange={(select) => {
                     if (select.selectedItem)
                         handleChange('groupBy', select.selectedItem as keyof T);
@@ -32,7 +32,7 @@ export const GroupingSelectors = <T extends unknown>(props: GroupingSelectorsPro
             <SingleSelect
                 items={options}
                 label="Series"
-                value={`${seriesKey}`}
+                value={String(seriesKey)}
                 handleSelectedItemChange={(select) => {
                     if (select.selectedItem) handleChange('series', select.selectedItem as keyof T);
                 }}

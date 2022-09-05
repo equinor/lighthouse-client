@@ -8,7 +8,7 @@ interface BarChart {
     series: string[] | { name: string; type: string; data: number[] }[];
 }
 
-export function useBarChart<T>(
+export function useBarChart<T extends Record<PropertyKey, unknown>>(
     data: T[],
     { stacked, nameKey, categoryKey, colors }: BarChartOptions<T>
 ): BarChart {

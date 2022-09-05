@@ -11,7 +11,7 @@ const DraggableHandleSelector = 'globalDraggableHandle';
 
 interface ColumnMenuPickerProps {
     getApi: () => TableAPI;
-    hiddenColumns?: string[];
+    hiddenColumns?: PropertyKey[];
 }
 
 export const ColumnMenuPicker = ({

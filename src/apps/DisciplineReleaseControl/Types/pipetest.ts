@@ -1,6 +1,6 @@
 import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEnums';
 
-export interface Pipetest {
+export type Pipetest = {
     name: string;
     step: PipetestStep;
     steps: PipetestStep[];
@@ -21,9 +21,9 @@ export interface Pipetest {
     location: string;
     lineNos: string[];
     mcPkgId: string;
-}
+};
 
-export interface CheckList {
+export type CheckList = {
     tagNo: string;
     responsible: string;
     formularType: string;
@@ -40,22 +40,22 @@ export interface CheckList {
     m03Forecast?: string;
     m04Actual?: string;
     underline?: string;
-}
+};
 
-export interface InsulationBox {
+export type InsulationBox = {
     objectNo: string;
     objectName: string;
     objectStatusName: string;
     objectStatus: string;
     object3dReference: string;
     procosysStatus: string;
-}
+};
 
-export interface Circuit {
+export type Circuit = {
     switchBoardTagNo: string;
     circuitAndStarterTagNo: string;
     checkLists: CheckList[];
-}
+};
 
 export interface HeatTrace extends CheckList {}
 
@@ -80,7 +80,7 @@ export type InsulationBoxType = {
     procosysStatus: string;
 };
 
-export interface HTSidesheet {
+export type HTSidesheet = {
     value: string;
     items: Pipetest[];
-}
+};

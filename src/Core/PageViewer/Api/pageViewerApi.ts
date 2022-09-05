@@ -2,17 +2,20 @@ import { createDashboard, DashboardApiInstance } from '../../Dashboard/Api/dashb
 import { CoreViewState, CustomPage, DashboardOptions, FusionPowerBiOptions } from '../Types/State';
 import { dispatch, getContext } from './pageViewerState';
 
-export interface PageViewerOptions {
+export type PageViewerOptions = {
     title: string;
     viewerId: string;
     openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
-}
+};
 
-export interface PageViewerInstance {
+export type PageViewerInstance = {
     registerFusionPowerBi(reportId: string, options: FusionPowerBi): void;
-    registerDashboard<T>(pageId: string, options: DashboardConfig): DashboardApiInstance<T>;
+    registerDashboard<T extends Record<PropertyKey, unknown>>(
+        pageId: string,
+        options: DashboardConfig
+    ): DashboardApiInstance<T>;
     registerCustom(pageId: string, options: CustomConfig): void;
-}
+};
 
 type FusionPowerBi = Omit<FusionPowerBiOptions, 'type'>;
 type DashboardConfig = Omit<DashboardOptions, 'type' | 'dashboardId'>;
@@ -46,7 +49,7 @@ export function createPageViewer({
                 pages[pageId] = {
                     type: 'FusionPowerBi',
                     ...options,
-                } as FusionPowerBiOptions;
+                };
 
                 return {
                     ...state,
@@ -59,7 +62,10 @@ export function createPageViewer({
                 };
             });
         },
-        registerDashboard<T>(pageId: string, options: DashboardConfig) {
+        registerDashboard<T extends Record<PropertyKey, unknown>>(
+            pageId: string,
+            options: DashboardConfig
+        ) {
             dispatch(getContext(), (state: CoreViewState) => {
                 const pages = state[viewerId].pages;
                 pages[pageId] = {

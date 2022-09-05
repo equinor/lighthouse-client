@@ -3,13 +3,17 @@ import { AnalyticsOptions, getSections } from '../Types';
 import { Page, Wrapper } from './analyticsViewStyles';
 import { getChart } from './GetCharts';
 
-export interface AnalyticsViewProps<T> {
+export interface AnalyticsViewProps<T extends Record<PropertyKey, unknown>> {
     data: T[];
     isLoading?: boolean;
     options: AnalyticsOptions<T>;
 }
 
-export function AnalyticsView<T>({ isLoading, data, options }: AnalyticsViewProps<T>): JSX.Element {
+export function AnalyticsView<T extends Record<PropertyKey, unknown>>({
+    isLoading,
+    data,
+    options,
+}: AnalyticsViewProps<T>): JSX.Element {
     const sections = useMemo(() => getSections(options), [options]);
 
     return (

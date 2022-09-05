@@ -15,7 +15,8 @@ export function DashboardViewer({ isFilterActive }: DashboardViewerProps): JSX.E
     const isMounted = useRef(false);
     const filterApi = useFilterApi({
         data: data,
-        filterConfiguration: (instance.filterOptions as FilterConfiguration<unknown>[]) ?? [],
+        filterConfiguration:
+            (instance.filterOptions as FilterConfiguration<Record<PropertyKey, unknown>>[]) ?? [],
     });
     useEffect(() => {
         !isMounted.current && getData();

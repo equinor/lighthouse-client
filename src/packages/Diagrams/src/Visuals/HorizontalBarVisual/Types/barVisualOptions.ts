@@ -1,4 +1,4 @@
-export interface HorizontalBarChartOptions<T> {
+export type HorizontalBarChartOptions<T extends Record<PropertyKey, unknown>> = {
     nameKey: keyof T;
     categoryKey: keyof T;
     title?: string;
@@ -6,4 +6,4 @@ export interface HorizontalBarChartOptions<T> {
     enableGroupBy?: boolean;
     stacked?: boolean;
     colors?: string[];
-}
+};

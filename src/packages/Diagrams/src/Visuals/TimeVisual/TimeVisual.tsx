@@ -8,7 +8,7 @@ import { timeChartSeries } from '../../Utils/createTime';
 import { TimeChip, TimeWrapper } from './Styles/Styles';
 import { TimeBarChartProps } from './Types/timeVisualOptions';
 
-export function TimeChart<T>({
+export function TimeChart<T extends Record<PropertyKey, unknown>>({
     data,
     options: { title, timeChartOptions, colors, defaultTime },
 }: TimeBarChartProps<T>): JSX.Element {

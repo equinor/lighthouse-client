@@ -56,9 +56,9 @@ describe('Should create expected filter values', () => {
     });
 });
 
-interface Mock {
+type Mock = {
     names: string[];
-}
+};
 
 const mockArrayData: Mock[] = [
     {

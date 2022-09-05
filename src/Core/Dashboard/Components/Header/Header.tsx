@@ -2,12 +2,16 @@ import { KpiBar } from '@equinor/Kpi';
 import { useDashboardDataContext } from '../../Context/DataProvider';
 import { PageConfig } from '../../Types/State';
 import { HeaderTab, Line, TabTitle, Wrap, Wrapper } from './HeaderStyles';
-interface HeaderProps<T> {
+interface HeaderProps<T extends Record<PropertyKey, unknown>> {
     setActivePage: (pageId: string) => void;
     activePage: string;
     pages: Record<string, PageConfig<T>>;
 }
-export function Header<T>({ pages, setActivePage, activePage }: HeaderProps<T>): JSX.Element {
+export function Header<T extends Record<PropertyKey, unknown>>({
+    pages,
+    setActivePage,
+    activePage,
+}: HeaderProps<T>): JSX.Element {
     const { instance, data } = useDashboardDataContext();
     return (
         <Wrapper>

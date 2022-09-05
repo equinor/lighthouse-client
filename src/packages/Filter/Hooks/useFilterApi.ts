@@ -22,7 +22,7 @@ export interface FilterItemCount {
     count: number;
 }
 
-export interface FilterApi<T> {
+export interface FilterApi<T extends Record<PropertyKey, unknown>> {
     filterState: FilterState<T>;
     operations: FilterOperations;
     filterGroupState: FilterGroupState;
@@ -40,19 +40,19 @@ interface FilterGroupState {
     getCountForFilterValue: (
         filterGroup: FilterGroup,
         value: FilterValueType,
-        valueFormatter?: ValueFormatterFunction<unknown>
+        valueFormatter?: ValueFormatterFunction<Record<PropertyKey, unknown>>
     ) => number;
 }
 
 export type GetGroupValuesFunc = (groupName: string) => FilterValueType[];
 
-interface FilterState<T> {
+type FilterState<T extends Record<PropertyKey, unknown>> = {
     checkHasActiveFilters: () => boolean;
     getAllFilterGroups: () => FilterGroup[];
     getFilterState: () => FilterGroup[];
     getFilteredData: () => T[];
     getValueFormatters: () => ValueFormatterFilter<T>[];
-}
+};
 
 interface FilterSearch<T> {
     search: (args: FilterSearchActive<T>, preventReRender?: boolean) => void;
@@ -96,11 +96,11 @@ type ChangeFilterItem = (
 ) => void;
 type RerenderVoidFunction = (preventReRender?: boolean) => void;
 
-export interface FilterProviderProps<T> {
+export type FilterProviderProps<T extends Record<PropertyKey, unknown>> = {
     filterConfiguration: FilterOptions<T>;
     data: T[];
-}
-export function useFilterApi<T>({
+};
+export function useFilterApi<T extends Record<PropertyKey, unknown>>({
     filterConfiguration,
     data,
 }: FilterProviderProps<T>): FilterApi<T> {
@@ -181,7 +181,7 @@ export function useFilterApi<T>({
     const getCountForFilterValue = (
         filterGroup: FilterGroup,
         filterItem: FilterValueType,
-        valueFormatterFunc?: ValueFormatterFunction<unknown>
+        valueFormatterFunc?: ValueFormatterFunction<Record<PropertyKey, unknown>>
     ) => {
         const valueFormatter =
             valueFormatterFunc ??

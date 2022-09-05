@@ -3,12 +3,12 @@ import { useWorkSpace } from '@equinor/WorkSpace';
 import { Pipetest } from '../../../Types/pipetest';
 import { tokens } from '@equinor/eds-tokens';
 
-interface LineProps {
+type LineProps = {
     value?: string;
     currentPipetest: boolean;
     pipetest: Pipetest | undefined;
     htCable?: string;
-}
+};
 
 export const Line = ({ value, currentPipetest, pipetest, htCable }: LineProps): JSX.Element => {
     const { onSelect } = useWorkSpace();
@@ -16,7 +16,8 @@ export const Line = ({ value, currentPipetest, pipetest, htCable }: LineProps): 
         <LineNode
             currentPipetest={currentPipetest}
             htCable={htCable}
-            onClick={() => onSelect && onSelect(pipetest)}
+            // TODO check if still want to do this with no pipetest
+            onClick={() => onSelect && pipetest && onSelect(pipetest)}
         >
             {value}
         </LineNode>

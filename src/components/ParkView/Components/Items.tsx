@@ -1,12 +1,15 @@
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { Item } from '../Styles/item';
 
-interface RenderItemsProps<T> {
+interface RenderItemsProps<T extends Record<PropertyKey, unknown>> {
     data: T[];
     columnExpanded: boolean;
 }
 
-export function Items<T>({ data, columnExpanded }: RenderItemsProps<T>): JSX.Element | null {
+export function Items<T extends Record<PropertyKey, unknown>>({
+    data,
+    columnExpanded,
+}: RenderItemsProps<T>): JSX.Element | null {
     const { itemKey, customView, status, onSelect, sortData, groupByKeys, gardenKey } =
         useParkViewContext<T>();
 

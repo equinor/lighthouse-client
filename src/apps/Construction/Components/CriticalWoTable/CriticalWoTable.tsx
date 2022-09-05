@@ -71,7 +71,7 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                     <SingleSelect
                         items={groupByKeys as string[]}
                         label="Group by"
-                        value={`${groupBy}`}
+                        value={String(groupBy)}
                         handleSelectedItemChange={(select) => {
                             if (select.selectedItem) handleChange(select.selectedItem as keyof T);
                         }}

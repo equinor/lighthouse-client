@@ -4,6 +4,7 @@ import { SwcrPackage } from '../models/SwcrPackage';
 import { getNextSignatureRoleKeys, getNextToSignKeys, getTypeKeys } from './packages';
 export const tableConfig: TableOptions<SwcrPackage> = {
     objectIdentifierKey: 'swcrId',
+
     columnOrder: [
         'swcrNo',
         'title',
@@ -171,7 +172,7 @@ export const columns: Column<SwcrPackage>[] = [
             const count = row.subRows.reduce((acc, curr) => {
                 acc =
                     curr.original.status !== 'Closed' &&
-                        curr.original.status !== 'Closed - Rejected'
+                    curr.original.status !== 'Closed - Rejected'
                         ? acc + 1
                         : acc;
                 return acc;
@@ -194,7 +195,7 @@ export const columns: Column<SwcrPackage>[] = [
             const count = row.subRows.reduce((acc, curr) => {
                 acc =
                     curr.original.status === 'Closed' ||
-                        curr.original.status === 'Closed - Rejected'
+                    curr.original.status === 'Closed - Rejected'
                         ? acc + 1
                         : acc;
                 return acc;

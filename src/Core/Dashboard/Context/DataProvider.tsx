@@ -9,7 +9,7 @@ export interface DataState {
     dashboardId: string;
     title: string;
     data: any[];
-    instance: DashboardInstance<unknown>;
+    instance: DashboardInstance<Record<PropertyKey, unknown>>;
     isLoading: boolean;
 }
 interface DataContextState extends DataState {

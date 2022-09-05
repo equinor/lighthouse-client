@@ -1,13 +1,13 @@
 import { SeriesItem } from './cumulativeSeries';
 
-export interface SeriesItemOptions<T> {
+export type SeriesItemOptions<T extends Record<PropertyKey, unknown>> = {
     title: string;
     key: keyof T;
     type: 'column' | 'line' | 'bar';
     value: T[keyof T];
-}
+};
 
-export interface CumulativeSeriesOptions<T> {
+export type CumulativeSeriesOptions<T extends Record<PropertyKey, unknown>> = {
     categoriesKey: keyof T;
     title: string;
     type: 'column' | 'line' | 'bar';
@@ -16,4 +16,4 @@ export interface CumulativeSeriesOptions<T> {
     key?: keyof T;
     value?: T[keyof T];
     filter?: (data: SeriesItem<T>) => boolean;
-}
+};

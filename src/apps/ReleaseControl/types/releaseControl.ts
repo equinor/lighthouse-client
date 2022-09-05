@@ -119,7 +119,7 @@ export interface ReleaseControlPunch {
     id: string;
     procosysId: number;
 }
-export interface ReleaseControl {
+export type ReleaseControl = {
     createdAtUtc: Date;
     createdBy: CreatedBy;
     modifiedAtUtc: Date;
@@ -144,7 +144,7 @@ export interface ReleaseControl {
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
     attachments: Attachment[];
-}
+};
 
 export interface ReleaseControlWorkflow {
     id: string;

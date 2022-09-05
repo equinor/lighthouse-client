@@ -21,7 +21,7 @@ interface LineChart {
     };
 }
 
-export function useLineChart<T>(
+export function useLineChart<T extends Record<PropertyKey, unknown>>(
     data: T[],
     { nameKey, categoryKey }: LineChartOptions<T>
 ): LineChart {

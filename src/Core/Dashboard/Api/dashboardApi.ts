@@ -8,15 +8,15 @@ export interface DashboardOptions {
     description?: string;
 }
 
-export interface DashboardApiInstance<T> {
+export type DashboardApiInstance<T extends Record<PropertyKey, unknown>> = {
     registerPage(config: PageConfig<T>): void;
     registerKpi(kpiBuilder: KpiBuilder<T>): void;
     registerDataSource(dataFetcher: DataSource<T>): void;
     registerDataValidator(validator: Validator<T>): void;
     registerFilterOptions(options: FilterOptions<T>): void;
-}
+};
 
-export function createDashboard<T>({
+export function createDashboard<T extends Record<PropertyKey, unknown>>({
     dashboardId,
     title,
     description,
@@ -39,11 +39,11 @@ export function createDashboard<T>({
 
     return {
         registerPage(config: PageConfig<T>): void {
-            dispatch(getDashboardContext(), (state: DashboardState) => {
+            dispatch(getDashboardContext(), (state: DashboardState<T>) => {
                 const pages = state[dashboardId].pages;
                 pages[config.pageId] = {
                     ...config,
-                } as PageConfig<unknown>;
+                };
 
                 return {
                     ...state,
@@ -79,23 +79,23 @@ export function createDashboard<T>({
             });
         },
         registerFilterOptions(filterOptions: FilterOptions<T>): void {
-            dispatch(getDashboardContext(), (state: DashboardState) => {
+            dispatch(getDashboardContext(), (state: DashboardState<T>) => {
                 return {
                     ...state,
                     [dashboardId]: {
                         ...state[dashboardId],
-                        filterOptions: filterOptions as FilterOptions<unknown>,
+                        filterOptions: filterOptions,
                     },
                 };
             });
         },
         registerKpi(kpiBuilder: KpiBuilder<T>): void {
-            dispatch(getDashboardContext(), (state: DashboardState) => {
+            dispatch(getDashboardContext(), (state: DashboardState<T>) => {
                 return {
                     ...state,
                     [dashboardId]: {
                         ...state[dashboardId],
-                        kpiBuilder: kpiBuilder as KpiBuilder<unknown>,
+                        kpiBuilder: kpiBuilder,
                     },
                 };
             });

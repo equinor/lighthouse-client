@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { MomentInput } from 'moment';
 import {
     ChartData,
     CumulativeSeries,
@@ -8,11 +8,14 @@ import {
 } from '../Types';
 import { sortDateByKey } from './sortDate';
 
-function createCumulativeSeries<T>(sortedData: T[], options: CumulativeSeriesOptions<T>) {
+function createCumulativeSeries<T extends Record<PropertyKey, unknown>>(
+    sortedData: T[],
+    options: CumulativeSeriesOptions<T>
+) {
     const reducedData = sortedData.reduce((acc, item) => {
         if (!item[options.categoriesKey] || item[options.categoriesKey as string] === '')
             return acc;
-        const date = moment(item[options.categoriesKey]).format('L');
+        const date = moment(item[options.categoriesKey] as MomentInput).format('L');
         acc[date] = acc[date] || {
             categoriesKey: options.categoriesKey,
             value: 0,
@@ -43,7 +46,10 @@ function createCumulativeSeries<T>(sortedData: T[], options: CumulativeSeriesOpt
     return Object.values(reducedData).filter(options.filter ? options.filter : () => true);
 }
 
-export function cumulativeSeries<T>(dataItem: T[], options: CumulativeSeriesOptions<T>): ChartData {
+export function cumulativeSeries<T extends Record<PropertyKey, unknown>>(
+    dataItem: T[],
+    options: CumulativeSeriesOptions<T>
+): ChartData {
     const sortedData = sortDateByKey(dataItem, options.categoriesKey);
 
     const reducedData = createCumulativeSeries<T>(sortedData, options);

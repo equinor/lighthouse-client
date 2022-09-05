@@ -6,15 +6,15 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { CumulativeSeriesOptions } from '../../Types';
 import { cumulativeSeries } from '../../Utils/createAccumulativeSeries';
 
-export interface ControlledTimeBarChartProps<T> {
+export interface ControlledTimeBarChartProps<T extends Record<PropertyKey, unknown>> {
     data: T[];
     options: ControlledTimeBarChartOptions<T>;
 }
-export interface ControlledTimeBarChartOptions<T> {
+export interface ControlledTimeBarChartOptions<T extends Record<PropertyKey, unknown>> {
     timeChartOptions: CumulativeSeriesOptions<T>;
 }
 
-export function ControlledTimeBarChart<T>({
+export function ControlledTimeBarChart<T extends Record<PropertyKey, unknown>>({
     data,
     options: { timeChartOptions },
 }: ControlledTimeBarChartProps<T>): JSX.Element {

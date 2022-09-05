@@ -4,7 +4,7 @@ import { DataSet, GardenGroups } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { PreGroupByFiltering, StatusView } from '../Models/gardenOptions';
 
-interface GroupByArgs<T, K extends keyof T> {
+interface GroupByArgs<T extends Record<PropertyKey, unknown>, K extends keyof T> {
     arr: T[];
     keys: K[];
     status?: StatusView<T>;
@@ -16,11 +16,14 @@ interface GroupByArgs<T, K extends keyof T> {
     depth: number;
 }
 
-const lookupGroup = <T>(acc: GardenGroups<T>, valueKey: string): DataSet<T> | undefined => {
+const lookupGroup = <T extends Record<PropertyKey, unknown>>(
+    acc: GardenGroups<T>,
+    valueKey: string
+): DataSet<T> | undefined => {
     return acc.find((x) => x.value === valueKey);
 };
 
-export function groupBy<T, K extends keyof T>({
+export function groupBy<T extends Record<PropertyKey, unknown>, K extends keyof T>({
     arr,
     keys,
     customGroupByKeys,
@@ -50,7 +53,7 @@ export function groupBy<T, K extends keyof T>({
         });
     } else {
         gardengroups = preGroupFiltering(arr, key).reduce((acc, item) => {
-            const itemKeys: string[] | string = fieldSetting?.getKey
+            const itemKeys = fieldSetting?.getKey
                 ? fieldSetting.getKey(item, fieldSetting?.key || key, customGroupByKeys)
                 : item[key];
 
@@ -136,7 +139,7 @@ interface GroupByArrayArgs<T> {
     isExpanded?: boolean;
 }
 
-function groupByArray<T>({
+function groupByArray<T extends Record<PropertyKey, unknown>>({
     arr,
     key,
     preGroupFiltering,
@@ -147,15 +150,17 @@ function groupByArray<T>({
     const childKey = fieldSetting?.key;
 
     /** List of all unique identifiers in child array of all arr entries  */
+    // TODO check if works
     const groupNames = preGroupFiltering(arr, key as string).reduce((prev, curr) => {
-        const childArray = curr[key as string]
-            .map((nestedObject: Record<string, unknown> | string | number) =>
-                typeof nestedObject === 'object' ? nestedObject[childKey as string] : nestedObject
-            )
-            .filter(
-                (v: string | number, i: number, a: Array<string | number>) => a.indexOf(v) === i
-            ) as Array<number | string>;
-
+        let childArray: (string | number)[] = [];
+        let children = curr[key];
+        if (Array.isArray(children)) {
+            children
+                .map((nestedObject: Record<string, unknown> | string | number) =>
+                    typeof nestedObject === 'object' ? nestedObject[String(childKey)] : nestedObject
+                )
+                .filter((v, i, a) => a.indexOf(v) === i);
+        }
         return [...prev, ...childArray.filter((identifier) => !prev.includes(identifier))];
     }, [] as (string | number)[]);
 
@@ -179,7 +184,11 @@ function groupByArray<T>({
     });
 
     /** Makes a group for the items with an empty array */
-    const blanks = arr.filter((item) => item[key as string].length === 0);
+    // TODO Check if works
+    const blanks = arr.filter((item) => {
+        const children = item[key];
+        return Array.isArray(children) && children.length === 0;
+    });
 
     if (blanks.length > 0) {
         groups.push({

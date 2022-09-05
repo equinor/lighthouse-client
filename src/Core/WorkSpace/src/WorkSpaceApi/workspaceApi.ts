@@ -10,7 +10,7 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState
+    WorkSpaceState,
 } from './workspaceState';
 import {
     DataSource,
@@ -20,7 +20,7 @@ import {
     Validator,
     ViewOptions,
     WorkSpaceApi,
-    WorkspaceOptions
+    WorkspaceOptions,
 } from './WorkSpaceTypes';
 
 /**
@@ -31,9 +31,10 @@ import {
  * @param {WorkspaceOptions<T>} options
  * @return {*}  {DataViewerApi<T>}
  */
-export function createWorkSpace<T, SideSheetIds extends string>(
-    options: WorkspaceOptions<T, SideSheetIds>
-): WorkSpaceApi<T> {
+export function createWorkSpace<
+    T extends Record<PropertyKey, unknown>,
+    SideSheetIds extends string
+>(options: WorkspaceOptions<T, SideSheetIds>): WorkSpaceApi<T> {
     const onSelect = (item: T) => {
         options.openSidesheet(options.customSidesheetOptions?.component, item, {
             ...options.customSidesheetOptions,
@@ -42,7 +43,7 @@ export function createWorkSpace<T, SideSheetIds extends string>(
         return item[options.objectIdentifier];
     };
 
-    const onGroupeSelect = (item: DataSet<unknown>): string => {
+    const onGroupeSelect = (item: DataSet<Record<PropertyKey, unknown>>): string => {
         options.openSidesheet<any>(options.customGroupeSidesheet?.component, item, {
             ...options.customGroupeSidesheet,
             widgetId: options.customGroupeSidesheet?.id,
@@ -52,7 +53,7 @@ export function createWorkSpace<T, SideSheetIds extends string>(
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
 
-    function updateState(update: Partial<WorkSpaceConfig<unknown>>) {
+    function updateState(update: Partial<WorkSpaceConfig<Record<PropertyKey, unknown>>>) {
         dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => {
             const newState = state;
             newState[options.viewerId] = { ...update, ...newState[options.viewerId] };
@@ -100,8 +101,10 @@ export function createWorkSpace<T, SideSheetIds extends string>(
             viewOptions: ViewOptions<T>
         ) {
             updateState({
-                viewComponent: viewComponent as React.FC<DataViewerProps<unknown>>,
-                viewOptions: viewOptions as ViewOptions<unknown>,
+                viewComponent: viewComponent as React.FC<
+                    DataViewerProps<Record<PropertyKey, unknown>>
+                >,
+                viewOptions: viewOptions as ViewOptions<Record<PropertyKey, unknown>>,
             });
 
             return workspaceAPI;
@@ -121,28 +124,38 @@ export function createWorkSpace<T, SideSheetIds extends string>(
          * View option Registration
          *
          */
-        registerTableOptions<T>(tableOptions: Omit<TableOptions<T>, 'onSelect'>) {
+        registerTableOptions<T extends Record<PropertyKey, unknown>>(
+            tableOptions: Omit<TableOptions<T>, 'onSelect'>
+        ) {
             updateState({
-                tableOptions: { onSelect, ...tableOptions } as TableOptions<unknown>,
+                tableOptions: { onSelect, ...tableOptions } as TableOptions<
+                    Record<PropertyKey, unknown>
+                >,
             });
 
             return workspaceAPI;
         },
-        registerTreeOptions<T>(treeOptions: Omit<TreeOptions<T>, 'onSelect'>) {
+        registerTreeOptions<T extends Record<PropertyKey, unknown>>(
+            treeOptions: Omit<TreeOptions<T>, 'onSelect'>
+        ) {
             updateState({
-                treeOptions: { ...treeOptions, onSelect } as unknown as TreeOptions<unknown>,
+                treeOptions: { ...treeOptions, onSelect } as unknown as TreeOptions<
+                    Record<PropertyKey, unknown>
+                >,
             });
 
             return workspaceAPI;
         },
-        registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
+        registerGardenOptions<T extends Record<PropertyKey, unknown>>(
+            gardenOptions: Omit<GardenOptions<T>, 'onSelect'>
+        ) {
             updateState({
                 gardenOptions: {
                     customGroupByKeys: {},
                     ...gardenOptions,
                     onSelect,
                     onGroupeSelect,
-                } as unknown as GardenOptions<unknown>,
+                } as unknown as GardenOptions<Record<PropertyKey, unknown>>,
             });
 
             return workspaceAPI;
@@ -153,13 +166,19 @@ export function createWorkSpace<T, SideSheetIds extends string>(
             });
             return workspaceAPI;
         },
-        registerAnalyticsOptions<T>(analyticsOptions: AnalyticsOptions<T>) {
-            updateState({ analyticsOptions: analyticsOptions as AnalyticsOptions<unknown> });
+        registerAnalyticsOptions<T extends Record<PropertyKey, unknown>>(
+            analyticsOptions: AnalyticsOptions<T>
+        ) {
+            updateState({
+                analyticsOptions: analyticsOptions as AnalyticsOptions<
+                    Record<PropertyKey, unknown>
+                >,
+            });
 
             return workspaceAPI;
         },
-        registerStatusItems<T>(statusFunc: StatusFunc<T>) {
-            updateState({ statusFunc: statusFunc as StatusFunc<unknown> });
+        registerStatusItems<T extends Record<PropertyKey, unknown>>(statusFunc: StatusFunc<T>) {
+            updateState({ statusFunc: statusFunc as StatusFunc<Record<PropertyKey, unknown>> });
 
             return workspaceAPI;
         },
