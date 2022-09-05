@@ -28,7 +28,7 @@ export const ViewSettings = ({ tabs }: ViewSettingsProps): JSX.Element | null =>
                 aria-selected={isOpen}
                 onClick={() => setIsOpen(true)}
             >
-                <Icon name="settings" />
+                <Icon name="more_vertical" />
             </TabButton>
             {isOpen && (
                 <Popover
