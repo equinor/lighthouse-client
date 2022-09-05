@@ -1,9 +1,13 @@
 import { Popover } from '@equinor/eds-core-react';
-import { ColumnMenuPicker } from '../../../../../packages/Table/Components/ColumnPicker/ColumnPicker';
+import { ColumnMenuPicker, ExportToExcel } from '@equinor/Table';
+import { useWorkSpace } from '../..';
 import { tabApis } from '../../Context/LocationProvider';
+import { StyledLine, StyledTabWrapper } from './listTab.styles';
 
 export const ListTabPopover = (): JSX.Element | null => {
     const getApi = tabApis.useAtomState()?.table?.getApi;
+
+    const { tableOptions } = useWorkSpace();
     if (!getApi) return null;
 
     return (
@@ -12,7 +16,19 @@ export const ListTabPopover = (): JSX.Element | null => {
             <Popover.Content
                 style={{ maxHeight: '70vh', paddingBottom: '10px', overflowY: 'scroll' }}
             >
-                <ColumnMenuPicker getApi={getApi} />
+                <StyledTabWrapper>
+                    {tableOptions && tableOptions.excelExport && (
+                        <>
+                            <ExportToExcel
+                                excelExportFn={tableOptions.excelExport}
+                                rows={getApi().getRows()}
+                            />
+                            <StyledLine />
+                        </>
+                    )}
+
+                    <ColumnMenuPicker getApi={getApi} />
+                </StyledTabWrapper>
             </Popover.Content>
         </>
     );
