@@ -9,7 +9,7 @@ export const StyledTabWrapper = styled.div`
 `;
 
 export const StyledLine = styled.div`
-    background-color: ${tokens.colors.interactive.pressed_overlay_dark.hsla};
-    height: 2px;
+    background-color: ${tokens.colors.ui.background__medium.rgba};
+    height: 1px;
     width: 98%;
 `;

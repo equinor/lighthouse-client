@@ -30,6 +30,7 @@ export const ColumnMenuPicker = ({
 
     return (
         <>
+            <div>Column picker</div>
             <ReactSortable
                 animation={200}
                 handle={`.${DraggableHandleSelector}`}
