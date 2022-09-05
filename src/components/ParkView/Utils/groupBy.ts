@@ -152,11 +152,11 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
     /** List of all unique identifiers in child array of all arr entries  */
     // TODO check if works
     const groupNames = preGroupFiltering(arr, key as string).reduce((prev, curr) => {
-        let childArray: (string | number)[] = [];
+        let childArray = new Array();
         let children = curr[key];
         if (Array.isArray(children)) {
-            children
-                .map((nestedObject: Record<string, unknown> | string | number) =>
+            childArray = children
+                .map((nestedObject) =>
                     typeof nestedObject === 'object' ? nestedObject[String(childKey)] : nestedObject
                 )
                 .filter((v, i, a) => a.indexOf(v) === i);
