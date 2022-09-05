@@ -63,7 +63,7 @@ export interface Scope {
     name: string;
 }
 
-export interface ScopeChangeBaseModel {
+export type ScopeChangeBaseModel = {
     id: string;
     title: string;
     description: string;
@@ -80,7 +80,7 @@ export interface ScopeChangeBaseModel {
     materialsIdentifiedInStorage: boolean;
     materialsToBeBoughtByContractor: boolean;
     materialsNote?: string;
-}
+};
 
 export interface ScopeChangeDisciplineGuesstimates {
     id: string;
@@ -118,7 +118,7 @@ export interface LogEntry {
     details: string;
 }
 
-export interface ScopeChangeRequest extends ScopeChangeBaseModel {
+export type ScopeChangeRequest = ScopeChangeBaseModel & {
     workflowStatus: string | null;
     createdAtUtc: string;
     createdBy: Person;
@@ -144,7 +144,7 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
     revisionNumber: number;
     serialNumber: string;
-}
+};
 
 export interface ScopeChangeWorkOrder {
     id: string;
