@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.9.0
+[PowerBI] Added commissioning analytics Pbi app
+[PowerBI] Added preservation Pbi app
+[ReleaseControl] '...' menu only for current step
+[ReleaseControl] Improved layout of workflow steps
+[ReleaseControl] Split sign-button into two buttons
+[ReleaseControl] Tabbed edit-mode
+[ReleaseControl] Added attachment support for release controls
+[ReleaseControl] Use person as workflow step responsible
+[ReleaseControl] Improved tag/htCable search speed
+[ReleaseControl] Spinner chip when application is fetching/updating
+[ReleaseControl] Pop-up modal for sign with comment
+[ScopeChangeRequest] Validation bugfix
+[ScopeChangeRequest] Export to Excel
+[Menu] Fix bug where two apps with similar names are both active
+[Workorder] Add abortsingal to api calls
+[Handover] Unit tests
+
 # 1.8.1
 [LCI] Update to use PowerBIViewer
 [MDR] Update to use PowerBIViewer
