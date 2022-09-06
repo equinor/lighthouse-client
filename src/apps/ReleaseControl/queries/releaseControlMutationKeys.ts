@@ -21,7 +21,7 @@ interface ReleaseControlMutationKeys {
 }
 
 export function releaseControlMutationKeys(requestId: string): ReleaseControlMutationKeys {
-    const baseKey = ['releaseControl', requestId];
+    const baseKey = ['releasecontrol', requestId];
 
     const workflowKeys = {
         baseKey: [...baseKey, 'workflow'],

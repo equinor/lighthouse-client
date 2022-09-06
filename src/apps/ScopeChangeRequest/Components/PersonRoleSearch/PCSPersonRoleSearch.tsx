@@ -19,12 +19,16 @@ interface PCSLinkProps {
     onSelect: (selected?: TypedSelectOption | null) => void;
     isDisabled?: boolean;
     classification?: string;
+    value?: string;
+    defaultResult?: FunctionalRole[];
 }
 
 export const PCSPersonRoleSearch = ({
     isDisabled,
     onSelect,
     classification,
+    value,
+    defaultResult,
 }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
     const { procosysPlantId } = useFacility();
@@ -36,21 +40,34 @@ export const PCSPersonRoleSearch = ({
         getFunctionalRolesQuery(procosysPlantId, classification)
     );
 
+    const defaultOptions: TypedSelectOption[] = [];
+    defaultResult?.forEach((option) => {
+        const selectOption: TypedSelectOption = {
+            label: option.Code,
+            value: option.Code,
+            object: option,
+            searchValue: option.Code,
+            type: 'functionalRole',
+        };
+        defaultOptions.push(selectOption);
+    });
+
     const loadOptions = async (
         inputValue: string,
         callback: (options: TypedSelectOption[]) => void
     ) => {
         abort();
         const options: TypedSelectOption[] = [];
-
         await (await searchPCS(inputValue, 'person', getSignal())).forEach((x) => options.push(x));
 
         if (!data) {
             await refetch();
         }
         if (data) {
-            const matches = data.filter((x) =>
-                x.Code.toLowerCase().startsWith(inputValue.toLowerCase())
+            const matches = data.filter(
+                (x) =>
+                    x.Code.toLowerCase().startsWith(inputValue.toLowerCase()) ||
+                    x.Code.toLowerCase().includes(inputValue.toLowerCase())
             );
             matches.forEach((x) => {
                 const selectOption: TypedSelectOption = {
@@ -67,7 +84,6 @@ export const PCSPersonRoleSearch = ({
 
         callback(sorted);
     };
-
     return (
         <>
             <div
@@ -78,9 +94,10 @@ export const PCSPersonRoleSearch = ({
                 }}
             >
                 <AsyncSelect
+                    defaultInputValue={value !== '' && value !== undefined ? value : undefined}
                     cacheOptions={false}
                     loadOptions={loadOptions}
-                    defaultOptions={false}
+                    defaultOptions={defaultOptions.length !== 0 ? defaultOptions : undefined}
                     isDisabled={isDisabled}
                     styles={applyEdsStyles()}
                     controlShouldRenderValue={true}

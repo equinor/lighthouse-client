@@ -1,10 +1,12 @@
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { searchPunchListItems } from '../../api/FAM/searchPunchListItems';
-import { searchTag } from '../../api/FAM/searchTag';
 import { FamTag } from '../../../ReleaseControl/types/releaseControl';
+import { searchTagNo } from '../../api/FAM/searchTagNo';
+import { searchHtCableTagNo } from '../../api/FAM/searchHtCableTagNo';
+import { searchTag } from '../../api/FAM/searchTag';
 import { searchHtCable } from '../../api/FAM/searchHtCable';
 
-export type FAMTypes = 'punch' | 'famtag' | 'htcable';
+export type FAMTypes = 'punch' | 'famtag' | 'htcable' | 'famtagno' | 'htcabletagno';
 
 interface FAMSearch {
     searchFAM: (
@@ -48,9 +50,33 @@ export function useFAMSearch(): FAMSearch {
                     })
                 );
             }
-
             case 'htcable': {
                 const items = await searchHtCable(searchValue, signal);
+                return items.map(
+                    (x: FamTag): TypedSelectOption => ({
+                        label: `${x.tagNo}`,
+                        value: x.tagNo,
+                        type: 'htcable',
+                        searchValue: x.tagNo,
+                        object: x,
+                    })
+                );
+            }
+            case 'famtagno': {
+                const items = await searchTagNo(searchValue, signal);
+                return items.map(
+                    (x: FamTag): TypedSelectOption => ({
+                        label: `${x.tagNo}`,
+                        value: x.tagNo,
+                        type: 'famtag',
+                        searchValue: x.tagNo,
+                        object: x,
+                    })
+                );
+            }
+
+            case 'htcabletagno': {
+                const items = await searchHtCableTagNo(searchValue, signal);
                 return items.map(
                     (x: FamTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,

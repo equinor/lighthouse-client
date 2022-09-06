@@ -9,6 +9,7 @@ import { DateTime } from 'luxon';
 import { Atom, deref, swap } from '@dbeining/react-atom';
 import styled from 'styled-components';
 import { CellProps, EstimateBar, ExpendedProgressBar, CustomColumn } from '@equinor/Table';
+import { excelExport } from './excelExport';
 
 const DEFAULT_TABLE_AGGREGATED = { Aggregated: () => null, aggregate: 'count' };
 
@@ -40,11 +41,11 @@ const defineColumn = ({
     [options?.render ? 'Cell' : 0]: ({ cell }: any) =>
         options?.render && options?.render(cell.row.original, cell.value, cell),
 });
-
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
     preventAutoGenerateColumns: true,
     enableSelectRows: true,
+    excelExport: excelExport,
     customColumns: [
         defineColumn({
             header: 'Id',

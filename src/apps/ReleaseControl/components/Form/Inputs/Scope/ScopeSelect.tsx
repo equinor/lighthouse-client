@@ -20,9 +20,10 @@ export interface SelectProps {
         newValue: MultiValue<TypedSelectOption>,
         actionMeta: ActionMeta<TypedSelectOption>
     ) => void;
+    disabled?: boolean;
 }
 
-export const Select = ({ loadOptions, onChange, onInputChange, value }: SelectProps) => (
+export const Select = ({ loadOptions, onChange, onInputChange, value, disabled }: SelectProps) => (
     <AsyncSelect
         cacheOptions={false}
         loadOptions={loadOptions}
@@ -37,5 +38,6 @@ export const Select = ({ loadOptions, onChange, onInputChange, value }: SelectPr
         onInputChange={onInputChange}
         onChange={onChange}
         theme={(theme: Theme) => applyEDSTheme(theme)}
+        isDisabled={disabled}
     />
 );

@@ -4,10 +4,16 @@ import { FilterOptions } from '@equinor/filter';
 import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 import { StatusItem } from '@equinor/lighthouse-status-bar';
 import { CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
-import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
+import {
+    CustomCell,
+    CustomColumn,
+    CustomHeader,
+    TableData,
+    Row,
+    TableOptions as ReactTableOptions,
+} from '@equinor/Table';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
-import { TableOptions as ReactTableOptions } from 'react-table';
 import {
     DataSource,
     DataViewerProps,
@@ -27,6 +33,10 @@ export type TableOptions<T> = Pick<
     ReactTableOptions<T>,
     'enableSelectRows' | 'onCellClick' | 'setSelected' | 'columnOrder' | 'onSelect'
 > & {
+    /** Function to run on Export to Excel button click handler. */
+    excelExport?: (
+        filteredRows: Row<T extends Record<PropertyKey, unknown> ? T : TableData>[]
+    ) => Promise<void>;
     preventAutoGenerateColumns?: boolean;
     objectIdentifierKey: string;
     /** Hide certain columns based on key */

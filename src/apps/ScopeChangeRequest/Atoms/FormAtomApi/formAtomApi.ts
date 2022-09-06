@@ -140,8 +140,7 @@ function checkFormState(
             case checkString(request.originSource):
                 return false;
         }
-
-        if (request.originSource !== 'Not Applicable') {
+        if (request.originSource !== 'Not Applicable' && request.originSource !== 'NotApplicable') {
             if (checkString(request.originSourceId)) {
                 return false;
             }

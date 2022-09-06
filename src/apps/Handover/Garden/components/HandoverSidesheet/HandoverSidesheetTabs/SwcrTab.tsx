@@ -42,7 +42,7 @@ export const SwcrTab = ({ packages, isFetching }: TabProps): JSX.Element => {
             columns={columns}
             packages={packages}
             isFetching={isFetching}
-            resourceName="SWCR Packages"
+            resourceName="SWCR"
             error={null}
         />
     );

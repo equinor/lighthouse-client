@@ -7,6 +7,7 @@ export const ActionBar = styled.div`
     width: 100%;
     border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
     background-color: white;
+    margin-top: 100px;
 `;
 
 export const ButtonContainer = styled.div`

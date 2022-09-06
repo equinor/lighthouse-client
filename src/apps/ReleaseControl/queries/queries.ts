@@ -27,7 +27,7 @@ export interface QueryContext {
     signal?: AbortSignal;
 }
 
-const releaseControlBaseKey = (requestId: string): string[] => ['releaseControl', requestId];
+const releaseControlBaseKey = (requestId: string): string[] => ['releasecontrol', requestId];
 const releaseControlHistoryKey = (requestId: string): string[] => [
     ...releaseControlBaseKey(requestId),
     'history',

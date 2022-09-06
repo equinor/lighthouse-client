@@ -1,6 +1,6 @@
 import { isAppActive, isProduction } from '@equinor/lighthouse-portal-client';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { AppManifest } from '../../../../Core/Client/Types';
 import Icon from '../../../Icon/Icon';
 import { useFavoritesContext } from '../../Context/FavoritesContext';
@@ -15,17 +15,21 @@ interface MenuItemProps {
 }
 
 export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Element | null => {
-    const { toggleFavorite, hasFavorite } = useFavoritesContext();
-    const navigate = useNavigate();
     const [showIcon, setShowIcon] = useState(false);
+    const { toggleFavorite, hasFavorite } = useFavoritesContext();
+
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
     const isActive = useMemo(() => isAppActive(manifest), [manifest]);
 
+    const activePath = matchPath(`/${groupId}/${manifest.shortName}/*`, pathname);
     if (!isActive) return null;
 
     return (
         <Item
             isLink={manifest.uri !== undefined}
-            active={location.pathname.includes(`${groupId}/${manifest.shortName}`)}
+            active={activePath !== null}
             title={isActive ? manifest.title : 'Disabled'}
             onClick={(e) => {
                 e.preventDefault();
