@@ -37,7 +37,7 @@ export default {
         '^@equinor\\/lighthouse-model-viewer(.*)$': '<rootDir>/src/packages/ModelViewer$1',
         '^@equinor\\/echo3dweb-viewer(.*)$': '<rootDir>/packages/echo3dViewer/src$1',
         '^@equinor\\/ParkView(.*)$': '<rootDir>/src/components/ParkView$1',
-        '^@equinor\\/Modal(.*)$': '<rootDir>/src/packages/Modal$1',
+        '^@equinor\\/modal(.*)$': '<rootDir>/src/packages/Modal$1',
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     modulePathIgnorePatterns: ['<rootDir>/packages'],
