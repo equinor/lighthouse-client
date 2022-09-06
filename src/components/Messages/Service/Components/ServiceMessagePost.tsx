@@ -30,7 +30,7 @@ export function ServiceMessagePost(): JSX.Element | null {
             message.link = formDataLink.data;
         }
 
-        await appConfig.post('/api/serviceMessage', {
+        await appConfig.post('api/serviceMessage', {
             body: JSON.stringify(message),
         });
 
@@ -63,6 +63,17 @@ export function ServiceMessagePost(): JSX.Element | null {
         );
     };
 
+    const deleteServiceMessage = async () => {
+        try {
+            await appConfig.delete('api/serviceMessage');
+        } catch (e) {
+            console.error(e);
+        } finally {
+            // storage.setItem('postMessage', 'false');
+            // setIsActive(false);
+        }
+    };
+
     return (
         <div>
             {isActive && (
@@ -87,6 +98,22 @@ export function ServiceMessagePost(): JSX.Element | null {
                                     buttons={[]}
                                 />
                             </GeneratedForm>
+                        </Container>
+                        <Container>
+                            <h2>Delete active service message</h2>
+
+                            <p>
+                                This service message can be set to appear in the future (not shown
+                                at the moment), so be sure that you actually want to delete it
+                            </p>
+
+                            <Button
+                                color="danger"
+                                variant="outlined"
+                                onClick={() => deleteServiceMessage()}
+                            >
+                                Delete
+                            </Button>
                         </Container>
                     </ScrimContainer>
                 </Scrim>
