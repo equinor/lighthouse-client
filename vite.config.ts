@@ -64,6 +64,7 @@ export default defineConfig({
             '@equinor/BookmarksManager': path.resolve(__dirname, './src/packages/BookmarksManager'),
             '@equinor/lighthouse-hooks': path.resolve(__dirname, './src/hooks'),
             '@equinor/procosys-urls': path.resolve(__dirname, 'src/packages/ProCoSysUrls'),
+            '@equinor/modal': path.resolve(__dirname, 'src/packages/Modal'),
         },
     },
     build: {
