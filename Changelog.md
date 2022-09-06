@@ -17,6 +17,10 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 [ReleaseControl] Spinner chip when application is fetching/updating
 [ReleaseControl] Pop-up modal for sign with comment
 [ScopeChangeRequest] Validation bugfix
+[ScopeChangeRequest] Export to Excel
+[Menu] Fix bug where two apps with similar names are both active
+[Workorder] Add abortsingal to api calls
+[Handover] Unit tests
 
 # 1.8.1
 [LCI] Update to use PowerBIViewer
