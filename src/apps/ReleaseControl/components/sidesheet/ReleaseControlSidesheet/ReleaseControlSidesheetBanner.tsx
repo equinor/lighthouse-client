@@ -1,9 +1,11 @@
+import { CircularProgress } from '@equinor/eds-core-react';
+import { useIsReleaseControlMutatingOrFetching } from '../../../hooks';
 import { useReleaseControlContext } from '../../../hooks/useReleaseControlContext';
-import { Banner, BannerItemTitle, BannerItemValue } from './sidesheetStyles';
+import { Banner, BannerItemTitle, BannerItemValue, ChipText, SpinnerChip } from './sidesheetStyles';
 
 export function ReleaseControlSidesheetBanner(): JSX.Element {
     const { releaseControl } = useReleaseControlContext();
-
+    const isLoading = useIsReleaseControlMutatingOrFetching(releaseControl.id);
     return (
         <Banner>
             <BannerItem title="" value="" />
@@ -13,6 +15,12 @@ export function ReleaseControlSidesheetBanner(): JSX.Element {
                 title={'State'}
                 value={releaseControl.isVoided ? 'Voided' : releaseControl.state}
             />
+            {isLoading && (
+                <SpinnerChip>
+                    <CircularProgress size={16} />
+                    <ChipText>Processing...</ChipText>
+                </SpinnerChip>
+            )}
         </Banner>
     );
 }
