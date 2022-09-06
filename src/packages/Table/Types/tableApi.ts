@@ -10,4 +10,5 @@ export interface TableAPI {
     getSelectedRowId: () => string | null;
     setSelectedRowId: (callbackOrId: SelectedRowCallback | string) => void;
     getColumns: () => ColumnInstance<TableData, TableData>[];
+    getRows: () => Row<TableData>[];
 }

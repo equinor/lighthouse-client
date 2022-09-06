@@ -58,7 +58,8 @@ export const WorkflowCustomEditor = (): JSX.Element => {
             >
                 {dragableSteps.map((dragItem) => (
                     <WorkflowStep
-                        key={dragItem.item.order}
+                        //TODO - find unique ID
+                        key={Math.random()}
                         step={dragItem.item}
                         steps={workflowSteps.map(({ item }) => item)}
                         functionalRoles={functionalRoles}

@@ -34,6 +34,7 @@ export interface DRCCreateModel {
     workflowSteps?: CreateReleaseControlStepModel[];
     editedWorkflowSteps?: CreateReleaseControlStepModel[];
     signedWorkflowSteps?: CreateReleaseControlStepModel[];
+    newAttachments?: File[];
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -51,16 +52,16 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
     prepareReleaseControl: () => prepareReleaseControl(),
     clearState: () =>
         api.updateAtom({
-            description: undefined,
+            description: '',
             allowContributors: true,
             documentNumbers: [],
             punchListItemIds: [],
             plannedDueDate: '',
             workflowSteps: [],
-            title: undefined,
-            phase: undefined,
+            title: '',
+            phase: '',
             references: [],
-            id: undefined,
+            id: '',
             step: 'scope',
             editedWorkflowSteps: [],
             signedWorkflowSteps: [],
@@ -68,6 +69,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             htCables: [],
             scopeTags: [],
             scopeHTTags: [],
+            newAttachments: [],
         }),
 }));
 

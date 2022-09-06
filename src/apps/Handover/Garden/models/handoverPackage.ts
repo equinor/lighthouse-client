@@ -46,7 +46,7 @@ export type HandoverPackage = {
     isReadyForStartup: boolean;
     isSubsea: boolean;
     mcDisciplineCodes: string[];
-    mcDisciplines: string[];
+    mcDisciplines: string[] | null;
     mcPkgsCount: number;
     mcPkgsRFCCShippedCount: number;
     mcPkgsRFCCSigned: number;
@@ -89,6 +89,6 @@ export type HandoverPackage = {
     tacIsShipped: boolean;
     url: string;
     volume: number;
-    yellowLineStatus: string;
-    blueLineStatus: string;
+    yellowLineStatus: string | null;
+    blueLineStatus: string | null;
 };

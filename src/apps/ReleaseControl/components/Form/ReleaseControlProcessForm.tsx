@@ -1,6 +1,6 @@
 import { Button, Icon, Progress, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { PhaseSelect } from '../../../DisciplineReleaseControl/Components/Form/Inputs/PhaseSelect';
 import { getReleaseControlById } from '../../api/releaseControl/Request';
@@ -28,7 +28,12 @@ import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
-    const { useAtomState, updateAtom } = DRCFormAtomApi;
+    const { useAtomState, updateAtom, clearState } = DRCFormAtomApi;
+    //Clear state once when opening the form
+    useEffect(() => {
+        clearState();
+    }, []);
+
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
     const step = useAtomState(({ step }) => step ?? 'scope');
     const { workflowsQuery, workflowTemplateQuery } = releaseControlQueries;

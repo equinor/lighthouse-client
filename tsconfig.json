@@ -140,6 +140,9 @@
             ],
             "@equinor/overlay-menu": [
                 "./src/components/OverlayMenu"
+            ],
+             "@equinor/modal": [
+                "./src/packages/Modal"
             ]
         }
     },
