@@ -15,7 +15,7 @@ import { DetailText, VerticalLine, WorklowIconAndLine } from './criteria.styles'
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { SignWithCommentModal } from './SignWithComment/SignWithCommentModal';
-import { Modal } from '../../../../../../packages/BookmarksManager/src/components/BookmarksSidesheet/Modal';
+import { Modal } from '@equinor/modal';
 
 interface CriteriaRenderProps {
     name: string;
