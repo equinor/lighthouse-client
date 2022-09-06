@@ -1,37 +1,37 @@
 import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
-export interface CreatedBy {
+export type CreatedBy = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface ModifiedBy {
+export type ModifiedBy = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface SignedBy {
+export type SignedBy = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface Person {
+export type Person = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface Contribution {
+export type Contribution = {
     createdAtUtc: Date;
     createdBy: CreatedBy;
     modifiedAtUtc: Date;
@@ -39,9 +39,9 @@ export interface Contribution {
     id: string;
     comment: string;
     suggestion: string;
-}
+};
 
-export interface Contributor {
+export type Contributor = {
     id: string;
     instructionsToContributor: string;
     person: Person;
@@ -51,14 +51,14 @@ export interface Contributor {
     modifiedAtUtc;
     modifiedBy;
     plant;
-}
+};
 
-export interface DraggableReleaseControlStep {
+export type DraggableReleaseControlStep = {
     id: string;
     item: CreateReleaseControlStepModel;
-}
+};
 
-export interface ReleaseControlStep {
+export type ReleaseControlStep = {
     id: string;
     name: string;
     order: number;
@@ -70,9 +70,9 @@ export interface ReleaseControlStep {
     allowContributors: boolean;
     criteriaTemplates: CriteriaTemplate[];
     workflowStepCriteriaTemplates?: CriteriaTemplate[];
-}
+};
 
-export interface CreateReleaseControlStepModel {
+export type CreateReleaseControlStepModel = {
     id?: string;
     name: string;
     order: number;
@@ -88,9 +88,9 @@ export interface CreateReleaseControlStepModel {
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
     workflowStepCriteriaTemplates?: CriteriaTemplate[];
-}
+};
 
-export interface Criteria {
+export type Criteria = {
     id: string;
     type: string;
     value: string;
@@ -99,27 +99,27 @@ export interface Criteria {
     signedBy: SignedBy;
     signedComment: string;
     signedState: CriteriaSignState | null;
-}
-export interface CriteriaTemplate {
+};
+export type CriteriaTemplate = {
     id?: string;
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
     assignToCreator: boolean;
     //I.E functional role name or azure oid
     value?: string;
     valueDescription?: string;
-}
+};
 
-export interface ReleaseControlDocument {
+export type ReleaseControlDocument = {
     id: string;
     stidDocumentNumber: string;
     stidDocumentRevisionNumber: string;
-}
+};
 
-export interface ReleaseControlPunch {
+export type ReleaseControlPunch = {
     id: string;
     procosysId: number;
-}
-export interface ReleaseControl {
+};
+export type ReleaseControl = {
     createdAtUtc: Date;
     createdBy: CreatedBy;
     modifiedAtUtc: Date;
@@ -144,20 +144,20 @@ export interface ReleaseControl {
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
     attachments: Attachment[];
-}
+};
 
-export interface ReleaseControlWorkflow {
+export type ReleaseControlWorkflow = {
     id: string;
     name: string;
-}
+};
 
-export interface ReleaseControlWorkflowTemplate {
+export type ReleaseControlWorkflowTemplate = {
     id: string;
     isPublished: boolean;
     workflowStepTemplates: CreateReleaseControlStepModel[];
-}
+};
 
-export interface FamTag {
+export type FamTag = {
     facility: string;
     project: string;
     tagNo: string;
@@ -187,7 +187,7 @@ export interface FamTag {
     installedCableLength: string | null;
     tagHeated: string | null;
     checklistIds: string | null;
-}
+};
 
 export type FamTagType = {
     facility: string;
@@ -221,7 +221,7 @@ export type FamTagType = {
     checklistIds: string | null;
 };
 
-export interface Attachment {
+export type Attachment = {
     blobPath: string;
     createdAtUtc: string;
     createdBy: Person;
@@ -230,7 +230,7 @@ export interface Attachment {
     modifiedAtUtc: string | null;
     modifiedBy: string | null;
     fileSize: number;
-}
+};
 
 export enum ReleaseControlStepNames {
     Coordinator = 'Coordinator',

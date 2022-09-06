@@ -7,7 +7,7 @@ export type SwcrStatus =
     | 'Initiated'
     | 'Tested';
 
-export interface SwcrPackage {
+export type SwcrPackage = {
     siteCode: string;
     projectIdentifier: string;
     projectDescription: string;
@@ -44,4 +44,4 @@ export interface SwcrPackage {
     latestSignRanking: string;
     swcrId: string;
     nextsToSign: string[];
-}
+};
