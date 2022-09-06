@@ -2,7 +2,7 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
-interface Checklist {
+type Checklist = {
     loopTag: string;
     tagNo: string;
     description: string;
@@ -15,9 +15,9 @@ interface Checklist {
     phase: string;
     createdAt: string;
     signedAt: string;
-}
+};
 
-export interface WP {
+export type WP = {
     tagNo: string;
     commPk: string;
     mcPk: string;
@@ -30,7 +30,7 @@ export interface WP {
     signedAt: string;
     contentChecklists: Checklist[];
     functionTags: string[];
-}
+};
 
 const analyticsOptions: AnalyticsOptions<WP> = {
     section2: {
