@@ -14,20 +14,20 @@ export type CustomClientApi = Omit<
     'createWorkSpace' | 'createPageViewer' | 'createPowerBiViewer'
 >;
 
-export interface App {
+export type App = {
     appType?: AppType;
     setup?: (api: ClientApi) => void;
     component?: React.FC<CustomClientApi>;
-}
+};
 
-export interface ClientApi extends AppManifest {
+export type ClientApi = AppManifest & {
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
-    createWorkSpace<T, SideSheetId extends string = string>(
+    createWorkSpace<T extends Record<PropertyKey, unknown>, SideSheetId extends string = string>(
         options: WorkspaceViewerOptions<T, SideSheetId>
     ): WorkSpaceApi<T>;
     createPageViewer(): PageViewerInstance;
     createPowerBiViewer(): PowerBIViewerInstance;
     isProduction: boolean;
     hasSidesheet?: boolean;
-}
+};

@@ -5,20 +5,20 @@ import { useDashboard } from '../Hooks/useDashboard';
 import { DashboardInstance } from '../Types/State';
 import { Action, actions } from './DataActions';
 
-export interface DataState {
+export type DataState = {
     dashboardId: string;
     title: string;
     data: any[];
-    instance: DashboardInstance<unknown>;
+    instance: DashboardInstance<Record<PropertyKey, unknown>>;
     isLoading: boolean;
-}
-interface DataContextState extends DataState {
+};
+type DataContextState = DataState & {
     getData: VoidFunction;
-}
-interface DataProviderProps {
+};
+type DataProviderProps = {
     children: React.ReactNode;
     dashboardId: string;
-}
+};
 
 type VoidFunction = () => void;
 
