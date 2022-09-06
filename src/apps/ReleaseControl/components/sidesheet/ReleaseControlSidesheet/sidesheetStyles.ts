@@ -1,3 +1,4 @@
+import { Chip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
@@ -97,4 +98,15 @@ export const BannerWarningTriangle = styled.div`
 export const NoScope = styled.div`
     font-size: 14px;
     font-weight: 400;
+`;
+
+export const SpinnerChip = styled(Chip)`
+    margin-left: 10px;
+    margin-top: 12px;
+    background-color: ${tokens.colors.interactive.primary__selected_hover.hex};
+`;
+
+export const ChipText = styled.div`
+    font-size: 16px;
+    text-align: center;
 `;

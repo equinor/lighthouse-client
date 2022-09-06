@@ -10,3 +10,4 @@ export * from './useSidesheetEffects';
 export * from './useUnpackReferences';
 export * from './useWorkflowCriteriaOptions';
 export * from './useWorkflowSigning';
+export * from './useIsReleaseControlMutatingOrFetching';
