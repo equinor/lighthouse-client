@@ -17,11 +17,14 @@ const Loading = styled.p`
     flex-direction: column;
     align-items: center;
 `;
-interface PagesProps<T> extends DashboardInstance<T> {
+type PagesProps<T extends Record<PropertyKey, unknown>> = DashboardInstance<T> & {
     activePage: string;
-}
+};
 
-export function Pages<T>({ pages, activePage }: PagesProps<T>): JSX.Element {
+export function Pages<T extends Record<PropertyKey, unknown>>({
+    pages,
+    activePage,
+}: PagesProps<T>): JSX.Element {
     const {
         filterState: { getFilteredData },
     } = useFilterApiContext();

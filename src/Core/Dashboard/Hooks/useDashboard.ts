@@ -4,7 +4,9 @@ import { DashboardInstance } from '../Types/State';
 
 /** Hook for retrieving the current dashboard, by passing the dashboardId registered,
  * will all ways return empty dashboard if not found*/
-export function useDashboard<T>(dashboardId: string): DashboardInstance<T> {
+export function useDashboard<T extends Record<PropertyKey, unknown>>(
+    dashboardId: string
+): DashboardInstance<T> {
     const state = useAtom(getDashboardContext());
 
     if (state[dashboardId]) {
