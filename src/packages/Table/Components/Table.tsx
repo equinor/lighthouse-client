@@ -19,14 +19,14 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
-interface DataTableProps<TData extends TableData> {
+type DataTableProps<TData extends TableData> = {
     options?: Partial<TableOptions<TData>>;
     data: TData[];
     columns: Column<TData>[];
     height?: number;
     itemSize?: number;
     onTableReady?: (getApi: () => TableAPI) => void;
-}
+};
 
 const DEFAULT_HEIGHT = 600;
 const DEFAULT_ITEM_SIZE = 35;
