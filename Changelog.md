@@ -8,6 +8,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 [SpoolsAnalytics] New PowerBIViewer application
 [General] Update typing for Core/Workspace/Apps
 [Table] Don't do automatic retries for export to excel
+[ReleaseControl] Added auto-focus and keyboard shortcuts to sign with comment modal
+[ReleaseControl] Fixed workflow step responsible field
 
 ## 1.9.0
 [PowerBI] Added commissioning analytics Pbi app
