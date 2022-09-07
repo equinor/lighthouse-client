@@ -3,12 +3,12 @@ import { useMemo } from 'react';
 import { HorizontalBarChartOptions } from '../Types/barVisualOptions';
 import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
-interface BarChart {
+type BarChart = {
     barChartOptions: ApexOptions;
     series: string[] | { name: string; type: string; data: number[] }[];
-}
+};
 
-export function useHorizontalBarChart<T>(
+export function useHorizontalBarChart<T extends Record<PropertyKey, unknown>>(
     data: T[],
     { stacked, colors, onClick }: HorizontalBarChartOptions<T>,
     groupByKey: keyof T,

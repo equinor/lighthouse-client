@@ -4,7 +4,7 @@ import { GardenOptions } from '../Models/gardenOptions';
 import { NoGardenOptions } from './NoGardenOptions';
 import { VirtualContainer } from './VirtualGarden/Container';
 
-type GardenProps<T> = {
+type GardenProps<T extends Record<PropertyKey, unknown>> = {
     data: T[];
     gardenOptions: GardenOptions<T> | undefined;
     onGardenReady?: (api: GardenApi) => void;
