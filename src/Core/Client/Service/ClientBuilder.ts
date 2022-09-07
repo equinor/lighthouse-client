@@ -13,7 +13,10 @@ export type ClientBuilderConfig = AppManifest & {
     isProduction: boolean;
 };
 
-export type WorkspaceViewerOptions<T, SideSheetIds extends string> = Omit<
+export type WorkspaceViewerOptions<
+    T extends Record<PropertyKey, unknown>,
+    SideSheetIds extends string
+> = Omit<
     WorkspaceOptions<T, SideSheetIds>,
     'viewerId' | 'initialState' | 'dataFactoryCreator' | 'openSidesheet'
 >;

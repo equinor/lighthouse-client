@@ -6,7 +6,7 @@ import { actions } from './ParkViewActions';
 import { ParkViewContext, ParkViewProviderProps, ParkViewState } from './ParkViewContext';
 import { GardenReducer } from './ParkViewReducer';
 
-export function ParkViewProvider<T>({
+export function ParkViewProvider<T extends Record<PropertyKey, unknown>>({
     children,
     data,
     parkViewOptions,

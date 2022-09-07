@@ -12,7 +12,7 @@ export const WorkspaceSidesheet = (): JSX.Element => {
     const navigate = useNavigate();
 
     const findItem = useCallback(
-        (id: string): unknown | undefined => {
+        (id: string): Record<PropertyKey, unknown> | undefined => {
             return data.find((x) => x[objectIdentifier] === id);
         },
         [data, objectIdentifier]

@@ -49,7 +49,7 @@ export function createPageViewer({
                 pages[pageId] = {
                     type: 'FusionPowerBi',
                     ...options,
-                } as FusionPowerBiOptions;
+                };
 
                 return {
                     ...state,

@@ -8,7 +8,7 @@ import { Action, actions } from './DataActions';
 export type DataState = {
     dashboardId: string;
     title: string;
-    data: any[];
+    data: Record<PropertyKey, unknown>[];
     instance: DashboardInstance<Record<PropertyKey, unknown>>;
     isLoading: boolean;
 };
