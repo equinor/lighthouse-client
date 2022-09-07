@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 1.10.0
+[SpoolsAnalytics] New PowerBIViewer application
+[General] Update typing for Core/Workspace/Apps
+[Table] Don't do automatic retries for export to excel
+
 ## 1.9.0
 [PowerBI] Added commissioning analytics Pbi app
 [PowerBI] Added preservation Pbi app
