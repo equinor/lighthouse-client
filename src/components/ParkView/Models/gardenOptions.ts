@@ -2,24 +2,23 @@ import React, { MemoExoticComponent, MutableRefObject } from 'react';
 import { DataSet, GardenGroups } from './data';
 import { FieldSettings } from './fieldSettings';
 
-
 export interface Options<T> {
     groupDescriptionFunc?: (data: T, groupingKey: string) => string;
 }
 
-export interface Status {
+export type Status = {
     rating: number;
     statusElement?: JSX.Element;
     status?: string;
-}
+};
 
-export interface StatusView<T> {
+export type StatusView<T extends Record<PropertyKey, unknown>> = {
     statusItemFunc: (data: T) => Status;
     statusGroupFunc?: (group: DataSet<T>) => Status;
     shouldAggregate: boolean;
-}
+};
 
-export interface CustomItemView<T> {
+export type CustomItemView<T extends Record<PropertyKey, unknown>> = {
     data: T;
     itemKey: string;
     onClick: () => void;
@@ -30,32 +29,32 @@ export interface CustomItemView<T> {
     parentRef: MutableRefObject<HTMLDivElement | null>;
     depth?: number;
     width?: number;
-}
+};
 
-export interface CustomGroupView<T> {
+export type CustomGroupView<T extends Record<PropertyKey, unknown>> = {
     data: DataSet<T>;
     onClick: () => void;
     onSelect?: (item: T) => void;
     onGroupeSelect?: (item: any) => void;
     columnExpanded: boolean;
     groupByKeys: (keyof T)[];
-}
+};
 
-export interface CustomHeaderView<T> {
+export type CustomHeaderView<T extends Record<PropertyKey, unknown>> = {
     garden: GardenGroups<T>;
     columnIndex: number;
     columnIsExpanded: boolean;
     groupByKey?: string;
-}
+};
 
-export interface CustomVirtualView<T> {
+export type CustomVirtualView<T extends Record<PropertyKey, unknown>> = {
     customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
     customGroupView?: MemoExoticComponent<(args: CustomGroupView<T>) => JSX.Element>;
     customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     customGroupByView?: React.FC;
-}
+};
 
-export interface GardenOptions<T, D = T> {
+export type GardenOptions<T extends Record<PropertyKey, unknown>, D = T> = {
     gardenKey: keyof T;
     itemKey: keyof T;
     objectIdentifier: keyof T;
@@ -86,15 +85,17 @@ export interface GardenOptions<T, D = T> {
     customDescription?: (item: T) => string;
     /** Function that returns the color of the item to be displayed */
     customItemColor?: (item: T) => string;
-}
+};
 
-export type PreGroupByFiltering<T = unknown> = (arr: T[], groupByKey: string) => T[];
-export type PostGroupBySorting<T = unknown> = (
-    data: GardenGroups<T>,
-    keys: (keyof T)[]
-) => GardenGroups<T>;
+export type PreGroupByFiltering<T extends Record<PropertyKey, unknown>> = (
+    arr: T[],
+    groupByKey: string
+) => T[];
+export type PostGroupBySorting<
+    T extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>
+> = (data: GardenGroups<T>, keys: (keyof T)[]) => GardenGroups<T>;
 
-export interface GardenDataIntercepters<T> {
+export type GardenDataIntercepters<T extends Record<PropertyKey, unknown>> = {
     preGroupFiltering?: PreGroupByFiltering<T>;
     postGroupSorting?: PostGroupBySorting<T>;
-}
+};

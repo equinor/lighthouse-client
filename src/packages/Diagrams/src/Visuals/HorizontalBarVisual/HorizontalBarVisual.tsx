@@ -8,10 +8,10 @@ const Title = styled.div`
     font-size: 16px;
     font-weight: bold;
 `;
-interface HorizontalBarVisual<T> {
+type HorizontalBarVisual<T extends Record<PropertyKey, unknown>> = {
     data: T[];
     options: HorizontalBarChartOptions<T>;
-}
+};
 
 /**
  * A Simple BarChart Visual
@@ -49,7 +49,10 @@ interface HorizontalBarVisual<T> {
  *
  * ```
  */
-export function HorizontalBarVisual<T>({ data, options }: HorizontalBarVisual<T>): JSX.Element {
+export function HorizontalBarVisual<T extends Record<PropertyKey, unknown>>({
+    data,
+    options,
+}: HorizontalBarVisual<T>): JSX.Element {
     const [groupByKey, setGroupByKey] = useState<keyof T>(options.categoryKey);
     const [nameByKey, setNameByKey] = useState<keyof T>(options.nameKey);
     const { barChartOptions, series } = useHorizontalBarChart(data, options, groupByKey, nameByKey);

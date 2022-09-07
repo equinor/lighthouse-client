@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { LineChartOptions } from '../LineChartVisual';
 import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
-interface LineChart {
+type LineChart = {
     series: string[] | { name: string; type: string; data: number[] }[];
     lineChartOptions: {
         chart: { id: string; stacked: boolean; toolbar: { show: boolean } };
@@ -19,9 +19,9 @@ interface LineChart {
         };
         yaxis: { tickAmount: number; min: number };
     };
-}
+};
 
-export function useLineChart<T>(
+export function useLineChart<T extends Record<PropertyKey, unknown>>(
     data: T[],
     { nameKey, categoryKey }: LineChartOptions<T>
 ): LineChart {
