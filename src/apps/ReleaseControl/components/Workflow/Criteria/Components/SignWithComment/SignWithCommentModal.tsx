@@ -1,5 +1,5 @@
 import { Button, TextField } from '@equinor/eds-core-react';
-import { useState } from 'react';
+import { KeyboardEventHandler, useState } from 'react';
 import { CriteriaSignState } from '../../../../../../ScopeChangeRequest/types/scopeChangeRequest';
 import { useReleaseControlContext, useWorkflowSigning } from '../../../../../hooks';
 import { resetSigningAtom } from '../../../Atoms/signingAtom';
@@ -29,8 +29,26 @@ export const SignWithCommentModal = ({
     const onCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setComment(e.target.value);
     };
+
+    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            resetSigningAtom();
+            setComment('');
+        }
+        //Allow shift+enter linebreak
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            signMutation({
+                action: action,
+                comment: comment,
+            });
+            resetSigningAtom();
+        }
+    };
+
     return (
-        <>
+        <div onKeyDown={handleOnKeyPress} tabIndex={0}>
             <InputContainer>
                 <TextField
                     variant="default"
@@ -39,6 +57,7 @@ export const SignWithCommentModal = ({
                     value={comment}
                     onChange={onCommentChange}
                     multiline
+                    autoFocus={true}
                 />
             </InputContainer>
 
@@ -65,6 +84,6 @@ export const SignWithCommentModal = ({
                     Close
                 </Button>
             </ButtonContainer>
-        </>
+        </div>
     );
 };
