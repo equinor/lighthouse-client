@@ -30,7 +30,7 @@ export const ListTabPopover = (): JSX.Element | null => {
                     {tableOptions && (
                         <ColumnMenuPicker
                             getApi={getApi}
-                            hiddenColumns={tableOptions.hiddenColumns}
+                            hiddenColumns={tableOptions.hiddenColumns as string[]}
                         />
                     )}
                 </StyledTabWrapper>

@@ -14,7 +14,7 @@ type FilterItemValueProps = {
     virtualRowSize: number;
     filterItem: FilterValueType;
     filterGroup: FilterGroup;
-    valueFormatter: ValueFormatterFunction<unknown>;
+    valueFormatter: ValueFormatterFunction<Record<PropertyKey, unknown>>;
     CustomRender?: (value: FilterValueType) => JSX.Element;
 };
 
