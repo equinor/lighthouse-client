@@ -2,6 +2,7 @@ import { FieldSettings } from '../Models/fieldSettings';
 import { DataSet, GardenGroups } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { PreGroupByFiltering, StatusView } from '../Models/gardenOptions';
+import { hasChildKey, isRecordWithKeys } from './utilities';
 
 type GroupByArgs<T extends Record<PropertyKey, unknown>, K extends keyof T> = {
     arr: T[];
@@ -150,7 +151,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
 
     /** List of all unique identifiers in child array of all arr entries  */
     const groupNames = preGroupFiltering(arr, String(key)).reduce((prev, curr) => {
-        let childArray = new Array();
+        let childArray = new Array<unknown>();
         let children = curr[key];
         if (Array.isArray(children)) {
             childArray = children
@@ -161,7 +162,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
         }
 
         return [...prev, ...childArray.filter((identifier) => !prev.includes(identifier))];
-    }, [] as (string | number)[]);
+    }, [] as unknown[]);
 
     const groups = groupNames.map((groupName) => {
         const parentsContainingChildren = arr.filter((item) => {
@@ -169,15 +170,21 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
 
             return (
                 childArr &&
-                childArr.map((y) => (typeof y === 'object' ? y[childKey] : y)).includes(groupName)
+                childArr
+                    .map((child) => {
+                        return isRecordWithKeys(child) && hasChildKey(child, childKey)
+                            ? child[childKey]
+                            : child;
+                    })
+                    .includes(groupName)
             );
         });
 
         return {
-            groupKey: key as keyof T,
+            groupKey: key,
             isExpanded: Boolean(isExpanded),
             subGroups: [],
-            value: groupName as string,
+            value: String(groupName),
             count: 0,
             items: parentsContainingChildren,
             subGroupCount: 0,
@@ -207,7 +214,10 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
     return groups;
 }
 
-function getChildArray<T extends Record<PropertyKey, unknown>>(item: T, key: keyof T) {
+function getChildArray<T extends Record<PropertyKey, unknown>>(
+    item: T,
+    key: keyof T
+): unknown[] | null {
     const childArr = item[key];
     return Array.isArray(childArr) ? childArr : null;
 }
