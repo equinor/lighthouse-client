@@ -106,10 +106,12 @@ export function updateStepResponsible(
     step: CreateReleaseControlStepModel,
     steps: CreateReleaseControlStepModel[],
     responsible: string,
+    responsibleDescription: string,
     responsibleType: string
 ): CreateReleaseControlStepModel[] {
     const index = steps.findIndex((x) => x.order === step.order);
     steps[index].criteriaTemplates[0].value = responsible;
+    steps[index].criteriaTemplates[0].valueDescription = responsibleDescription;
     steps[index].criteriaTemplates[0].assignToCreator = false;
 
     steps[index].criteriaTemplates[0].type =

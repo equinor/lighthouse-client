@@ -25,6 +25,7 @@ describe('electroViewHelpers tests', () => {
                 steps[1],
                 steps,
                 'RC - Insulation',
+                '',
                 'RequireProcosysFunctionalRoleSignature'
             )[1].criteriaTemplates[0].value
         ).toStrictEqual('RC - Insulation');
