@@ -3,7 +3,7 @@ import { Options } from '../Types';
 import { HorizontalBarVisual } from '../Visuals/HorizontalBarVisual/HorizontalBarVisual';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
 
-export function getChart<T>(
+export function getChart<T extends Record<PropertyKey, unknown>>(
     data: T[],
     config: Options<T> = { type: 'default' },
     isLoading?: boolean

@@ -3,22 +3,22 @@ import { Tooltip } from '@equinor/eds-core-react';
 import { useMemo } from 'react';
 import { Circle, StatusCard, Title, Value } from './KpiItemStyles';
 
-export interface KpiItem {
+export type KpiItem = {
     title: string;
     value: () => string;
     description?: string;
     status: keyof Status;
     tooltipContent?: string;
-}
+};
 
-export type KpiBuilder<T> = (data: T[]) => KpiItem[];
+export type KpiBuilder<T extends Record<PropertyKey, unknown>> = (data: T[]) => KpiItem[];
 
-export interface Status {
+export type Status = {
     waring: string;
     info: string;
     ok: string;
     default: string;
-}
+};
 
 export function Item({
     status,

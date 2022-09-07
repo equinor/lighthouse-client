@@ -14,7 +14,7 @@ const getFieldSettingsLabelFromKey = <T extends unknown>(
     fieldSettings: FieldSettings<T, string>
 ) => fieldSettings?.[key]?.label || key;
 
-export function FilterSelector<T>(): JSX.Element | null {
+export function FilterSelector<T extends Record<PropertyKey, unknown>>(): JSX.Element | null {
     const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, fieldSettings, customViews } =
         useParkViewContext<T>();
 

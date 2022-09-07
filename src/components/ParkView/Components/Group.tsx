@@ -9,13 +9,17 @@ import { FieldSettings } from '../Models/fieldSettings';
 import { defaultSortFunction } from '../Utils/utilities';
 import { useMemo } from 'react';
 
-interface GroupProps<T> {
+type GroupProps<T extends Record<PropertyKey, unknown>> = {
     group: DataSet<T>;
     columnExpanded: boolean;
     fieldSettings?: FieldSettings<T>;
-}
+};
 
-export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>): JSX.Element {
+export function Group<T extends Record<PropertyKey, unknown>>({
+    group,
+    columnExpanded,
+    fieldSettings,
+}: GroupProps<T>): JSX.Element {
     const refresh = useRefresh();
     const { customView, gardenKey, groupByKeys } = useParkViewContext<T>();
 
@@ -42,7 +46,7 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
                     groupByKeys={[gardenKey, ...groupByKeys]}
                 />
             ) : (
-                <Pack key={group.value + group.groupKey} onClick={handleClick}>
+                <Pack key={group.value + String(group.groupKey)} onClick={handleClick}>
                     <div style={{ display: 'flex' }}>
                         {group.status?.statusElement}
                         {group.value}

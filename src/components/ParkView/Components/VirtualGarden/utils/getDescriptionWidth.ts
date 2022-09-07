@@ -16,7 +16,7 @@ function packageHasDescription<T extends unknown>(
         return false;
     }
 }
-export function columnDataIsWithDepth<T extends unknown>(
+export function columnDataIsWithDepth<T extends Record<PropertyKey, unknown>>(
     packageObj: GardenItem<T>[]
 ): packageObj is GardenItemWithDepth<T>[] {
     if ((packageObj[0] as GardenItemWithDepth<T>)?.item !== undefined) {
@@ -40,7 +40,7 @@ const getTextLengthToBeDisplayed = <T extends unknown>(
  * @param columnData One column from the garden
  * @returns Longest description string
  */
-export const getLongestDescription = <T extends unknown>(
+export const getLongestDescription = <T extends Record<PropertyKey, unknown>>(
     columnData: GardenItem<T>[],
     customDescription?: (item: T | GardenItem<T>) => string
 ): string => {
@@ -63,7 +63,7 @@ export const getLongestDescription = <T extends unknown>(
  * @param columnData One column from the garden
  * @returns A calculated width based on string length and font
  */
-export const getDescriptionWidth = <T extends unknown>(
+export const getDescriptionWidth = <T extends Record<PropertyKey, unknown>>(
     columnData: GardenItem<T>[] | null,
     customDescription?: (item: T | GardenItem<T>) => string
 ): number => {
