@@ -1,5 +1,4 @@
 import { FieldSettings } from '../Models/fieldSettings';
-import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { DataSet, GardenGroups } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { PreGroupByFiltering, StatusView } from '../Models/gardenOptions';
@@ -133,7 +132,7 @@ export function groupBy<T extends Record<PropertyKey, unknown>, K extends keyof 
 
 type GroupByArrayArgs<T extends Record<PropertyKey, unknown>> = {
     arr: T[];
-    key: keyof T | string;
+    key: keyof T;
     preGroupFiltering: (arr: T[], groupByKey: string) => T[];
     fieldSettings?: FieldSettings<T, string>;
     isExpanded?: boolean;
@@ -164,7 +163,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
         return [...prev, ...childArray.filter((identifier) => !prev.includes(identifier))];
     }, [] as (string | number)[]);
 
-    const groups: GardenGroups<T> = groupNames.map((groupName): DataSet<T> => {
+    const groups = groupNames.map((groupName) => {
         const parentsContainingChildren = arr.filter((item) => {
             const childArr = getChildArray(item, key);
 
@@ -194,7 +193,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
 
     if (blanks.length > 0) {
         groups.push({
-            groupKey: key as keyof T,
+            groupKey: key,
             isExpanded: Boolean(isExpanded),
             subGroups: [],
             count: 0,

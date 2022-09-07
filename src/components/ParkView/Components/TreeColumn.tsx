@@ -6,7 +6,7 @@ import { FieldSettings } from '../Models/fieldSettings';
 import { defaultSortFunction } from '../Utils/utilities';
 import { useMemo } from 'react';
 
-interface TreeColumnProps<T> {
+interface TreeColumnProps<T extends Record<PropertyKey, unknown>> {
     group: DataSet<T>;
     fieldSettings?: FieldSettings<T>;
 }
@@ -21,7 +21,10 @@ const Groups = styled.div`
     }
 `;
 
-export function TreeColumn<T>({ group, fieldSettings }: TreeColumnProps<T>): JSX.Element | null {
+export function TreeColumn<T extends Record<PropertyKey, unknown>>({
+    group,
+    fieldSettings,
+}: TreeColumnProps<T>): JSX.Element | null {
     const columnExpanded = group.isExpanded;
     const subGroupKeys = useMemo(
         () => group.subGroups.map((sub) => sub.value) || [],
