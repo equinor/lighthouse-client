@@ -7,6 +7,7 @@ import { FunctionalRole } from '../../../types/functionalRole';
 import {
     CreateReleaseControlStepModel,
     ReleaseControlStepNames,
+    UserObject,
 } from '../../../types/releaseControl';
 import { CriteriaRender } from '../../Workflow/Criteria';
 import { getCriteriaStatus } from '../../Workflow/Utils/getCriteriaStatus';
@@ -83,17 +84,24 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                             <PCSPersonRoleSearch
                                 onSelect={(value) => {
                                     if (!value) return;
+                                    const responsibleObject = value.object as UserObject;
                                     updateAtom({
                                         workflowSteps: updateStepResponsible(
                                             step,
                                             steps,
                                             !value ? '' : value.value,
+                                            responsibleObject.Email,
                                             value.type
                                         ),
                                     });
                                 }}
                                 classification="RELEASECONTROL"
-                                value={step?.criteriaTemplates?.[0]?.valueDescription}
+                                value={
+                                    step?.criteriaTemplates?.[0]?.type ===
+                                    'RequireProcosysFunctionalRoleSignature'
+                                        ? step?.criteriaTemplates?.[0]?.value
+                                        : step?.criteriaTemplates?.[0]?.valueDescription
+                                }
                                 defaultResult={functionalRoles}
                             />
                         </ResponsibleSelect>
@@ -128,17 +136,24 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                             <PCSPersonRoleSearch
                                 onSelect={(value) => {
                                     if (!value) return;
+                                    const responsibleObject = value.object as UserObject;
                                     updateAtom({
                                         workflowSteps: updateStepResponsible(
                                             step,
                                             steps,
                                             !value ? '' : value.value,
+                                            responsibleObject.Email,
                                             value.type
                                         ),
                                     });
                                 }}
                                 classification="RELEASECONTROL"
-                                value={step?.criteriaTemplates?.[0]?.valueDescription}
+                                value={
+                                    step?.criteriaTemplates?.[0]?.type ===
+                                    'RequireProcosysFunctionalRoleSignature'
+                                        ? step?.criteriaTemplates?.[0]?.value
+                                        : step?.criteriaTemplates?.[0]?.valueDescription
+                                }
                                 defaultResult={functionalRoles}
                             />
                         </ResponsibleSelect>
