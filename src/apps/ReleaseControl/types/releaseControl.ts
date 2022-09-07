@@ -232,6 +232,14 @@ export type Attachment = {
     fileSize: number;
 };
 
+export type UserObject = {
+    AzureOid: string;
+    FirstName: string;
+    LastName: string;
+    UserName: string;
+    Email: string;
+};
+
 export enum ReleaseControlStepNames {
     Coordinator = 'Coordinator',
     Engineering = 'Engineering',
