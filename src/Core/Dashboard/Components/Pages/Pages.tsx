@@ -56,7 +56,7 @@ export function Pages<T extends Record<PropertyKey, unknown>>({
                     return (
                         <Page key={`page-${key}`} style={{ paddingTop: 0 }}>
                             {activePage == page.pageId && (
-                                <AnalyticsView<T>
+                                <AnalyticsView
                                     data={data as T[]}
                                     // isLoading={isLoading}
                                     options={page}

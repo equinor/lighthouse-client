@@ -63,7 +63,7 @@ export const ListTab = (): JSX.Element => {
             enableSelectRow: tableOptions?.enableSelectRows,
             onCellClick: tableOptions?.onCellClick,
             initialState: {
-                hiddenColumns: tableOptions?.hiddenColumns ?? [],
+                hiddenColumns: (tableOptions?.hiddenColumns ?? []) as string[],
             },
             columnOrder: tableOptions?.columnOrder,
             groupByFn: defaultGroupByFn,

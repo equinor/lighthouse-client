@@ -1,6 +1,6 @@
-export type FilterOptions<T> = FilterConfiguration<T>[];
+export type FilterOptions<T extends Record<PropertyKey, unknown>> = FilterConfiguration<T>[];
 
-export interface FilterConfiguration<T> {
+export type FilterConfiguration<T extends Record<PropertyKey, unknown>> = {
     name: string;
     /** Takes in an item and returns the filter value */
     valueFormatter: (item: T) => FilterValueType | FilterValueType[];
@@ -24,6 +24,6 @@ export interface FilterConfiguration<T> {
     sort?: (values: FilterValueType[]) => FilterValueType[];
     /** Custom render function for rendering the value in the filter view */
     customValueRender?: (value: FilterValueType) => JSX.Element;
-}
+};
 
 export type FilterValueType = string | number | null;

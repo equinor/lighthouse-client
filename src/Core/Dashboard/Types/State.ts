@@ -16,21 +16,21 @@ export type DashboardInstance<T extends Record<PropertyKey, unknown>> = {
     dataSource?: DataSource<T>;
     validator?: Validator<T>;
     icon?: React.FC;
-    pages: Record<string, PageConfig<T>>;
+    pages: Record<PropertyKey, PageConfig<T>>;
     filterOptions?: FilterOptions<T>;
     kpiBuilder?: KpiBuilder<T>;
 };
 
 export type PageConfig<T extends Record<PropertyKey, unknown>> = AnalyticsPage<T> | CustomPage<T>;
 
-export type AnalyticsPage<T> = AnalyticsOptions<T> & {
+export type AnalyticsPage<T extends Record<PropertyKey, unknown>> = AnalyticsOptions<T> & {
     type: 'AnalyticsPage';
     pageId: string;
     title: string;
     icon?: React.FC;
 };
 
-export type CustomPage<T> = {
+export type CustomPage<T extends Record<PropertyKey, unknown>> = {
     type: 'Custom';
     pageId: string;
     component: React.FC;
@@ -39,10 +39,12 @@ export type CustomPage<T> = {
     data: T[];
 };
 
-export type DataSource<T> = (abortController?: AbortController) => Promise<T[]>;
-export type Validator<T> = (data: unknown[]) => T[];
+export type DataSource<T extends Record<PropertyKey, unknown>> = (
+    abortController?: AbortController
+) => Promise<T[]>;
+export type Validator<T extends Record<PropertyKey, unknown>> = (data: unknown[]) => T[];
 
-export type FilterOptions<T> = {
+export type FilterOptions<T extends Record<PropertyKey, unknown>> = {
     excludeKeys?: (keyof T)[];
     typeMap?: Partial<Record<keyof T, string>>;
     groupValue?: Record<string, (item: T) => string>;

@@ -16,7 +16,7 @@ export const Line = ({ value, currentPipetest, pipetest, htCable }: LineProps): 
         <LineNode
             currentPipetest={currentPipetest}
             htCable={htCable}
-            onClick={() => onSelect && onSelect(pipetest)}
+            onClick={() => onSelect && pipetest && onSelect(pipetest)}
         >
             {value}
         </LineNode>

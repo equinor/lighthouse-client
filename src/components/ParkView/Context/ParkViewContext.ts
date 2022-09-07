@@ -23,16 +23,16 @@ export type ParkViewState<T extends unknown> = GardenOptions<T> & {
 export type ParkViewContextState = ParkViewState<unknown> & {
     setGroupKeys: (groupKeys: string[]) => void;
     setCustomGroupKeys: (groupKeys: Record<string, unknown>) => void;
-    setGardenKey: (groupeKey?: string) => void;
+    setGardenKey: (groupeKey?: PropertyKey) => void;
     setCustomState: (customState: Record<string, unknown>) => void;
     customState?: Record<string, unknown>;
 };
 
-export interface ParkViewProviderProps<T> {
+export type ParkViewProviderProps<T extends Record<PropertyKey, unknown>> = {
     children: React.ReactNode;
     parkViewOptions: GardenOptions<T> | TreeOptions<T>;
     data: T[] | undefined;
-}
+};
 
 export enum DataAction {
     setGroupKeys = 'setGroupKeys',

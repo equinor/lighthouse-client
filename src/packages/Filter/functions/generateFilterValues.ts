@@ -1,7 +1,7 @@
 import { FilterGroup, ValueFormatterFilter } from '../Hooks/useFilterApi';
 import { FilterOptions, FilterValueType } from '../Types';
 
-export function generateFilterValues<T>(
+export function generateFilterValues<T extends Record<PropertyKey, unknown>>(
     valueFormatters: ValueFormatterFilter<T>[],
     data: T[]
 ): FilterGroup[] {
@@ -45,7 +45,7 @@ export function generateFilterValues<T>(
  * @param groups
  * @returns
  */
-function sortFilterGroups<T = unknown>(
+function sortFilterGroups<T extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>>(
     groups: FilterGroup[],
     filterConfig: FilterOptions<T>
 ): FilterGroup[] {
