@@ -5,7 +5,9 @@ import { NoPages } from '../NoDashboard/NoDashboard';
 import { Pages } from '../Pages/Pages';
 import { PageWrapper, Wrapper } from './DashboardStyles';
 
-export function Dashboard<T>(props: DashboardInstance<T>): JSX.Element {
+export function Dashboard<T extends Record<PropertyKey, unknown>>(
+    props: DashboardInstance<T>
+): JSX.Element {
     const [activePage, setActivePage] = useState(Object.values(props.pages)[0]?.pageId || '');
 
     const handlePageChange = (pageId: string) => {

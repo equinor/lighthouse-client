@@ -9,7 +9,13 @@ type ExportToExcelProps = {
     width?: string;
 };
 export const ExportToExcel = ({ excelExportFn, rows, width }: ExportToExcelProps) => {
-    const { mutate, isLoading } = useMutation(excelExportFn);
+    const { mutate, isLoading } = useMutation(
+        excelExportFn,
+
+        {
+            retry: 0,
+        }
+    );
 
     return (
         <StyledButton

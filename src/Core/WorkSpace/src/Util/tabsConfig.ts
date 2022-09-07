@@ -83,7 +83,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         workflowEditorOptions,
         powerBiOptions,
         helpPageOptions,
-    }: WorkSpaceConfig<unknown>): ActiveTabs {
+    }: WorkSpaceConfig<Record<PropertyKey, unknown>>): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
             if (treeOptions && item.title === 'Tree') return true;
             if (tableOptions && item.title === 'Table') return true;
