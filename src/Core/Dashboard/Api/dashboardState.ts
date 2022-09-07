@@ -11,9 +11,9 @@ export function getDashboardContext(): Atom<DashboardState> {
     return DashboardCoreContext;
 }
 
-export function dispatch(
-    globalState: Atom<DashboardState>,
-    update: (state: DashboardState) => DashboardState
+export function dispatch<T extends Record<PropertyKey, unknown>>(
+    globalState: Atom<DashboardState<T>>,
+    update: (state: DashboardState<T>) => DashboardState<T>
 ): void {
     swap(globalState, update);
 }
