@@ -13,7 +13,7 @@ import { GardenItem } from './types/gardenItem';
 import { isSubGroup } from './utils';
 
 type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 'scrollToIndex'>;
-type PackageContainerProps<T> = {
+type PackageContainerProps<T extends Record<PropertyKey, unknown>> = {
     virtualColumn: VirtualItem;
     rowVirtualizer: VirtualHookReturn;
     garden: GardenGroups<T>;
@@ -30,7 +30,7 @@ type PackageContainerProps<T> = {
     handleOnClick: (item: T) => void;
     parentRef: MutableRefObject<HTMLDivElement | null>;
 };
-export const GardenItemContainer = <T extends unknown>(
+export const GardenItemContainer = <T extends Record<PropertyKey, unknown>>(
     props: PackageContainerProps<T>
 ): JSX.Element => {
     const {

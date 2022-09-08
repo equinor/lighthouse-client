@@ -32,9 +32,7 @@ type PowerBiState = {
 };
 type PbiContext = PowerBiState & {
     setReport: (report: Report | undefined) => void;
-    handleApplyingBookmark: ({
-        id: bookmarkId,
-    }: ApplyEventArgs) => Promise<PowerBIBookmarkPayload | undefined>;
+    handleApplyingBookmark: ({ id }: ApplyEventArgs) => Promise<PowerBIBookmarkPayload | undefined>;
     handleSaveBookmarks: (saveArgs: SaveArgs<PowerBIBookmarkPayload>) => Promise<void>;
     setActivePage(page: Page, options?: PBIOptions): void;
     ready: boolean;

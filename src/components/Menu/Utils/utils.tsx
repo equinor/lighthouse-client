@@ -1,6 +1,6 @@
 import { AppManifest } from '@equinor/lighthouse-portal-client';
 
-export function filterByValue<T, K extends keyof T>(
+export function filterByValue<T extends Record<PropertyKey, unknown>, K extends keyof T>(
     list: Record<string, T[]>,
     value: string,
     key: K
@@ -28,7 +28,10 @@ export function filterByValue<T, K extends keyof T>(
     return filteredList;
 }
 
-export function objectContainsValue<T>(object: T, value: string): boolean {
+export function objectContainsValue<T extends Record<PropertyKey, unknown>>(
+    object: T,
+    value: string
+): boolean {
     let contains = false;
     Object.keys(object).map((key) => {
         const item = object[key];
@@ -45,16 +48,20 @@ export function objectContainsValue<T>(object: T, value: string): boolean {
     return contains;
 }
 
-export function groupeByKey<T, K extends keyof T>(list: T[], key: K) {
+export function groupeByKey<T extends Record<PropertyKey, unknown>, K extends keyof T>(
+    list: T[],
+    key: K
+) {
     return list.reduce((acc: Record<string, T[]>, item: T) => {
-        if (Array.isArray(item[`${key}`])) {
-            item[`${key}`].forEach((groupeKey) => {
+        const entry = item[key];
+        if (Array.isArray(entry)) {
+            entry.forEach((groupeKey) => {
                 acc[groupeKey] = acc[groupeKey] || [];
                 acc[groupeKey].push(item);
             });
         } else {
-            acc[item[`${key}`]] = acc[item[`${key}`]] || [];
-            acc[item[`${key}`]].push(item);
+            acc[String(entry)] = acc[String(entry)] || [];
+            acc[String(entry)].push(item);
         }
         return acc;
     }, {} as Record<string, T[]>);

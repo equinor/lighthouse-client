@@ -10,12 +10,11 @@ import { ExpandProvider } from './ExpandProvider';
 import { Container } from './styles';
 import { VirtualGarden } from './VirtualGarden';
 
-
 interface VirtualContainerProps {
     onGardenReady?: (api: GardenApi) => void;
 }
 
-export const VirtualContainer = <T extends unknown>({
+export const VirtualContainer = <T extends Record<PropertyKey, unknown>>({
     onGardenReady,
 }: VirtualContainerProps): JSX.Element | null => {
     const [widths, setWidths] = useState<number[]>([]);

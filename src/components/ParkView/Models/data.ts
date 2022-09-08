@@ -1,6 +1,6 @@
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 
-export type DataSet<T> = {
+export type DataSet<T extends Record<PropertyKey, unknown>> = {
     groupKey: keyof T;
     value: string;
     subGroups: GardenGroups<T>;
@@ -13,4 +13,4 @@ export type DataSet<T> = {
     depth: number;
 };
 
-export type GardenGroups<T> = DataSet<T>[];
+export type GardenGroups<T extends Record<PropertyKey, unknown>> = DataSet<T>[];

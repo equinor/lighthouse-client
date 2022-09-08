@@ -3,13 +3,13 @@ import { GardenItem } from '../types/gardenItem';
 
 type ColumnStates = 'No items' | 'No subgroups' | 'Not Expanded';
 
-export const isSubGroup = <T extends unknown>(
+export const isSubGroup = <T extends Record<PropertyKey, unknown>>(
     arg: GardenItem<T> | undefined
 ): arg is DataSet<T> => {
     return (arg as DataSet<T>).value !== undefined;
 };
 
-const getSubGroupItems = <T extends unknown>(
+const getSubGroupItems = <T extends Record<PropertyKey, unknown>>(
     column: DataSet<T>,
     subGroupIndex: number,
     includeSubGroupValue = false
@@ -37,7 +37,9 @@ const getSubGroupItems = <T extends unknown>(
     return items;
 };
 
-const getGardenColumnState = <T extends unknown>(column: DataSet<T>): ColumnStates | null => {
+const getGardenColumnState = <T extends Record<PropertyKey, unknown>>(
+    column: DataSet<T>
+): ColumnStates | null => {
     const columnHasNoItems = column.count === 0 && column.subGroupCount === 0;
     if (columnHasNoItems) return 'No items';
 
@@ -58,7 +60,9 @@ const getGardenColumnState = <T extends unknown>(column: DataSet<T>): ColumnStat
  * @param includeSubGroupValue Set to true if group value is wanted inside return value
  * @returns Array of objects with garden items and their depth (and subgroup value if second parameter is true)
  */
-export const getGardenItems = <T extends unknown = unknown>(
+export const getGardenItems = <
+    T extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>
+>(
     column: DataSet<T> | undefined,
     includeSubGroupValue = false
 ): GardenItem<T>[] | null => {

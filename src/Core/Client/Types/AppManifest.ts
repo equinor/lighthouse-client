@@ -4,7 +4,7 @@ type HEXColor = `#${string}`;
 
 type AppEnvironment = 'dev' | 'test' | 'prod';
 
-export interface AppManifest {
+export type AppManifest = {
     title: string;
     shortName: string;
     color: HEXColor;
@@ -15,4 +15,4 @@ export interface AppManifest {
     appEnv?: AppEnvironment;
     app?: App;
     helpPageUrl?: string;
-}
+};

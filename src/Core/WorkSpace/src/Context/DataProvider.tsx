@@ -15,48 +15,48 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions
+    WorkflowEditorOptions,
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 
-interface DataState {
+type DataState = {
     key: string;
     name: string;
-    subData: Record<string, any[]>;
+    subData: Record<string, unknown[]>;
     item: Record<string, unknown>;
-    viewComponent?: React.FC<DataViewerProps<unknown>>;
-    viewOptions?: ViewOptions<unknown>;
-    filterOptions?: FilterOptions<unknown>;
-    tableOptions?: TableOptions<unknown>;
-    treeOptions?: TreeOptions<unknown>;
+    viewComponent?: React.FC<DataViewerProps<Record<PropertyKey, unknown>>>;
+    viewOptions?: ViewOptions<Record<PropertyKey, unknown>>;
+    filterOptions?: FilterOptions<Record<PropertyKey, unknown>>;
+    tableOptions?: TableOptions<Record<PropertyKey, unknown>>;
+    treeOptions?: TreeOptions<Record<PropertyKey, unknown>>;
     timelineOptions?: any;
-    gardenOptions?: GardenOptions<unknown>;
-    analyticsOptions?: AnalyticsOptions<unknown>;
-    statusFunc?: StatusFunc<unknown>;
+    gardenOptions?: GardenOptions<Record<PropertyKey, unknown>>;
+    analyticsOptions?: AnalyticsOptions<Record<PropertyKey, unknown>>;
+    statusFunc?: StatusFunc<Record<PropertyKey, unknown>>;
     powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
-}
-interface DataContextState extends DataState {
-    data: any[];
+};
+type DataContextState = DataState & {
+    data: Record<PropertyKey, unknown>[];
     dataApi: DataApi;
-}
+};
 
 type DataApi = DataOperations & UseQueryResult<unknown[] | undefined, unknown> & QueryInformation;
 
-interface QueryInformation {
+type QueryInformation = {
     queryKey: string;
-}
+};
 
-interface DataOperations {
+type DataOperations = {
     patchRecord: (id: string, item: unknown, identifier?: string) => void;
     deleteRecord: (id: string, identifier?: string) => void;
     getRecord: (id: string, identifier?: string) => void;
     insertRecord: (item: unknown) => void;
-}
+};
 
-interface DataProviderProps {
+type DataProviderProps = {
     children: React.ReactNode;
-}
+};
 
 export enum DataAction {
     setOptions = 'setOptions',

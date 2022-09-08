@@ -1,5 +1,5 @@
 export type GardenPayload = {
     customGroupByKeys?: Record<string, unknown>;
-    gardenKey?: string;
+    gardenKey?: PropertyKey;
     groupByKeys?: string[];
 };

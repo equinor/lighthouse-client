@@ -3,10 +3,10 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { useBarChart } from './Hooks/useBarChart';
 import { BarChartOptions } from './Types/barVisualOptions';
 
-interface BarChartVisualProps<T> {
+type BarChartVisualProps<T extends Record<PropertyKey, unknown>> = {
     data: T[];
     options: BarChartOptions<T>;
-}
+};
 
 /**
  * A Simple BarChart Visual
@@ -44,7 +44,10 @@ interface BarChartVisualProps<T> {
  *
  * ```
  */
-export function BarChartVisual<T>({ data, options }: BarChartVisualProps<T>): JSX.Element {
+export function BarChartVisual<T extends Record<PropertyKey, unknown>>({
+    data,
+    options,
+}: BarChartVisualProps<T>): JSX.Element {
     const { barChartOptions, series } = useBarChart(data, options);
 
     return (

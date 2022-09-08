@@ -92,7 +92,11 @@ function getYears<T>(data: T[], dateKey: keyof T): number[] {
     return [...years];
 }
 
-function dataReducer<T>(sortedData: T[], options: CumulativeSeriesOptions<T>, time: TimeDimension) {
+function dataReducer<T extends Record<PropertyKey, unknown>>(
+    sortedData: T[],
+    options: CumulativeSeriesOptions<T>,
+    time: TimeDimension
+) {
     const years = getYears(sortedData, options.categoriesKey);
     const initialData = getInitialTimeDecimation<T>(
         years,
@@ -132,7 +136,7 @@ function dataReducer<T>(sortedData: T[], options: CumulativeSeriesOptions<T>, ti
     return Object.values(reducedData).filter(options.filter ? options.filter : () => true);
 }
 
-export function timeChartSeries<T extends unknown>(
+export function timeChartSeries<T extends Record<PropertyKey, unknown>>(
     dataItem: T[],
     options: CumulativeSeriesOptions<T>,
     time: TimeDimension

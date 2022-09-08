@@ -24,7 +24,7 @@ import {
 } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
-    [key: string]: WorkSpaceConfig<unknown>;
+    [key: string]: WorkSpaceConfig<Record<PropertyKey, unknown>>;
 }
 
 export type TableOptions<T> = Pick<
@@ -64,7 +64,7 @@ interface Options<T> {
 }
 
 //update TreeOptions;;
-export interface TreeOptions<T> {
+export type TreeOptions<T extends Record<PropertyKey, unknown>> = {
     objectIdentifier: keyof T;
     groupByKeys?: (keyof T)[];
     itemKey: keyof T;
@@ -74,9 +74,9 @@ export interface TreeOptions<T> {
     status?: StatusView<T>;
     onGroupeSelect?: (item: T) => string;
     onSelect?: (item: T) => string;
-}
+};
 
-export type StatusFunc<T> = (data: T[]) => StatusItem[];
+export type StatusFunc<T extends Record<PropertyKey, unknown>> = (data: T[]) => StatusItem[];
 
 export interface WorkflowEditorOptions {
     endpoint: string;
@@ -90,7 +90,7 @@ export interface PrefetchQueriesOptions {
 
 export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor' | 'help';
 
-export interface WorkSpaceConfig<T> {
+export type WorkSpaceConfig<T extends Record<PropertyKey, unknown>> = {
     name: string;
     defaultTab: WorkspaceTab;
     objectIdentifier: string;
@@ -113,13 +113,13 @@ export interface WorkSpaceConfig<T> {
     presetOptions?: PresetOption[];
     searchOptions?: SearchOption<T>[];
     helpPageOptions?: HelpPageOptions;
-}
+};
 
-export interface PowerBiOptions {
+export type PowerBiOptions = {
     reportURI: string;
     filter?: Filter[];
     options?: PBIOptions;
-}
+};
 
 export interface TimeLineOptions {}
 

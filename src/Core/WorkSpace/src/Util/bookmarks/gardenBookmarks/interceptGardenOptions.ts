@@ -2,10 +2,9 @@ import { deref } from '@dbeining/react-atom';
 import { GardenOptions } from '@equinor/ParkView';
 import { gardenStateSnapshotAtom } from './gardenStateSnapshotAtom';
 
-export function interceptGardenOptions(
-    gardenOptions: GardenOptions<unknown>,
-    name: string
-): GardenOptions<unknown> {
+export function interceptGardenOptions<
+    T extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>
+>(gardenOptions: GardenOptions<T>, name: string): GardenOptions<T> {
     const oldGardenState = deref(gardenStateSnapshotAtom);
     if (oldGardenState !== null && name === oldGardenState.appKey) {
         return {
@@ -13,8 +12,8 @@ export function interceptGardenOptions(
             customGroupByKeys: oldGardenState.customGroupByKeys,
             groupByKeys: oldGardenState.groupByKeys,
             gardenKey: oldGardenState.gardenKey,
-        } as GardenOptions<unknown>;
+        };
     } else {
-        return gardenOptions as GardenOptions<unknown>;
+        return gardenOptions;
     }
 }

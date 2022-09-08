@@ -8,11 +8,11 @@ import { BookmarkResponse } from '../../types';
 import {
     DeleteModalContent,
     EditModalContent,
-    Modal,
     ShareModalContent,
     UnfavouriteModalContent,
     UnshareModalContent,
 } from './Modal';
+import { Modal } from '@equinor/modal';
 
 type Modals = 'Edit' | 'Delete' | 'Remove' | 'Share' | 'Unshare';
 type MenuOptionsProps = {
