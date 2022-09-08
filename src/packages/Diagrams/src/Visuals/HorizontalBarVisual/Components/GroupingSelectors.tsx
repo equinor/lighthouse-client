@@ -5,7 +5,7 @@ const Container = styled.div`
     display: flex;
     gap: 1em;
 `;
-type GroupingSelectorsProps<T> = {
+type GroupingSelectorsProps<T extends Record<PropertyKey, unknown>> = {
     enableGroupBy: boolean | undefined;
     options: string[];
     groupByKey: keyof T;
@@ -13,7 +13,9 @@ type GroupingSelectorsProps<T> = {
     handleChange: (selector: 'groupBy' | 'series', selectedItem: keyof T) => void;
 };
 
-export const GroupingSelectors = <T extends unknown>(props: GroupingSelectorsProps<T>) => {
+export const GroupingSelectors = <T extends Record<PropertyKey, unknown>>(
+    props: GroupingSelectorsProps<T>
+) => {
     const { enableGroupBy, options, seriesKey, groupByKey, handleChange } = props;
     if (!enableGroupBy) return null;
     return (
@@ -21,7 +23,7 @@ export const GroupingSelectors = <T extends unknown>(props: GroupingSelectorsPro
             <SingleSelect
                 items={options}
                 label="Group by"
-                value={`${groupByKey}`}
+                value={String(groupByKey)}
                 handleSelectedItemChange={(select) => {
                     if (select.selectedItem)
                         handleChange('groupBy', select.selectedItem as keyof T);
@@ -32,7 +34,7 @@ export const GroupingSelectors = <T extends unknown>(props: GroupingSelectorsPro
             <SingleSelect
                 items={options}
                 label="Series"
-                value={`${seriesKey}`}
+                value={String(seriesKey)}
                 handleSelectedItemChange={(select) => {
                     if (select.selectedItem) handleChange('series', select.selectedItem as keyof T);
                 }}

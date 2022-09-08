@@ -5,7 +5,7 @@ import { StatusView } from '../Models/gardenOptions';
 
 export type Tree<T> = Record<string, T[]>;
 
-export function createTree<T>(
+export function createTree<T extends Record<PropertyKey, unknown>>(
     dataSet: T[],
     groupingKeys?: (keyof T)[],
     status?: StatusView<T>,

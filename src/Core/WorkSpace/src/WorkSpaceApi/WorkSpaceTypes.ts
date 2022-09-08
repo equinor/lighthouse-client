@@ -13,18 +13,21 @@ import {
     WorkspaceTab,
 } from './workspaceState';
 
-export interface DataSource<T> {
+export type DataSource<T extends Record<PropertyKey, unknown>> = {
     /** Function that returns the api call promise */
     responseAsync: (signal?: AbortSignal) => Promise<Response>;
     /** Function that parses the response to correct format, defaults to just parsing the raw response */
     responseParser?: (Response: Response) => Promise<T[]>;
-}
+};
 
 export type Validator<T> = (data: unknown[]) => T[];
 
 export type IdResolverFunc<T> = (id: string) => Promise<T | undefined>;
 
-export interface WorkspaceOptions<T, SideSheetId extends string = string> {
+export interface WorkspaceOptions<
+    T extends Record<PropertyKey, unknown>,
+    SideSheetId extends string = string
+> {
     initialState: T[];
     objectIdentifier: keyof T;
     viewerId: string;
@@ -34,11 +37,11 @@ export interface WorkspaceOptions<T, SideSheetId extends string = string> {
     customGroupeSidesheet?: WorkspaceSideSheet<any, string>;
 }
 
-export interface DataViewerProps<T> extends ViewOptions<T> {
+export type DataViewerProps<T extends Record<PropertyKey, unknown>> = ViewOptions<T> & {
     data: T;
-}
+};
 
-export interface ViewOptions<T> {
+export type ViewOptions<T extends Record<PropertyKey, unknown>> = {
     objectIdentifierKey: keyof T;
     title?: {
         key: keyof T;
@@ -48,9 +51,9 @@ export interface ViewOptions<T> {
         key: keyof T;
         label: string;
     };
-}
+};
 
-export interface WorkSpaceApi<T> {
+export type WorkSpaceApi<T extends Record<PropertyKey, unknown>> = {
     /** Use with caution, only cache small datasets */
     registerPrefetchQueries: (queryOptions: PrefetchQueriesOptions[]) => WorkSpaceApi<T>;
     registerDataSource: (dataSource: DataSource<T>) => WorkSpaceApi<T>;
@@ -70,41 +73,41 @@ export interface WorkSpaceApi<T> {
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
     registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
     registerHelpPage: (options: HelpPageOptions) => WorkSpaceApi<T>;
-}
+};
 
 export type PresetOption = GardenPresetOption | TablePresetOption;
-interface GardenPresetOption {
+type GardenPresetOption = {
     name: string;
     type: Extract<WorkspaceTab, 'garden'>;
     filter: FilterPreset;
     garden: GardenPreset;
-}
+};
 
-interface TablePresetOption {
+type TablePresetOption = {
     name: string;
     type: Extract<WorkspaceTab, 'table'>;
     filter: FilterPreset;
     table: TablePreset;
-}
+};
 
-interface TablePreset { }
+interface TablePreset {}
 
-interface GardenPreset {
+type GardenPreset = {
     gardenKey: string;
     groupByKeys?: string[];
     customGroupByKeys?: Record<string, unknown>;
-}
+};
 
-interface FilterPreset {
+type FilterPreset = {
     filterGroups: FilterGroup[];
-}
+};
 
-export interface SearchOption<T> {
+export type SearchOption<T> = {
     name: string;
     /** Takes in an item and returns the search value */
     valueFormatter: (item: T) => string;
-}
+};
 
-export interface HelpPageOptions {
+export type HelpPageOptions = {
     Component: () => JSX.Element;
-}
+};

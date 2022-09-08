@@ -5,7 +5,7 @@ import { TreeColumn } from './TreeColumn';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FilterSelector } from './GroupingSelector';
 
-export function TreeView<T>(): JSX.Element | null {
+export function TreeView<T extends Record<PropertyKey, unknown>>(): JSX.Element | null {
     const { groupByKeys, options, status, data } = useParkViewContext<T>();
 
     const tree = useMemo(

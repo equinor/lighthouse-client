@@ -14,7 +14,7 @@ export enum ActionType {
     EXPAND_COLUMN,
 }
 
-type ExpandColumn<T extends unknown = any> = {
+type ExpandColumn<T extends Record<PropertyKey, unknown> = any> = {
     key: string;
     index: number;
     descriptionData: GardenItem<T>[] | null;

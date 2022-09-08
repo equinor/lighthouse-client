@@ -6,7 +6,7 @@ import { actions } from './ParkViewActions';
 import { ParkViewContext, ParkViewProviderProps, ParkViewState } from './ParkViewContext';
 import { GardenReducer } from './ParkViewReducer';
 
-export function ParkViewProvider<T>({
+export function ParkViewProvider<T extends Record<PropertyKey, unknown>>({
     children,
     data,
     parkViewOptions,
@@ -59,7 +59,7 @@ export function ParkViewProvider<T>({
     );
 }
 
-export function useParkViewContext<T>() {
+export function useParkViewContext<T extends Record<PropertyKey, unknown>>() {
     const parkViewContext = useContext(ParkViewContext);
 
     return {
@@ -80,7 +80,7 @@ export function useParkViewContext<T>() {
     };
 }
 
-type GetItemWidth<T> = (
+type GetItemWidth<T extends Record<PropertyKey, unknown>> = (
     gardenGroups: GardenGroups<T>,
     groupKey: string,
     customGroupByKeys?: Record<string, unknown>

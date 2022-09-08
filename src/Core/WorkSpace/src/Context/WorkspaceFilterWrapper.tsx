@@ -2,10 +2,10 @@ import { FilterApiContext, FilterOptions, useFilterApi } from '@equinor/filter';
 import { useEffect } from 'react';
 import { useDataContext } from './DataProvider';
 
-interface WorkspaceFilterWrapperProps {
+type WorkspaceFilterWrapperProps = {
     children: React.ReactNode;
-    filterOptions: FilterOptions<unknown>;
-}
+    filterOptions: FilterOptions<Record<PropertyKey, unknown>>;
+};
 
 /** Wrapper for workspace filter api */
 export function WorkspaceFilterWrapper({

@@ -10,7 +10,8 @@ export const MiniWrapper = styled.div`
     display: flex;
     flex-direction: column;
     max-width: 30px;
-    margin-left: 2px;
+    margin-left: 3px;
+    margin-right: 6px;
 `;
 
 export const MenuText = styled(Typography)`
