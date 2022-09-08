@@ -69,8 +69,8 @@ export function ServiceMessagePost(): JSX.Element | null {
         } catch (e) {
             console.error(e);
         } finally {
-            // storage.setItem('postMessage', 'false');
-            // setIsActive(false);
+            storage.setItem('postMessage', 'false');
+            setIsActive(false);
         }
     };
 
