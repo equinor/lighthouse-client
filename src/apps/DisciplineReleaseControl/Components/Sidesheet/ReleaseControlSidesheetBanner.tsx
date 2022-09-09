@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { getYearAndWeekFromString } from '../../Functions/statusHelpers';
-import { checklistTagFunc, createChecklistSteps } from '../../Functions/tableHelpers';
+import { getYearAndWeekFromString } from '../../utils/helpers/statusHelpers';
+import { checklistTagFunc, createChecklistSteps } from '../../utils/helpers/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
 import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
 import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';

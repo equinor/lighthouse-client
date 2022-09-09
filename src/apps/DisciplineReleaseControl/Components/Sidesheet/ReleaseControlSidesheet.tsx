@@ -9,7 +9,7 @@ import { ServerError } from '../../Api/Types/ServerError';
 import {
     fetchAndChewPipetestDataFromApi,
     sortCheckListsForTable,
-} from '../../Functions/statusHelpers';
+} from '../../utils/helpers/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 import { Panel, ThreeDView } from '../3D';
