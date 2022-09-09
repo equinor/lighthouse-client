@@ -1,7 +1,7 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { downloadToDrive } from '@equinor/lighthouse-utils';
 import { Row } from '@equinor/Table';
-import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 
 export const excelExport = async (rows: Row<ScopeChangeRequest>[]) => {
     const { scopeChange } = httpClient();
