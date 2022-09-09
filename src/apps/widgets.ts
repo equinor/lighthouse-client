@@ -2,13 +2,13 @@ import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
-    actionCenterSidesheetWidgetManifest
+    actionCenterSidesheetWidgetManifest,
 } from '../components/ActionCenter/ActionCenterSidesheet';
 import {
     htSidesheetWidgetComponent,
     htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetManifest
+    ReleaseControlSidesheetWidgetManifest,
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
@@ -16,16 +16,16 @@ import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
-    releaseCreatorManifest
+    releaseCreatorManifest,
 } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import {
     changeSideSheetWidgetComponent,
-    changeSideSheetWidgetManifest
-} from './ScopeChangeRequest/ScopeChangeRequestApp';
+    changeSideSheetWidgetManifest,
+} from './ScopeChangeRequest/utils/config/sidesheetConfig';
 import {
     changeCreatorComponent,
-    changeCreatorManifest
-} from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
+    changeCreatorManifest,
+} from './ScopeChangeRequest/utils/config/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
 import { tagWidgetComponent, tagWidgetManifest } from './Tags';
 import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';

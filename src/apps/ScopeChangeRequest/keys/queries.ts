@@ -9,7 +9,6 @@ import {
     canVoid,
     getRequestAccess,
 } from '../api/ScopeChange/Access';
-import { OptionRequestResult } from '../api/ScopeChange/Access/optionsRequestChecker';
 import { Category, getCategories } from '../api/ScopeChange/getCategories';
 import { getPhases } from '../api/ScopeChange/getPhases';
 import { getScopes } from '../api/ScopeChange/getScopes';
@@ -17,11 +16,9 @@ import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
 import { getRevisions } from '../api/ScopeChange/Request/getRevisions';
 import { CacheTime } from '../enum/cacheTimes';
+import { OptionRequestResult } from '../types/query/optionsRequest';
+import { QueryContext } from '../types/query/queryContext';
 import { LogEntry, Scope, ScopeChangeRequest } from '../types/scopeChangeRequest';
-
-export interface QueryContext {
-    signal?: AbortSignal;
-}
 
 const scopeChangeBaseKey = (requestId: string): string[] => ['scopechange', requestId];
 const scopeChangeHistoryKey = (requestId: string): string[] => [

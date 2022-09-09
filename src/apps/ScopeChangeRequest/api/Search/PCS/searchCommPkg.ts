@@ -1,5 +1,5 @@
 import { HttpClient } from '@equinor/http-client';
-import { TypedSelectOption } from '../searchType';
+import { TypedSelectOption } from '../../../types/search/searchType';
 import { CommissioningPackage } from '../../../types/ProCoSys/CommissioningPackage';
 
 export const searchCommPkg = async (

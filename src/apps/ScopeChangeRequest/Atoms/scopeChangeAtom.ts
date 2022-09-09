@@ -1,6 +1,6 @@
 import { Atom } from '@dbeining/react-atom';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { ScopeChangeAccess } from '../hooks/queries/useScopeChangeAccess';
+import { ScopeChangeAccess } from '../types/query/scopeChangeAccess';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export interface ScopeChangeAtom {

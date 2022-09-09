@@ -1,5 +1,5 @@
 import { ClickableIcon } from '../../../../packages/Components/Icon';
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { getReferenceIcon } from './getReferenceIcon';
 import { ListItem, SelectedItemLabel, MetaData } from './searchReferences.styles';
 

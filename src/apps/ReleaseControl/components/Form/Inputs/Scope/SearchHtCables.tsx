@@ -2,15 +2,13 @@ import { Progress } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
 import { useCancellationToken } from '../../../../../../hooks/cancellationToken/useCancellationToken';
-import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
-import {
-    FAMTypes,
-    useFAMSearch,
-} from '../../../../../ScopeChangeRequest/hooks/Search/useFAMSearch';
+import { TypedSelectOption } from '../../../../../ScopeChangeRequest/types/search/searchType';
+import { useFAMSearch } from '../../../../../ScopeChangeRequest/hooks/Search/useFAMSearch';
 import { FamTagType } from '../../../../types/releaseControl';
 import { HtCableTable } from './HtCableTable';
 import { Select } from './ScopeSelect';
 import { LoadingWrapper, SearchWrapper, Section } from './search.styles';
+import { FAMTypes } from '../../../../../ScopeChangeRequest/types/FAM/famTypes';
 
 interface SearchHtCablesProps {
     onChange: (newHtCables: TypedSelectOption[]) => void;

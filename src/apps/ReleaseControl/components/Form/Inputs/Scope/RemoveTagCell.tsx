@@ -1,6 +1,6 @@
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { CellProps } from '@equinor/Table';
-import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
+import { TypedSelectOption } from '../../../../../ScopeChangeRequest/types/search/searchType';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 
 const { useAtomState, updateAtom } = DRCFormAtomApi;

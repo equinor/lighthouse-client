@@ -1,29 +1,14 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
-import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
-import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
-import { dataSource, idResolver } from './workspaceConfig/dataOptions';
-import { filterConfig } from './workspaceConfig/filter/filterConfig';
-import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
-import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
-import { tableConfig } from './workspaceConfig/sTable/tableConfig';
-import { statusBarConfig } from './workspaceConfig/statusBarConfig';
-
-const sidesheetCreator = setupWorkspaceSidesheet<ScopeChangeRequest, 'change'>({
-    id: 'change',
-    color: '#7B3A96',
-    component: SidesheetWrapper,
-    props: {
-        objectIdentifier: 'id',
-        parentApp: 'change',
-        function: idResolver,
-    },
-});
-
-export const changeSideSheetWidgetManifest = sidesheetCreator('SidesheetManifest');
-export const changeSideSheetWidgetComponent = sidesheetCreator('SidesheetComponentManifest');
-export const changeResolverFunction = sidesheetCreator('ResolverFunction');
+import {
+    statusBarConfig,
+    dataSource,
+    prefetchQueriesOptions,
+    filterConfig,
+    gardenConfig,
+    tableConfig,
+    sidesheetCreator,
+} from './utils/config';
 
 export function setup(appApi: ClientApi): void {
     appApi
@@ -46,7 +31,6 @@ export function setup(appApi: ClientApi): void {
                 valueFormatter: (s) => (s.potentialWarrantyCase ? 'Warranty' : ''),
             },
         ])
-        .registerPrefetchQueries(prefetchQueriesOptions)
         .registerPowerBIOptions({
             reportURI: 'pp-scope-change-analytics',
         });

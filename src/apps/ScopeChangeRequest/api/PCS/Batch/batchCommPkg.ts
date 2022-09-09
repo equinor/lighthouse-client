@@ -1,6 +1,6 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { CommissioningPackage } from '../../../types/ProCoSys/CommissioningPackage';
-import { TypedSelectOption } from '../../Search/searchType';
+import { TypedSelectOption } from '../../../types/search/searchType';
 
 export async function fetchBatchCommPkg(
     commPkgNo: string[],

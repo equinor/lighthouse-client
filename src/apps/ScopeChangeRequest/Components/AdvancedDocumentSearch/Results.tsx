@@ -1,6 +1,6 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { ResultLabel, ResultItem } from './advancedSearch.styles';
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { useState } from 'react';
 
 interface ResultProps {

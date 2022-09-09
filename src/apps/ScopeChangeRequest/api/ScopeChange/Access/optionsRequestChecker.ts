@@ -1,10 +1,4 @@
-export type OptionRequestResult = {
-    canGet: boolean;
-    canPost: boolean;
-    canPut: boolean;
-    canPatch: boolean;
-    canDelete: boolean;
-};
+import { OptionRequestResult } from '../../../types/query/optionsRequest';
 
 export const checkOptionsRequest = async (
     request: () => Promise<any>

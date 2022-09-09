@@ -1,5 +1,5 @@
 import { TableOptions } from '@equinor/WorkSpace';
-import { WorkflowCompact } from '../../../ScopeChangeRequest/workspaceConfig/sTable/WorkflowCompact';
+import { WorkflowCompact } from '../../../ScopeChangeRequest/utils/config/table/WorkflowCompact';
 import { ReleaseControl } from '../../types/releaseControl';
 
 const customCellView = (render: (req: ReleaseControl) => JSX.Element | null) => ({

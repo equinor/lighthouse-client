@@ -1,12 +1,9 @@
 import { useSTIDSearch } from './useStidSearch';
 import { usePcsSearch } from './usePcsSearch';
-import { StidTypes } from '../../types/STID/STIDTypes';
-import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { useState } from 'react';
-import { FAMTypes, useFAMSearch } from './useFAMSearch';
-
-export type ReferenceType = ProcoSysTypes | StidTypes | FAMTypes;
+import { useFAMSearch } from './useFAMSearch';
+import { ReferenceType } from '../../types/search/referenceType';
 
 interface ReferenceSearch {
     search: (

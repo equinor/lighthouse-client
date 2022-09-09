@@ -1,5 +1,6 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest, OptionRequestResult } from './optionsRequestChecker';
+import { OptionRequestResult } from '../../../types/query/optionsRequest';
+import { checkOptionsRequest } from './optionsRequestChecker';
 
 export async function getRequestAccess(
     requestId: string,

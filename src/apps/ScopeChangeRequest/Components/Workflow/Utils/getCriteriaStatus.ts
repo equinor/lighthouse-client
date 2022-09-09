@@ -1,5 +1,4 @@
-import { CriteriaStatus } from '../Criteria/Components/CriteriaDetail';
-import { Criteria } from '../../../types/scopeChangeRequest';
+import { Criteria, CriteriaStatus } from '../../../types/scopeChangeRequest';
 
 export function getCriteriaStatus(criteria: Criteria, isCurrentStep: boolean): CriteriaStatus {
     if (!criteria.signedState) {

@@ -1,5 +1,5 @@
 import { useFacility } from '@equinor/lighthouse-portal-client';
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { searchDocuments } from '../../api/Search/STID/searchDocuments';
 import { searchTags } from '../../api/Search/STID/searchTags';
 import { StidTypes } from '../../types/STID/STIDTypes';

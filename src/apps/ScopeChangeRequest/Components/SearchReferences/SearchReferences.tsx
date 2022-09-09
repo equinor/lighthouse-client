@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
 import {
@@ -22,8 +22,9 @@ import {
     TitleBar,
     SearchLineWrapper,
 } from './searchReferences.styles';
-import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { SelectedReference } from './SelectedReference';
+import { ReferenceType } from '../../types/search/referenceType';
 
 interface SearchReferencesOptions {
     referenceTypes?: ReferenceType[];

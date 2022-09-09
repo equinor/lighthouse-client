@@ -2,7 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { openNewScopeChange } from '../../../functions/openNewScopeChange';
+import { openNewScopeChange } from '../../../utils/helpers/openNewScopeChange';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
 import { scopeChangeQueries } from '../../../keys/queries';
 

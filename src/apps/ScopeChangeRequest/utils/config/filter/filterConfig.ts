@@ -1,5 +1,5 @@
-import { FilterOptions, FilterValueType } from '../../../../packages/Filter/Types';
-import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { FilterOptions, FilterValueType } from '@equinor/filter';
+import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 import {
     calculateGuesstimateHoursGap,
     guesstimate,
@@ -70,8 +70,8 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ disciplineGuesstimates }) =>
             disciplineGuesstimates.length > 0
                 ? calculateGuesstimateHoursGap(
-                    disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
-                )
+                      disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
+                  )
                 : null,
 
         sort: (a) =>

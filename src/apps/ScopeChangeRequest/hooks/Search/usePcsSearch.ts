@@ -1,4 +1,4 @@
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { searchTags } from '../../api/Search/PCS/searchTags';
 import { httpClient } from '../../../../Core/Client/Functions';

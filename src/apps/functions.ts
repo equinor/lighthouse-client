@@ -1,15 +1,15 @@
 import { FunctionManifest } from '@equinor/lighthouse-functions';
 import {
     htResolverFunction,
-    rcResolverFunction
+    rcResolverFunction,
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { handoverResolverFunction } from './Handover';
 import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
 import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
-import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
-import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
+import { changeResolverFunction } from './ScopeChangeRequest/utils/config';
+import { changeCreatorAccessFunction } from './ScopeChangeRequest/utils/config/dataCreatorConfig';
 import { swcrResolverFunction } from './swcr';
 import { tagResolverFunction } from './Tags';
 import { workOrderResolverFunction } from './WorkOrder';

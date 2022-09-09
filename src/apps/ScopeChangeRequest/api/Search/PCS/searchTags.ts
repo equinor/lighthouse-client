@@ -1,6 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { isProduction } from '../../../../../Core/Client/Functions';
-import { TypedSelectOption } from '../searchType';
+import { TypedSelectOption } from '../../../types/search/searchType';
 import { PCSStructure } from './searchStructure';
 import { SearchTag } from '../../../types/ProCoSys/Tag';
 
@@ -16,8 +16,9 @@ export const searchTags = async (
     const searchIdProd = 105793;
 
     const uri = 'api/Search';
-    const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
-        }&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
+    const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${
+        isProduction() ? searchIdProd : searchIdDev
+    }&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
 
     const url = `${uri}?${queryParameters}`;
 
@@ -45,8 +46,9 @@ export const searchTags = async (
                     type: 'tag',
                     searchValue: x.TagNo,
                     object: x,
-                    metadata: `Comm pkg: ${x.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
-                        } | Tag register: ${x.Register__Id} `,
+                    metadata: `Comm pkg: ${
+                        x.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
+                    } | Tag register: ${x.Register__Id} `,
                 });
             });
         });

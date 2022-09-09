@@ -1,4 +1,4 @@
-import { TypedSelectOption } from '../api/Search/searchType';
+import { TypedSelectOption } from './search/searchType';
 
 export type ScopeChangeCreateEditModel = {
     id?: string;
@@ -247,3 +247,4 @@ export type Contribution = {
 };
 
 export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';
+export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';

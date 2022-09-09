@@ -1,7 +1,7 @@
 import { setupCreator } from '@equinor/lighthouse-fusion-modules';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { checkOptionsRequest } from '../api/ScopeChange/Access/optionsRequestChecker';
-import { ScopeChangeCreateForm } from '../Components/DataCreator/DataCreatorWrapper';
+import { checkOptionsRequest } from '../../api/ScopeChange/Access/optionsRequestChecker';
+import { ScopeChangeCreateForm } from '../../Components/DataCreator/DataCreatorWrapper';
 
 const creator = setupCreator({
     widgetId: 'changeCreator',

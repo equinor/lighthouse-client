@@ -3,10 +3,12 @@ import { useAtom } from '@dbeining/react-atom';
 
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { AddContributor } from './AddContributor';
-import { CriteriaStatus } from './CriteriaDetail';
-import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
+import {
+    convertUtcToLocalDate,
+    dateToDateTimeFormat,
+} from '../../../../utils/helpers/dateFormatting';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
-import { Contributor, Criteria } from '../../../../types/scopeChangeRequest';
+import { Contributor, Criteria, CriteriaStatus } from '../../../../types/scopeChangeRequest';
 import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { ContributorRender } from '../../Contributor/Contributor';
 import { RowContent, WorkflowRow, WorkflowWrapper } from '../../workflowLayout.styles';

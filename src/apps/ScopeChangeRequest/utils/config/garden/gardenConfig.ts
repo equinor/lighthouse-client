@@ -1,5 +1,5 @@
-import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
-import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { GardenOptions } from '@equinor/ParkView';
+import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 
 const workflowStatusMap = new Map([
     ['Initiate', 1],

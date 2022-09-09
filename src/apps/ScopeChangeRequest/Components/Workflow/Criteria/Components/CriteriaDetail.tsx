@@ -1,6 +1,9 @@
 import styled from 'styled-components';
-import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../types/scopeChangeRequest';
-import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
+import { Criteria, CriteriaStatus, WorkflowStep } from '../../../../types/scopeChangeRequest';
+import {
+    convertUtcToLocalDate,
+    dateToDateTimeFormat,
+} from '../../../../utils/helpers/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -8,8 +11,6 @@ interface CriteriaDetailProps {
     criteria: Criteria;
     step: WorkflowStep;
 }
-
-export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';
 
 function statusFunc(criteria: Criteria, step: WorkflowStep): CriteriaStatus {
     if (!criteria.signedState) {

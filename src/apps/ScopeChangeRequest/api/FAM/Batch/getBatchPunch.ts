@@ -2,7 +2,7 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 import { generateExpressions, generateFamRequest } from '../../../functions/FAM/generateFAMRequest';
 import { throwOnError } from '../../../functions/throwError';
 import { PunchListItem } from '../../../types/FAM/punchListItem';
-import { TypedSelectOption } from '../../Search/searchType';
+import { TypedSelectOption } from '../../../types/search/searchType';
 
 export async function getBatchPunch(
     punchIds: string[],

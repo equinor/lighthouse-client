@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
+import { TypedSelectOption } from '../../../../../ScopeChangeRequest/types/search/searchType';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
 import { addContributor } from '../../../../api/releaseControl/Workflow';
 import { PCSPersonSearch } from '../../../../../ScopeChangeRequest/Components/PersonRoleSearch/PCSPersonSearch';

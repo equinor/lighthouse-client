@@ -1,6 +1,6 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
 import { useState } from 'react';
-import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
+import { TypedSelectOption } from '../../ScopeChangeRequest/types/search/searchType';
 import { ProcoSysTypes } from '../types/PCS/ProCoSysTypes';
 import { StidTypes } from '../types/PCS/STIDTypes';
 import { CreateReleaseControlStepModel, FamTag } from '../types/releaseControl';

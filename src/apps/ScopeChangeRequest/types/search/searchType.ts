@@ -1,4 +1,4 @@
-import { ReferenceType } from '../../hooks/Search/useReferencesSearch';
+import { ReferenceType } from './referenceType';
 
 interface SelectOption {
     label: string;

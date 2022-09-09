@@ -1,5 +1,5 @@
-import { StatusItem } from '../../../packages/StatusBar';
-import { ScopeChangeRequest } from '../types/scopeChangeRequest';
+import { StatusItem } from '@equinor/lighthouse-status-bar';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 
 export function numberFormat(number: number): string {
     return parseFloat(Math.round(number).toString()).toLocaleString('no');
