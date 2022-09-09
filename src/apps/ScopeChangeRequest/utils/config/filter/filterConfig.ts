@@ -1,5 +1,5 @@
 import { FilterOptions, FilterValueType } from '@equinor/filter';
-import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 import {
     calculateGuesstimateHoursGap,
     guesstimate,

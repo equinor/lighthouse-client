@@ -2,10 +2,15 @@ import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
-import { filterConfig } from './workspaceConfig/filter/filterConfig';
 import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
-import { statusBarConfig, dataSource, idResolver, prefetchQueriesOptions } from './utils/config';
+import {
+    statusBarConfig,
+    dataSource,
+    idResolver,
+    prefetchQueriesOptions,
+    filterConfig,
+} from './utils/config';
 
 const sidesheetCreator = setupWorkspaceSidesheet<ScopeChangeRequest, 'change'>({
     id: 'change',
