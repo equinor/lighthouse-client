@@ -1,8 +1,8 @@
-import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { transformIsoDate } from '../../../Components/Workflow/Utils/dateFormatting';
+import { transformIsoDate } from '../../../utils/helpers/dateFormatting';
 import { throwOnError } from '../../../functions/throwError';
 import { Document } from '../../../types/STID/document';
 import { TypedSelectOption } from '../../../types/search/searchType';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 
 export const searchDocuments = async (
     searchString: string,

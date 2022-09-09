@@ -6,7 +6,7 @@ import { getSystems } from '../../api/PCS/getSystems';
 import { getTagById } from '../../api/PCS/getTagById';
 import { TypedSelectOption } from '../../types/search/searchType';
 import { getDocumentById } from '../../api/STID/getDocumentById';
-import { transformIsoDate } from '../../Components/Workflow/Utils/dateFormatting';
+import { transformIsoDate } from '../../utils/helpers/dateFormatting';
 import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
