@@ -1,7 +1,7 @@
-import { StatusItem } from '../../../../packages/StatusBar';
-import { getPipetestsWithHTCable } from '../../Functions/tableHelpers';
-import { PipetestStep } from '../../Types/drcEnums';
-import { Pipetest } from '../../Types/pipetest';
+import { StatusItem } from '@equinor/lighthouse-status-bar';
+import { PipetestStep } from '../../../Types/drcEnums';
+import { Pipetest } from '../../../Types/pipetest';
+import { getPipetestsWithHTCable } from '../../helpers/tableHelpers';
 
 export function statusBarConfig(data: Pipetest[]): StatusItem[] {
     return [

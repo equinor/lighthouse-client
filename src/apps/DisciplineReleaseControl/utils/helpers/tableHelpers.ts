@@ -3,8 +3,8 @@ import {
     CheckListStepTag,
     PipetestCompletionStatus,
     PipetestStep,
-} from '../Types/drcEnums';
-import { CheckList, Pipetest } from '../Types/pipetest';
+} from '../../Types/drcEnums';
+import { CheckList, Pipetest } from '../../Types/pipetest';
 import {
     getBoxInsulationStatus,
     getChecklistStepName,

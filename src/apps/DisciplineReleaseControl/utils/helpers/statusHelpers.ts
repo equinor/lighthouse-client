@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon';
-import { getPipetests } from '../Components/Electro/getPipetests';
-import { getTimePeriod } from '../Components/Garden/gardenFunctions';
-import { PipetestCompletionStatusColors } from '../Styles/ReleaseControlColors';
+import { getPipetests } from '../api/getPipetests';
+import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import {
     CheckListStatus,
     PipetestCheckListOrder,
@@ -9,15 +8,31 @@ import {
     PipetestStatusOrder,
     CheckListStepTag,
     PipetestCompletionStatus,
-} from '../Types/drcEnums';
-import { CheckList, Circuit, InsulationBox, Pipetest } from '../Types/pipetest';
+} from '../../Types/drcEnums';
+import { CheckList, Circuit, InsulationBox, Pipetest } from '../../Types/pipetest';
 
 export async function fetchAndChewPipetestDataFromApi(): Promise<Pipetest[]> {
     let data = await getPipetests();
     data = chewPipetestDataFromApi(data);
     return data;
 }
+export const getTimePeriod = (item: Pipetest): string => {
+    const date = DateTime.fromISO(item.rfccPlanned);
 
+    const upcomingFourWeeks = (date: DateTime) =>
+        0 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 4;
+    const pastFourWeeks = (date: DateTime) =>
+        -4 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 0;
+
+    if (upcomingFourWeeks(date)) {
+        return 'Next four weeks';
+    }
+    if (pastFourWeeks(date)) {
+        return 'Past four weeks';
+    }
+
+    return 'Other';
+};
 export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
     pipetests.map((pipetest: Pipetest) => {
         pipetest.circuits?.forEach((circuit: Circuit) => {
