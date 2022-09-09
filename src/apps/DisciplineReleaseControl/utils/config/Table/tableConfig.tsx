@@ -1,12 +1,12 @@
 import { tokens } from '@equinor/eds-tokens';
 import { TableOptions } from '@equinor/WorkSpace';
-import { WorkflowCompact } from '../../Components/Workflow/Components/WorkflowCompact';
-import { WorkflowWarningTriangle } from '../../Components/Workflow/Components/WorkflowWarningTriangle';
-import { CurrentStepContainer } from '../../Components/Workflow/Styles/styles';
-import { getYearAndWeekFromString } from '../../Functions/statusHelpers';
-import { createChecklistSteps, checklistTagFunc, getHTList } from '../../Functions/tableHelpers';
-import { Monospace } from '../../Styles/Monospace';
-import { Pipetest } from '../../Types/pipetest';
+import { WorkflowCompact } from '../../../Components/Workflow/Components/WorkflowCompact';
+import { WorkflowWarningTriangle } from '../../../Components/Workflow/Components/WorkflowWarningTriangle';
+import { CurrentStepContainer } from '../../../Components/Workflow/Styles/styles';
+import { Monospace } from '../../../Styles/Monospace';
+import { Pipetest } from '../../../Types/pipetest';
+import { getYearAndWeekFromString } from '../../helpers/statusHelpers';
+import { checklistTagFunc, createChecklistSteps, getHTList } from '../../helpers/tableHelpers';
 
 export const tableConfig: TableOptions<Pipetest> = {
     objectIdentifierKey: 'name',

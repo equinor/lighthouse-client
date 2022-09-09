@@ -1,13 +1,13 @@
 import { FilterOptions } from '@equinor/filter';
-import { getGardenItemColor } from '../../Components/Garden/gardenFunctions';
 import {
     StepFilterContainer,
     StepFilterText,
     WorkflowFilterDot,
-} from '../../Components/Workflow/Components/WorkflowFilterDot';
-import { getStatusLetterFromStatus } from '../../Functions/tableHelpers';
-import { PipetestStep } from '../../Types/drcEnums';
-import { Pipetest } from '../../Types/pipetest';
+} from '../../../Components/Workflow/Components/WorkflowFilterDot';
+import { PipetestStep } from '../../../Types/drcEnums';
+import { Pipetest } from '../../../Types/pipetest';
+import { getGardenItemColor } from '../../helpers/gardenFunctions';
+import { getStatusLetterFromStatus } from '../../helpers/tableHelpers';
 
 export const filterConfig: FilterOptions<Pipetest> = [
     {

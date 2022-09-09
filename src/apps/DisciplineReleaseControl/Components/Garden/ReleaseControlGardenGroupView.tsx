@@ -1,9 +1,12 @@
 import { ChevronDown, ChevronRight, CustomGroupView } from '@equinor/ParkView';
 import { memo } from 'react';
-import { checklistTagFunc } from '../../Functions/tableHelpers';
+import { checklistTagFunc } from '../../utils/helpers/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
 import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
-import { createChecklistTestSteps, getPipetestStatusValueForHTCable } from './gardenFunctions';
+import {
+    createChecklistTestSteps,
+    getPipetestStatusValueForHTCable,
+} from '../../utils/helpers/gardenFunctions';
 import {
     Chevron,
     HTGardenSubGroup,

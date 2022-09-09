@@ -12,7 +12,7 @@ import {
     getGardenContentColor,
     getGardenItemColor,
     getGardenItemCompletionColor,
-} from './gardenFunctions';
+} from '../../utils/helpers/gardenFunctions';
 import { useParkViewContext } from '@equinor/ParkView';
 import { memo } from 'react';
 import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
