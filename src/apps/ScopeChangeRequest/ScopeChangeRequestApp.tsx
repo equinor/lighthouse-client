@@ -43,7 +43,6 @@ export function setup(appApi: ClientApi): void {
                 valueFormatter: (s) => (s.potentialWarrantyCase ? 'Warranty' : ''),
             },
         ])
-        .registerPrefetchQueries(prefetchQueriesOptions)
         .registerPowerBIOptions({
             reportURI: 'pp-scope-change-analytics',
         });
