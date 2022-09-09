@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../types/scopeChangeRequest';
+import { Criteria, CriteriaStatus, WorkflowStep } from '../../../../types/scopeChangeRequest';
 import {
     convertUtcToLocalDate,
     dateToDateTimeFormat,
@@ -11,8 +11,6 @@ interface CriteriaDetailProps {
     criteria: Criteria;
     step: WorkflowStep;
 }
-
-export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';
 
 function statusFunc(criteria: Criteria, step: WorkflowStep): CriteriaStatus {
     if (!criteria.signedState) {

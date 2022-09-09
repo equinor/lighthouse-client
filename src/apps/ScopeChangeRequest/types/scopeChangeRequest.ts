@@ -247,3 +247,4 @@ export type Contribution = {
 };
 
 export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';
+export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';
