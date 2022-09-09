@@ -1,6 +1,6 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { DataSource, IdResolverFunc } from '../../../Core/WorkSpace/src';
-import { ScopeChangeRequest } from '../types/scopeChangeRequest';
+import { DataSource, IdResolverFunc } from '../../../../Core/WorkSpace/src';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 
 async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { scopeChange } = httpClient();
