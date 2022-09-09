@@ -1,4 +1,4 @@
-import { StatusItem } from '../../../packages/StatusBar';
+import { StatusItem } from '@equinor/lighthouse-status-bar';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export function numberFormat(number: number): string {
