@@ -1,6 +1,6 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { throwOnError } from '../../functions/throwError';
-import { QueryContext } from '../../keys/queries';
+import { QueryContext } from '../../types/query/queryContext';
 
 export interface Category {
     id: string;

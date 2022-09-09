@@ -17,11 +17,8 @@ import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
 import { getRevisions } from '../api/ScopeChange/Request/getRevisions';
 import { CacheTime } from '../enum/cacheTimes';
+import { QueryContext } from '../types/query/queryContext';
 import { LogEntry, Scope, ScopeChangeRequest } from '../types/scopeChangeRequest';
-
-export interface QueryContext {
-    signal?: AbortSignal;
-}
 
 const scopeChangeBaseKey = (requestId: string): string[] => ['scopechange', requestId];
 const scopeChangeHistoryKey = (requestId: string): string[] => [
