@@ -1,5 +1,5 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { WorkOrder } from '../Types/workOrder';
+import { WorkOrder } from '../../../Types/workOrder';
 
 export async function getWorkOrdersById(id: string): Promise<WorkOrder[]> {
     if (!id || id === '') return [];

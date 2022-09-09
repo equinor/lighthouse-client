@@ -1,5 +1,5 @@
-import { httpClient } from '../../../../Core/Client/Functions';
-import { EleNetwork } from '../../Types/eleNetwork';
+import { httpClient } from '@equinor/lighthouse-portal-client';
+import { EleNetwork } from '../../../Types/eleNetwork';
 
 export async function getEleNetworks(circuitStarterTagNos: string): Promise<EleNetwork[]> {
     const { FAM } = httpClient();

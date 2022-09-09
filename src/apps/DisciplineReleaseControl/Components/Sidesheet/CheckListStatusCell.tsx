@@ -1,6 +1,6 @@
+import { StatusCircle } from '@equinor/GardenUtils';
 import { CellProps } from '@equinor/Table';
 import styled from 'styled-components';
-import { StatusCircle } from '../../../../packages/GardenUtils/src';
 import { CheckListType } from '../../Types/pipetest';
 import { getElectroViewCompletionStatusColor } from '../Electro/electroViewHelpers';
 

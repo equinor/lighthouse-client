@@ -1,5 +1,5 @@
 import { FilterOptions } from '@equinor/filter';
-import { getGardenItemColor } from '../../Components/Garden/gardenFunctions';
+import { getGardenItemColor } from '../../Functions/garden';
 import {
     StepFilterContainer,
     StepFilterText,

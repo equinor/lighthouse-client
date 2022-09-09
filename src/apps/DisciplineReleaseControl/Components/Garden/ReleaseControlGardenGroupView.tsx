@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { checklistTagFunc } from '../../Functions/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
 import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
-import { createChecklistTestSteps, getPipetestStatusValueForHTCable } from './gardenFunctions';
+import { createChecklistTestSteps, getPipetestStatusValueForHTCable } from '../../Functions/garden';
 import {
     Chevron,
     HTGardenSubGroup,

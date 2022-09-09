@@ -7,11 +7,15 @@ import {
     EleNetworkCircuit,
 } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
-import { Cable, CableNode } from './Components/Cable';
-import { CircuitAndStarter } from './Components/CircuitAndStarter';
-import { HeatTracingCable } from './Components/HeatTracingCable';
-import { JunctionBox } from './Components/JunctionBox';
-import { SpaceHeater } from './Components/SpaceHeater';
+import {
+    Cable,
+    CableNode,
+    CircuitAndStarter,
+    HeatTracingCable,
+    JunctionBox,
+    SpaceHeater,
+} from './Components';
+
 import {
     getCableChildren,
     getCircuitChildren,

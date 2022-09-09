@@ -6,7 +6,7 @@ import {
     getPipetestStatusEnumByValue,
     getPipetestStatusForStep,
     getPipetestStatusSortValue,
-} from '../../Functions/statusHelpers';
+} from '../statusHelpers';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import {
     PipetestStep,

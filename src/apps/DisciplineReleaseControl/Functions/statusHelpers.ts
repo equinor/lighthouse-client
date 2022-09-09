@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
-import { getPipetests } from '../Components/Electro/getPipetests';
-import { getTimePeriod } from '../Components/Garden/gardenFunctions';
+import { getTimePeriod } from './garden';
 import { PipetestCompletionStatusColors } from '../Styles/ReleaseControlColors';
 import {
     CheckListStatus,
@@ -11,6 +10,7 @@ import {
     PipetestCompletionStatus,
 } from '../Types/drcEnums';
 import { CheckList, Circuit, InsulationBox, Pipetest } from '../Types/pipetest';
+import { getPipetests } from './api';
 
 export async function fetchAndChewPipetestDataFromApi(): Promise<Pipetest[]> {
     let data = await getPipetests();

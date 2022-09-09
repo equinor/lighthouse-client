@@ -1,8 +1,8 @@
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { ReleaseControlHTSidesheet } from './Components/Sidesheet/ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
-import { responseAsync, responseParser } from './DisciplineReleaseControlApp';
 import { HTSidesheet, Pipetest } from './Types/pipetest';
+import { responseAsync, responseParser } from './WorkspaceConfig/DataSource';
 
 export const htSidesheetCreator = setupWorkspaceSidesheet<HTSidesheet, 'ht'>({
     id: 'ht',
