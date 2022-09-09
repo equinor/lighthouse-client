@@ -8,7 +8,7 @@ import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
 import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
-import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { changeResolverFunction } from './ScopeChangeRequest/utils/config';
 import { changeCreatorAccessFunction } from './ScopeChangeRequest/utils/config/dataCreatorConfig';
 import { swcrResolverFunction } from './swcr';
 import { tagResolverFunction } from './Tags';

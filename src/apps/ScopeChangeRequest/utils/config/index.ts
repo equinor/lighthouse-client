@@ -5,3 +5,4 @@ export * from './prefetchQueryOptions';
 export * from './filter/filterConfig';
 export * from './garden/gardenConfig';
 export * from './table';
+export * from './sidesheetConfig';

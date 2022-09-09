@@ -5,7 +5,7 @@ import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
-import { changeSideSheetWidgetManifest } from '../../ScopeChangeRequestApp';
+import { changeSideSheetWidgetManifest } from '../../utils/config/sidesheetConfig';
 import { Upload } from '../Attachments/Upload';
 import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';

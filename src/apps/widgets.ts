@@ -21,7 +21,7 @@ import {
 import {
     changeSideSheetWidgetComponent,
     changeSideSheetWidgetManifest,
-} from './ScopeChangeRequest/ScopeChangeRequestApp';
+} from './ScopeChangeRequest/utils/config/sidesheetConfig';
 import {
     changeCreatorComponent,
     changeCreatorManifest,
