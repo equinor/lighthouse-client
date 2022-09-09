@@ -4,7 +4,7 @@ import { getAreaByCode } from '../../api/PCS/getAreaByCode';
 import { getCommPkgById } from '../../api/PCS/getCommPkgById';
 import { getSystems } from '../../api/PCS/getSystems';
 import { getTagById } from '../../api/PCS/getTagById';
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { getDocumentById } from '../../api/STID/getDocumentById';
 import { transformIsoDate } from '../../Components/Workflow/Utils/dateFormatting';
 import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
@@ -133,11 +133,13 @@ export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsPara
                 ...documentSelectOption,
                 label: `${x.stidDocumentNumber} ${document.docTitle}`,
                 object: document,
-                metadata: `Revision ${document.currentRevision.revNo} | Rev date ${document.currentRevision.revDate &&
+                metadata: `Revision ${document.currentRevision.revNo} | Rev date ${
+                    document.currentRevision.revDate &&
                     transformIsoDate(document.currentRevision.revDate)
-                    } | Reason for issue ${document.currentRevision.reasonForIssue &&
+                } | Reason for issue ${
+                    document.currentRevision.reasonForIssue &&
                     document.currentRevision.reasonForIssue
-                    }`,
+                }`,
             });
         });
 

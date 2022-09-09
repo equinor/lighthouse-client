@@ -3,7 +3,7 @@ import { GroupBase, OptionsOrGroups } from 'react-select';
 import { PCSOrigins } from '../../../../types/ProCoSys/ProCoSysTypes';
 
 import { useState } from 'react';
-import { TypedSelectOption } from '../../../../api/Search/searchType';
+import { TypedSelectOption } from '../../../../types/search/searchType';
 import { SearchableSingleSelect } from '../../../Inputs/SearchableSingleSelect';
 import { usePcsSearch } from '../../../../hooks/Search/usePcsSearch';
 
@@ -19,12 +19,12 @@ export const SearchOrigin = ({ setOriginId, originId, type }: PCSLinkProps): JSX
 
     const origin: TypedSelectOption | null = originId
         ? {
-            label: originId,
-            value: originId,
-            type: type,
-            searchValue: originId,
-            object: originId,
-        }
+              label: originId,
+              value: originId,
+              type: type,
+              searchValue: originId,
+              object: originId,
+          }
         : null;
 
     const loadOptions = async (

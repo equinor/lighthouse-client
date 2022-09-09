@@ -6,7 +6,7 @@ import {
     applyEdsStyles,
     applyEDSTheme,
 } from '../Inputs/SearchableDropdown/applyEds';
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { sort } from '../../functions/sort';
 import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { usePcsSearch } from '../../hooks/Search/usePcsSearch';

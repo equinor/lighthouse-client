@@ -18,7 +18,7 @@ import { WorkflowTab } from './Tabs/WorkflowTab';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { EditWorkflowTab } from './EditTabs/EditWorkflowTab';
 import { EditScopeTab } from './EditTabs/EditScopeTab';
-import { TypedSelectOption } from '../../../../ScopeChangeRequest/api/Search/searchType';
+import { TypedSelectOption } from '../../../../ScopeChangeRequest/types/search/searchType';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import {
     getReleaseControlSnapshot,

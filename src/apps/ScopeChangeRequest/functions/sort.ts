@@ -1,5 +1,5 @@
 import levenshtein from 'fast-levenshtein';
-import { TypedSelectOption } from '../api/Search/searchType';
+import { TypedSelectOption } from '../types/search/searchType';
 
 /**
  * Sort function using levenshtein distance

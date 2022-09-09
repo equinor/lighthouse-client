@@ -1,4 +1,4 @@
-import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
+import { TypedSelectOption } from '../../../../../ScopeChangeRequest/types/search/searchType';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { SearchHtCables } from './SearchHtCables';
 

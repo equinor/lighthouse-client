@@ -1,12 +1,11 @@
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { searchPunchListItems } from '../../api/FAM/searchPunchListItems';
 import { FamTag } from '../../../ReleaseControl/types/releaseControl';
 import { searchTagNo } from '../../api/FAM/searchTagNo';
 import { searchHtCableTagNo } from '../../api/FAM/searchHtCableTagNo';
 import { searchTag } from '../../api/FAM/searchTag';
 import { searchHtCable } from '../../api/FAM/searchHtCable';
-
-export type FAMTypes = 'punch' | 'famtag' | 'htcable' | 'famtagno' | 'htcabletagno';
+import { FAMTypes } from '../../types/FAM/famTypes';
 
 interface FAMSearch {
     searchFAM: (

@@ -1,6 +1,6 @@
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
+import { TypedSelectOption } from '../../../../../ScopeChangeRequest/types/search/searchType';
 import {
     applyEdsComponents,
     applyEdsStyles,

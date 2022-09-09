@@ -3,7 +3,7 @@ import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { tokens } from '@equinor/eds-tokens';
 
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { Result } from './Results';
 import {
     AdvancedSearch,
@@ -13,7 +13,7 @@ import {
     SearchField,
     BatchCheckboxWrapper,
 } from './advancedSearch.styles';
-import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { NotFoundList } from './NotFoundList';
 import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
 import { getBatchPunch } from '../../api/FAM/Batch/getBatchPunch';
@@ -22,6 +22,7 @@ import { QueryFunctionContext, useQuery } from 'react-query';
 import { proCoSysQueries } from '../../keys/ProCoSysQueries';
 import { useFacility } from '../../../../Core/Client/Hooks';
 import { System } from '../../types/ProCoSys/system';
+import { ReferenceType } from '../../types/search/referenceType';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];

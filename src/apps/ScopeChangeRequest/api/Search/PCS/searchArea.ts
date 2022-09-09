@@ -1,4 +1,4 @@
-import { TypedSelectOption } from '../searchType';
+import { TypedSelectOption } from '../../../types/search/searchType';
 import { PCSStructure } from './searchStructure';
 import { Area } from '../../../types/ProCoSys/area';
 import { HttpClient } from '../../../../../Core/httpClient/src';
@@ -16,8 +16,9 @@ export const searchAreas = async (
     const searchIdProd = 106102;
 
     const uri = 'api/Search';
-    const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
-        }&currentPage=0&itemsPerPage=20&paging=true&sortColumns=false&api-version=4.1`;
+    const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${
+        isProduction() ? searchIdProd : searchIdDev
+    }&currentPage=0&itemsPerPage=20&paging=true&sortColumns=false&api-version=4.1`;
 
     const url = `${uri}?${queryParameters}`;
 

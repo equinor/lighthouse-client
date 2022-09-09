@@ -1,4 +1,4 @@
-import { TypedSelectOption } from '../../../../api/Search/searchType';
+import { TypedSelectOption } from '../../../../types/search/searchType';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 import { SearchReferences } from '../../../SearchReferences/SearchReferences';
 

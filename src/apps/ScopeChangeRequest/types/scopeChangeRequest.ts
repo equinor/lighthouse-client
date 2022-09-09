@@ -1,4 +1,4 @@
-import { TypedSelectOption } from '../api/Search/searchType';
+import { TypedSelectOption } from './search/searchType';
 
 export type ScopeChangeCreateEditModel = {
     id?: string;

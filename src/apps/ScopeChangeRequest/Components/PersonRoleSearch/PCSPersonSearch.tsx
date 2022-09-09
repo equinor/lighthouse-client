@@ -1,6 +1,6 @@
 import { GroupBase, OptionsOrGroups, SingleValue } from 'react-select';
 import { SearchableSingleSelect } from '../Inputs/SearchableSingleSelect';
-import { TypedSelectOption } from '../../api/Search/searchType';
+import { TypedSelectOption } from '../../types/search/searchType';
 import { usePcsSearch } from '../../hooks/Search/usePcsSearch';
 
 interface PCSLinkProps {
