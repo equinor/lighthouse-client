@@ -7,7 +7,7 @@ import { filterConfig } from './workspaceConfig/filter/filterConfig';
 import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
 import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
-import { statusBarConfig } from './workspaceConfig/statusBarConfig';
+import { statusBarConfig } from './utils/config';
 
 const sidesheetCreator = setupWorkspaceSidesheet<ScopeChangeRequest, 'change'>({
     id: 'change',
