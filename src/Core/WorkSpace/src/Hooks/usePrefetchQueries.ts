@@ -1,7 +1,7 @@
 import { DeepImmutableArray } from '@dbeining/react-atom';
 import { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
-import { PrefetchQueriesOptions } from '../WorkSpaceApi/workspaceState';
+import { PrefetchQueriesOptions } from '../WorkSpaceApi/Types/options';
 
 export function usePrefetchQueries(
     prefetchQueriesOptions: PrefetchQueriesOptions[] & DeepImmutableArray<PrefetchQueriesOptions>

@@ -9,15 +9,16 @@ import { checkResponseCode } from '../Functions/checkResponseCode';
 import * as queryCacheOperations from '../Functions/DataOperations';
 import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
 import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
-import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import {
+    DataViewerProps,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
+    ViewOptions,
     WorkflowEditorOptions,
-} from '../WorkSpaceApi/workspaceState';
-import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
+} from '../WorkSpaceApi/Types/options';
+import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 
 type DataState = {
     key: string;

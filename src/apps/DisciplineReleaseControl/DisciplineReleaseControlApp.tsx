@@ -1,6 +1,6 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
+import { PowerBiOptions } from '@equinor/WorkSpace';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
 import { chewPipetestDataFromApi } from './Functions/statusHelpers';

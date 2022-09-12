@@ -13,7 +13,8 @@ import { PowerBiTab } from '../Tabs/PowerBiTab';
 import { TimelineTab } from '../Tabs/TimeLineTAb';
 import { TreeTab } from '../Tabs/TreeTab';
 import { VisualEditorTab } from '../Tabs/VisualEditorTab';
-import { WorkSpaceConfig, WorkspaceTab } from '../WorkSpaceApi/workspaceState';
+import { WorkspaceTab } from '../WorkSpaceApi/Types/options';
+import { WorkSpaceConfig } from '../WorkSpaceApi/workspaceState';
 
 export interface TabsConfigItem {
     title: string;

@@ -8,13 +8,13 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useState
+    useState,
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
+import { WorkspaceTab } from '../WorkSpaceApi/Types/options';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
-import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
 
 interface LocationContext {
     activeTab: WorkspaceTab;

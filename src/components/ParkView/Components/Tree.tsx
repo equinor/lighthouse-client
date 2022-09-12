@@ -1,4 +1,4 @@
-import { TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { TreeOptions } from '@equinor/WorkSpace';
 import { ParkViewProvider } from '../Context/ParkViewProvider';
 import { NoTreeOptions } from './NoTreeOptions';
 import { TreeView } from './TreeView';

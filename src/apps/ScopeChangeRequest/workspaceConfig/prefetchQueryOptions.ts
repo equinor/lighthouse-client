@@ -1,3 +1,3 @@
-import { PrefetchQueriesOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { PrefetchQueriesOptions } from '@equinor/WorkSpace';
 
 export const prefetchQueriesOptions: PrefetchQueriesOptions[] = [];
