@@ -1,5 +1,5 @@
+import { FamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { FamRequest } from '../helpers/fam';
 export const checklistColumnNames = [
     'ChecklistID',
     'Facility',
