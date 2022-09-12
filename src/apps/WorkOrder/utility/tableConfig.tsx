@@ -9,7 +9,7 @@ import {
     ExpendedProgressBar,
     StatusCustomCell,
 } from '@equinor/Table';
-import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { TableOptions } from '@equinor/WorkSpace';
 import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../Garden/models';
 import { getMatStatusColorByStatus, getMccrStatusColorByStatus } from '../Garden/utility';

@@ -3,26 +3,22 @@ import { DataSet, GardenOptions } from '@equinor/ParkView';
 import React from 'react';
 import { dispatch } from './CoreActions';
 import {
-    getWorkSpaceContext,
-    PowerBiOptions,
-    PrefetchQueriesOptions,
-    StatusFunc,
-    TableOptions,
-    TreeOptions,
-    WorkflowEditorOptions,
-    WorkSpaceConfig,
-    WorkSpaceState,
-} from './workspaceState';
-import {
     DataSource,
     DataViewerProps,
     HelpPageOptions,
+    PowerBiOptions,
+    PrefetchQueriesOptions,
     SearchOption,
+    StatusFunc,
+    TableOptions,
+    TreeOptions,
     Validator,
     ViewOptions,
-    WorkSpaceApi,
+    WorkflowEditorOptions,
     WorkspaceOptions,
-} from './WorkSpaceTypes';
+} from './Types/options';
+import { getWorkSpaceContext, WorkSpaceConfig, WorkSpaceState } from './workspaceState';
+import { WorkSpaceApi } from './WorkSpaceTypes';
 
 /**
  * The Data

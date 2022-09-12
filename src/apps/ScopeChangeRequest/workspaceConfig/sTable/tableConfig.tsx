@@ -1,6 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { OriginLink } from '../../Components/DetailView/OriginLink';
 import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
@@ -10,6 +9,7 @@ import { Atom, deref, swap } from '@dbeining/react-atom';
 import styled from 'styled-components';
 import { CellProps, EstimateBar, ExpendedProgressBar, CustomColumn } from '@equinor/Table';
 import { excelExport } from './excelExport';
+import { TableOptions } from '@equinor/WorkSpace';
 
 const DEFAULT_TABLE_AGGREGATED = { Aggregated: () => null, aggregate: 'count' };
 

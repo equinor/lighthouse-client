@@ -1,4 +1,4 @@
-import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { TableOptions } from '@equinor/WorkSpace';
 import { HandoverPackage } from '../../Garden/models';
 import { getDotsColor } from '../../Garden/utility';
 export const hiddenColumns: (keyof HandoverPackage)[] = [
