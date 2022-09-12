@@ -1,12 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
 import { GetKeyFunction } from '@equinor/ParkView';
-import { DateTime } from 'luxon';
 import {
     getChecklistStepName,
     getPipetestStatusEnumByValue,
     getPipetestStatusForStep,
     getPipetestStatusSortValue,
-} from '../../Functions/statusHelpers';
+} from './statusHelpers';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import {
     PipetestStep,
@@ -43,24 +42,6 @@ export const groupBySystem = (a: string, b: string): number => {
 
 export const sortByNumber = (a: string, b: string): number =>
     a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
-
-export const getTimePeriod = (item: Pipetest): string => {
-    const date = DateTime.fromISO(item.rfccPlanned);
-
-    const upcomingFourWeeks = (date: DateTime) =>
-        0 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 4;
-    const pastFourWeeks = (date: DateTime) =>
-        -4 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 0;
-
-    if (upcomingFourWeeks(date)) {
-        return 'Next four weeks';
-    }
-    if (pastFourWeeks(date)) {
-        return 'Past four weeks';
-    }
-
-    return 'Other';
-};
 
 export const getGardenItemColor = (step: string | undefined): string => {
     let color = '#D3D3D3';

@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { getShortformCompletionStatusName } from '../../../Functions/statusHelpers';
+import { getShortformCompletionStatusName } from '../../../utils/helpers/statusHelpers';
 import {
     PipetestCompletionStatusColors,
     PipetestCompletionStatusHoverColors,

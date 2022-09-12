@@ -1,10 +1,16 @@
-import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
-import { getYearAndWeekFromDate, getYearAndWeekFromString } from '../../Functions/statusHelpers';
+import { FieldSettings, GardenOptions } from '@equinor/ParkView';
 
-import { Pipetest } from '../../Types/pipetest';
-import { getSystemKey, groupBySystem, sortByNumber, sortByPipetestStatus } from './gardenFunctions';
-
-export type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
+import ReleaseControlGardenGroupView from '../../../Components/Garden/ReleaseControlGardenGroupView';
+import ReleaseControlGardenItem from '../../../Components/Garden/ReleaseControlGardenItem';
+import { Pipetest } from '../../../Types/pipetest';
+import {
+    getSystemKey,
+    groupBySystem,
+    sortByNumber,
+    sortByPipetestStatus,
+} from '../../helpers/gardenFunctions';
+import { getYearAndWeekFromDate, getYearAndWeekFromString } from '../../helpers/statusHelpers';
+type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
 
 export const drcGardenKeys = {
     defaultGardenKey: 'dueAtDate' as keyof Pipetest,
@@ -43,4 +49,18 @@ export const getHighlightedColumn = (groupByKey: string) => {
         default:
             return undefined;
     }
+};
+export const gardenConfig: GardenOptions<Pipetest> = {
+    gardenKey: drcGardenKeys.defaultGardenKey,
+    itemKey: 'name',
+    objectIdentifier: 'name',
+    fieldSettings: fieldSettings,
+    collapseSubGroupsByDefault: true,
+    customViews: {
+        customItemView: ReleaseControlGardenItem,
+        customGroupView: ReleaseControlGardenGroupView,
+    },
+    highlightColumn: getHighlightedColumn,
+    itemWidth: () => 170,
+    rowHeight: 25,
 };

@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { createChecklistTestSteps, getGardenItemColor } from '../Components/Garden/gardenFunctions';
+import { createChecklistTestSteps, getGardenItemColor } from '../utils/helpers/gardenFunctions';
 import { testData1 } from '../Mock/mockData';
 
 describe('gardenFunctions tests', () => {

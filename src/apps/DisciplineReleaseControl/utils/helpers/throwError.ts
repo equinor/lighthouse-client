@@ -1,4 +1,4 @@
-import { ServerError } from '../Api/Types/ServerError';
+import { ServerError } from '../../Api/Types/ServerError';
 
 export async function throwOnError(res: Response): Promise<void> {
     if (!res.ok) {

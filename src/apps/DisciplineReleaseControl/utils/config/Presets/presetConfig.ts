@@ -1,5 +1,5 @@
 import { PresetOption } from '@equinor/WorkSpace';
-import { drcGardenKeys } from '../../Components/Garden/gardenSetup';
+import { drcGardenKeys } from '../Garden/gardenConfig';
 
 export const presetConfig: PresetOption[] = [
     {
