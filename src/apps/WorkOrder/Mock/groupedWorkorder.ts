@@ -1,4 +1,5 @@
 import { GardenGroups } from '../../../components/ParkView/Models/data';
+import { getYearAndWeekFromDate } from '@equinor/GardenUtils';
 import { WorkOrder } from '../Garden/models';
 
 export const groupedWorkOrder: GardenGroups<WorkOrder> = [
@@ -546,7 +547,7 @@ export const groupedWorkOrder: GardenGroups<WorkOrder> = [
     },
     {
         groupKey: 'hwp' as keyof WorkOrder,
-        value: '2022-36',
+        value: getYearAndWeekFromDate(new Date()),
         count: 3,
         isExpanded: true,
         items: [
