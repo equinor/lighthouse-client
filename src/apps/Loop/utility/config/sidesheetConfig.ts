@@ -1,3 +1,4 @@
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { IdResolverFunc } from '@equinor/WorkSpace';
 import { setupWorkspaceSidesheet } from '../../../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
@@ -5,7 +6,6 @@ import { setupWorkspaceSidesheet } from '../../../../Core/WorkSpace/src/WorkSpac
 import { LoopSidesheet } from '../../components';
 import { Loop } from '../../types';
 import { checklistColumnNames } from '../api';
-import { generateExpressions, generateFamRequest } from '../helpers/fam';
 
 const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();

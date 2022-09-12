@@ -1,5 +1,7 @@
-import { FamRequest } from '@equinor/fam-request-builder';
-import { httpClient } from '@equinor/lighthouse-portal-client';
+# Fam Request Builder
+Utility for generating typesafe, valid FAM requests.
+
+```ts
 export const checklistColumnNames = [
     'ChecklistID',
     'Facility',
@@ -13,6 +15,12 @@ export const checklistColumnNames = [
     'CommissioningPackageId',
     'Responsible',
 ];
+const expressions = generateExpressions('checklistID', 'Equals', [checklistId]);
+const requestArgs = generateFamRequest(checklistColumnNames, 'Or', expressions);
+const { data, isLoading, error } = useQuery(['checklists', checklistId], ({ signal }) =>
+        getChecklistsForLoop(requestArgs, signal)
+    );
+
 export const getChecklistsForLoop = async (famFilter: FamRequest, signal?: AbortSignal) => {
     const { FAM } = httpClient();
     const res = await FAM.post(`v0.1/dynamic/completion/custom_loopsidesheetchecklists/JCA`, {
@@ -26,3 +34,4 @@ export const getChecklistsForLoop = async (famFilter: FamRequest, signal?: Abort
 
     return await res.json();
 };
+```
