@@ -10,7 +10,7 @@ export const ReleaseControlDetailView = (): JSX.Element => {
     const { activeTab, handleChange } = useEdsTabs();
     return (
         <>
-            <ReleaseControlSidesheetBanner></ReleaseControlSidesheetBanner>
+            <ReleaseControlSidesheetBanner />
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <HeaderTab>Scope</HeaderTab>

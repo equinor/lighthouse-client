@@ -53,7 +53,7 @@ export const ReleaseControlRequestEditForm = (): JSX.Element => {
 
     return (
         <>
-            <ReleaseControlSidesheetBanner></ReleaseControlSidesheetBanner>
+            <ReleaseControlSidesheetBanner />
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <HeaderTab>Scope</HeaderTab>
