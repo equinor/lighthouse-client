@@ -4,41 +4,45 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 1.10.0
-[SpoolsAnalytics] New PowerBIViewer application
-[General] Update typing for Core/Workspace/Apps
-[Table] Don't do automatic retries for export to excel
-[ReleaseControl] Added auto-focus and keyboard shortcuts to sign with comment modal
-[ReleaseControl] Fixed workflow step responsible field
+## 1.10.0
+
+- [SpoolsAnalytics] New PowerBIViewer application
+- [General] Update typing for Core/Workspace/Apps
+- [Table] Don't do automatic retries for export to excel
+- [ReleaseControl] Added auto-focus and keyboard shortcuts to sign with comment modal
+- [ReleaseControl] Fixed workflow step responsible field
 
 ## 1.9.0
-[PowerBI] Added commissioning analytics Pbi app
-[PowerBI] Added preservation Pbi app
-[ReleaseControl] '...' menu only for current step
-[ReleaseControl] Improved layout of workflow steps
-[ReleaseControl] Split sign-button into two buttons
-[ReleaseControl] Tabbed edit-mode
-[ReleaseControl] Added attachment support for release controls
-[ReleaseControl] Use person as workflow step responsible
-[ReleaseControl] Improved tag/htCable search speed
-[ReleaseControl] Spinner chip when application is fetching/updating
-[ReleaseControl] Pop-up modal for sign with comment
-[ScopeChangeRequest] Validation bugfix
-[ScopeChangeRequest] Export to Excel
-[Menu] Fix bug where two apps with similar names are both active
-[Workorder] Add abortsingal to api calls
-[Handover] Unit tests
+
+- [PowerBI] Added commissioning analytics Pbi app
+- [PowerBI] Added preservation Pbi app
+- [ReleaseControl] '...' menu only for current step
+- [ReleaseControl] Improved layout of workflow steps
+- [ReleaseControl] Split sign-button into two buttons
+- [ReleaseControl] Tabbed edit-mode
+- [ReleaseControl] Added attachment support for release controls
+- [ReleaseControl] Use person as workflow step responsible
+- [ReleaseControl] Improved tag/htCable search speed
+- [ReleaseControl] Spinner chip when application is fetching/updating
+- [ReleaseControl] Pop-up modal for sign with comment
+- [ScopeChangeRequest] Validation bugfix
+- [ScopeChangeRequest] Export to Excel
+- [Menu] Fix bug where two apps with similar names are both active
+- [Workorder] Add abortsingal to api calls
+- [Handover] Unit tests
 
 # 1.8.1
-[LCI] Update to use PowerBIViewer
-[MDR] Update to use PowerBIViewer
+
+- [LCI] Update to use PowerBIViewer
+- [MDR] Update to use PowerBIViewer
 
 ## 1.8.0
-[PowerBI] Automatically load PowerBI pages. 
-[PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
-[Workspace] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and pageTitle is allowed anymore.
-[PowerBIViewer] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and pageTitle is allowed anymore.
-[Apps] Remove PowerBI pages config in all apps that uses PowerBI
+
+- [PowerBI] Automatically load PowerBI pages. 
+- [PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
+- [Workspace] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and - pageTitle is allowed anymore.
+- [PowerBIViewer] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId - and pageTitle is allowed anymore.
+- [Apps] Remove PowerBI pages config in all apps that uses PowerBI
 ## 1.7.7
 
 - [Workspace] Changed bookmark icon in workspace
@@ -59,10 +63,12 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [ScopeChangeRequest] Bugfix: NotApplicable -> Not Applicable
 
 ## 1.7.5
+
 - [Workspace] Use ResizeObserver to fix table height when opening/closing filter panel
 - [ScopeChangeRequest] Show workorders with info text if SC workorders length does not equal FAM workorders
   
 ## 1.7.4
+
 - [MechanicalCompletion] Remove new column from API and prevent auto columns
 - [MechanicalCompletion] Remove prod check on PBI tab
 - [PowerBI] Add check for true/false string values and change to bool type
