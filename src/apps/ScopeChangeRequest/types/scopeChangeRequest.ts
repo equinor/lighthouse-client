@@ -144,6 +144,9 @@ export type ScopeChangeRequest = ScopeChangeBaseModel & {
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
     revisionNumber: number;
     serialNumber: string;
+    workOrdersTotalEstimatedManHours: number;
+    workOrdersTotalExpendedManHours: number;
+    workOrdersTotalRemainingManHours: number;
 };
 
 export type ScopeChangeWorkOrder = {
