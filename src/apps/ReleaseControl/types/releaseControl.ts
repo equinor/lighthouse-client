@@ -141,6 +141,7 @@ export type ReleaseControl = {
     editedWorkflowSteps: ReleaseControlStep[];
     documents: ReleaseControlDocument[];
     punchListItems: ReleaseControlPunch[];
+    scopeChangeRequestReferences: ScopeChangeRequestReference[];
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
     attachments: Attachment[];
@@ -238,6 +239,12 @@ export type UserObject = {
     LastName: string;
     UserName: string;
     Email: string;
+};
+
+export type ScopeChangeRequestReference = {
+    scopeChangeReferenceId: string;
+    scopeChangeReferenceSerialNumber: string;
+    scopeChangeReferenceTitle: string;
 };
 
 export enum ReleaseControlStepNames {

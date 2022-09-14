@@ -22,6 +22,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         'documents',
         'punchListItems',
         'attachments',
+        'scopeChangeRequestReferences',
     ],
     columnOrder: ['sequenceNumber', 'title', 'workflowSteps'],
     headers: [
