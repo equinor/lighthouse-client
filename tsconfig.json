@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
         "lib": [
-            "esnext"
+            "esnext",
+            "DOM",
+            "DOM.Iterable"
         ],
         "strict": true,
         "jsx": "react-jsx",
@@ -143,6 +145,9 @@
             ],
              "@equinor/modal": [
                 "./src/packages/Modal"
+            ],
+            "@equinor/fam-request-builder": [
+                "./src/packages/FamRequestBuilder"
             ]
         }
     },

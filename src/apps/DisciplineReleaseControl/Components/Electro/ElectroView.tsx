@@ -1,11 +1,10 @@
-import React from 'react';
 import { useQuery } from 'react-query';
 import { StatusCircle } from '../../../../packages/GardenUtils/src';
 import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
 import { ElectroNode } from './ElectroNode';
 import { getElectroViewCompletionStatusColor, getNodeStatus } from './electroViewHelpers';
-import { getEleNetworks } from './getEleNetworks';
+import { getEleNetworks } from '../../utils/api/getEleNetworks';
 import {
     ElectroViewContainer,
     ElectroViewNodeGroupRow,

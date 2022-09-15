@@ -1,8 +1,5 @@
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import {
-    generateExpressions,
-    generateFamRequest,
-} from '../../../../ScopeChangeRequest/functions/FAM/generateFAMRequest';
 import { throwOnError } from '../../../functions/throwError';
 import { Punch } from '../../../types/PCS/Punch';
 

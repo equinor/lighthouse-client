@@ -38,6 +38,7 @@ export default {
         '^@equinor\\/echo3dweb-viewer(.*)$': '<rootDir>/packages/echo3dViewer/src$1',
         '^@equinor\\/ParkView(.*)$': '<rootDir>/src/components/ParkView$1',
         '^@equinor\\/modal(.*)$': '<rootDir>/src/packages/Modal$1',
+        '^@equinor\\/fam-request-builder(.*)$': '<rootDir>/src/packages/FamRequestBuilder$1',
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     modulePathIgnorePatterns: ['<rootDir>/packages'],

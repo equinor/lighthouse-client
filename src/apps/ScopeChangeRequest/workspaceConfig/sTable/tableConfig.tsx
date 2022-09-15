@@ -1,15 +1,22 @@
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { OriginLink } from '../../Components/DetailView/OriginLink';
 import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { DateTime } from 'luxon';
-import { Atom, deref, swap } from '@dbeining/react-atom';
-import styled from 'styled-components';
-import { CellProps, EstimateBar, ExpendedProgressBar, CustomColumn } from '@equinor/Table';
+import { CellProps, CustomColumn } from '@equinor/Table';
 import { excelExport } from './excelExport';
+
+import { TableOptions } from '@equinor/WorkSpace';
+import {
+    Comments,
+    GuessMhrsRender,
+    MakeDateCell,
+    PendingContributions,
+    StateCell,
+    WOEstMhrsRender,
+    WOExpMhrsRender,
+    WORemMhrsRender,
+} from './Cells';
 
 const DEFAULT_TABLE_AGGREGATED = { Aggregated: () => null, aggregate: 'count' };
 
@@ -20,7 +27,7 @@ interface CustomCellOptions {
     id?: string;
     aggregated?: (s: React.PropsWithChildren<CellProps<ScopeChangeRequest, any>>) => null;
     aggregate?: 'sum' | 'count';
-    render?: (item: ScopeChangeRequest, value: any, cell: any) => JSX.Element;
+    render?: (item: ScopeChangeRequest, value: any, cell: any) => JSX.Element | null;
 }
 
 type AccessorFunction<T> = (it: T) => string | number | boolean | null | undefined | DateTime;
@@ -98,7 +105,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             header: 'State',
             accessor: (s) => (s.isVoided ? 'Voided' : s.state),
             width: 80,
-            render: stateRender,
+            render: (scr, val, _cell) => <StateCell item={scr} value={val} />,
         }),
         defineColumn({
             header: 'Disciplines',
@@ -112,21 +119,26 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             header: 'Guess Mhrs',
             accessor: (s) => s?.disciplineGuesstimates.reduce((s, a) => s + a.guesstimate, 0),
             width: 120,
-            render: (_, u, cell) => GuessMhrsRender({ cell }),
+            render: (_, u, cell) => <GuessMhrsRender cell={cell} />,
         }),
-        /**Disabled pending FAM integration in backend */
-        // defineColumn({
-        //     header: 'Est mhrs',
-        //     accessor: (s) => s.estimatedChangeHours,
-        //     width: 120,
-        //     render: (s, u, cell) => EstMhrsRender({ cell }),
-        // }),
-        // defineColumn({
-        //     header: 'Exp mhrs',
-        //     accessor: (s) => s.actualChangeHours ?? 0,
-        //     width: 120,
-        //     render: (s, u, cell) => ExpMhrsRender({ cell }),
-        // }),
+        defineColumn({
+            header: 'Est Mhrs',
+            accessor: (scr) => scr.workOrdersTotalEstimatedManHours,
+            width: 120,
+            render: (_scr, _val, cell) => <WOEstMhrsRender cell={cell} />,
+        }),
+        defineColumn({
+            header: 'Exp Mhrs',
+            accessor: (scr) => scr.workOrdersTotalExpendedManHours,
+            width: 120,
+            render: (_scr, _val, cell) => <WOExpMhrsRender cell={cell} />,
+        }),
+        defineColumn({
+            header: 'Rem Mhrs',
+            accessor: (scr) => scr.workOrdersTotalRemainingManHours,
+            width: 120,
+            render: (_scr, _val, cell) => <WORemMhrsRender cell={cell} />,
+        }),
         defineColumn({
             header: 'Change cateogry',
             accessor: (s) => s?.changeCategory?.name,
@@ -162,161 +174,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     ],
 };
 
-const guesstimateHoursMaxAtom = Atom.of<number>(-1);
-const estimateHoursMaxAtom = Atom.of<number>(-1);
-const actualHoursMaxAtom = Atom.of<number>(-1);
-
-const CenterIcon = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-`;
-
-interface GuessMhrsRenderProps {
-    cell: any;
-}
-const GuessMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
-    if (deref(guesstimateHoursMaxAtom) === -1) {
-        const maxCount = Math.max(
-            ...cell.column.filteredRows.map((val) =>
-                val.original.disciplineGuesstimates.reduce(
-                    (count, curr) => curr.guesstimate + count,
-                    0
-                )
-            )
-        );
-        swap(guesstimateHoursMaxAtom, () => maxCount);
-    }
-
-    const count = deref(guesstimateHoursMaxAtom);
-
-    return <EstimateBar current={cell.value} max={count} />;
-};
-
-const EstMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
-    if (deref(estimateHoursMaxAtom) === -1) {
-        const maxCount = Math.max(
-            ...cell.column.filteredRows.map((val) => val.original.estimatedChangeHours)
-        );
-        swap(estimateHoursMaxAtom, () => maxCount);
-    }
-
-    const highestEstimateHours = deref(estimateHoursMaxAtom);
-
-    return <EstimateBar current={cell.value} max={highestEstimateHours} />;
-};
-
-const ExpMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
-    if (deref(actualHoursMaxAtom) === -1) {
-        const maxCount = Math.max(
-            ...cell.column.filteredRows.map((val) => val.original.actualChangeHours)
-        );
-        swap(actualHoursMaxAtom, () => maxCount);
-    }
-
-    const highestExpendedHours = deref(actualHoursMaxAtom);
-
-    if (cell.isGrouped) {
-        return cell.value;
-    }
-
-    return (
-        <ExpendedProgressBar
-            actual={cell.value}
-            estimate={cell.row.original.estimatedChangeHours}
-            highestExpended={highestExpendedHours}
-        />
-    );
-};
-
-function stateRender(item: ScopeChangeRequest, value: any) {
-    return (
-        <div style={{ display: 'flex', gap: '0.4em', alignItems: 'center' }}>
-            <div>{getStateIcon(value)}</div>
-            <div>{value}</div>
-        </div>
-    );
-}
-
-function getStateIcon(state: 'Draft' | 'Open' | 'Voided' | 'Closed') {
-    switch (state) {
-        case 'Closed': {
-            return <StateCircle color="#4BB748" />;
-        }
-
-        case 'Open': {
-            return <StateCircle color="#A8C8DE" />;
-        }
-
-        case 'Draft': {
-            return <StateCircle color="#DCDCDC" />;
-        }
-
-        case 'Voided': {
-            return <StateCircle color="#EB0000" />;
-        }
-
-        default: {
-            return <StateCircle color="white" />;
-        }
-    }
-}
-
-const StateCircle = styled.div<{ color: string }>`
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: ${({ color }) => color};
-`;
-
-interface PendingContributionsProps {
-    hasPending: boolean;
-}
-const PendingContributions = ({ hasPending }: PendingContributionsProps) => (
-    <>
-        {hasPending && (
-            <CenterIcon>
-                <Icon color={tokens.colors.text.static_icons__default.hex} name="group" />
-            </CenterIcon>
-        )}
-    </>
-);
-
-interface CommentsProps {
-    hasComments: boolean;
-}
-const Comments = ({ hasComments }: CommentsProps) => (
-    <>
-        {hasComments && (
-            <CenterIcon>
-                <Icon
-                    name={'comment_chat'}
-                    color={`${tokens.colors.text.static_icons__default.hex}`}
-                />
-            </CenterIcon>
-        )}
-    </>
-);
-
 function findNextToSign(sc: ScopeChangeRequest) {
     return (
         sc.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
         null
-    );
-}
-
-interface MakeDateCellProps {
-    date: string | null;
-}
-function MakeDateCell({ date }: MakeDateCellProps) {
-    return (
-        <>
-            {date &&
-                DateTime.fromJSDate(new Date(date)).toRelative({
-                    locale: 'en-GB',
-                })}
-        </>
     );
 }

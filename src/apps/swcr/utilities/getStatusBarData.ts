@@ -1,7 +1,6 @@
 import { StatusItem } from '../../../packages/StatusBar';
 import { SwcrPackage } from '../models/SwcrPackage';
 export const statusBarData = (data: SwcrPackage[]): StatusItem[] => {
-    const statusData = getStatusBarData(data);
     return [
         {
             title: 'Total SWCRs',
@@ -42,4 +41,3 @@ export const statusBarData = (data: SwcrPackage[]): StatusItem[] => {
         },
     ];
 };
-export const getStatusBarData = (data: SwcrPackage[]) => {};

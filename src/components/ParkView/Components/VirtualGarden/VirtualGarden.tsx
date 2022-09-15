@@ -11,14 +11,14 @@ import { useExpand, useVirtualScrolling } from './hooks';
 import { Layout } from './Layout';
 import { getGardenItems, getRowCount } from './utils';
 
-type VirtualGardenProps<T> = {
+type VirtualGardenProps<T extends Record<PropertyKey, unknown>> = {
     garden: GardenGroups<T>;
     width?: number;
     selectedItem: string | null;
     handleOnItemClick: (item: T) => void;
 };
 
-export const VirtualGarden = <T extends unknown>({
+export const VirtualGarden = <T extends Record<PropertyKey, unknown>>({
     garden,
     width,
     handleOnItemClick,
@@ -82,7 +82,7 @@ export const VirtualGarden = <T extends unknown>({
         (customView?.customItemView as CustomVirtualView<T>['customItemView']) ?? undefined;
 
     const handleExpand = useCallback(
-        <T extends unknown>(subGroup: DataSet<T>): void => {
+        <T extends Record<PropertyKey, unknown>>(subGroup: DataSet<T>): void => {
             subGroup.isExpanded = !subGroup.isExpanded;
 
             refresh();

@@ -1,4 +1,4 @@
-import { Chip } from '@equinor/eds-core-react';
+import { Chip, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
@@ -109,4 +109,26 @@ export const SpinnerChip = styled(Chip)`
 export const ChipText = styled.div`
     font-size: 16px;
     text-align: center;
+`;
+
+export const HeaderTab = styled(Tabs.Tab)``;
+export const SidesheetTabList = styled(Tabs.List)`
+    background-color: ${tokens.colors.ui.background__light.hex};
+`;
+export const TabList = styled(Tabs.Panels)`
+    margin: 24px 32px;
+`;
+
+export const Tab = styled(Tabs.Panel)`
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    padding-bottom: 50px;
+`;
+
+export const SidesheetWrapper = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: scroll;
+    height: 100%;
 `;
