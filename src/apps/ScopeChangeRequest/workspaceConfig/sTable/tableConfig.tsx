@@ -127,13 +127,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             width: 120,
             render: (_scr, _val, cell) => <WOEstMhrsRender cell={cell} />,
         }),
-        //TODO Implement when expended man hours are available from FAM
-        // defineColumn({
-        //     header: 'Exp Mhrs',
-        //     accessor: (scr) => scr.workOrdersTotalExpendedManHours,
-        //     width: 120,
-        //     render: (_scr, _val, cell) => <WOExpMhrsRender cell={cell} />,
-        // }),
+        defineColumn({
+            header: 'Exp Mhrs',
+            accessor: (scr) => scr.workOrdersTotalExpendedManHours,
+            width: 120,
+            render: (_scr, _val, cell) => <WOExpMhrsRender cell={cell} />,
+        }),
         defineColumn({
             header: 'Rem Mhrs',
             accessor: (scr) => scr.workOrdersTotalRemainingManHours,
