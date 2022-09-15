@@ -1,6 +1,6 @@
+import { FamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { LoopContent } from '../../types';
-import { FamRequest } from '../helpers/fam';
 export const loopContentColumnNames = [
     'Facility',
     'LoopNo',

@@ -7,7 +7,7 @@ import { PostGroupBySorting, PreGroupByFiltering, StatusView } from '../Models/g
 
 export type Garden<T> = Record<string, T[]>;
 
-interface CreateGardenArgs<T> {
+type CreateGardenArgs<T extends Record<PropertyKey, unknown>> = {
     dataSet: T[];
     gardenKey: keyof T;
     groupingKeys?: (keyof T)[];
@@ -18,9 +18,9 @@ interface CreateGardenArgs<T> {
     preGroupFiltering?: PreGroupByFiltering<T>;
     postGroupBySorting?: PostGroupBySorting<T>;
     isExpanded?: boolean;
-}
+};
 
-export function createGarden<T>({
+export function createGarden<T extends Record<PropertyKey, unknown>>({
     dataSet,
     gardenKey,
     customGroupByKeys,

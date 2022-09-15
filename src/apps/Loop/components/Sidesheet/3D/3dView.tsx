@@ -1,5 +1,6 @@
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { Viewer } from '@equinor/lighthouse-model-viewer';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useMemo } from 'react';
@@ -9,7 +10,6 @@ import { statusColorMap } from '../../../../../packages/GardenUtils/src';
 import { TagMap, TagOverlay } from '../../../../../packages/ModelViewer/components/tagOverlay';
 import { Loop } from '../../../types';
 import { getLoopContent } from '../../../utility/api';
-import { generateExpressions, generateFamRequest } from '../../../utility/helpers/fam';
 export const ThreeDModel = styled.div`
     height: ${() => window.innerHeight - 250 + 'px'};
 `;

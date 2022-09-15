@@ -11,6 +11,7 @@ export default defineConfig({
     },
     server: {
         // https: true,
+        port: 3000,
     },
     define: {
         'process.env': {},
@@ -65,6 +66,10 @@ export default defineConfig({
             '@equinor/lighthouse-hooks': path.resolve(__dirname, './src/hooks'),
             '@equinor/procosys-urls': path.resolve(__dirname, 'src/packages/ProCoSysUrls'),
             '@equinor/modal': path.resolve(__dirname, 'src/packages/Modal'),
+            '@equinor/fam-request-builder': path.resolve(
+                __dirname,
+                './src/packages/FamRequestBuilder'
+            ),
         },
     },
     build: {

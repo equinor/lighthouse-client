@@ -1,5 +1,5 @@
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { generateExpressions, generateFamRequest } from '../../functions/FAM/generateFAMRequest';
 
 export async function searchTag(value: string, signal?: AbortSignal): Promise<any[]> {
     const { FAM } = httpClient();

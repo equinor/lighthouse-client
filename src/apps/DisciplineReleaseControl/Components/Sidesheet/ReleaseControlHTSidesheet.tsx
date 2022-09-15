@@ -4,7 +4,7 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
-import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import { fetchAndChewPipetestDataFromApi } from '../../utils/helpers/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet } from '../../Types/pipetest';
 import { ElectroView } from '../Electro/ElectroView';
