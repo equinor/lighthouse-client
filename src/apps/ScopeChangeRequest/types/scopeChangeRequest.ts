@@ -152,6 +152,11 @@ export type ScopeChangeRequest = ScopeChangeBaseModel & {
 export type ScopeChangeWorkOrder = {
     id: string;
     jobNumber: string;
+    description: string | null;
+    estimatedManHours: number | null;
+    expendedManHours: number | null;
+    remainingManHours: number | null;
+    sourceIdentity: string | null;
 };
 
 export type ScopeChangeArea = {
