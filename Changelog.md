@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.11.0
+
+- [ScopeChangeRequest] Updated API call and added WO mhrs data in table
+- [FAMRequestGenerator] Extract duplicate functions from apps to a seperate package for FAM request generation
+- [Components] Remove unused code
+- [Apps] Remove unused code
+- [Workorder] Fix issue in test with dates
+- [Dependencies] Upgrade vite, @vitejs/plugin-react, typescript, ts-node @microsoft/signalr & dexie
+- [ServiceMessage] Add option to delete current service message
+- [DRC] Refactor and fix circular imports
+- [ReleaseControl] Added Scope change request references
+- [ReleaseControl] Fixed bug with release control references in edit-mode sidesheet
+  
 ## 1.10.0
 
 - [SpoolsAnalytics] New PowerBIViewer application
@@ -31,7 +44,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Workorder] Add abortsingal to api calls
 - [Handover] Unit tests
 
-# 1.8.1
+## 1.8.1
 
 - [LCI] Update to use PowerBIViewer
 - [MDR] Update to use PowerBIViewer
