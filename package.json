@@ -1,6 +1,6 @@
 {
   "name": "castberg-project-portal",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Castberg Project Portal",
   "main": "Index.ts",
   "author": "Castberg Project Portal Team",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^2.18.0",
-    "@cognite/reveal": "^3.0.2",
+    "@cognite/reveal": "^3.2.0",
     "@cognite/sdk": "^7.3.0",
     "@cutting/use-get-parent-size": "^1.19.2",
     "@dbeining/react-atom": "^4.1.21",
