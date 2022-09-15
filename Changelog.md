@@ -14,6 +14,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Dependencies] Upgrade vite, @vitejs/plugin-react, typescript, ts-node @microsoft/signalr & dexie
 - [ServiceMessage] Add option to delete current service message
 - [DRC] Refactor and fix circular imports
+- [ReleaseControl] Added Scope change request references
+- [ReleaseControl] Fixed bug with release control references in edit-mode sidesheet
   
 ## 1.10.0
 
