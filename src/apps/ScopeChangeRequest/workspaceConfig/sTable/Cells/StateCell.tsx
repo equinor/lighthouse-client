@@ -1,9 +1,10 @@
+import { tokens } from '@equinor/eds-tokens';
 import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 import { StateCircle } from './cells.styles';
 function getStateIcon(state: 'Draft' | 'Open' | 'Voided' | 'Closed') {
     switch (state) {
         case 'Closed': {
-            return <StateCircle color="#4BB748" />;
+            return <StateCircle color={tokens.colors.interactive.success__resting.hex} />;
         }
 
         case 'Open': {
@@ -11,11 +12,11 @@ function getStateIcon(state: 'Draft' | 'Open' | 'Voided' | 'Closed') {
         }
 
         case 'Draft': {
-            return <StateCircle color="#DCDCDC" />;
+            return <StateCircle color={tokens.colors.ui.background__medium.hex} />;
         }
 
         case 'Voided': {
-            return <StateCircle color="#EB0000" />;
+            return <StateCircle color={tokens.colors.interactive.danger__resting.hex} />;
         }
 
         default: {
