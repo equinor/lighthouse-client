@@ -3,11 +3,16 @@ import { useState } from 'react';
 import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
 import { ProcoSysTypes } from '../types/PCS/ProCoSysTypes';
 import { StidTypes } from '../types/PCS/STIDTypes';
-import { CreateReleaseControlStepModel, FamTag } from '../types/releaseControl';
+import {
+    CreateReleaseControlStepModel,
+    FamTag,
+    ScopeChangeRequestReference,
+} from '../types/releaseControl';
 
 interface ReleaseControlReferencesAndScope {
     documentNumbers: string[];
     punchListItemIds: string[];
+    scopeChangeRequestReferences: ScopeChangeRequestReference[];
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
 }
@@ -26,6 +31,7 @@ export interface DRCCreateModel {
     allowContributors?: boolean;
     documentNumbers?: string[];
     punchListItemIds?: string[];
+    scopeChangeRequestReferences: ScopeChangeRequestReference[];
     references?: TypedSelectOption[];
     tags?: TypedSelectOption[];
     htCables?: TypedSelectOption[];
@@ -56,6 +62,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             allowContributors: true,
             documentNumbers: [],
             punchListItemIds: [],
+            scopeChangeRequestReferences: [],
             plannedDueDate: '',
             workflowSteps: [],
             title: '',
@@ -104,12 +111,14 @@ function unPackReferencesAndScope(
         x.tagType = x.register;
         x.system = x.functionalSystem;
     });
-
     return {
         scopeTags: tags,
         scopeHTTags: htCables,
         punchListItemIds: unpackByType(references, 'punch'),
         documentNumbers: unpackByType(references, 'document'),
+        scopeChangeRequestReferences: references
+            .filter(({ type }) => type === 'scopechangerequest')
+            .map((x) => x.object as ScopeChangeRequestReference),
     };
 }
 

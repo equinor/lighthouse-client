@@ -1,17 +1,24 @@
 import styled from 'styled-components';
 import { ChevronList } from '../ChevronList/ChevronList';
-import { ReleaseControlDocument, ReleaseControlPunch } from '../../types/releaseControl';
+import {
+    ReleaseControlDocument,
+    ReleaseControlPunch,
+    ScopeChangeRequestReference,
+} from '../../types/releaseControl';
 import { Document } from './Document';
 import { Punch } from './Punch';
+import { ScopeChangeRequestReferenceItem } from './ScopeChangeRequestReferenceItem';
 
 interface RelatedObjectsProps {
     documents: ReleaseControlDocument[];
     punchListItems: ReleaseControlPunch[];
+    scopeChangeRequestReferences: ScopeChangeRequestReference[];
 }
 
 export const ReferencesList = ({
     documents = [],
     punchListItems = [],
+    scopeChangeRequestReferences = [],
 }: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
@@ -35,6 +42,20 @@ export const ReferencesList = ({
                     <>
                         {punchListItems.map((x) => (
                             <Punch key={x.id} punchListItem={x} />
+                        ))}
+                    </>
+                </ChevronList>
+            )}
+            {scopeChangeRequestReferences && scopeChangeRequestReferences.length > 0 && (
+                <ChevronList
+                    title={`Scope change request items (${scopeChangeRequestReferences.length})`}
+                >
+                    <>
+                        {scopeChangeRequestReferences.map((reference) => (
+                            <ScopeChangeRequestReferenceItem
+                                key={reference.scopeChangeReferenceId}
+                                scopeChangeRequestReference={reference}
+                            />
                         ))}
                     </>
                 </ChevronList>

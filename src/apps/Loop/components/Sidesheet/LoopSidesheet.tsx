@@ -1,4 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
@@ -6,7 +7,6 @@ import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/con
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
 import { workorderColumnNames } from '../../utility/api';
-import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 import { Status } from '../Status';
 import { ThreeDView } from './3D/3dView';
 import { Banner } from './Banner';

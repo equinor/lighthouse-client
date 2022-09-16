@@ -17,17 +17,27 @@ import {
 } from '../sidesheetStyles';
 
 export const ScopeTab = (): JSX.Element => {
-    const { description, dueDate, tags, htCables, documents, punchListItems, id, attachments } =
-        useReleaseControlContext(({ releaseControl }) => ({
-            dueDate: new Date(releaseControl.plannedDueDate),
-            description: releaseControl.description,
-            tags: releaseControl.scopeTags,
-            htCables: releaseControl.scopeHTTags,
-            documents: releaseControl.documents,
-            punchListItems: releaseControl.punchListItems,
-            id: releaseControl.id,
-            attachments: releaseControl.attachments,
-        }));
+    const {
+        description,
+        dueDate,
+        tags,
+        htCables,
+        documents,
+        punchListItems,
+        id,
+        attachments,
+        scopeChangeRequestReferences,
+    } = useReleaseControlContext(({ releaseControl }) => ({
+        dueDate: new Date(releaseControl.plannedDueDate),
+        description: releaseControl.description,
+        tags: releaseControl.scopeTags,
+        htCables: releaseControl.scopeHTTags,
+        documents: releaseControl.documents,
+        punchListItems: releaseControl.punchListItems,
+        id: releaseControl.id,
+        attachments: releaseControl.attachments,
+        scopeChangeRequestReferences: releaseControl.scopeChangeRequestReferences,
+    }));
 
     const { requestAccess } = useReleaseControlContext();
 
@@ -75,6 +85,7 @@ export const ScopeTab = (): JSX.Element => {
                                 <ReferencesList
                                     documents={documents}
                                     punchListItems={punchListItems}
+                                    scopeChangeRequestReferences={scopeChangeRequestReferences}
                                 />
                             </SubSectionText>
                         </SectionWrapper>
