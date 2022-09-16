@@ -1,5 +1,5 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
-import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { PowerBiOptions } from '@equinor/WorkSpace';
 import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
 import { Pipetest } from './Types/pipetest';
 import {

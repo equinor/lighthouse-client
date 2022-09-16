@@ -1,5 +1,5 @@
 import { FilterGroup } from '@equinor/filter';
-import { WorkspaceTab } from '../../../WorkSpaceApi/workspaceState';
+import { WorkspaceTab } from '../../../WorkSpaceApi/Types/options';
 import { GardenPayload } from './gardenPayload';
 
 export type WorkspaceBookmarkPayload = {
