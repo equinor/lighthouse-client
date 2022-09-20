@@ -13,7 +13,11 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
 
     checkLists?.sort((a, b) => a.responsible?.localeCompare(b?.responsible));
     checkLists?.sort((a, b) => a.formularType?.localeCompare(b?.formularType));
-    checkLists?.sort((a, b) => a.revision?.localeCompare(b?.revision));
+    checkLists?.sort((a, b) =>
+        a.revision !== undefined && b.revision !== undefined
+            ? a.revision?.localeCompare(b?.revision)
+            : -1
+    );
     checkLists?.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
 
     const columns: Column<CheckListType>[] = [
