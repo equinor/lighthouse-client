@@ -65,7 +65,7 @@ export type CheckListType = {
     formularType: string;
     formularGroup: string;
     status: string;
-    revision?: string;
+    revision: string;
     test?: string;
     isHeatTrace?: boolean;
     workflowStepText?: string | undefined;
