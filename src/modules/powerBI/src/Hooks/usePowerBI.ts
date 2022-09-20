@@ -7,7 +7,7 @@ import { PBIOptions } from '../Types';
 import { Filter } from '../Types/filter';
 
 interface PowerBIResult {
-    config: IReportEmbedConfiguration;
+    config: IReportEmbedConfiguration & { tokenExpiration: string };
     error: FusionPBIError | undefined;
 }
 
@@ -24,7 +24,9 @@ export function usePowerBI(
 ): PowerBIResult {
     const { getConfig } = useFusionClient(resource, filterOptions, options);
     const [error, setError] = useState<FusionPBIError>();
-    const [config, setReportConfig] = useState<IReportEmbedConfiguration>({
+    const [config, setReportConfig] = useState<
+        IReportEmbedConfiguration & { tokenExpiration: string }
+    >({
         type: 'report',
         embedUrl: undefined,
         tokenType: models.TokenType.Embed,
@@ -32,6 +34,7 @@ export function usePowerBI(
         // permissions: models.Permissions.All,
         settings: undefined,
         bookmark: undefined,
+        tokenExpiration: '',
     });
 
     useEffect(() => {
@@ -39,6 +42,7 @@ export function usePowerBI(
             setError(undefined);
             try {
                 const fusionConfig = await getConfig();
+
                 setReportConfig((config) => ({ ...config, ...fusionConfig }));
             } catch (error: any) {
                 setError(error);

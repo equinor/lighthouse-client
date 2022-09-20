@@ -12,6 +12,7 @@ import { usePowerBI } from './Hooks';
 import './style.css';
 import { PBIOptions, PowerBIBookmarkPayload } from './Types';
 import { Filter } from './Types/filter';
+import { checkTokenAndUpdate, INTERVAL_TIME } from './Utils/accessToken';
 
 interface PowerBiProps {
     reportUri: string;
@@ -143,6 +144,15 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
         options?.activePage && report?.setPage(options.activePage);
     }, [options?.activePage, report]);
 
+    useEffect(() => {
+        const a = setInterval(() => {
+            checkTokenAndUpdate(reportUri, report, config.tokenExpiration);
+        }, INTERVAL_TIME);
+
+        return () => {
+            clearInterval(a);
+        };
+    }, [report, reportUri, config.tokenExpiration]);
     if (error) {
         return (
             <ReportErrorMessage

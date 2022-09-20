@@ -17,7 +17,7 @@ const filterBuilder = (filter: Filter): BuiltPowerBiFilter => {
 };
 
 interface useFusionClientReturn {
-    getConfig(): Promise<IReportEmbedConfiguration>;
+    getConfig(): Promise<IReportEmbedConfiguration & { tokenExpiration: string }>;
 }
 export function useFusionClient(
     resource: string,
@@ -41,7 +41,7 @@ export function useFusionClient(
         return data;
     }
 
-    async function getConfig(): Promise<IReportEmbedConfiguration> {
+    async function getConfig(): Promise<IReportEmbedConfiguration & { tokenExpiration: string }> {
         const { embedConfig } = await getEmbedInfo();
         const repose = await fusionPbi.fetch(`${baseUri}/${resource}/token`);
         const token = await repose.json();
@@ -67,6 +67,7 @@ export function useFusionClient(
             bookmark: options?.bookmark,
             pageName: options?.defaultPage,
             filters: filters ?? undefined,
+            tokenExpiration: token['expirationUtc'],
         };
     }
 
