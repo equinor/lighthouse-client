@@ -2,6 +2,7 @@ import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { PBIOptions } from '..';
 import { BuiltPowerBiFilter, Filter } from '../Types/filter';
+import { AccessToken } from '../Utils/access-token';
 
 const filterBuilder = (filter: Filter): BuiltPowerBiFilter => {
     return {
@@ -17,7 +18,7 @@ const filterBuilder = (filter: Filter): BuiltPowerBiFilter => {
 };
 
 interface useFusionClientReturn {
-    getConfig(): Promise<IReportEmbedConfiguration & { tokenExpiration: string }>;
+    getConfig(): Promise<IReportEmbedConfiguration>;
 }
 export function useFusionClient(
     resource: string,
@@ -41,16 +42,18 @@ export function useFusionClient(
         return data;
     }
 
-    async function getConfig(): Promise<IReportEmbedConfiguration & { tokenExpiration: string }> {
+    async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
         const repose = await fusionPbi.fetch(`${baseUri}/${resource}/token`);
         const token = await repose.json();
         if (repose.status === 403 || repose.status === 401) {
             throw token['error'];
         }
+        const access = AccessToken.getInstance();
+        access.setAccess(token);
 
         return {
-            accessToken: token['token'],
+            accessToken: access.getAccess()?.token,
             embedUrl: embedConfig.embedUrl,
             id: embedConfig.reportId,
             settings: {
@@ -67,7 +70,6 @@ export function useFusionClient(
             bookmark: options?.bookmark,
             pageName: options?.defaultPage,
             filters: filters ?? undefined,
-            tokenExpiration: token['expirationUtc'],
         };
     }
 
