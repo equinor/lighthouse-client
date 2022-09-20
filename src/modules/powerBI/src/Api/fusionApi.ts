@@ -2,6 +2,7 @@ import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { PBIOptions } from '..';
 import { BuiltPowerBiFilter, Filter } from '../Types/filter';
+import { AccessToken } from '../Utils/access-token';
 
 const filterBuilder = (filter: Filter): BuiltPowerBiFilter => {
     return {
@@ -48,9 +49,11 @@ export function useFusionClient(
         if (repose.status === 403 || repose.status === 401) {
             throw token['error'];
         }
+        const access = AccessToken.getInstance();
+        access.setAccess(token);
 
         return {
-            accessToken: token['token'],
+            accessToken: access.getAccess()?.token,
             embedUrl: embedConfig.embedUrl,
             id: embedConfig.reportId,
             settings: {
