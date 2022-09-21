@@ -37,14 +37,14 @@ const columns: Column<FamTagType>[] = [
         ),
     },
     {
-        id: 'switchboard',
+        id: 'switchBoardTagNos',
         Header: 'Switchboard',
-        accessor: () => null,
+        accessor: (item) => item.switchBoardTagNos,
     },
     {
-        id: 'circuit',
+        id: 'circuitTagNos',
         Header: 'Circuit',
-        accessor: () => null,
+        accessor: (item) => item.circuitTagNos,
     },
     {
         id: 'installedCableLength',

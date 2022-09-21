@@ -1,20 +1,23 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
-import { CheckListStepTag } from '../../../Types/drcEnums';
-import { EleNetwork } from '../../../Types/eleNetwork';
-import { Pipetest } from '../../../Types/pipetest';
-import { getElectroTestStatus, getHTSidesheetObjectForHtCable } from '../electroViewHelpers';
-import { ElectroViewHTHighlight, ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
+import {
+    getCircuitTestStatus,
+    getHTSidesheetObjectForHtCable,
+} from '../../Utils/circuitDiagramHelpers';
+import { CircuitDiagramHTText, CircuitDiagramNodeGroup } from '../../styles/styles';
+import { EleNetwork } from '../types/eleNetwork';
+import { CheckListStepTag, Pipetest } from '../types/pipetestTypes';
 import { Line } from './Line';
 import { TestDot } from './TestDot';
 
 interface HeatTracingCableProps {
     value?: string;
     pipetests: Pipetest[];
-    currentPipetest: Pipetest;
+    currentPipetest: Pipetest | null;
     eleNetwork: EleNetwork;
     htCable?: string;
+    onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
+    onSelect?: (item: Record<PropertyKey, unknown>) => void;
 }
 export const HeatTracingCable = ({
     value,
@@ -22,43 +25,48 @@ export const HeatTracingCable = ({
     currentPipetest,
     eleNetwork,
     htCable,
+    onGroupeSelect,
+    onSelect,
 }: HeatTracingCableProps): JSX.Element => {
-    const { onGroupeSelect } = useWorkSpace();
     const pipetestsOnHTCable = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === value));
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
     return (
-        <ElectroViewNodeGroup>
+        <CircuitDiagramNodeGroup>
             <HeatTracingCableNode pipetestCount={pipetestsOnHTCable.length}>
                 {htCable === value ? (
-                    <ElectroViewHTHighlight
+                    <CircuitDiagramHTText
                         onClick={() => {
-                            value &&
+                            currentPipetest &&
+                                value &&
                                 onGroupeSelect &&
                                 onGroupeSelect(getHTSidesheetObjectForHtCable(value, pipetests));
                         }}
+                        clickable={false}
+                        highlight={true}
                     >
                         {value}
-                    </ElectroViewHTHighlight>
+                    </CircuitDiagramHTText>
                 ) : (
-                    <ElectroViewNodeValueText
+                    <CircuitDiagramHTText
                         onClick={() => {
-                            value &&
+                            currentPipetest &&
+                                value &&
                                 onGroupeSelect &&
                                 onGroupeSelect(getHTSidesheetObjectForHtCable(value, pipetests));
                         }}
-                        clickable={true}
+                        clickable={currentPipetest !== null}
                     >
                         {value}
-                    </ElectroViewNodeValueText>
+                    </CircuitDiagramHTText>
                 )}
                 <ABTestDots>
                     <TestDot
                         value="A"
-                        status={getElectroTestStatus(CheckListStepTag.HtTest, checkListsForHTCable)}
+                        status={getCircuitTestStatus(CheckListStepTag.HtTest, checkListsForHTCable)}
                     />
                     <TestDot
                         value="B"
-                        status={getElectroTestStatus(
+                        status={getCircuitTestStatus(
                             CheckListStepTag.HtRetest,
                             checkListsForHTCable
                         )}
@@ -71,14 +79,17 @@ export const HeatTracingCable = ({
                         <Line
                             key={x.name}
                             value={x.name}
-                            currentPipetest={x.name === currentPipetest.name}
+                            currentPipetest={
+                                currentPipetest === null ? false : x.name === currentPipetest.name
+                            }
                             pipetest={pipetests.find((pipetest) => pipetest.name === x.name)}
                             htCable={htCable}
+                            onSelect={onSelect}
                         />
                     );
                 })}
             </Lines>
-        </ElectroViewNodeGroup>
+        </CircuitDiagramNodeGroup>
     );
 };
 
@@ -89,7 +100,7 @@ const HeatTracingCableNode = styled.div<{ pipetestCount: number }>`
     padding-top: 6px;
     text-align: center;
     margin-bottom: 2px;
-    margin-top: 16px;
+    margin-top: 12px;
     width: ${(p) =>
         p.pipetestCount === 0 || p.pipetestCount === 1
             ? '150px'

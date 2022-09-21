@@ -13,6 +13,8 @@ export function WorkOrderTab({ id }: WorkOrderTabProps): JSX.Element {
         staleTime: 5 * 1000 * 60,
     });
 
+    data?.sort((a, b) => a.workOrderNo?.localeCompare(b?.workOrderNo));
+
     if (error) {
         return (
             <Loading>

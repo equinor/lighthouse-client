@@ -1,14 +1,14 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { PipetestCompletionStatusColors } from '../../../Styles/ReleaseControlColors';
-import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
+import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
+import { PipetestCompletionStatusColors } from '../types/pipetestTypes';
 
 interface TestDotProps {
     value?: string;
     status: string;
 }
 export const TestDot = ({ value, status }: TestDotProps): JSX.Element => {
-    const color = getElectroViewCompletionStatusColor(status);
+    const color = getCircuitDiagramCompletionStatusColor(status);
     const LightningIcon = (
         <svg
             width="8"
