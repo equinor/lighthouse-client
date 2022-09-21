@@ -1,5 +1,6 @@
 import { Column, Table } from '@equinor/Table';
 import { CheckListType } from '../../Types/pipetest';
+import { sortCheckListTable } from '../../utils/helpers/tableHelpers';
 import { CheckListStatusCell } from './CheckListStatusCell';
 
 type TableProps = {
@@ -11,14 +12,7 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
 
     const rowHeight = 35;
 
-    checkLists?.sort((a, b) => a.responsible?.localeCompare(b?.responsible));
-    checkLists?.sort((a, b) => a.formularType?.localeCompare(b?.formularType));
-    checkLists?.sort((a, b) =>
-        a.revision !== undefined && b.revision !== undefined
-            ? a.revision?.localeCompare(b?.revision)
-            : -1
-    );
-    checkLists?.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+    checkLists = sortCheckListTable(checkLists);
 
     const columns: Column<CheckListType>[] = [
         {
