@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+## 1.12.0
+
+- [ReleaseControl] Added new filters
+- [ReleaseControl] Added new table columns
+- [ReleaseControl] Added new fields for tags/htCables
+- [ReleaseControl] Added circuit diagram
+- [PipingAndHeattrace] Removed duplicate WO
+- [PipingAndHeattrace] Workorder table sorting
+- [PipingAndHeattrace] Checklist table sorting
+  
 
 ## 1.11.0
 
