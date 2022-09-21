@@ -4,7 +4,7 @@ import {
     PipetestCompletionStatus,
     PipetestStep,
 } from '../../Types/drcEnums';
-import { CheckList, Pipetest } from '../../Types/pipetest';
+import { CheckList, CheckListType, Pipetest } from '../../Types/pipetest';
 import {
     getBoxInsulationStatus,
     getChecklistStepName,
@@ -224,4 +224,16 @@ export function getStatusLetterFromStatus(step: string | undefined): string {
     }
 
     return letter;
+}
+
+export function sortCheckListTable(checkLists: CheckListType[]): CheckListType[] {
+    checkLists?.sort((a, b) => a.responsible?.localeCompare(b?.responsible));
+    checkLists?.sort((a, b) => a.formularType?.localeCompare(b?.formularType));
+    checkLists?.sort((a, b) =>
+        a.revision !== undefined && b.revision !== undefined
+            ? a.revision?.localeCompare(b?.revision)
+            : -1
+    );
+    checkLists?.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+    return checkLists;
 }
