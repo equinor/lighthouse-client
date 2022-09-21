@@ -1,40 +1,55 @@
 import { useQuery } from 'react-query';
-import { StatusCircle } from '../../../../packages/GardenUtils/src';
-import { EleNetwork } from '../../Types/eleNetwork';
-import { Pipetest } from '../../Types/pipetest';
-import { ElectroNode } from './ElectroNode';
-import { getElectroViewCompletionStatusColor, getNodeStatus } from './electroViewHelpers';
-import { getEleNetworks } from '../../utils/api/getEleNetworks';
+import { CircuitNode } from './CircuitNode';
+import { getCircuitDiagramCompletionStatusColor, getNodeStatus } from './circuitDiagramHelpers';
 import {
-    ElectroViewContainer,
-    ElectroViewNodeGroupRow,
-    ElectroViewNodeText,
-    ElectroViewRow,
+    CircuitDiagramContainer,
+    CircuitDiagramNodeGroupRow,
+    CircuitDiagramNodeText,
+    CircuitDiagramRow,
     SwitchBoardBorderContainer,
     SwitchBoardContainer,
 } from './styles';
+import { StatusCircle } from '@equinor/GardenUtils';
+import { EleNetwork } from './types/eleNetwork';
+import { getEleNetworks } from './getEleNetworks';
+import { Pipetest } from './types/pipetestTypes';
+import { NoCircuitDiagramFound } from './Components/NoCircuitDiagramFound';
 
-interface ElectroViewProps {
-    pipetest: Pipetest;
+interface CircuitDiagramProps {
+    pipetest: Pipetest | null;
     pipetests: Pipetest[];
     width: number;
     htCable?: string; //HT cable tagNo if htCable should be the focus of the diagram (HT sidesheet)
+    circuitAndStarterTagNos: string[]; //list of circuitAndStarterTagNos to fetch eleNetworks from and display
 }
 
 // If this component gets logic that causes it to need re-renders, it should be rewritten to use more useMemo()/hooks to avoid re-calculating static logic
-export const ElectroView = ({
+export const CircuitDiagram = ({
     pipetest,
     pipetests,
     width,
     htCable,
-}: ElectroViewProps): JSX.Element => {
-    const circuitStarterTagNosArray = pipetest.circuits?.map((c) => c.circuitAndStarterTagNo);
-    const circuitStarterTagNos = circuitStarterTagNosArray.toString();
+    circuitAndStarterTagNos,
+}: CircuitDiagramProps): JSX.Element => {
+    const circuitStarterTagNoString = circuitAndStarterTagNos?.toString();
 
-    let { data } = useQuery([circuitStarterTagNos], () => getEleNetworks(circuitStarterTagNos), {
-        staleTime: Infinity,
-        cacheTime: Infinity,
-    });
+    let { data } = useQuery(
+        [circuitStarterTagNoString],
+        () => getEleNetworks(circuitStarterTagNoString ?? ''),
+        {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+        }
+    );
+
+    if (circuitStarterTagNoString === '' || circuitStarterTagNoString === undefined) {
+        return (
+            <NoCircuitDiagramFound
+                htCable={htCable !== undefined}
+                releaseControl={pipetest === null}
+            />
+        );
+    }
 
     let switchboardArray;
 
@@ -44,7 +59,7 @@ export const ElectroView = ({
 
     if (data !== undefined) {
         for (let i = 0; i < data.length; i++) {
-            data[i].switchBoardTagNo = circuitStarterTagNosArray[i];
+            data[i].switchBoardTagNo = circuitAndStarterTagNos[i];
         }
 
         //Alphabetical sorting
@@ -74,12 +89,13 @@ export const ElectroView = ({
                 ?.localeCompare(b[0]?.switchBoardTagNo?.split('-')[0])
         );
     }
+
     return (
         <>
-            {pipetest && circuitStarterTagNos !== '' ? (
+            {circuitStarterTagNoString !== '' ? (
                 <>
                     {!data && <h3 style={{ marginLeft: '8px' }}>Loading circuit diagram...</h3>}
-                    <ElectroViewContainer width={width}>
+                    <CircuitDiagramContainer width={width}>
                         {switchboardArray?.map((eleNetworksForSwitchboard: EleNetwork[]) => {
                             const switchboardTagNo =
                                 eleNetworksForSwitchboard[0].switchBoardTagNo.split('-');
@@ -92,24 +108,24 @@ export const ElectroView = ({
                                     key={eleNetworksForSwitchboard[0].switchBoardTagNo}
                                 >
                                     <SwitchBoardBorderContainer>
-                                        <ElectroViewNodeGroupRow>
-                                            <ElectroViewNodeText>
+                                        <CircuitDiagramNodeGroupRow>
+                                            <CircuitDiagramNodeText>
                                                 {switchboardTagNo[0]}
-                                            </ElectroViewNodeText>
+                                            </CircuitDiagramNodeText>
                                             <StatusCircle
-                                                statusColor={getElectroViewCompletionStatusColor(
+                                                statusColor={getCircuitDiagramCompletionStatusColor(
                                                     switchboardStatus
                                                 )}
                                             />
-                                        </ElectroViewNodeGroupRow>
+                                        </CircuitDiagramNodeGroupRow>
                                         {eleNetworksForSwitchboard?.map(
                                             (eleNetwork: EleNetwork) => {
                                                 const startNode = eleNetwork.circuits.find(
                                                     (x) => x.parentEleNetId === null
                                                 );
                                                 return (
-                                                    <ElectroViewRow key={eleNetwork.eleNetId}>
-                                                        <ElectroNode
+                                                    <CircuitDiagramRow key={eleNetwork.eleNetId}>
+                                                        <CircuitNode
                                                             key={startNode?.eleNetId}
                                                             node={startNode}
                                                             eleNetwork={eleNetwork}
@@ -117,7 +133,7 @@ export const ElectroView = ({
                                                             currentPipetest={pipetest}
                                                             htCable={htCable}
                                                         />
-                                                    </ElectroViewRow>
+                                                    </CircuitDiagramRow>
                                                 );
                                             }
                                         )}
@@ -125,10 +141,13 @@ export const ElectroView = ({
                                 </SwitchBoardContainer>
                             );
                         })}
-                    </ElectroViewContainer>
+                    </CircuitDiagramContainer>
                 </>
             ) : (
-                <h3 style={{ marginLeft: '8px' }}>No circuit diagram found for this pipetest</h3>
+                <NoCircuitDiagramFound
+                    htCable={htCable !== undefined}
+                    releaseControl={pipetest === null}
+                />
             )}
         </>
     );

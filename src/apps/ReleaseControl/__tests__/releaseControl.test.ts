@@ -9,7 +9,7 @@ import {
 } from '../components/Form/WorkflowEditor/WorkflowEditorHelpers';
 import { testSteps } from '../Mock/mockData';
 
-describe('electroViewHelpers tests', () => {
+describe('statusHelpers tests', () => {
     it('should return one step which is "Initiate" step', () => {
         expect(getNewWorkflowSteps()).toHaveLength(1);
         expect(getNewWorkflowSteps()[0].name).toStrictEqual('Initiate');
