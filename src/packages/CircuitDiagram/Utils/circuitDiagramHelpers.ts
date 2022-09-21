@@ -1,13 +1,16 @@
 import { tokens } from '@equinor/eds-tokens';
-import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
-import { CheckListStatus } from '../../Types/drcEnums';
 import {
     EleNetwork,
     EleNetworkCable,
     EleNetworkCheckList,
     EleNetworkCircuit,
-} from '../../Types/eleNetwork';
-import { HTSidesheet, Pipetest } from '../../Types/pipetest';
+} from '../src/types/eleNetwork';
+import {
+    CheckListStatus,
+    HTSidesheet,
+    Pipetest,
+    PipetestCompletionStatusColors,
+} from '../src/types/pipetestTypes';
 
 export function getCircuitChildren(
     eleNetwork: EleNetwork,
@@ -50,7 +53,7 @@ export function getNodeStatus(checkLists: EleNetworkCheckList[], tagNo?: string)
     }
 }
 
-export const getElectroViewCompletionStatusColor = (completionStatus: string): string => {
+export const getCircuitDiagramCompletionStatusColor = (completionStatus: string): string => {
     let color = tokens.colors.ui.background__medium.hex;
 
     switch (completionStatus) {
@@ -70,7 +73,7 @@ export const getElectroViewCompletionStatusColor = (completionStatus: string): s
     return color;
 };
 
-export function getElectroTestStatus(testType: string, checkLists: EleNetworkCheckList[]): string {
+export function getCircuitTestStatus(testType: string, checkLists: EleNetworkCheckList[]): string {
     if (testType === undefined) return CheckListStatus.Outstanding;
 
     checkLists = checkLists.filter((x) => x.formularType.startsWith(testType));

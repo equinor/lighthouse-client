@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { StatusCircle } from '@equinor/GardenUtils';
-import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
-import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
-import { EleNetworkCable } from '../../../Types/eleNetwork';
+import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
+import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
 import { CableSpiralRight } from './CableSpiralRight';
 import { CableSpiralLeft } from './CableSpiralLeft';
 import { tokens } from '@equinor/eds-tokens';
-import { CheckListStatus } from '../../../Types/drcEnums';
+import { EleNetworkCable } from '../types/eleNetwork';
+import { CheckListStatus } from '../types/pipetestTypes';
+import { StatusCircle } from './StatusCircle';
 
 interface CableProps {
     cable: EleNetworkCable;
@@ -15,11 +15,11 @@ interface CableProps {
 }
 export const Cable = ({ cable, status, borderBottom }: CableProps): JSX.Element => {
     return (
-        <ElectroViewNodeGroup>
+        <CircuitDiagramNodeGroup>
             {status === CheckListStatus.OK ? ( //Even if data says cables are disconnected, if status is OK we draw the entire cable.
                 <CableInfo borderBottom={borderBottom} disconnectedCount={0}>
-                    <ElectroViewNodeValueText>{cable.tagNo}</ElectroViewNodeValueText>
-                    <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
+                    <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
+                    <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
                 </CableInfo>
             ) : cable.terminatedFromDate === null && cable.terminatedToDate === null ? (
                 <CableWrapper>
@@ -28,9 +28,9 @@ export const Cable = ({ cable, status, borderBottom }: CableProps): JSX.Element 
                             <CableSpiralLeft />
                         </DisconnectedStart>
                         <CableInfo borderBottom={borderBottom} disconnectedCount={2}>
-                            <ElectroViewNodeValueText>{cable.tagNo}</ElectroViewNodeValueText>
+                            <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
                             <StatusCircle
-                                statusColor={getElectroViewCompletionStatusColor(status)}
+                                statusColor={getCircuitDiagramCompletionStatusColor(status)}
                             />
                         </CableInfo>
                         <DisconnectedEnd>
@@ -45,9 +45,9 @@ export const Cable = ({ cable, status, borderBottom }: CableProps): JSX.Element 
                             <CableSpiralLeft />
                         </DisconnectedStart>
                         <CableInfo borderBottom={borderBottom} disconnectedCount={1}>
-                            <ElectroViewNodeValueText>{cable.tagNo}</ElectroViewNodeValueText>
+                            <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
                             <StatusCircle
-                                statusColor={getElectroViewCompletionStatusColor(status)}
+                                statusColor={getCircuitDiagramCompletionStatusColor(status)}
                             />
                         </CableInfo>
                     </CableNode>
@@ -56,9 +56,9 @@ export const Cable = ({ cable, status, borderBottom }: CableProps): JSX.Element 
                 <CableWrapper>
                     <CableNode>
                         <CableInfo borderBottom={borderBottom} disconnectedCount={1}>
-                            <ElectroViewNodeValueText>{cable.tagNo}</ElectroViewNodeValueText>
+                            <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
                             <StatusCircle
-                                statusColor={getElectroViewCompletionStatusColor(status)}
+                                statusColor={getCircuitDiagramCompletionStatusColor(status)}
                             />
                         </CableInfo>
                         <DisconnectedEnd>
@@ -68,11 +68,11 @@ export const Cable = ({ cable, status, borderBottom }: CableProps): JSX.Element 
                 </CableWrapper>
             ) : (
                 <CableInfo borderBottom={borderBottom} disconnectedCount={0}>
-                    <ElectroViewNodeValueText>{cable.tagNo}</ElectroViewNodeValueText>
-                    <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
+                    <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
+                    <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
                 </CableInfo>
             )}
-        </ElectroViewNodeGroup>
+        </CircuitDiagramNodeGroup>
     );
 };
 

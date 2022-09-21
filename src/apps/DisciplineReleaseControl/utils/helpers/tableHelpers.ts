@@ -4,7 +4,7 @@ import {
     PipetestCompletionStatus,
     PipetestStep,
 } from '../../Types/drcEnums';
-import { CheckList, Pipetest } from '../../Types/pipetest';
+import { CheckList, CheckListType, Pipetest } from '../../Types/pipetest';
 import {
     getBoxInsulationStatus,
     getChecklistStepName,
@@ -28,26 +28,15 @@ export const checklistTagFunc = (item: CheckList) => {
     }
 };
 
-export function getHTList(checkLists: CheckList[]): string {
-    let htList = '';
-    const usedHts: string[] = [];
-    let htCount = 0;
+export function getHTList(checkLists: CheckList[]): string[] {
+    const heatTraces: string[] = [];
     checkLists
         .filter((x) => x.isHeatTrace)
         .forEach((ht: CheckList) => {
-            if (htCount < 3 && !usedHts.some((x) => x === ht.tagNo)) {
-                htList !== '' ? (htList += ', ') : null;
-                htList += ht.tagNo;
-            }
-            if (!usedHts.some((x) => x === ht.tagNo)) {
-                htCount = htCount += 1;
-            }
-            usedHts.push(ht.tagNo);
+            heatTraces.push(ht.tagNo);
         });
-    if (htCount > 3) {
-        htList += ' (+' + (htCount - 3).toString() + ')';
-    }
-    return htList;
+
+    return heatTraces;
 }
 
 export function getPipetestsWithHTCable(pipetests: Pipetest[]): Pipetest[] {
@@ -224,4 +213,16 @@ export function getStatusLetterFromStatus(step: string | undefined): string {
     }
 
     return letter;
+}
+
+export function sortCheckListTable(checkLists: CheckListType[]): CheckListType[] {
+    checkLists?.sort((a, b) => a.responsible?.localeCompare(b?.responsible));
+    checkLists?.sort((a, b) => a.formularType?.localeCompare(b?.formularType));
+    checkLists?.sort((a, b) =>
+        a.revision !== undefined && b.revision !== undefined
+            ? a.revision?.localeCompare(b?.revision)
+            : -1
+    );
+    checkLists?.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+    return checkLists;
 }

@@ -19,6 +19,11 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
         return isProduction() ? url : url.replace('procosys', 'procosystest');
     };
 
+    //Remove duplicates
+    workOrders = workOrders.filter(
+        (v, i, a) => a.findIndex((wo) => wo.workOrderNo === v.workOrderNo) === i
+    );
+
     const someColumns: Column<any>[] = [
         generateColumn(
             'WO',
