@@ -4,13 +4,13 @@ import {
     EleNetworkCable,
     EleNetworkCheckList,
     EleNetworkCircuit,
-} from './types/eleNetwork';
+} from '../src/types/eleNetwork';
 import {
     CheckListStatus,
     HTSidesheet,
     Pipetest,
     PipetestCompletionStatusColors,
-} from './types/pipetestTypes';
+} from '../src/types/pipetestTypes';
 
 export function getCircuitChildren(
     eleNetwork: EleNetwork,

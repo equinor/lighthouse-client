@@ -1,6 +1,9 @@
 import { useQuery } from 'react-query';
-import { CircuitNode } from './CircuitNode';
-import { getCircuitDiagramCompletionStatusColor, getNodeStatus } from './circuitDiagramHelpers';
+import { CircuitNode } from './Components/CircuitNode';
+import {
+    getCircuitDiagramCompletionStatusColor,
+    getNodeStatus,
+} from '../Utils/circuitDiagramHelpers';
 import {
     CircuitDiagramContainer,
     CircuitDiagramNodeGroupRow,
@@ -8,12 +11,12 @@ import {
     CircuitDiagramRow,
     SwitchBoardBorderContainer,
     SwitchBoardContainer,
-} from './styles';
-import { StatusCircle } from '@equinor/GardenUtils';
+} from '../styles/styles';
 import { EleNetwork } from './types/eleNetwork';
-import { getEleNetworks } from './getEleNetworks';
+import { getEleNetworks } from './Api/getEleNetworks';
 import { Pipetest } from './types/pipetestTypes';
 import { NoCircuitDiagramFound } from './Components/NoCircuitDiagramFound';
+import { StatusCircle } from './Components/StatusCircle';
 
 interface CircuitDiagramProps {
     pipetest: Pipetest | null;

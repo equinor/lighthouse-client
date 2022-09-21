@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 
-import { Cable, CableNode } from './Components/Cable';
-import { CircuitAndStarter } from './Components/CircuitAndStarter';
-import { HeatTracingCable } from './Components/HeatTracingCable';
-import { JunctionBox } from './Components/JunctionBox';
-import { SpaceHeater } from './Components/SpaceHeater';
+import { Cable, CableNode } from './Cable';
+import { CircuitAndStarter } from './CircuitAndStarter';
+import { HeatTracingCable } from './HeatTracingCable';
+import { JunctionBox } from './JunctionBox';
+import { SpaceHeater } from './SpaceHeater';
 import {
     getCableChildren,
     getCircuitChildren,
     getCircuitTestStatus,
     getNodeStatus,
-} from './circuitDiagramHelpers';
-import { CircuitDiagramNodeGroupRow } from './styles';
-import { CircuitTypes, EleNetwork, EleNetworkCable, EleNetworkCircuit } from './types/eleNetwork';
-import { CheckListStepTag, Pipetest } from './types/pipetestTypes';
+} from '../../Utils/circuitDiagramHelpers';
+import { CircuitDiagramNodeGroupRow } from '../../styles/styles';
+import { CircuitTypes, EleNetwork, EleNetworkCable, EleNetworkCircuit } from '../types/eleNetwork';
+import { CheckListStepTag, Pipetest } from '../types/pipetestTypes';
 
 interface CircuitNodeProps {
     eleNetwork: EleNetwork;

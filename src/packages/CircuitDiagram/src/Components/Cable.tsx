@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { StatusCircle } from '@equinor/GardenUtils';
-import { getCircuitDiagramCompletionStatusColor } from '../circuitDiagramHelpers';
-import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../styles';
+import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
+import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
 import { CableSpiralRight } from './CableSpiralRight';
 import { CableSpiralLeft } from './CableSpiralLeft';
 import { tokens } from '@equinor/eds-tokens';
 import { EleNetworkCable } from '../types/eleNetwork';
 import { CheckListStatus } from '../types/pipetestTypes';
+import { StatusCircle } from './StatusCircle';
 
 interface CableProps {
     cable: EleNetworkCable;

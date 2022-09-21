@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { StatusCircle } from '@equinor/GardenUtils';
-import { getCircuitDiagramCompletionStatusColor } from '../circuitDiagramHelpers';
-import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../styles';
+import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
+import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
+import { StatusCircle } from './StatusCircle';
 
 interface JunctionBoxProps {
     value?: string;

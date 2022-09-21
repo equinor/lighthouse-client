@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../styles';
+import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
 import { TestDot } from './TestDot';
 
 interface CircuitAndStarterProps {

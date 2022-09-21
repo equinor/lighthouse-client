@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { getCircuitDiagramCompletionStatusColor } from '../circuitDiagramHelpers';
+import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
 import { PipetestCompletionStatusColors } from '../types/pipetestTypes';
 
 interface TestDotProps {

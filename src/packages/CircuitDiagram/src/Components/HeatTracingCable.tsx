@@ -1,8 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
-import { getCircuitTestStatus, getHTSidesheetObjectForHtCable } from '../circuitDiagramHelpers';
-import { CircuitDiagramHTText, CircuitDiagramNodeGroup } from '../styles';
+import {
+    getCircuitTestStatus,
+    getHTSidesheetObjectForHtCable,
+} from '../../Utils/circuitDiagramHelpers';
+import { CircuitDiagramHTText, CircuitDiagramNodeGroup } from '../../styles/styles';
 import { EleNetwork } from '../types/eleNetwork';
 import { CheckListStepTag, Pipetest } from '../types/pipetestTypes';
 import { Line } from './Line';

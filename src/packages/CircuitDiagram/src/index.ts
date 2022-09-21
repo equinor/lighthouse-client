@@ -8,5 +8,6 @@ export * from './Components/Line';
 export * from './Components/SpaceHeater';
 export * from './Components/TestDot';
 export * from './Components/NoCircuitDiagramFound';
+export * from './Components/StatusCircle';
 export * from './types/eleNetwork';
 export * from './types/pipetestTypes';
