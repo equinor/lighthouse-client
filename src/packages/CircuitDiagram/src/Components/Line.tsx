@@ -1,17 +1,22 @@
 import styled from 'styled-components';
-import { useWorkSpace } from '@equinor/WorkSpace';
-import { Pipetest } from '../../../Types/pipetest';
 import { tokens } from '@equinor/eds-tokens';
+import { Pipetest } from '../types/pipetestTypes';
 
 type LineProps = {
     value?: string;
     currentPipetest: boolean;
     pipetest: Pipetest | undefined;
     htCable?: string;
+    onSelect?: (item: Record<PropertyKey, unknown>) => void;
 };
 
-export const Line = ({ value, currentPipetest, pipetest, htCable }: LineProps): JSX.Element => {
-    const { onSelect } = useWorkSpace();
+export const Line = ({
+    value,
+    currentPipetest,
+    pipetest,
+    htCable,
+    onSelect,
+}: LineProps): JSX.Element => {
     return (
         <LineNode
             currentPipetest={currentPipetest}

@@ -70,6 +70,7 @@ export default defineConfig({
                 __dirname,
                 './src/packages/FamRequestBuilder'
             ),
+            '@equinor/CircuitDiagram': path.resolve(__dirname, './src/packages/CircuitDiagram'),
         },
     },
     build: {

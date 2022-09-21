@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
+import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
 import { TestDot } from './TestDot';
 
 interface CircuitAndStarterProps {
@@ -10,12 +10,12 @@ interface CircuitAndStarterProps {
 }
 export const CircuitAndStarter = ({ value, cTestStatus }: CircuitAndStarterProps): JSX.Element => {
     return (
-        <ElectroViewNodeGroup>
+        <CircuitDiagramNodeGroup>
             <CircuitAndStarterNode>
                 <TestDot value="C" status={cTestStatus} />
-                <ElectroViewNodeValueText>
+                <CircuitDiagramNodeValueText>
                     <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
-                </ElectroViewNodeValueText>
+                </CircuitDiagramNodeValueText>
                 <Icon
                     size={16}
                     style={{ transform: 'rotate(90deg)' }}
@@ -23,7 +23,7 @@ export const CircuitAndStarter = ({ value, cTestStatus }: CircuitAndStarterProps
                     name="circuit"
                 />
             </CircuitAndStarterNode>
-        </ElectroViewNodeGroup>
+        </CircuitDiagramNodeGroup>
     );
 };
 

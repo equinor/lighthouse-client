@@ -7,11 +7,12 @@ import { ServerError } from '../../Api/Types/ServerError';
 import { fetchAndChewPipetestDataFromApi } from '../../utils/helpers/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet } from '../../Types/pipetest';
-import { ElectroView } from '../Electro/ElectroView';
 import { CheckListTable } from './CheckListTable';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
 import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab } from './styles';
+import { CircuitDiagram } from '@equinor/CircuitDiagram';
+import { useWorkSpace } from '@equinor/WorkSpace';
 
 interface ReleaseControlHTSidesheetProps {
     item: HTSidesheet;
@@ -48,6 +49,8 @@ export const ReleaseControlHTSidesheet = ({
         cacheTime: Infinity,
     });
 
+    const { onGroupeSelect, onSelect } = useWorkSpace();
+
     return (
         <Wrapper>
             <ReleaseControlErrorBanner message={errorMessage} />
@@ -58,11 +61,16 @@ export const ReleaseControlHTSidesheet = ({
                 </SidesheetTabList>
                 <Tabs.Panels>
                     <Tabs.Panel>
-                        <ElectroView
+                        <CircuitDiagram
                             pipetest={item.items[0]}
                             pipetests={data !== undefined ? data : []}
                             width={width}
                             htCable={item.value}
+                            circuitAndStarterTagNos={item.items[0]?.circuits?.map(
+                                (c) => c.circuitAndStarterTagNo
+                            )}
+                            onGroupeSelect={onGroupeSelect}
+                            onSelect={onSelect}
                         />
                     </Tabs.Panel>
                     <Tabs.Panel>
