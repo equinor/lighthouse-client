@@ -4,8 +4,7 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 export async function searchHtCable(value: string, signal?: AbortSignal): Promise<any[]> {
     const { FAM } = httpClient();
     const htExpression = generateExpressions('Register', 'Equals', ['HEAT_TRACING_CABLE']);
-    const tagNoExpression = generateExpressions('TagNo', 'Like', [value]);
-
+    const tagNoExpression = generateExpressions('TagNo', 'Equals', [value]);
     const request = generateFamRequest(
         [
             'Facility',
@@ -20,13 +19,16 @@ export async function searchHtCable(value: string, signal?: AbortSignal): Promis
             'MechanicalCompletionPackageId',
             'Location',
             'TagId',
-            'ChecklistIds',
+            'OpenWorkOrderIds',
             'OpenWorkOrders',
             'Status',
             'InstalledCableLength',
             'MountedOn',
-            'RelatedHTCables',
             'TagHeated',
+            'TagMountedOn',
+            'EstimatedCableLength',
+            'SwitchBoardTagNos',
+            'CircuitTagNos',
         ],
         'And',
         [...htExpression, ...tagNoExpression]

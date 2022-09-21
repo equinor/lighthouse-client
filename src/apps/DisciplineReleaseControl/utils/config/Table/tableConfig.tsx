@@ -1,4 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
+import { generateCommaSeperatedStringArrayColumn } from '@equinor/Table';
 import { TableOptions } from '@equinor/WorkSpace';
 import { WorkflowCompact } from '../../../Components/Workflow/Components/WorkflowCompact';
 import { WorkflowWarningTriangle } from '../../../Components/Workflow/Components/WorkflowWarningTriangle';
@@ -110,7 +111,9 @@ export const tableConfig: TableOptions<Pipetest> = {
             Cell: (cell) => {
                 return (
                     <Monospace>
-                        {getHTList(cell.row.values.checkLists.content.checkLists)}
+                        {generateCommaSeperatedStringArrayColumn(
+                            getHTList(cell.row.values.checkLists.content.checkLists)
+                        )}
                     </Monospace>
                 );
             },

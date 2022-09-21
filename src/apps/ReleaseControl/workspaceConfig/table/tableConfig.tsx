@@ -1,5 +1,7 @@
+import { generateCommaSeperatedStringArrayColumn } from '@equinor/Table';
 import { TableOptions } from '@equinor/WorkSpace';
 import { WorkflowCompact } from '../../../ScopeChangeRequest/workspaceConfig/sTable/WorkflowCompact';
+import { Monospace } from '../../Styles/WrapperStyles';
 import { ReleaseControl } from '../../types/releaseControl';
 
 const customCellView = (render: (req: ReleaseControl) => JSX.Element | null) => ({
@@ -23,6 +25,12 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         'punchListItems',
         'attachments',
         'scopeChangeRequestReferences',
+        'circuits',
+        'switchboards',
+        'systems',
+        'areas',
+        'commPkIds',
+        'commPkNos',
     ],
     columnOrder: ['sequenceNumber', 'title', 'workflowSteps'],
     headers: [
@@ -71,6 +79,84 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         {
             key: 'currentWorkflowStep',
             type: customCellView((rc) => <>{rc?.currentWorkflowStep?.name}</>),
+        },
+    ],
+    customColumns: [
+        {
+            id: 'rcSystems',
+            accessor: 'systems',
+            Header: 'Systems',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                console.log(cell);
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSystems, 8)}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'rcAreas',
+            accessor: 'areas',
+            Header: 'Areas',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas, 5)}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'rcCommPks',
+            accessor: 'commPkNos',
+            Header: 'CommPks',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCommPks, 3)}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'rcSwitchboards',
+            accessor: 'switchboards',
+            Header: 'Switchboards',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSwitchboards, 4)}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'rcCircuits',
+            accessor: 'circuits',
+            Header: 'Circuits',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCircuits, 3)}
+                    </Monospace>
+                );
+            },
         },
     ],
 };
