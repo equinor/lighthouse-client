@@ -1,5 +1,4 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
 import {
     getCircuitTestStatus,
@@ -17,6 +16,8 @@ interface HeatTracingCableProps {
     currentPipetest: Pipetest | null;
     eleNetwork: EleNetwork;
     htCable?: string;
+    onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
+    onSelect?: (item: Record<PropertyKey, unknown>) => void;
 }
 export const HeatTracingCable = ({
     value,
@@ -24,8 +25,9 @@ export const HeatTracingCable = ({
     currentPipetest,
     eleNetwork,
     htCable,
+    onGroupeSelect,
+    onSelect,
 }: HeatTracingCableProps): JSX.Element => {
-    const { onGroupeSelect } = useWorkSpace();
     const pipetestsOnHTCable = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === value));
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
     return (
@@ -82,6 +84,7 @@ export const HeatTracingCable = ({
                             }
                             pipetest={pipetests.find((pipetest) => pipetest.name === x.name)}
                             htCable={htCable}
+                            onSelect={onSelect}
                         />
                     );
                 })}

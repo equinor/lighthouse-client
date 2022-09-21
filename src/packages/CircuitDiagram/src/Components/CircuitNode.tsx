@@ -23,6 +23,8 @@ interface CircuitNodeProps {
     currentPipetest: Pipetest | null;
     cableBorderBottom?: boolean;
     htCable?: string;
+    onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
+    onSelect?: (item: Record<PropertyKey, unknown>) => void;
 }
 
 export const CircuitNode = ({
@@ -33,6 +35,8 @@ export const CircuitNode = ({
     currentPipetest,
     cableBorderBottom,
     htCable,
+    onGroupeSelect,
+    onSelect,
 }: CircuitNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
@@ -68,6 +72,8 @@ export const CircuitNode = ({
                     eleNetwork={eleNetwork}
                     pipetests={pipetests}
                     currentPipetest={currentPipetest}
+                    onGroupeSelect={onGroupeSelect}
+                    onSelect={onSelect}
                 />
             );
         });
@@ -102,6 +108,8 @@ export const CircuitNode = ({
                         pipetests={pipetests}
                         currentPipetest={currentPipetest}
                         htCable={htCable}
+                        onGroupeSelect={onGroupeSelect}
+                        onSelect={onSelect}
                     />
                 );
             case CircuitTypes.SpaceHeater:
@@ -133,6 +141,8 @@ export const CircuitNode = ({
                                 currentPipetest={currentPipetest}
                                 cableBorderBottom={true}
                                 htCable={htCable}
+                                onGroupeSelect={onGroupeSelect}
+                                onSelect={onSelect}
                             />
                             {remainingChildrenRender}
                         </CircuitDiagramVerticalRow>
@@ -144,6 +154,8 @@ export const CircuitNode = ({
                             pipetests={pipetests}
                             currentPipetest={currentPipetest}
                             htCable={htCable}
+                            onGroupeSelect={onGroupeSelect}
+                            onSelect={onSelect}
                         />
                     </CircuitDiagramRow>
                 )}
@@ -162,6 +174,8 @@ export const CircuitNode = ({
                                     currentPipetest={currentPipetest}
                                     cableBorderBottom={true}
                                     htCable={htCable}
+                                    onGroupeSelect={onGroupeSelect}
+                                    onSelect={onSelect}
                                 />
                                 <CircuitNode
                                     key={cableTo?.tagNo}
@@ -170,6 +184,8 @@ export const CircuitNode = ({
                                     pipetests={pipetests}
                                     currentPipetest={currentPipetest}
                                     htCable={htCable}
+                                    onGroupeSelect={onGroupeSelect}
+                                    onSelect={onSelect}
                                 />
                             </CircuitDiagramRow>
                         );
@@ -186,6 +202,8 @@ export const CircuitNode = ({
                                 pipetests={pipetests}
                                 currentPipetest={currentPipetest}
                                 htCable={htCable}
+                                onGroupeSelect={onGroupeSelect}
+                                onSelect={onSelect}
                             />
                         ) : (
                             <CircuitDiagramNodeGroupRow>
@@ -198,6 +216,8 @@ export const CircuitNode = ({
                                     pipetests={pipetests}
                                     currentPipetest={currentPipetest}
                                     htCable={htCable}
+                                    onGroupeSelect={onGroupeSelect}
+                                    onSelect={onSelect}
                                 />
                             </CircuitDiagramNodeGroupRow>
                         );

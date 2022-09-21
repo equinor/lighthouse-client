@@ -22,8 +22,12 @@ interface CircuitDiagramProps {
     pipetest: Pipetest | null;
     pipetests: Pipetest[];
     width: number;
-    htCable?: string; //HT cable tagNo if htCable should be the focus of the diagram (HT sidesheet)
-    circuitAndStarterTagNos: string[]; //list of circuitAndStarterTagNos to fetch eleNetworks from and display
+    /* HT cable tagNo if htCable should be the focus of the diagram (HT sidesheet) */
+    htCable?: string;
+    /* list of circuitAndStarterTagNos to fetch eleNetworks from and display */
+    circuitAndStarterTagNos: string[];
+    onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
+    onSelect?: (item: Record<PropertyKey, unknown>) => void;
 }
 
 // If this component gets logic that causes it to need re-renders, it should be rewritten to use more useMemo()/hooks to avoid re-calculating static logic
@@ -33,6 +37,8 @@ export const CircuitDiagram = ({
     width,
     htCable,
     circuitAndStarterTagNos,
+    onGroupeSelect,
+    onSelect,
 }: CircuitDiagramProps): JSX.Element => {
     const circuitStarterTagNoString = circuitAndStarterTagNos?.toString();
 
@@ -135,6 +141,8 @@ export const CircuitDiagram = ({
                                                             pipetests={pipetests}
                                                             currentPipetest={pipetest}
                                                             htCable={htCable}
+                                                            onGroupeSelect={onGroupeSelect}
+                                                            onSelect={onSelect}
                                                         />
                                                     </CircuitDiagramRow>
                                                 );

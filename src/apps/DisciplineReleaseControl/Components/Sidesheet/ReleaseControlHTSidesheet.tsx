@@ -12,6 +12,7 @@ import { ReleaseControlErrorBanner } from './ErrorBanner';
 import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab } from './styles';
 import { CircuitDiagram } from '@equinor/CircuitDiagram';
+import { useWorkSpace } from '@equinor/WorkSpace';
 
 interface ReleaseControlHTSidesheetProps {
     item: HTSidesheet;
@@ -48,6 +49,8 @@ export const ReleaseControlHTSidesheet = ({
         cacheTime: Infinity,
     });
 
+    const { onGroupeSelect, onSelect } = useWorkSpace();
+
     return (
         <Wrapper>
             <ReleaseControlErrorBanner message={errorMessage} />
@@ -66,6 +69,8 @@ export const ReleaseControlHTSidesheet = ({
                             circuitAndStarterTagNos={item.items[0]?.circuits?.map(
                                 (c) => c.circuitAndStarterTagNo
                             )}
+                            onGroupeSelect={onGroupeSelect}
+                            onSelect={onSelect}
                         />
                     </Tabs.Panel>
                     <Tabs.Panel>

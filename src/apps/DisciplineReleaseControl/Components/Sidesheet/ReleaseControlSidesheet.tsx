@@ -23,6 +23,7 @@ import { TablesTab, WarningBanner, WarningBannerText } from './styles';
 import { useSidesheetEffects } from './useSidesheetEffects';
 import { WorkOrderTab } from './WorkOrderTab';
 import { CircuitDiagram } from '@equinor/CircuitDiagram';
+import { useWorkSpace } from '@equinor/WorkSpace';
 
 interface GatewaySidesheetProps {
     item: Pipetest | HTSidesheet;
@@ -74,6 +75,8 @@ export function ReleaseControlSidesheet({
         (x) => x.procosysStatus === null
     )?.length;
 
+    const { onGroupeSelect, onSelect } = useWorkSpace();
+
     return (
         <Wrapper>
             <ReleaseControlErrorBanner message={errorMessage} />
@@ -95,6 +98,8 @@ export function ReleaseControlSidesheet({
                             circuitAndStarterTagNos={item?.circuits?.map(
                                 (c) => c.circuitAndStarterTagNo
                             )}
+                            onGroupeSelect={onGroupeSelect}
+                            onSelect={onSelect}
                         />
                     </Tabs.Panel>
                     <Tabs.Panel>
