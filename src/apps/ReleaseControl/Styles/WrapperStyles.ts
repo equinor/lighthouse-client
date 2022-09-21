@@ -10,3 +10,7 @@ export const Wrapper = styled.div`
     margin: 0.2rem 0rem;
     gap: 0.8em;
 `;
+
+export const Monospace = styled.div`
+    font-variant-numeric: tabular-nums;
+`;
