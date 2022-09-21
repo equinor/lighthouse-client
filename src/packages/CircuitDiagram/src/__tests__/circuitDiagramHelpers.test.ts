@@ -1,13 +1,13 @@
 import {
+    CheckListStepTag,
     getCableChildren,
     getCircuitChildren,
-    getElectroTestStatus,
+    getCircuitTestStatus,
     getNodeStatus,
-} from '../Components/Electro/electroViewHelpers';
-import { eleTestData } from '../Mock/mockData';
-import { CheckListStepTag } from '../Types/drcEnums';
+} from '@equinor/CircuitDiagram';
+import { eleTestData } from '../Mock/circuitMockData';
 
-describe('electroViewHelpers tests', () => {
+describe('circuitDiagramHelpers tests', () => {
     it('should return the circuit (junction box) that connects to the circuit starter', () => {
         const result = getCircuitChildren(
             eleTestData,
@@ -33,11 +33,11 @@ describe('electroViewHelpers tests', () => {
     });
 
     it('should return correct status for ht test', () => {
-        expect(getElectroTestStatus(CheckListStepTag.HtTest, eleTestData.checkLists)).toStrictEqual(
+        expect(getCircuitTestStatus(CheckListStepTag.HtTest, eleTestData.checkLists)).toStrictEqual(
             'OK'
         );
         expect(
-            getElectroTestStatus(CheckListStepTag.HtCTest, eleTestData.checkLists)
+            getCircuitTestStatus(CheckListStepTag.HtCTest, eleTestData.checkLists)
         ).toStrictEqual('OS');
     });
 });
