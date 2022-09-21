@@ -8,18 +8,6 @@ export const tableConfig: TableOptions<ReleaseControl> = {
     objectIdentifierKey: 'id',
     enableSelectRows: true,
     preventAutoGenerateColumns: true,
-    headers: [
-        { key: 'sequenceNumber', title: 'Id' },
-        { key: 'title', title: 'Title' },
-        { key: 'workflowSteps', title: 'Workflow' },
-        { key: 'currentWorkflowStep', title: 'Current step' },
-        { key: 'workflowStatus', title: 'Status' },
-        { key: 'phase', title: 'Phase' },
-        { key: 'state', title: 'State' },
-        { key: 'plannedDueDate', title: 'Due date' },
-        { key: 'createdAtUtc', title: 'Created at' },
-        { key: 'modifiedAtUtc', title: 'Last modified' },
-    ],
     customColumns: [
         {
             id: 'sequenceNumber',
