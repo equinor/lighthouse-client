@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { StatusCircle } from '@equinor/GardenUtils';
-import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
-import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
+import { getCircuitDiagramCompletionStatusColor } from '../circuitDiagramHelpers';
+import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../styles';
 
 interface JunctionBoxProps {
     value?: string;
@@ -10,14 +10,14 @@ interface JunctionBoxProps {
 }
 export const JunctionBox = ({ value, status }: JunctionBoxProps): JSX.Element => {
     return (
-        <ElectroViewNodeGroup>
+        <CircuitDiagramNodeGroup>
             <JunctionBoxNode>
-                <ElectroViewNodeValueText>
+                <CircuitDiagramNodeValueText>
                     <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
-                </ElectroViewNodeValueText>
-                <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
+                </CircuitDiagramNodeValueText>
+                <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
             </JunctionBoxNode>
-        </ElectroViewNodeGroup>
+        </CircuitDiagramNodeGroup>
     );
 };
 

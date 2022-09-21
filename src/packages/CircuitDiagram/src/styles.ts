@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const ElectroViewContainer = styled.div<{ width: number }>`
+export const CircuitDiagramContainer = styled.div<{ width: number }>`
     display: flex;
     flex-direction: row;
     flex: 0 0 100%;
@@ -37,7 +37,7 @@ export const SwitchBoardBorderContainer = styled.div`
     background: ${tokens.colors.ui.background__light.hex};
 `;
 
-export const ElectroViewRow = styled.div`
+export const CircuitDiagramRow = styled.div`
     display: flex;
     flex-direction: row;
     padding-bottom: 5px;
@@ -46,41 +46,46 @@ export const ElectroViewRow = styled.div`
     flex-basis: 100%;
 `;
 
-export const ElectroViewNodeGroup = styled.div`
+export const CircuitDiagramNodeGroup = styled.div`
     display: flex;
     flex-direction: column;
 `;
 
-export const ElectroViewNodeGroupRow = styled.div`
+export const CircuitDiagramNodeGroupRow = styled.div`
     display: flex;
     flex-direction: row;
 `;
 
-export const ElectroViewNodeText = styled.div`
+export const CircuitDiagramNodeText = styled.div`
     display: flex;
     flex-direction: horizontal;
     font-size: 12px;
     font-weight: 500, Medium;
     margin-left: 4px;
     padding-top: 3px;
+    font-variant-numeric: tabular-nums;
 `;
 
-export const ElectroViewNodeValueText = styled.div<{ clickable?: boolean }>`
+export const CircuitDiagramNodeValueText = styled.div<{ clickable?: boolean }>`
     font-size: 12px;
     font-weight: 400, regular;
     margin-left: 4px;
-    padding-top: 2px;
+    padding-top: 4px;
+    font-variant-numeric: tabular-nums;
     cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
 `;
 
-export const ElectroViewHTHighlight = styled.div`
+export const CircuitDiagramHTText = styled.div<{ clickable?: boolean; highlight?: boolean }>`
     font-size: 12px;
     font-weight: 400, regular;
-    margin-left: 5px;
-    cursor: pointer;
-    padding: 1px;
-    margin-top: 2px;
-    background-color: ${tokens.colors.interactive.primary__resting.hex};
-    color: ${tokens.colors.text.static_icons__primary_white.hex};
+    margin-left: 4px;
+    padding-top: 5px;
     font-variant-numeric: tabular-nums;
+
+    background-color: ${(p) =>
+        p.highlight ? tokens.colors.interactive.primary__resting.hex : null};
+    color: ${(p) => (p.highlight ? tokens.colors.text.static_icons__primary_white.hex : null)};
+    cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
+    padding-left: ${(p) => (p.highlight ? '2px' : null)};
+    padding-right: ${(p) => (p.highlight ? '2px' : null)};
 `;

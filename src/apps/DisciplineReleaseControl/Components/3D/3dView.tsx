@@ -5,12 +5,11 @@ import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { TagMap, TagOverlay } from '../../../../packages/ModelViewer/components/tagOverlay';
-import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
-import { getEleNetworks } from '../../utils/api/getEleNetworks';
 import { MessageWrapper, ThreeDModel } from './3dViewStyles';
 import { getIconName, getStatusColor, getTagOverlay as getElectroTagOverlay } from './Helpers';
 import { ElectroIcon } from './icons/ElectroIcon';
+import { EleNetwork, getEleNetworks } from '@equinor/CircuitDiagram';
 
 interface I3DViewProp {
     pipetest: Pipetest;

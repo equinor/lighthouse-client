@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { StatusCircle } from '@equinor/GardenUtils';
-import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
-import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
+import { getCircuitDiagramCompletionStatusColor } from '../circuitDiagramHelpers';
+import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../styles';
 
 interface SpaceHeaterProps {
     value?: string;
@@ -10,14 +10,14 @@ interface SpaceHeaterProps {
 }
 export const SpaceHeater = ({ value, status }: SpaceHeaterProps): JSX.Element => {
     return (
-        <ElectroViewNodeGroup>
+        <CircuitDiagramNodeGroup>
             <SpaceHeaterNode>
-                <ElectroViewNodeValueText>
+                <CircuitDiagramNodeValueText>
                     <div>{value}</div>
-                </ElectroViewNodeValueText>
-                <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
+                </CircuitDiagramNodeValueText>
+                <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
             </SpaceHeaterNode>
-        </ElectroViewNodeGroup>
+        </CircuitDiagramNodeGroup>
     );
 };
 

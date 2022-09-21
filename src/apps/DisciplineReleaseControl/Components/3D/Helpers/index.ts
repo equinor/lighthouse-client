@@ -1,6 +1,6 @@
+import { EleNetwork, EleNetworkCheckList } from '@equinor/CircuitDiagram';
 import { tokens } from '@equinor/eds-tokens';
 import { TagMap } from '../../../../../packages/ModelViewer/components/tagOverlay';
-import { EleNetwork, EleNetworkCheckList } from '../../../Types/eleNetwork';
 
 export function getIconName(type: string): string {
     switch (type) {
