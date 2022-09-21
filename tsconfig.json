@@ -148,7 +148,10 @@
             ],
             "@equinor/fam-request-builder": [
                 "./src/packages/FamRequestBuilder"
-            ]
+            ],
+            "@equinor/CircuitDiagram": [
+                "./src/packages/CircuitDiagram"
+            ],
         }
     },
     "compileOnSave": true,

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useWorkSpace } from '@equinor/WorkSpace';
-import { Pipetest } from '../../../Types/pipetest';
 import { tokens } from '@equinor/eds-tokens';
+import { Pipetest } from '../types/pipetestTypes';
 
 type LineProps = {
     value?: string;

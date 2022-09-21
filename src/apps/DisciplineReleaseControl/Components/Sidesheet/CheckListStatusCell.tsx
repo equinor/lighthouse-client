@@ -1,8 +1,8 @@
+import { getCircuitDiagramCompletionStatusColor } from '@equinor/CircuitDiagram';
 import { CellProps } from '@equinor/Table';
 import styled from 'styled-components';
 import { StatusCircle } from '../../../../packages/GardenUtils/src';
 import { CheckListType } from '../../Types/pipetest';
-import { getElectroViewCompletionStatusColor } from '../Electro/electroViewHelpers';
 
 export const CheckListStatusCell = ({
     value,
@@ -11,7 +11,7 @@ export const CheckListStatusCell = ({
         <StatusItem>
             <StatusText>{value.status}</StatusText>
             {value.status && (
-                <StatusCircle statusColor={getElectroViewCompletionStatusColor(value.status)} />
+                <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(value.status)} />
             )}
         </StatusItem>
     );
