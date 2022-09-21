@@ -39,6 +39,7 @@ export function usePowerBI(
             setError(undefined);
             try {
                 const fusionConfig = await getConfig();
+
                 setReportConfig((config) => ({ ...config, ...fusionConfig }));
             } catch (error: any) {
                 setError(error);
