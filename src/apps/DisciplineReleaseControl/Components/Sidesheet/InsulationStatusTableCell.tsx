@@ -1,8 +1,8 @@
+import { getCircuitDiagramCompletionStatusColor } from '@equinor/CircuitDiagram';
 import { CellProps } from '@equinor/Table';
 import styled from 'styled-components';
 import { StatusCircle } from '../../../../packages/GardenUtils/src';
 import { InsulationBoxType } from '../../Types/pipetest';
-import { getElectroViewCompletionStatusColor } from '../Electro/electroViewHelpers';
 
 export const InsulationStatusTableCell = ({
     value,
@@ -12,7 +12,7 @@ export const InsulationStatusTableCell = ({
             <StatusText>{value.procosysStatus}</StatusText>
             {value.procosysStatus && (
                 <StatusCircle
-                    statusColor={getElectroViewCompletionStatusColor(value.procosysStatus)}
+                    statusColor={getCircuitDiagramCompletionStatusColor(value.procosysStatus)}
                 />
             )}
         </StatusItem>

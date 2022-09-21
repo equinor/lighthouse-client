@@ -13,7 +13,6 @@ import {
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 import { Panel, ThreeDView } from '../3D';
-import { ElectroView } from '../Electro/ElectroView';
 import { CheckListTable } from './CheckListTable';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
 import { InsulationTable } from './InsulationTable';
@@ -23,6 +22,7 @@ import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
 import { useSidesheetEffects } from './useSidesheetEffects';
 import { WorkOrderTab } from './WorkOrderTab';
+import { CircuitDiagram } from '@equinor/CircuitDiagram';
 
 interface GatewaySidesheetProps {
     item: Pipetest | HTSidesheet;
@@ -88,10 +88,13 @@ export function ReleaseControlSidesheet({
                 </SidesheetTabList>
                 <Tabs.Panels>
                     <Tabs.Panel>
-                        <ElectroView
+                        <CircuitDiagram
                             pipetest={item}
                             pipetests={data !== undefined ? data : []}
                             width={width}
+                            circuitAndStarterTagNos={item?.circuits?.map(
+                                (c) => c.circuitAndStarterTagNo
+                            )}
                         />
                     </Tabs.Panel>
                     <Tabs.Panel>
