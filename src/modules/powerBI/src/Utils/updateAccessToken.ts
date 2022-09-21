@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/lighthouse-portal-client';
+import { httpClient, isProduction } from '@equinor/lighthouse-portal-client';
 import { Report } from 'powerbi-client';
 import { Access } from '../Types/access';
 import { AccessToken } from './access-token';
@@ -33,12 +33,27 @@ const updateToken = async (reportId: string, report: Report | undefined): Promis
  * @param report - The embedded report object.
  */
 export const checkTokenAndUpdate = (reportId: string, report: Report | undefined): void => {
+    const now = new Date();
     const access = AccessToken.getInstance();
     const currentTime = new Date().getTime();
     const expiration = Date.parse(access?.getAccess()?.expirationUtc ?? '');
     const timeUntilExpiration = expiration - currentTime;
     const timeToUpdate = MINUTES_BEFORE_EXPIRATION * 60 * 1000;
+    if (!isProduction()) {
+        console.info('Checking if token needs to be updated');
+        console.log(
+            'Access token expiration',
+            access?.getAccess()?.expirationUtc,
+            'with value: ',
+            expiration
+        );
+        console.log('Current time is', now, 'with value: ', now.getTime());
+        console.log('Using this value to check for current time: ', currentTime);
+        console.log('Time until expiration is ', timeUntilExpiration);
+    }
+
     if (timeUntilExpiration <= timeToUpdate) {
+        console.info('Updating token');
         updateToken(reportId, report);
     }
 };
