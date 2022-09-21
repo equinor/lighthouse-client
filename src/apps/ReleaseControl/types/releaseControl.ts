@@ -145,6 +145,13 @@ export type ReleaseControl = {
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
     attachments: Attachment[];
+
+    systems: string[];
+    areas: string[];
+    switchboards: string[];
+    circuits: string[];
+    commPkIds: string[];
+    commPkNos: string[];
 };
 
 export type ReleaseControlWorkflow = {
@@ -163,31 +170,30 @@ export type FamTag = {
     project: string;
     tagNo: string;
     tagId: string;
-    description: string;
     register: string | null;
-    tagType: string | null;
     function: string | null;
+    functionalSystem: string | null;
     mechanicalCompletionPackageNo: string;
     mechanicalCompletionPackageId: string;
     commissioningPackageNo: string;
     commissioningPackageId: string;
-    packageNo: string | null;
-    callOffNo: string | null;
     status: string | null;
-    discipline: string | null;
-    functionalSystem: string | null;
-    system: string | null;
     location: string | null;
-    area: string | null;
-    isVoided: string | null;
-    createdDate: string | null;
-    updatedDate: string | null;
     mountedOn: string | null;
     relatedHTCables: string | null;
     openWorkOrders: string | null;
+    openWorkOrderIds: string | null;
     installedCableLength: string | null;
+    estimatedCableLength: string | null;
     tagHeated: string | null;
-    checklistIds: string | null;
+    tagMountedOn: string | null;
+    switchBoardTagNos: string | null;
+    circuitTagNos: string | null;
+
+    //Sent to release control api
+    area: string | null;
+    tagType: string | null;
+    system: string | null;
 };
 
 export type FamTagType = {
@@ -195,31 +201,30 @@ export type FamTagType = {
     project: string;
     tagNo: string;
     tagId: string;
-    description: string;
     register: string | null;
-    tagType: string | null;
     function: string | null;
+    functionalSystem: string | null;
     mechanicalCompletionPackageNo: string;
     mechanicalCompletionPackageId: string;
     commissioningPackageNo: string;
     commissioningPackageId: string;
-    packageNo: string | null;
-    callOffNo: string | null;
     status: string | null;
-    discipline: string | null;
-    functionalSystem: string | null;
-    system: string | null;
     location: string | null;
-    area: string | null;
-    isVoided: string | null;
-    createdDate: string | null;
-    updatedDate: string | null;
     mountedOn: string | null;
     relatedHTCables: string | null;
     openWorkOrders: string | null;
+    openWorkOrderIds: string | null;
     installedCableLength: string | null;
+    estimatedCableLength: string | null;
     tagHeated: string | null;
-    checklistIds: string | null;
+    tagMountedOn: string | null;
+    switchBoardTagNos: string | null;
+    circuitTagNos: string | null;
+
+    //Sent to release control api
+    area: string | null;
+    tagType: string | null;
+    system: string | null;
 };
 
 export type Attachment = {
