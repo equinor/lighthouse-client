@@ -5,4 +5,4 @@ export * from './Components/ColumnPicker';
 export * from './Hooks';
 export * from './Types';
 export { defaultGroupByFn } from './Utils/utils';
-export { generateCommaSeperatedStringArrayColumn } from './Utils/columnGenerators';
+export { generateCommaSeperatedStringArrayColumn } from './Utils/generateCommaSeperatedStringArrayColumn';

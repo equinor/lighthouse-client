@@ -4,35 +4,10 @@ import { WorkflowCompact } from '../../../ScopeChangeRequest/workspaceConfig/sTa
 import { Monospace } from '../../Styles/WrapperStyles';
 import { ReleaseControl } from '../../types/releaseControl';
 
-const customCellView = (render: (req: ReleaseControl) => JSX.Element | null) => ({
-    Cell: ({ cell }: any) => <>{render(cell.value.content)}</>,
-});
-
 export const tableConfig: TableOptions<ReleaseControl> = {
     objectIdentifierKey: 'id',
     enableSelectRows: true,
-    hiddenColumns: [
-        'id',
-        'description',
-        'isVoided',
-        'hasComments',
-        'hasPendingContributions',
-        'createdBy',
-        'modifiedBy',
-        'scopeTags',
-        'scopeHTTags',
-        'documents',
-        'punchListItems',
-        'attachments',
-        'scopeChangeRequestReferences',
-        'circuits',
-        'switchboards',
-        'systems',
-        'areas',
-        'commPkIds',
-        'commPkNos',
-    ],
-    columnOrder: ['sequenceNumber', 'title', 'workflowSteps'],
+    preventAutoGenerateColumns: true,
     headers: [
         { key: 'sequenceNumber', title: 'Id' },
         { key: 'title', title: 'Title' },
@@ -45,43 +20,123 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         { key: 'createdAtUtc', title: 'Created at' },
         { key: 'modifiedAtUtc', title: 'Last modified' },
     ],
-    customCellView: [
-        {
-            key: 'sequenceNumber',
-            type: customCellView((rc) => <>{'RC' + rc.sequenceNumber}</>),
-        },
-        {
-            key: 'plannedDueDate',
-            type: customCellView((rc) => (
-                <>{rc.plannedDueDate && new Date(rc.plannedDueDate).toLocaleDateString('en-gb')}</>
-            )),
-        },
-        {
-            key: 'workflowSteps',
-            type: customCellView((rc) => <WorkflowCompact steps={rc.workflowSteps as any[]} />),
-        },
-        {
-            key: 'createdAtUtc',
-            type: customCellView((rc) => (
-                <>{rc.createdAtUtc && new Date(rc.createdAtUtc).toLocaleDateString('en-gb')}</>
-            )),
-        },
-        {
-            key: 'state',
-            type: customCellView((rc) => <>{rc.isVoided ? 'Voided' : rc.state}</>),
-        },
-        {
-            key: 'modifiedAtUtc',
-            type: customCellView((rc) => (
-                <>{rc.modifiedAtUtc && new Date(rc.modifiedAtUtc).toLocaleDateString('en-gb')}</>
-            )),
-        },
-        {
-            key: 'currentWorkflowStep',
-            type: customCellView((rc) => <>{rc?.currentWorkflowStep?.name}</>),
-        },
-    ],
     customColumns: [
+        {
+            id: 'sequenceNumber',
+            Header: 'Id',
+            accessor: (rc) => rc.sequenceNumber,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 75,
+            Cell: (cell) => {
+                return <>{'RC' + cell.row.values.sequenceNumber}</>;
+            },
+        },
+        {
+            id: 'title',
+            Header: 'Title',
+            accessor: (rc) => rc.title,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 300,
+        },
+        {
+            id: 'workflowSteps',
+            Header: 'Workflow',
+            accessor: (rc) => rc.workflowSteps,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 300,
+            Cell: (cell) => {
+                return <WorkflowCompact steps={cell.row.values.workflowSteps as any[]} />;
+            },
+        },
+        {
+            id: 'phase',
+            Header: 'Phase',
+            accessor: (rc) => rc.phase,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 75,
+        },
+        {
+            id: 'dueDate',
+            Header: 'Due date',
+            accessor: (rc) => rc.plannedDueDate,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+            Cell: (cell) => {
+                return (
+                    <>
+                        {cell.row.values.dueDate &&
+                            new Date(cell.row.values.dueDate).toLocaleDateString('en-gb')}
+                    </>
+                );
+            },
+        },
+        {
+            id: 'state',
+            Header: 'State',
+            accessor: (rc) => rc.state,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+            Cell: (cell) => {
+                return <>{cell.row.values.state.isVoided ? 'Voided' : cell.row.values.state}</>;
+            },
+        },
+        {
+            id: 'status',
+            Header: 'Status',
+            accessor: (rc) => rc.workflowStatus,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+        },
+        {
+            id: 'currentStep',
+            Header: 'Current step',
+            accessor: (rc) => rc.currentWorkflowStep,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 200,
+            Cell: (cell) => {
+                return <>{cell.row.values.currentStep?.name}</>;
+            },
+        },
+        {
+            id: 'createdAt',
+            Header: 'Created at',
+            accessor: (rc) => rc.createdAtUtc,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+            Cell: (cell) => {
+                return (
+                    <>
+                        {cell.row.values.createdAt &&
+                            new Date(cell.row.values.createdAt).toLocaleDateString('en-gb')}
+                    </>
+                );
+            },
+        },
+        {
+            id: 'lastModified',
+            Header: 'Last modified',
+            accessor: (rc) => rc.modifiedAtUtc,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+            Cell: (cell) => {
+                return (
+                    <>
+                        {cell.row.values.lastModified &&
+                            new Date(cell.row.values.lastModified).toLocaleDateString('en-gb')}
+                    </>
+                );
+            },
+        },
         {
             id: 'rcSystems',
             accessor: 'systems',
@@ -90,7 +145,6 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             width: 300,
             aggregate: 'count',
             Cell: (cell) => {
-                console.log(cell);
                 return (
                     <Monospace>
                         {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSystems, 8)}
