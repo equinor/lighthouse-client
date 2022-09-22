@@ -23,7 +23,7 @@ export function selectPlantByContext(
     let message: Message | undefined = undefined;
     if (plants.length === 0) {
         message = createMessage(
-            `No plants awaitable in the current context ${context}}`,
+            `You need access to ${context} in Echo to use 3D functionality`,
             'NoPlant'
         );
     }
