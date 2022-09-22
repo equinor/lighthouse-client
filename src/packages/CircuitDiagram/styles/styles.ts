@@ -1,21 +1,34 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const CircuitDiagramContainer = styled.div<{ width: number }>`
+export const CircuitDiagramWrapper = styled.div<{ width: number }>`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex: 0 0 100%;
-    align-items: center;
     position: relative;
     flex-wrap: wrap;
     overflow: auto;
     white-space: nowrap;
     max-width: 100%;
     width: ${(p) => (p.width ? p.width : '800px')};
-    max-height: ${() => window.innerHeight - 378 + 'px'};
-    overflow-x: auto;
-    overflow-y: auto;
+    max-height: ${() => window.innerHeight - 264 + 'px'};
     padding-left: 16px;
+`;
+
+export const CircuitDiagramContainer = styled.div<{ width: number }>`
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    white-space: nowrap;
+    width: ${(p) => (p.width ? p.width : '800px')};
+    max-width: 100%;
+`;
+
+//Filler div to place scrollbar at the bottom of screen
+export const CircuitDiagramFillerDiv = styled.div`
+    height: 100vh;
 `;
 
 export const SwitchBoardContainer = styled.div`

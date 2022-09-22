@@ -3,11 +3,16 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 44px;
+    flex: 0 0 100%;
+    position: relative;
+    max-height: ${() => window.innerHeight - 264 + 'px'};
+    overflow: auto;
+`;
+//Filler div to place scrollbar at the bottom of screen
+export const WrapperFillerDiv = styled.div`
+    height: 100vh;
 `;
 
 export const FlexColumn = styled.div`
@@ -116,12 +121,10 @@ export const SidesheetTabList = styled(Tabs.List)`
     background-color: ${tokens.colors.ui.background__light.hex};
 `;
 export const TabList = styled(Tabs.Panels)`
-    margin: 24px 32px;
+    margin-left: 16px;
 `;
 
 export const Tab = styled(Tabs.Panel)`
-    overflow-y: scroll;
-    overflow-x: hidden;
     height: 100%;
     padding-bottom: 50px;
 `;
@@ -129,6 +132,5 @@ export const Tab = styled(Tabs.Panel)`
 export const SidesheetWrapper = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
-    overflow: scroll;
     height: 100%;
 `;

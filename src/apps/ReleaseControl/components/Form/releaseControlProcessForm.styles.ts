@@ -8,6 +8,7 @@ export const ActionBar = styled.div`
     border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
     background-color: white;
     margin-top: 100px;
+    max-width: 95%;
 `;
 
 export const ButtonContainer = styled.div`
@@ -49,6 +50,7 @@ export const FlexColumn = styled.div`
     display: flex;
     gap: 10px;
     flex-direction: column;
+    max-width: 95%;
 `;
 
 export const Section = styled.div`
@@ -59,9 +61,12 @@ export const Section = styled.div`
 `;
 
 export const Wrapper = styled.div`
-    overflow-y: scroll;
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 100%;
+    position: relative;
     height: 100%;
+    overflow: auto;
 `;
 
 export const FormWrapper = styled.form`
