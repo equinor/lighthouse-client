@@ -7,6 +7,7 @@ import {
     FAMTypes,
     useFAMSearch,
 } from '../../../../../ScopeChangeRequest/hooks/Search/useFAMSearch';
+import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { FamTagType } from '../../../../types/releaseControl';
 import { HtCableTable } from './HtCableTable';
 import { Select } from './ScopeSelect';
@@ -44,8 +45,10 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
 
     async function addHtCable(value: TypedSelectOption) {
         setLoading(true);
-        const newValues = searchFAM(value.value, 'htcable', undefined);
-        onChange([...htCables, ...(await newValues)]);
+        const newValues = searchFAM(value.value, 'htcable');
+        if (await newValues) {
+            onChange([...(DRCFormAtomApi.readAtomValue().htCables ?? []), ...(await newValues)]);
+        }
         setLoading(false);
     }
 
@@ -65,7 +68,6 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
                         }}
                         onInputChange={abort}
                         value={htCables}
-                        disabled={loading}
                     />
                     <LoadingWrapper>
                         {loading ? <Progress.Dots color="primary" /> : null}

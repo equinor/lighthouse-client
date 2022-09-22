@@ -7,6 +7,7 @@ import {
     FAMTypes,
     useFAMSearch,
 } from '../../../../../ScopeChangeRequest/hooks/Search/useFAMSearch';
+import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { FamTagType } from '../../../../types/releaseControl';
 import { Select } from './ScopeSelect';
 import { LoadingWrapper, SearchWrapper, Section } from './search.styles';
@@ -18,9 +19,8 @@ interface SearchTagsProps {
 }
 
 export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => {
-    const { getSignal, abort } = useCancellationToken();
-
     const { searchFAM } = useFAMSearch();
+    const { getSignal, abort } = useCancellationToken();
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -44,8 +44,10 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
 
     async function addTag(value: TypedSelectOption) {
         setLoading(true);
-        const newValues = searchFAM(value.value, 'famtag', undefined);
-        onChange([...tags, ...(await newValues)]);
+        const newValues = searchFAM(value.value, 'famtag');
+        if (await newValues) {
+            onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), ...(await newValues)]);
+        }
         setLoading(false);
     }
 
@@ -65,7 +67,6 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                         }}
                         onInputChange={abort}
                         value={tags}
-                        disabled={loading}
                     />
                     <LoadingWrapper>
                         {loading ? <Progress.Dots color="primary" /> : null}
