@@ -14,25 +14,23 @@ import { EditButtonBar } from './EditButtonBar';
 
 export const EditScopeTab = (): JSX.Element => {
     return (
-        <>
-            <Wrapper>
-                <FormWrapper>
-                    <FlexColumn>
-                        General info
-                        <TitleInput />
-                        <DescriptionInput />
-                        <PlannedDueDateInput />
-                        <TagsInput />
-                        <HtCablesInput />
-                        <ReferencesInput />
-                        Attachments
-                        <HotUpload />
-                        <RequestAttachmentsList />
-                    </FlexColumn>
-                </FormWrapper>
-                <WrapperFillerDiv />
-                <EditButtonBar />
-            </Wrapper>
-        </>
+        <Wrapper>
+            <FormWrapper>
+                <FlexColumn>
+                    General info
+                    <TitleInput />
+                    <DescriptionInput />
+                    <PlannedDueDateInput />
+                    <TagsInput />
+                    <HtCablesInput />
+                    <ReferencesInput />
+                    Attachments
+                    <HotUpload />
+                    <RequestAttachmentsList />
+                </FlexColumn>
+            </FormWrapper>
+            <WrapperFillerDiv />
+            <EditButtonBar />
+        </Wrapper>
     );
 };

@@ -15,21 +15,19 @@ export const EditWorkflowTab = (): JSX.Element => {
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
 
     return (
-        <>
-            <Wrapper>
-                <FormWrapper>
-                    <FlexColumn>
-                        Workflow
-                        <WorkflowCustomEditor />
-                        {steps.length !== 0 && (
-                            <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
-                        )}
-                    </FlexColumn>
-                </FormWrapper>
-                <WrapperFillerDiv />
+        <Wrapper>
+            <FormWrapper>
+                <FlexColumn>
+                    Workflow
+                    <WorkflowCustomEditor />
+                    {steps.length !== 0 && (
+                        <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
+                    )}
+                </FlexColumn>
+            </FormWrapper>
+            <WrapperFillerDiv />
 
-                <EditButtonBar />
-            </Wrapper>
-        </>
+            <EditButtonBar />
+        </Wrapper>
     );
 };
