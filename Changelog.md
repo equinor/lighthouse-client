@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+## 1.13.0
+
+- [ReleaseControl] Simultaneous tag/htCable search. Search and select multiple at a time.
+- [ReleaseControl] Scrollbar fix in circuit diagram + RC sidesheet
+- [ReleaseControl] System filter bugfix
+- [PipingAndHeattrace] Better error message when no access to 3D model
+
 ## 1.12.0
 
 - [PowerBI] Refetch token when expired
