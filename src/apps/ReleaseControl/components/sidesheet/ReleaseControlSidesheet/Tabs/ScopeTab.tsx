@@ -14,6 +14,7 @@ import {
     SubSectionText,
     SubSectionTitle,
     Wrapper,
+    WrapperFillerDiv,
 } from '../sidesheetStyles';
 
 export const ScopeTab = (): JSX.Element => {
@@ -95,6 +96,7 @@ export const ScopeTab = (): JSX.Element => {
                     </InnerSection>
                 </FlexColumn>
             </FormWrapper>
+            <WrapperFillerDiv />
         </Wrapper>
     );
 };

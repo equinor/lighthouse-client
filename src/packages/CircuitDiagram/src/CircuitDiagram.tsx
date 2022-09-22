@@ -6,9 +6,11 @@ import {
 } from '../Utils/circuitDiagramHelpers';
 import {
     CircuitDiagramContainer,
+    CircuitDiagramFillerDiv,
     CircuitDiagramNodeGroupRow,
     CircuitDiagramNodeText,
     CircuitDiagramRow,
+    CircuitDiagramWrapper,
     SwitchBoardBorderContainer,
     SwitchBoardContainer,
 } from '../styles/styles';
@@ -104,55 +106,60 @@ export const CircuitDiagram = ({
             {circuitStarterTagNoString !== '' ? (
                 <>
                     {!data && <h3 style={{ marginLeft: '8px' }}>Loading circuit diagram...</h3>}
-                    <CircuitDiagramContainer width={width}>
-                        {switchboardArray?.map((eleNetworksForSwitchboard: EleNetwork[]) => {
-                            const switchboardTagNo =
-                                eleNetworksForSwitchboard[0].switchBoardTagNo.split('-');
-                            const switchboardStatus = getNodeStatus(
-                                eleNetworksForSwitchboard[0].checkLists,
-                                switchboardTagNo[0]
-                            );
-                            return (
-                                <SwitchBoardContainer
-                                    key={eleNetworksForSwitchboard[0].switchBoardTagNo}
-                                >
-                                    <SwitchBoardBorderContainer>
-                                        <CircuitDiagramNodeGroupRow>
-                                            <CircuitDiagramNodeText>
-                                                {switchboardTagNo[0]}
-                                            </CircuitDiagramNodeText>
-                                            <StatusCircle
-                                                statusColor={getCircuitDiagramCompletionStatusColor(
-                                                    switchboardStatus
-                                                )}
-                                            />
-                                        </CircuitDiagramNodeGroupRow>
-                                        {eleNetworksForSwitchboard?.map(
-                                            (eleNetwork: EleNetwork) => {
-                                                const startNode = eleNetwork.circuits.find(
-                                                    (x) => x.parentEleNetId === null
-                                                );
-                                                return (
-                                                    <CircuitDiagramRow key={eleNetwork.eleNetId}>
-                                                        <CircuitNode
-                                                            key={startNode?.eleNetId}
-                                                            node={startNode}
-                                                            eleNetwork={eleNetwork}
-                                                            pipetests={pipetests}
-                                                            currentPipetest={pipetest}
-                                                            htCable={htCable}
-                                                            onGroupeSelect={onGroupeSelect}
-                                                            onSelect={onSelect}
-                                                        />
-                                                    </CircuitDiagramRow>
-                                                );
-                                            }
-                                        )}
-                                    </SwitchBoardBorderContainer>
-                                </SwitchBoardContainer>
-                            );
-                        })}
-                    </CircuitDiagramContainer>
+                    <CircuitDiagramWrapper width={width}>
+                        <CircuitDiagramContainer width={width}>
+                            {switchboardArray?.map((eleNetworksForSwitchboard: EleNetwork[]) => {
+                                const switchboardTagNo =
+                                    eleNetworksForSwitchboard[0].switchBoardTagNo.split('-');
+                                const switchboardStatus = getNodeStatus(
+                                    eleNetworksForSwitchboard[0].checkLists,
+                                    switchboardTagNo[0]
+                                );
+                                return (
+                                    <SwitchBoardContainer
+                                        key={eleNetworksForSwitchboard[0].switchBoardTagNo}
+                                    >
+                                        <SwitchBoardBorderContainer>
+                                            <CircuitDiagramNodeGroupRow>
+                                                <CircuitDiagramNodeText>
+                                                    {switchboardTagNo[0]}
+                                                </CircuitDiagramNodeText>
+                                                <StatusCircle
+                                                    statusColor={getCircuitDiagramCompletionStatusColor(
+                                                        switchboardStatus
+                                                    )}
+                                                />
+                                            </CircuitDiagramNodeGroupRow>
+                                            {eleNetworksForSwitchboard?.map(
+                                                (eleNetwork: EleNetwork) => {
+                                                    const startNode = eleNetwork.circuits.find(
+                                                        (x) => x.parentEleNetId === null
+                                                    );
+                                                    return (
+                                                        <CircuitDiagramRow
+                                                            key={eleNetwork.eleNetId}
+                                                        >
+                                                            <CircuitNode
+                                                                key={startNode?.eleNetId}
+                                                                node={startNode}
+                                                                eleNetwork={eleNetwork}
+                                                                pipetests={pipetests}
+                                                                currentPipetest={pipetest}
+                                                                htCable={htCable}
+                                                                onGroupeSelect={onGroupeSelect}
+                                                                onSelect={onSelect}
+                                                            />
+                                                        </CircuitDiagramRow>
+                                                    );
+                                                }
+                                            )}
+                                        </SwitchBoardBorderContainer>
+                                    </SwitchBoardContainer>
+                                );
+                            })}
+                        </CircuitDiagramContainer>
+                        <CircuitDiagramFillerDiv />
+                    </CircuitDiagramWrapper>
                 </>
             ) : (
                 <NoCircuitDiagramFound
