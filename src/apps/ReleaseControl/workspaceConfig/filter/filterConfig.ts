@@ -16,7 +16,7 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         name: 'System',
         valueFormatter: ({ systems }) =>
             systems
-                ?.map((system) => (system !== '' ? system : null))
+                ?.map((system) => (system.toString() !== '' ? system.toString() : null))
                 .filter((v, i, a) => a.indexOf(v) === i),
     },
     {

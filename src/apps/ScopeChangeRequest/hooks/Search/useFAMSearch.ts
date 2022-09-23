@@ -39,7 +39,7 @@ export function useFAMSearch(): FAMSearch {
                 );
             }
             case 'famtag': {
-                const items = await searchTag(searchValue, signal);
+                const items = await searchTag(searchValue);
                 return items.map(
                     (x: FamTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
@@ -51,7 +51,7 @@ export function useFAMSearch(): FAMSearch {
                 );
             }
             case 'htcable': {
-                const items = await searchHtCable(searchValue, signal);
+                const items = await searchHtCable(searchValue);
                 return items.map(
                     (x: FamTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,

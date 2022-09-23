@@ -6,6 +6,7 @@ import {
     SectionHeading,
     SectionWrapper,
     Wrapper,
+    WrapperFillerDiv,
 } from '../sidesheetStyles';
 
 export const WorkflowTab = (): JSX.Element => {
@@ -21,6 +22,7 @@ export const WorkflowTab = (): JSX.Element => {
                     </InnerSection>
                 </FlexColumn>
             </FormWrapper>
+            <WrapperFillerDiv />
         </Wrapper>
     );
 };
