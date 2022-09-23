@@ -9,11 +9,12 @@ import {
     TitleInput,
 } from '../../../Form/Inputs';
 import { FlexColumn, FormWrapper } from '../../../Form/releaseControlProcessForm.styles';
+import { Wrapper, WrapperFillerDiv } from '../sidesheetStyles';
 import { EditButtonBar } from './EditButtonBar';
 
 export const EditScopeTab = (): JSX.Element => {
     return (
-        <>
+        <Wrapper>
             <FormWrapper>
                 <FlexColumn>
                     General info
@@ -28,7 +29,8 @@ export const EditScopeTab = (): JSX.Element => {
                     <RequestAttachmentsList />
                 </FlexColumn>
             </FormWrapper>
+            <WrapperFillerDiv />
             <EditButtonBar />
-        </>
+        </Wrapper>
     );
 };

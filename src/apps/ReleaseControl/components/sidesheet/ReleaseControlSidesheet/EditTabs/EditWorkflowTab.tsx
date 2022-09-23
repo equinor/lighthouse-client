@@ -8,13 +8,14 @@ import {
 import { EditButtonBar } from './EditButtonBar';
 import { WorkflowCustomEditor } from '../../../Form/WorkflowEditor/WorkflowCustomEditor';
 import { addStep } from '../../../Form/WorkflowEditor/WorkflowEditorHelpers';
+import { Wrapper, WrapperFillerDiv } from '../sidesheetStyles';
 
 export const EditWorkflowTab = (): JSX.Element => {
     const { useAtomState } = DRCFormAtomApi;
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
 
     return (
-        <>
+        <Wrapper>
             <FormWrapper>
                 <FlexColumn>
                     Workflow
@@ -24,7 +25,9 @@ export const EditWorkflowTab = (): JSX.Element => {
                     )}
                 </FlexColumn>
             </FormWrapper>
+            <WrapperFillerDiv />
+
             <EditButtonBar />
-        </>
+        </Wrapper>
     );
 };
