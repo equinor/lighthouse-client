@@ -1,4 +1,5 @@
 import { Column, Table } from '@equinor/Table';
+import { Wrapper, WrapperFillerDiv } from '../../Styles/SidesheetWrapper';
 import { CheckListType } from '../../Types/pipetest';
 import { sortCheckListTable } from '../../utils/helpers/tableHelpers';
 import { CheckListStatusCell } from './CheckListStatusCell';
@@ -19,39 +20,47 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
             id: 'tagNo',
             Header: 'Tag',
             accessor: (item) => item.tagNo,
+            width: 150,
         },
         {
             id: 'revision',
             Header: 'Revision',
             accessor: (item) => item.revision,
+            width: 75,
         },
         {
             id: 'formularType',
             Header: 'Formular type',
             accessor: (item) => item.formularType,
+            width: 100,
         },
         {
             id: 'responsible',
             Header: 'Responsible',
             accessor: (item) => item.responsible,
+            width: 100,
         },
         {
             id: 'status',
             Header: 'Status',
             accessor: (item) => item,
             Cell: CheckListStatusCell,
+            width: 75,
         },
     ];
 
     return (
-        <>
+        <Wrapper>
             <h4>Pipetest checklists:</h4>
-            <Table
-                data={checkLists}
-                columns={columns}
-                options={{}}
-                height={rowHeight + checkLists?.length * rowHeight}
-            />
-        </>
+            <div>
+                <Table
+                    data={checkLists}
+                    columns={columns}
+                    options={{}}
+                    height={rowHeight + checkLists?.length * rowHeight}
+                />
+            </div>
+            <WrapperFillerDiv />
+        </Wrapper>
     );
 };

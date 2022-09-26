@@ -59,8 +59,8 @@ const Banner = styled.div`
     background-color: ${tokens.colors.ui.background__light.hex};
     display: flex;
     flex-direction: row;
-    gap: 10em;
-    padding: 0em 5em;
+    gap: 5rem;
+    padding-left: 5rem;
     align-items: center;
 `;
 
