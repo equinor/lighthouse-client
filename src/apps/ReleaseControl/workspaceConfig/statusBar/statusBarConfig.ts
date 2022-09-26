@@ -1,5 +1,5 @@
 import { StatusItem } from '@equinor/lighthouse-status-bar';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { ReleaseControl } from '../../types/releaseControl';
 
 function numberFormat(number: number): string {
@@ -24,7 +24,7 @@ export function statusBarConfig(data: ReleaseControl[]): StatusItem[] {
             title: 'Overdue',
             value: () => {
                 return numberFormat(
-                    data?.filter((x) => moment(x.plannedDueDate).isBefore(Date.now()))?.length
+                    data?.filter((x) => DateTime.fromISO(x.plannedDueDate) < DateTime.now())?.length
                 );
             },
         },
