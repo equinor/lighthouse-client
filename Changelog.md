@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.14.0
+
+- [ReleaseControl] Initial prod release (feature flagged prod)
+
 ## 1.13.0
 
 - [ReleaseControl] Simultaneous tag/htCable search. Search and select multiple at a time.
