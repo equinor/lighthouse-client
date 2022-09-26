@@ -29,5 +29,8 @@ export function setup({ createWorkSpace }: ClientApi): void {
         .registerDataSource(dataSource)
         .registerTableOptions(tableConfig)
         .registerFilterOptions(filterOptions)
-        .registerGardenOptions(gardenOptions);
+        .registerGardenOptions(gardenOptions)
+        .registerPowerBIOptions({
+            reportURI: 'pp-release-control-analytics',
+        });
 }
