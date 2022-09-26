@@ -391,7 +391,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: releaseControlSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
         helpPageUrl:
             'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Release-control.aspx',
     },
