@@ -8,7 +8,7 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useState
+    useState,
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
@@ -24,18 +24,15 @@ interface LocationContext {
 const Context = createContext({} as LocationContext);
 
 export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
-    const { id } = useParams();
+    const [activeTab, setActiveTab] = useState<WorkspaceTab>('table');
 
     const { defaultTab } = useWorkSpace();
 
-    const currentTabId = useMemo(() => id && `/${id}`, [id]);
-
-    const [activeTab, setActiveTab] = useState<WorkspaceTab>(
-        (id as WorkspaceTab) || defaultTab || 'table'
-    );
-
+    const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const currentTabId = useMemo(() => id && `/${id}`, [id]);
 
     const handleSetActiveTab = useCallback(
         (activeTab: WorkspaceTab) => {
@@ -52,6 +49,10 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         [currentTabId, location.hash, location.pathname, location.search, navigate]
     );
 
+    useEffect(() => {
+        setActiveTab((id as WorkspaceTab) || defaultTab);
+    }, [id, defaultTab]);
+
     /**
      * Add default tab to url if id is undefined
      */
@@ -61,8 +62,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
                 replace: true,
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [defaultTab, id, location.hash, location.pathname, location.search, navigate]);
 
     useEffect(() => {
         const ev = new EventHub();
@@ -85,7 +85,6 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
             onClose();
         };
     }, []);
-
     return (
         <Context.Provider
             value={{

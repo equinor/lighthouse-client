@@ -23,10 +23,9 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     const navigate = useNavigate();
     const { activeWidth, isMinimized } = useSideSheet();
-
     if (!viewIsActive) return <NoDataView />;
 
-    if (dataApi.isError) {
+    if (dataApi?.isError) {
         return (
             <WorkspaceErrorPage>
                 <DumpsterFireDialog
@@ -43,7 +42,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         );
     }
 
-    if (dataApi.isLoading) {
+    if (dataApi?.isLoading) {
         return (
             <Loading>
                 <CircularProgress color="primary" value={0} size={48} />
