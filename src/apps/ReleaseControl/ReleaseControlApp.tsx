@@ -4,6 +4,7 @@ import { ReleaseControlSidesheet } from './components/sidesheet/ReleaseControlSi
 import { ReleaseControl } from './types/releaseControl';
 import { dataSource, filterOptions, idResolverFunction, tableConfig } from './workspaceConfig';
 import { gardenOptions } from './workspaceConfig/garden/gardenConfig';
+import { statusBarConfig } from './workspaceConfig/statusBar/statusBarConfig';
 
 const creator = setupWorkspaceSidesheet<ReleaseControl, 'releaseDetails'>({
     id: 'releaseDetails',
@@ -32,5 +33,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
         .registerGardenOptions(gardenOptions)
         .registerPowerBIOptions({
             reportURI: 'pp-release-control-analytics',
-        });
+        })
+        .registerStatusItems(statusBarConfig);
 }
