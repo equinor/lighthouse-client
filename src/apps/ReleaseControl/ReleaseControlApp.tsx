@@ -1,5 +1,6 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
+import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { ReleaseControlSidesheet } from './components/sidesheet/ReleaseControlSidesheet/ReleaseControlSidesheet';
 import { ReleaseControl } from './types/releaseControl';
 import { dataSource, filterOptions, idResolverFunction, tableConfig } from './workspaceConfig';
@@ -21,15 +22,24 @@ export const releaseManifest = creator('SidesheetManifest');
 export const releaseComponent = creator('SidesheetComponentManifest');
 export const releaseResolverFunction = creator('ResolverFunction');
 
-export function setup({ createWorkSpace }: ClientApi): void {
-    createWorkSpace<ReleaseControl>({
-        objectIdentifier: 'id',
-        customSidesheetOptions: creator('WorkspaceSideSheet'),
-        defaultTab: 'table',
-    })
+export function setup(appApi: ClientApi): void {
+    appApi
+        .createWorkSpace<ReleaseControl>({
+            objectIdentifier: 'id',
+            customSidesheetOptions: creator('WorkspaceSideSheet'),
+            defaultTab: 'table',
+        })
         .registerDataSource(dataSource)
         .registerTableOptions(tableConfig)
         .registerFilterOptions(filterOptions)
         .registerGardenOptions(gardenOptions)
+        .registerPowerBIOptions(
+            //TODO Remove prod flag when ready
+            !appApi.isProduction
+                ? {
+                      reportURI: 'pp-release-control-analytics',
+                  }
+                : (undefined as unknown as PowerBiOptions)
+        )
         .registerStatusItems(statusBarConfig);
 }
