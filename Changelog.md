@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.15.0
+
+- [ReleaseControl] Added status bar KPIs
+- [ReleaseControl] Release control PBI analytics (feature flagged test)
+- [PipingAndHeattrace] Improved status bar KPIs
+- [PipingAndHeattrace] Sidesheet styling improvements (scrollbars ++)
+
 ## 1.14.0
 
 - [ReleaseControl] Initial prod release (feature flagged prod)
