@@ -5,12 +5,10 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
 import { fetchAndChewPipetestDataFromApi } from '../../utils/helpers/statusHelpers';
-import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet } from '../../Types/pipetest';
 import { CheckListTable } from './CheckListTable';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
-import { SidesheetTabList } from './SidesheetTabs';
-import { TablesTab } from './styles';
+import { SidesheetTabList, Tab, TabList } from './sidesheetStyles';
 import { CircuitDiagram } from '@equinor/CircuitDiagram';
 import { useWorkSpace } from '@equinor/WorkSpace';
 
@@ -52,15 +50,15 @@ export const ReleaseControlHTSidesheet = ({
     const { onGroupeSelect, onSelect } = useWorkSpace();
 
     return (
-        <Wrapper>
+        <>
             <ReleaseControlErrorBanner message={errorMessage} />
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <Tabs.Tab>Circuit diagram</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
                 </SidesheetTabList>
-                <Tabs.Panels>
-                    <Tabs.Panel>
+                <TabList>
+                    <Tab>
                         <CircuitDiagram
                             pipetest={item.items[0]}
                             pipetests={data !== undefined ? data : []}
@@ -72,18 +70,16 @@ export const ReleaseControlHTSidesheet = ({
                             onGroupeSelect={onGroupeSelect}
                             onSelect={onSelect}
                         />
-                    </Tabs.Panel>
-                    <Tabs.Panel>
-                        <TablesTab>
-                            <CheckListTable
-                                checkLists={item.items[0]?.checkLists?.filter(
-                                    (x) => x.tagNo === item.value
-                                )}
-                            />
-                        </TablesTab>
-                    </Tabs.Panel>
-                </Tabs.Panels>
+                    </Tab>
+                    <Tab>
+                        <CheckListTable
+                            checkLists={item.items[0]?.checkLists?.filter(
+                                (x) => x.tagNo === item.value
+                            )}
+                        />
+                    </Tab>
+                </TabList>
             </Tabs>
-        </Wrapper>
+        </>
     );
 };

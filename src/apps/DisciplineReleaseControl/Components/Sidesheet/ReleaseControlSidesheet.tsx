@@ -10,7 +10,7 @@ import {
     fetchAndChewPipetestDataFromApi,
     sortCheckListsForTable,
 } from '../../utils/helpers/statusHelpers';
-import { Wrapper } from '../../Styles/SidesheetWrapper';
+import { SidesheetWrapper, Wrapper, WrapperFillerDiv } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 import { Panel, ThreeDView } from '../3D';
 import { CheckListTable } from './CheckListTable';
@@ -18,8 +18,8 @@ import { ReleaseControlErrorBanner } from './ErrorBanner';
 import { InsulationTable } from './InsulationTable';
 import { ReleaseControlHTSidesheet } from './ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
-import { SidesheetTabList } from './SidesheetTabs';
-import { TablesTab, WarningBanner, WarningBannerText } from './styles';
+import { SidesheetTabList, Tab, TabList } from './sidesheetStyles';
+import { WarningBanner, WarningBannerText } from './sidesheetStyles';
 import { useSidesheetEffects } from './useSidesheetEffects';
 import { WorkOrderTab } from './WorkOrderTab';
 import { CircuitDiagram } from '@equinor/CircuitDiagram';
@@ -32,13 +32,13 @@ interface GatewaySidesheetProps {
 
 export const GatewaySidesheet = (props: GatewaySidesheetProps) => {
     return (
-        <>
+        <SidesheetWrapper>
             {'items' in props.item ? (
                 <ReleaseControlHTSidesheet item={props.item} actions={props.actions} />
             ) : (
                 <ReleaseControlSidesheet item={props.item} actions={props.actions} />
             )}
-        </>
+        </SidesheetWrapper>
     );
 };
 
@@ -78,7 +78,7 @@ export function ReleaseControlSidesheet({
     const { onGroupeSelect, onSelect } = useWorkSpace();
 
     return (
-        <Wrapper>
+        <>
             <ReleaseControlErrorBanner message={errorMessage} />
             <ReleaseControlSidesheetBanner pipetest={item} />
             <Tabs activeTab={activeTab} onChange={handleChange}>
@@ -89,8 +89,8 @@ export function ReleaseControlSidesheet({
                     <Tabs.Tab>Checklists</Tabs.Tab>
                     <Tabs.Tab>3D</Tabs.Tab>
                 </SidesheetTabList>
-                <Tabs.Panels>
-                    <Tabs.Panel>
+                <TabList>
+                    <Tab>
                         <CircuitDiagram
                             pipetest={item}
                             pipetests={data !== undefined ? data : []}
@@ -101,29 +101,28 @@ export function ReleaseControlSidesheet({
                             onGroupeSelect={onGroupeSelect}
                             onSelect={onSelect}
                         />
-                    </Tabs.Panel>
-                    <Tabs.Panel>
+                    </Tab>
+                    <Tab>
                         <WorkOrderTab id={item.name} />
-                    </Tabs.Panel>
-
-                    <Tabs.Panel>
-                        {missingInsulationCheckListsCount !== 0 &&
-                            (missingInsulationCheckListsCount === 1 ? (
-                                <WarningBanner>
-                                    <WarningBannerText>
-                                        Warning: {missingInsulationCheckListsCount} insulation box
-                                        missing checklists in ProCoSys.
-                                    </WarningBannerText>
-                                </WarningBanner>
-                            ) : (
-                                <WarningBanner>
-                                    <WarningBannerText>
-                                        Warning: {missingInsulationCheckListsCount} insulation boxes
-                                        missing checklists in ProCoSys.
-                                    </WarningBannerText>
-                                </WarningBanner>
-                            ))}
-                        <TablesTab>
+                    </Tab>
+                    <Tab>
+                        <Wrapper>
+                            {missingInsulationCheckListsCount !== 0 &&
+                                (missingInsulationCheckListsCount === 1 ? (
+                                    <WarningBanner>
+                                        <WarningBannerText>
+                                            Warning: {missingInsulationCheckListsCount} insulation
+                                            box missing checklists in ProCoSys.
+                                        </WarningBannerText>
+                                    </WarningBanner>
+                                ) : (
+                                    <WarningBanner>
+                                        <WarningBannerText>
+                                            Warning: {missingInsulationCheckListsCount} insulation
+                                            boxes missing checklists in ProCoSys.
+                                        </WarningBannerText>
+                                    </WarningBanner>
+                                ))}
                             <InsulationTable
                                 insulations={item.pipeInsulationBoxes}
                                 pipeInsulation={true}
@@ -134,13 +133,12 @@ export function ReleaseControlSidesheet({
                                 pipeInsulation={false}
                                 pipetestName={item.name}
                             />
-                        </TablesTab>
-                    </Tabs.Panel>
-                    <Tabs.Panel>
-                        <TablesTab>
-                            <CheckListTable checkLists={sortCheckListsForTable(item.checkLists)} />
-                        </TablesTab>
-                    </Tabs.Panel>
+                            <WrapperFillerDiv />
+                        </Wrapper>
+                    </Tab>
+                    <Tab>
+                        <CheckListTable checkLists={sortCheckListsForTable(item.checkLists)} />
+                    </Tab>
                     <>
                         <Panel>
                             {activeTab === 4 && (
@@ -150,8 +148,8 @@ export function ReleaseControlSidesheet({
                             )}
                         </Panel>
                     </>
-                </Tabs.Panels>
+                </TabList>
             </Tabs>
-        </Wrapper>
+        </>
     );
 }
