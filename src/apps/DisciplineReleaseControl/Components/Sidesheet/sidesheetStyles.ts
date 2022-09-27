@@ -1,11 +1,18 @@
+import { Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const TablesTab = styled.div`
-    padding-left: 8px;
-    overflow: auto;
-    overflow-y: auto;
-    max-height: ${() => window.innerHeight - 378 + 'px'};
+export const SidesheetTabList = styled(Tabs.List)`
+    background-color: ${tokens.colors.ui.background__light.hex};
+`;
+
+export const TabList = styled(Tabs.Panels)`
+    margin-left: 16px;
+`;
+
+export const Tab = styled(Tabs.Panel)`
+    height: 100%;
+    padding-bottom: 50px;
 `;
 
 export const WarningBanner = styled.div`
@@ -20,6 +27,5 @@ export const WarningBanner = styled.div`
 `;
 
 export const WarningBannerText = styled.div`
-    padding-top: 8px;
-    padding-left: 10px;
+    padding: 8px;
 `;
