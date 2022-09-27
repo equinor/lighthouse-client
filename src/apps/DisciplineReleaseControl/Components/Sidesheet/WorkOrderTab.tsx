@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import { getWorkOrdersById } from '../../Api/getWorkOrdersById';
-import { Loading, NoWorkOrders, Wrapper } from './workOrderTab.styles';
+import { Wrapper, WrapperFillerDiv } from '../../Styles/SidesheetWrapper';
+import { Loading, NoWorkOrders } from './workOrderTab.styles';
 import { WorkOrderTable } from './WorkOrderTable';
 
 interface WorkOrderTabProps {
@@ -33,9 +34,8 @@ export function WorkOrderTab({ id }: WorkOrderTabProps): JSX.Element {
 
     return (
         <Wrapper>
-            <div>
-                <WorkOrderTable workOrders={data ?? []} />
-            </div>
+            <WorkOrderTable workOrders={data ?? []} />
+            <WrapperFillerDiv />
         </Wrapper>
     );
 }
