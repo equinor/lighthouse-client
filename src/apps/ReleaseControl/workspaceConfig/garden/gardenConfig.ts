@@ -1,4 +1,5 @@
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
+import ReleaseControlGardenItem from '../../components/Garden/ReleaseControlGardenItem';
 import { ReleaseControl } from '../../types/releaseControl';
 
 export const gardenOptions: GardenOptions<ReleaseControl> = {
@@ -28,4 +29,9 @@ export const gardenOptions: GardenOptions<ReleaseControl> = {
                 items: group.items.sort((a, b) => a.sequenceNumber - b.sequenceNumber),
             })),
     },
+    customViews: {
+        customItemView: ReleaseControlGardenItem,
+    },
+    itemWidth: () => 170,
+    rowHeight: 26,
 };
