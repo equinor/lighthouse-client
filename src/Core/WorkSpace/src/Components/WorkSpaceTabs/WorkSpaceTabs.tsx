@@ -8,12 +8,12 @@ interface CompletionViewTabsProps {
 
 export const WorkSpaceTabs = ({ tabs }: CompletionViewTabsProps): JSX.Element => {
     const { activeTab } = useLocationContext();
-
+    console.log('workspace tabs', tabs);
     return (
         <TabsWrapper>
-            {tabs.map((tab) => {
+            {tabs.map((tab, index) => {
                 return activeTab === tab.tabId ? (
-                    <Tab key={`panel-${tab.title}`}>{<tab.viewComponent />}</Tab>
+                    <Tab key={`${index}-${tab.title}`}>{<tab.viewComponent />}</Tab>
                 ) : null;
             })}
         </TabsWrapper>

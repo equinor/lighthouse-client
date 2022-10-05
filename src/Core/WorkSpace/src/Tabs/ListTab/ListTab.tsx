@@ -1,11 +1,11 @@
 import { useResizeObserver } from '@equinor/hooks';
 import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
+import { useWorkSpace } from '@equinor/WorkSpace';
 import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { WorkspaceFilter } from '../../Components/WorkspaceFilter/WorkspaceFilter';
-import { useDataContext } from '../../Context/DataProvider';
 import { tabApis } from '../../Context/LocationProvider';
 import { useWorkspaceBookmarks } from '../../Util/bookmarks/hooks';
 const COLUMN_HEADER_HEIGHT = 32;
@@ -28,8 +28,7 @@ export const ListTab = (): JSX.Element => {
     } = useFilterApiContext();
 
     const data = getFilteredData() as TableData[];
-    const { tableOptions } = useDataContext();
-
+    const { tableOptions } = useWorkSpace();
     useWorkspaceBookmarks();
 
     const ref = useRef<HTMLDivElement>(null);

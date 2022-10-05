@@ -10,7 +10,7 @@ import {
     useMemo,
     useState,
 } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useRe } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
@@ -25,6 +25,7 @@ const Context = createContext({} as LocationContext);
 
 export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
     const [activeTab, setActiveTab] = useState<WorkspaceTab>('table');
+    console.log('Active tab', activeTab);
 
     const { defaultTab } = useWorkSpace();
 
@@ -57,12 +58,15 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
      * Add default tab to url if id is undefined
      */
     useEffect(() => {
+        console.log('Id', id);
         if (!id) {
-            navigate(`${location.pathname}/${defaultTab}${location.hash}` + location.search, {
+            console.log('Default:)', defaultTab);
+
+            navigate(`${defaultTab}${location.hash}` + location.search, {
                 replace: true,
             });
         }
-    }, [defaultTab, id, location.hash, location.pathname, location.search, navigate]);
+    }, [defaultTab, id, location.hash, location.search]);
 
     useEffect(() => {
         const ev = new EventHub();

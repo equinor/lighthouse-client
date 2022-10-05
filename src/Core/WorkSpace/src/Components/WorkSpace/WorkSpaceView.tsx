@@ -18,7 +18,7 @@ import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyle
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const workspace = useWorkSpace();
     const { tabs, viewIsActive } = useConfiguredTabs(workspace);
-
+    console.log('tabs', tabs);
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
