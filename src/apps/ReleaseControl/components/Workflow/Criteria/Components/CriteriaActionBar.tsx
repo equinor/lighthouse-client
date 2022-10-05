@@ -69,10 +69,6 @@ export const CriteriaActionBar = ({
 
     const setShowSignWithComment = () =>
         swap(actionWithCommentAtom, () => generateAtom('Approved', 'Sign'));
-
-    const setShowRejectWithComment = () =>
-        swap(actionWithCommentAtom, () => generateAtom('Rejected', 'Reject'));
-
     const setShowReassignBar = () =>
         swap(actionWithCommentAtom, () => generateAtom('Reassign', 'Confirm'));
 
@@ -90,13 +86,6 @@ export const CriteriaActionBar = ({
                 label: 'Sign with comment',
                 icon: <Icon name="comment_add" color={iconGrey} />,
                 onClick: setShowSignWithComment,
-                isDisabled: !canSign,
-            });
-
-            actions.push({
-                label: 'Reject with comment',
-                onClick: setShowRejectWithComment,
-                icon: <Icon name="close_circle_outlined" color={iconGrey} />,
                 isDisabled: !canSign,
             });
             if (stepOrder !== 0) {
