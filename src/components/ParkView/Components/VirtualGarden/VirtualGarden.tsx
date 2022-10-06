@@ -15,7 +15,6 @@ type VirtualGardenProps<T extends Record<PropertyKey, unknown>> = {
     width?: number;
     selectedItem: string | null;
     handleOnItemClick: (item: T) => void;
-    setGarden: (garden: DataSet<T>[]) => void;
 };
 
 export const VirtualGarden = <T extends Record<PropertyKey, unknown>>({
