@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 1.15.1
+- [Garden] Fix bug with subgrouping and total row count not being updated
+- [PBI] Remove embed of Business Case, Non Conformity, Quality Deviation, Safety Performance and instead redirect to Fusion
+- [ReleaseControl] Remove reject option from RC workflow
+- [ReleaseControl] Split description from item in Garden
+- [PipingAndHeattrace] Split description from item in Garden
+
 ## 1.15.0
 
 - [ReleaseControl] Added status bar KPIs
