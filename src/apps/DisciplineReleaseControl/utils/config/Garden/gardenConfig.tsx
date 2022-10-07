@@ -62,5 +62,5 @@ export const gardenConfig: GardenOptions<Pipetest> = {
     },
     highlightColumn: getHighlightedColumn,
     itemWidth: () => 170,
-    rowHeight: 25,
+    rowHeight: 26,
 };

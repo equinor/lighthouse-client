@@ -1,5 +1,4 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
-import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
 import { Pipetest } from './Types/pipetest';
 import {
@@ -30,11 +29,7 @@ export function setup(appApi: ClientApi): void {
         .registerPresets(presetConfig)
         .registerSearchOptions([{ name: 'Id', valueFormatter: ({ name }) => name }])
         .registerStatusItems(statusBarConfig)
-        .registerPowerBIOptions(
-            !appApi.isProduction
-                ? {
-                      reportURI: 'pp-pipetest-analytics',
-                  }
-                : (undefined as unknown as PowerBiOptions)
-        );
+        .registerPowerBIOptions({
+            reportURI: 'pp-pipetest-analytics',
+        });
 }

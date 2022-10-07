@@ -16,14 +16,7 @@ import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseContr
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
-import {
-    BusinessCaseReport,
-    NonConformityReport,
-    QualityDeviationReport,
-    SafetyPerformanceReport,
-} from './PowerBI';
 import { setup as MDRSetup } from './MDR';
-import { setup as LCISetup } from './LCI';
 import { setup as punchSetup } from './Punch';
 import { setup as querySetup } from './Query';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
@@ -147,13 +140,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: BusinessCaseReport,
-        },
-
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/pmt-nonconfidential/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/pmt-nonconfidential/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
-        tags: ['PowerBI'],
     },
     {
         title: 'Milestone',
@@ -193,12 +185,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: SafetyPerformanceReport,
-        },
-        tags: ['PowerBI'],
-
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/tpd-safety'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/tpd-safety',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     {
@@ -229,12 +220,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Engineering,
         icon: '',
-        app: {
-            appType: 'PowerBIViewer',
-            setup: LCISetup,
-        },
-        tags: ['PowerBI'],
-
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/lci-hanging-garden/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/lci-hanging-garden/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     {
@@ -591,11 +581,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndRisk,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: NonConformityReport,
-        },
-        tags: ['PowerBI'],
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/qrm/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/qrm/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     {
@@ -604,11 +594,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndRisk,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: QualityDeviationReport,
-        },
-        tags: ['PowerBI'],
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/qrm/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/qrm/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     // Collaboration
