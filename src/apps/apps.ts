@@ -596,8 +596,8 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: (isProduction: boolean) =>
             isProduction
-                ? 'https://fusion.equinor.com/apps/qrm/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/qrm/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+                ? 'https://fusion.equinor.com/apps/quality-deviation/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/quality-deviation/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
