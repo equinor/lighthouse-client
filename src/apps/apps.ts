@@ -30,6 +30,7 @@ import { setup as punchDevSetup } from './Punch_Dev';
 import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
 import { setup as preservationAnalyticsSetup } from './Preservation';
 import { setup as spoolsAnalyticsSetup } from './Spools';
+import { setup as ProgressStatusSetup } from './ProgressStatus';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -564,6 +565,19 @@ export const apps: AppManifest[] = [
                 ? 'https://fusion.equinor.com/apps/project-control-and-analysis/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
                 : 'https://pro-s-portal-ci.azurewebsites.net/apps/project-control-and-analysis/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700',
         tags: ['Link', 'Fusion'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Progress Status',
+        shortName: 'progress-status',
+        color: '#0364B8',
+        groupe: Apps.ProjectControl,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: ProgressStatusSetup,
+        },
         appEnv: 'prod',
     },
     // QualityAndRisk
