@@ -4,11 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 1.15.2
+## 1.15.3
+- [ProgressStatus] New PBI Viewer application
+
+## 1.15.2
 - [Apps] Change Quality Deviation app link to correct Fusion App
 - [Table] Remove option to click on grouped rows
 
-# 1.15.1
+## 1.15.1
 - [Garden] Fix bug with subgrouping and total row count not being updated
 - [PBI] Remove embed of Business Case, Non Conformity, Quality Deviation, Safety Performance and instead redirect to Fusion
 - [ReleaseControl] Remove reject option from RC workflow
