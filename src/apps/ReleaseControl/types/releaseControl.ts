@@ -186,7 +186,6 @@ export type FamTag = {
     installedCableLength: string | null;
     estimatedCableLength: string | null;
     tagHeated: string | null;
-    tagMountedOn: string | null;
     switchBoardTagNos: string | null;
     circuitTagNos: string | null;
 
@@ -217,7 +216,6 @@ export type FamTagType = {
     installedCableLength: string | null;
     estimatedCableLength: string | null;
     tagHeated: string | null;
-    tagMountedOn: string | null;
     switchBoardTagNos: string | null;
     circuitTagNos: string | null;
 

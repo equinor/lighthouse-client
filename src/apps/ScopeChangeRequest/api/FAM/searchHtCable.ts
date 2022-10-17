@@ -25,7 +25,6 @@ export async function searchHtCable(value: string): Promise<any[]> {
             'InstalledCableLength',
             'MountedOn',
             'TagHeated',
-            'TagMountedOn',
             'EstimatedCableLength',
             'SwitchBoardTagNos',
             'CircuitTagNos',
