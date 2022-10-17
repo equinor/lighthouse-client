@@ -25,7 +25,6 @@ export async function searchTag(value: string): Promise<any[]> {
             'InstalledCableLength',
             'MountedOn',
             'RelatedHTCables',
-            'TagMountedOn',
             'EstimatedCableLength',
         ],
         'And',
