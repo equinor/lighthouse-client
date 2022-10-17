@@ -42,7 +42,7 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.register,
     },
     {
-        id: 'mountedOn',
+        id: 'mountedOn', //TODO - change to mountedOnTagNo (also accessor) when backend is updated
         Header: 'Mounted on',
         accessor: (item) => item.mountedOn,
     },
