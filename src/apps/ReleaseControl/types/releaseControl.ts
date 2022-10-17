@@ -180,13 +180,15 @@ export type FamTag = {
     status: string | null;
     location: string | null;
     mountedOn: string | null;
-    relatedHTCables: string | null;
     openWorkOrders: string | null;
     openWorkOrderIds: string | null;
     installedCableLength: string | null;
     estimatedCableLength: string | null;
     tagHeated: string | null;
-    tagMountedOn: string | null;
+    mountedOnTagNo: string | null;
+    relatedHTCables: string | null;
+    mountedOn_HTCables: string | null;
+    htCables: string | null;
     switchBoardTagNos: string | null;
     circuitTagNos: string | null;
 
@@ -211,13 +213,15 @@ export type FamTagType = {
     status: string | null;
     location: string | null;
     mountedOn: string | null;
-    relatedHTCables: string | null;
     openWorkOrders: string | null;
     openWorkOrderIds: string | null;
     installedCableLength: string | null;
     estimatedCableLength: string | null;
     tagHeated: string | null;
-    tagMountedOn: string | null;
+    mountedOnTagNo: string | null;
+    relatedHTCables: string | null;
+    mountedOn_HTCables: string | null;
+    htCables: string | null;
     switchBoardTagNos: string | null;
     circuitTagNos: string | null;
 
