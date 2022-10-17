@@ -6,8 +6,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 1.15.4
 - [ProgressStatus] Prod flag
-- [HeatTrace] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
-- [ScopeChange] Remove TagMountedOn from API calls to FAM. Deprecated field.
+- [ReleaseControl] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
+- [ReleaseControl] Updated some Tag/HTCable fields after new FAM update.
 
 ## 1.15.3
 - [ProgressStatus] New PBI Viewer application
