@@ -40,6 +40,14 @@ export function useFAMSearch(): FAMSearch {
             }
             case 'famtag': {
                 const items = await searchTag(searchValue);
+                items.map((tag: FamTag) => {
+                    tag.relatedHTCables =
+                        (tag.htCables !== null ? tag.htCables : '') +
+                        (tag.htCables !== null ? ', ' : '') +
+                        (tag.mountedOn_HTCables !== null ? tag.mountedOn_HTCables : '');
+                    tag.mountedOn = tag.mountedOnTagNo; //TODO - remove when backend fixed
+                    return tag;
+                });
                 return items.map(
                     (x: FamTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,

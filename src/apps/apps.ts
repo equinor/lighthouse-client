@@ -578,7 +578,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBIViewer',
             setup: ProgressStatusSetup,
         },
-        appEnv: 'prod',
+        appEnv: 'test',
     },
     // QualityAndRisk
     {
