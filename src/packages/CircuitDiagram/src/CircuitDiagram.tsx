@@ -226,9 +226,6 @@ export const CircuitDiagram = ({
                                                                 comment={comment}
                                                                 setComment={setComment}
                                                                 updateDiagram={updateDiagram}
-                                                                parentCircuitTagNo={
-                                                                    eleNetwork.circuitAndStarterTagNo
-                                                                }
                                                             />
                                                         </CircuitDiagramRow>
                                                     );

@@ -37,8 +37,6 @@ interface CircuitNodeProps {
         updatedCircuit: EleNetwork | undefined,
         circuitTagNo: string
     ) => void;
-    /* Needed to check if a cable's parent is the circuit or not (first cable out from circuit cannot be disconnected) */
-    parentCircuitTagNo?: string;
 }
 
 export const CircuitNode = ({
@@ -56,7 +54,6 @@ export const CircuitNode = ({
     comment,
     setComment,
     updateDiagram,
-    parentCircuitTagNo,
 }: CircuitNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
@@ -102,7 +99,6 @@ export const CircuitNode = ({
                     comment={comment}
                     setComment={setComment}
                     updateDiagram={updateDiagram}
-                    parentCircuitTagNo={parentCircuitTagNo}
                 />
             );
         });
@@ -124,7 +120,7 @@ export const CircuitNode = ({
                     setComment={setComment}
                     updateDiagram={updateDiagram}
                     circuitIsolated={disconnected}
-                    parentCircuitTagNo={parentCircuitTagNo}
+                    parentCircuitTagNo={eleNetwork.circuitAndStarterTagNo}
                 />
             );
         }
@@ -204,7 +200,6 @@ export const CircuitNode = ({
                                 comment={comment}
                                 setComment={setComment}
                                 updateDiagram={updateDiagram}
-                                parentCircuitTagNo={parentCircuitTagNo}
                             />
                             {remainingChildrenRender}
                         </CircuitDiagramVerticalRow>
@@ -223,7 +218,6 @@ export const CircuitNode = ({
                             comment={comment}
                             setComment={setComment}
                             updateDiagram={updateDiagram}
-                            parentCircuitTagNo={parentCircuitTagNo}
                         />
                     </CircuitDiagramNodeRow>
                 )}
@@ -250,7 +244,6 @@ export const CircuitNode = ({
                                     comment={comment}
                                     setComment={setComment}
                                     updateDiagram={updateDiagram}
-                                    parentCircuitTagNo={parentCircuitTagNo}
                                 />
                                 <CircuitNode
                                     key={cableTo?.tagNo}
@@ -266,7 +259,6 @@ export const CircuitNode = ({
                                     comment={comment}
                                     setComment={setComment}
                                     updateDiagram={updateDiagram}
-                                    parentCircuitTagNo={parentCircuitTagNo}
                                 />
                             </CircuitDiagramNodeRow>
                         );
@@ -291,7 +283,6 @@ export const CircuitNode = ({
                                 comment={comment}
                                 setComment={setComment}
                                 updateDiagram={updateDiagram}
-                                parentCircuitTagNo={parentCircuitTagNo}
                             />
                         ) : (
                             <CircuitDiagramNodeGroupRow>
@@ -311,7 +302,6 @@ export const CircuitNode = ({
                                     comment={comment}
                                     setComment={setComment}
                                     updateDiagram={updateDiagram}
-                                    parentCircuitTagNo={parentCircuitTagNo}
                                 />
                             </CircuitDiagramNodeGroupRow>
                         );
