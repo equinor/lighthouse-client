@@ -1,19 +1,22 @@
-import styled from 'styled-components';
-
-import { Cable, CableNode } from './Cable';
-import { CircuitAndStarter } from './CircuitAndStarter';
-import { HeatTracingCable } from './HeatTracingCable';
-import { JunctionBox } from './JunctionBox';
-import { SpaceHeater } from './SpaceHeater';
+import Cable from './Cable';
+import CircuitAndStarter from './CircuitAndStarter';
+import HeatTracingCable from './HeatTracingCable';
+import JunctionBox from './JunctionBox';
+import SpaceHeater from './SpaceHeater';
 import {
     getCableChildren,
     getCircuitChildren,
     getCircuitTestStatus,
     getNodeStatus,
 } from '../../Utils/circuitDiagramHelpers';
-import { CircuitDiagramNodeGroupRow } from '../../styles/styles';
+import {
+    CircuitDiagramNodeGroupRow,
+    CircuitDiagramNodeRow,
+    CircuitDiagramVerticalRow,
+} from '../../styles/styles';
 import { CircuitTypes, EleNetwork, EleNetworkCable, EleNetworkCircuit } from '../types/eleNetwork';
 import { CheckListStepTag, Pipetest } from '../types/pipetestTypes';
+import { CableNode } from '../../styles/cableStyles';
 
 interface CircuitNodeProps {
     eleNetwork: EleNetwork;
@@ -25,6 +28,17 @@ interface CircuitNodeProps {
     htCable?: string;
     onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
+    isEditMode: boolean;
+    disconnected: boolean;
+    comment: string;
+    setComment: (comment: string) => void;
+    updateDiagram: (
+        updatedCable: EleNetworkCable | undefined,
+        updatedCircuit: EleNetwork | undefined,
+        circuitTagNo: string
+    ) => void;
+    /* Needed to check if a cable's parent is the circuit or not (first cable out from circuit cannot be disconnected) */
+    parentCircuitTagNo?: string;
 }
 
 export const CircuitNode = ({
@@ -37,12 +51,20 @@ export const CircuitNode = ({
     htCable,
     onGroupeSelect,
     onSelect,
+    isEditMode,
+    disconnected,
+    comment,
+    setComment,
+    updateDiagram,
+    parentCircuitTagNo,
 }: CircuitNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
+    /* Find circuit and cable children */
     const circuitChildren = getCircuitChildren(eleNetwork, node);
     const cableChildren = getCableChildren(eleNetwork, node);
 
+    /* CircuitAndStarter specific logic to find first and potentially other cables from circuit */
     const isCircuitNode = node?.eleSymbolCode === CircuitTypes.Circuit;
     const remainingCableChildren = cableChildren.slice(1);
     const firstCable = cableChildren[0];
@@ -62,6 +84,7 @@ export const CircuitNode = ({
         (circuit) => !cablesTo.some((x) => x === circuit.tagNo)
     );
 
+    /* Render if there are more than one cable */
     const remainingChildrenRender =
         isCircuitNode &&
         remainingCableChildren?.map((cable: EleNetworkCable) => {
@@ -74,32 +97,63 @@ export const CircuitNode = ({
                     currentPipetest={currentPipetest}
                     onGroupeSelect={onGroupeSelect}
                     onSelect={onSelect}
+                    isEditMode={isEditMode}
+                    disconnected={disconnected || cable.disconnected === true}
+                    comment={comment}
+                    setComment={setComment}
+                    updateDiagram={updateDiagram}
+                    parentCircuitTagNo={parentCircuitTagNo}
                 />
             );
         });
 
+    /* Get the component to be rendered for the current node */
     function getNodeRender(
         node?: EleNetworkCircuit,
         cableNode?: EleNetworkCable,
         cableBorderBottom?: boolean
     ) {
         if (cableNode !== undefined) {
-            return <Cable cable={cableNode} status={nodeStatus} borderBottom={cableBorderBottom} />;
+            return (
+                <Cable
+                    cable={cableNode}
+                    status={nodeStatus}
+                    borderBottom={cableBorderBottom}
+                    isEditMode={isEditMode}
+                    comment={comment}
+                    setComment={setComment}
+                    updateDiagram={updateDiagram}
+                    circuitIsolated={disconnected}
+                    parentCircuitTagNo={parentCircuitTagNo}
+                />
+            );
         }
         switch (node?.eleSymbolCode) {
             case CircuitTypes.Circuit:
                 return (
                     <CircuitAndStarter
-                        value={eleNetwork.switchBoardTagNo}
+                        value={eleNetwork.circuitAndStarterTagNo}
+                        eleNetwork={eleNetwork}
                         cTestStatus={getCircuitTestStatus(
                             CheckListStepTag.HtCTest,
                             eleNetwork.checkLists
                         )}
+                        isEditMode={isEditMode}
+                        disconnected={disconnected || eleNetwork.isolated === true}
+                        comment={comment}
+                        setComment={setComment}
+                        updateDiagram={updateDiagram}
                     />
                 );
 
             case CircuitTypes.JunctionBox:
-                return <JunctionBox value={node?.tagNo} status={nodeStatus} />;
+                return (
+                    <JunctionBox
+                        value={node?.tagNo}
+                        status={nodeStatus}
+                        disconnected={disconnected}
+                    />
+                );
             case CircuitTypes.HTCable:
                 return (
                     <HeatTracingCable
@@ -110,6 +164,7 @@ export const CircuitNode = ({
                         htCable={htCable}
                         onGroupeSelect={onGroupeSelect}
                         onSelect={onSelect}
+                        disconnected={disconnected}
                     />
                 );
             case CircuitTypes.SpaceHeater:
@@ -130,8 +185,9 @@ export const CircuitNode = ({
             >
                 {/* Render cables together with their children */}
 
+                {/* If starter circuit node => Renders cable from circuit (and potential other cables) + first circuit (like junction box) */}
                 {cableChildren.length !== 0 && isCircuitNode && (
-                    <CircuitDiagramRow>
+                    <CircuitDiagramNodeRow>
                         <CircuitDiagramVerticalRow>
                             <CircuitNode
                                 key={firstCable?.tagNo}
@@ -143,6 +199,12 @@ export const CircuitNode = ({
                                 htCable={htCable}
                                 onGroupeSelect={onGroupeSelect}
                                 onSelect={onSelect}
+                                isEditMode={isEditMode}
+                                disconnected={disconnected}
+                                comment={comment}
+                                setComment={setComment}
+                                updateDiagram={updateDiagram}
+                                parentCircuitTagNo={parentCircuitTagNo}
                             />
                             {remainingChildrenRender}
                         </CircuitDiagramVerticalRow>
@@ -156,16 +218,23 @@ export const CircuitNode = ({
                             htCable={htCable}
                             onGroupeSelect={onGroupeSelect}
                             onSelect={onSelect}
+                            isEditMode={isEditMode}
+                            disconnected={disconnected}
+                            comment={comment}
+                            setComment={setComment}
+                            updateDiagram={updateDiagram}
+                            parentCircuitTagNo={parentCircuitTagNo}
                         />
-                    </CircuitDiagramRow>
+                    </CircuitDiagramNodeRow>
                 )}
 
+                {/* If not starter circuit node => renders all cables and circuits (like junction box) from current node */}
                 {cableChildren.length !== 0 &&
                     !isCircuitNode &&
                     cableChildren.map((cable: EleNetworkCable) => {
                         const cableTo = circuitChildren.find((x) => x.tagNo === cable.tagTo);
                         return (
-                            <CircuitDiagramRow key={cable.tagNo}>
+                            <CircuitDiagramNodeRow key={cable.tagNo}>
                                 <CircuitNode
                                     key={cable?.tagNo}
                                     cableNode={cable}
@@ -176,6 +245,12 @@ export const CircuitNode = ({
                                     htCable={htCable}
                                     onGroupeSelect={onGroupeSelect}
                                     onSelect={onSelect}
+                                    isEditMode={isEditMode}
+                                    disconnected={disconnected || cable.disconnected === true}
+                                    comment={comment}
+                                    setComment={setComment}
+                                    updateDiagram={updateDiagram}
+                                    parentCircuitTagNo={parentCircuitTagNo}
                                 />
                                 <CircuitNode
                                     key={cableTo?.tagNo}
@@ -186,12 +261,19 @@ export const CircuitNode = ({
                                     htCable={htCable}
                                     onGroupeSelect={onGroupeSelect}
                                     onSelect={onSelect}
+                                    isEditMode={isEditMode}
+                                    disconnected={disconnected || cable.disconnected === true}
+                                    comment={comment}
+                                    setComment={setComment}
+                                    updateDiagram={updateDiagram}
+                                    parentCircuitTagNo={parentCircuitTagNo}
                                 />
-                            </CircuitDiagramRow>
+                            </CircuitDiagramNodeRow>
                         );
                     })}
 
-                {/* Render standalone children of the node - HT cable ++ */}
+                {/* Finally => Render standalone children of the node
+                The nodes that have no cables going to them - like HT cable goes out directly from junction box */}
                 {standaloneCircuitChildren.length !== 0 &&
                     standaloneCircuitChildren.map((circuit: EleNetworkCircuit) => {
                         return circuit.eleSymbolCode === CircuitTypes.HTCable ? (
@@ -204,6 +286,12 @@ export const CircuitNode = ({
                                 htCable={htCable}
                                 onGroupeSelect={onGroupeSelect}
                                 onSelect={onSelect}
+                                isEditMode={isEditMode}
+                                disconnected={disconnected}
+                                comment={comment}
+                                setComment={setComment}
+                                updateDiagram={updateDiagram}
+                                parentCircuitTagNo={parentCircuitTagNo}
                             />
                         ) : (
                             <CircuitDiagramNodeGroupRow>
@@ -218,6 +306,12 @@ export const CircuitNode = ({
                                     htCable={htCable}
                                     onGroupeSelect={onGroupeSelect}
                                     onSelect={onSelect}
+                                    isEditMode={isEditMode}
+                                    disconnected={disconnected}
+                                    comment={comment}
+                                    setComment={setComment}
+                                    updateDiagram={updateDiagram}
+                                    parentCircuitTagNo={parentCircuitTagNo}
                                 />
                             </CircuitDiagramNodeGroupRow>
                         );
@@ -226,16 +320,3 @@ export const CircuitNode = ({
         </>
     );
 };
-
-const CircuitDiagramVerticalRow = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const CircuitDiagramRow = styled.div`
-    display: flex;
-    flex-direction: row !important;
-    &:not(:last-child) {
-        margin-bottom: 20px;
-    }
-`;

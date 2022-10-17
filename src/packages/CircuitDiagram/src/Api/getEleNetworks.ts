@@ -2,10 +2,10 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 import { EleNetwork } from '../types/eleNetwork';
 
 export async function getEleNetworks(circuitStarterTagNos: string): Promise<EleNetwork[]> {
-    const { FAM } = httpClient();
-    const eleNetworks: EleNetwork[] = await FAM.fetch(
-        `v0.1/procosys/pipetest/JCA/elenetwork/${circuitStarterTagNos}`
-    ).then((x) => x.json());
+    const { scopeChange } = httpClient();
+    const eleNetworks: EleNetwork[] = await scopeChange
+        .fetch(`api/elenetwork/facility/JCA/elenetwork/${circuitStarterTagNos}`)
+        .then((x) => x.json());
 
     return eleNetworks;
 }

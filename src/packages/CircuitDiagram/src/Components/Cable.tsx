@@ -1,119 +1,316 @@
-import styled from 'styled-components';
-import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
-import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
+import {
+    formatDateString,
+    getCircuitDiagramCompletionStatusColor,
+} from '../../Utils/circuitDiagramHelpers';
+import {
+    CircuitDiagramNodeGroup,
+    CircuitDiagramNodeValueText,
+    CircuitDiagramPopover,
+    DisconnectedPopover,
+} from '../../styles/styles';
 import { CableSpiralRight } from './CableSpiralRight';
 import { CableSpiralLeft } from './CableSpiralLeft';
 import { tokens } from '@equinor/eds-tokens';
-import { EleNetworkCable } from '../types/eleNetwork';
+import { EleNetwork, EleNetworkCable } from '../types/eleNetwork';
 import { CheckListStatus } from '../types/pipetestTypes';
 import { StatusCircle } from './StatusCircle';
+import { Checkbox, Icon } from '@equinor/eds-core-react';
+import { Modal } from '@equinor/modal';
+import { memo, useState } from 'react';
+import { DisconnectModal } from './DisconnectModal';
+import { reconnectCable } from '../Api/reconnectCable';
+import {
+    CableGroupWrapper,
+    CableInfo,
+    CableNode,
+    CableWrapper,
+    CrossIconWrapper,
+    DisconnectedEnd,
+    DisconnectedStart,
+    DisconnectWrapper,
+} from '../../styles/cableStyles';
 
 interface CableProps {
     cable: EleNetworkCable;
     status: string;
     borderBottom?: boolean;
+    isEditMode: boolean;
+    comment: string;
+    setComment: (comment: string) => void;
+    updateDiagram: (
+        updatedCable: EleNetworkCable | undefined,
+        updatedCircuit: EleNetwork | undefined,
+        circuitTagNo: string
+    ) => void;
+    circuitIsolated: boolean;
+    parentCircuitTagNo?: string;
 }
-export const Cable = ({ cable, status, borderBottom }: CableProps): JSX.Element => {
+const Cable = ({
+    cable,
+    status,
+    borderBottom,
+    isEditMode,
+    comment,
+    setComment,
+    updateDiagram,
+    circuitIsolated,
+    parentCircuitTagNo,
+}: CableProps): JSX.Element => {
+    const [isDisconnecting, setIsDisconnecting] = useState<boolean>(false);
+    const isPulled = cable.pulledDate !== null;
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isCableStatusOpen, setIsCableStatusOpen] = useState<boolean>(false);
+
+    const onOpen = () => setIsOpen(true);
+    const onClose = () => setIsOpen(false);
+    const onStatusOpen = () => setIsCableStatusOpen(true);
+    const onStatusClose = () => setIsCableStatusOpen(false);
+
+    const isFirstCable = parentCircuitTagNo === cable.tagFrom;
     return (
-        <CircuitDiagramNodeGroup>
-            {status === CheckListStatus.OK ? ( //Even if data says cables are disconnected, if status is OK we draw the entire cable.
-                <CableInfo borderBottom={borderBottom} disconnectedCount={0}>
-                    <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
-                    <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
-                </CableInfo>
-            ) : cable.terminatedFromDate === null && cable.terminatedToDate === null ? (
-                <CableWrapper>
-                    <CableNode>
-                        <DisconnectedStart>
-                            <CableSpiralLeft />
-                        </DisconnectedStart>
-                        <CableInfo borderBottom={borderBottom} disconnectedCount={2}>
-                            <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
-                            <StatusCircle
-                                statusColor={getCircuitDiagramCompletionStatusColor(status)}
+        <>
+            <CableGroupWrapper>
+                {/* No disconnection option on first cable out of circuit. It would be the same as isolating */}
+                {!isFirstCable && isEditMode && cable.disconnected && (
+                    <DisconnectWrapper onMouseOver={onOpen} onMouseLeave={onClose}>
+                        <Checkbox
+                            checked={!cable.disconnected}
+                            onChange={async () => {
+                                const updatedCable = await reconnectCable(
+                                    parentCircuitTagNo ?? '',
+                                    cable.tagNo
+                                );
+                                if (updatedCable) {
+                                    updateDiagram(
+                                        updatedCable,
+                                        undefined,
+                                        parentCircuitTagNo ?? ''
+                                    );
+                                }
+                            }}
+                            size={12}
+                        />
+                        {isOpen && (
+                            <CircuitDiagramPopover>
+                                {
+                                    <DisconnectedPopover>
+                                        <div>
+                                            Disconnected by{' '}
+                                            {cable.disconnectedBy?.firstName +
+                                                ' ' +
+                                                cable.disconnectedBy?.lastName}{' '}
+                                            {formatDateString(cable.disconnectedDate ?? '')}
+                                        </div>
+                                        <div>Comment: {cable.disconnectedComment}</div>
+                                        <div>Click to connect</div>
+                                    </DisconnectedPopover>
+                                }
+                            </CircuitDiagramPopover>
+                        )}
+                    </DisconnectWrapper>
+                )}
+                {/* Edit mode and no disconnection gives checkbox */}
+                {!isFirstCable && isEditMode && !cable.disconnected && (
+                    <DisconnectWrapper onMouseOver={onOpen} onMouseLeave={onClose}>
+                        <Checkbox
+                            checked={!cable.disconnected}
+                            onChange={() => {
+                                setIsDisconnecting(true);
+                            }}
+                            size={12}
+                        />
+                        {isOpen && (
+                            <CircuitDiagramPopover>
+                                {'Connected. Click to disconnect'}
+                            </CircuitDiagramPopover>
+                        )}
+                    </DisconnectWrapper>
+                )}
+                {/* No edit mode but disconnected gives X-icon */}
+                {!isEditMode && cable.disconnected && (
+                    <DisconnectWrapper onMouseOver={onOpen} onMouseLeave={onClose}>
+                        <CrossIconWrapper>
+                            <Icon
+                                name={'close'}
+                                color={tokens.colors.interactive.danger__resting.hex}
+                                size={24}
                             />
-                        </CableInfo>
-                        <DisconnectedEnd>
-                            <CableSpiralRight />
-                        </DisconnectedEnd>
-                    </CableNode>
-                </CableWrapper>
-            ) : cable.terminatedFromDate === null ? (
-                <CableWrapper>
-                    <CableNode>
-                        <DisconnectedStart>
-                            <CableSpiralLeft />
-                        </DisconnectedStart>
-                        <CableInfo borderBottom={borderBottom} disconnectedCount={1}>
+                        </CrossIconWrapper>
+                        {isOpen && (
+                            <CircuitDiagramPopover>
+                                {
+                                    <DisconnectedPopover>
+                                        <div>
+                                            Disconnected by{' '}
+                                            {cable.disconnectedBy?.firstName +
+                                                ' ' +
+                                                cable.disconnectedBy?.lastName}{' '}
+                                            {formatDateString(cable.disconnectedDate ?? '')}
+                                        </div>
+                                        <div>Comment: {cable.disconnectedComment}</div>
+                                        {isEditMode && <div>Click to connect</div>}
+                                    </DisconnectedPopover>
+                                }
+                            </CircuitDiagramPopover>
+                        )}
+                    </DisconnectWrapper>
+                )}
+
+                <CircuitDiagramNodeGroup>
+                    {status === CheckListStatus.OK ? ( //Even if data says cables are disconnected, if status is OK we draw the entire cable.
+                        <CableInfo
+                            borderBottom={borderBottom}
+                            disconnectedCount={0}
+                            disconnected={cable.disconnected || circuitIsolated}
+                            pulled={isPulled}
+                        >
                             <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
-                            <StatusCircle
-                                statusColor={getCircuitDiagramCompletionStatusColor(status)}
-                            />
+                            <div onMouseOver={onStatusOpen} onMouseLeave={onStatusClose}>
+                                <StatusCircle
+                                    statusColor={getCircuitDiagramCompletionStatusColor(status)}
+                                />
+                                {isCableStatusOpen && (
+                                    <CircuitDiagramPopover>{status}</CircuitDiagramPopover>
+                                )}
+                            </div>
                         </CableInfo>
-                    </CableNode>
-                </CableWrapper>
-            ) : cable.terminatedToDate === null ? (
-                <CableWrapper>
-                    <CableNode>
-                        <CableInfo borderBottom={borderBottom} disconnectedCount={1}>
+                    ) : isPulled &&
+                      cable.terminatedFromDate === null &&
+                      cable.terminatedToDate === null ? ( //pulled cable but not terminated in either side (two spirals)
+                        <CableWrapper>
+                            <CableNode>
+                                <DisconnectedStart>
+                                    <CableSpiralLeft
+                                        isolated={cable.disconnected || circuitIsolated}
+                                    />
+                                </DisconnectedStart>
+                                <CableInfo
+                                    borderBottom={borderBottom}
+                                    disconnectedCount={2}
+                                    disconnected={cable.disconnected || circuitIsolated}
+                                    pulled={isPulled}
+                                >
+                                    <CircuitDiagramNodeValueText>
+                                        {cable.tagNo}
+                                    </CircuitDiagramNodeValueText>
+                                    <div onMouseOver={onStatusOpen} onMouseLeave={onStatusClose}>
+                                        <StatusCircle
+                                            statusColor={getCircuitDiagramCompletionStatusColor(
+                                                status
+                                            )}
+                                        />
+                                        {isCableStatusOpen && (
+                                            <CircuitDiagramPopover>{status}</CircuitDiagramPopover>
+                                        )}
+                                    </div>
+                                </CableInfo>
+                                <DisconnectedEnd>
+                                    <CableSpiralRight
+                                        isolated={cable.disconnected || circuitIsolated}
+                                    />
+                                </DisconnectedEnd>
+                            </CableNode>
+                        </CableWrapper>
+                    ) : isPulled && cable.terminatedFromDate === null ? ( //pulled but not terminated on left side (one spiral)
+                        <CableWrapper>
+                            <CableNode>
+                                <DisconnectedStart>
+                                    <CableSpiralLeft
+                                        isolated={cable.disconnected || circuitIsolated}
+                                    />
+                                </DisconnectedStart>
+                                <CableInfo
+                                    borderBottom={borderBottom}
+                                    disconnectedCount={1}
+                                    disconnected={cable.disconnected || circuitIsolated}
+                                    pulled={isPulled}
+                                >
+                                    <CircuitDiagramNodeValueText>
+                                        {cable.tagNo}
+                                    </CircuitDiagramNodeValueText>
+                                    <div onMouseOver={onStatusOpen} onMouseLeave={onStatusClose}>
+                                        <StatusCircle
+                                            statusColor={getCircuitDiagramCompletionStatusColor(
+                                                status
+                                            )}
+                                        />
+                                        {isCableStatusOpen && (
+                                            <CircuitDiagramPopover>{status}</CircuitDiagramPopover>
+                                        )}
+                                    </div>
+                                </CableInfo>
+                            </CableNode>
+                        </CableWrapper>
+                    ) : isPulled && cable.terminatedToDate === null ? ( //pulled but not terminated to right side (one spiral)
+                        <CableWrapper>
+                            <CableNode>
+                                <CableInfo
+                                    borderBottom={borderBottom}
+                                    disconnectedCount={1}
+                                    disconnected={cable.disconnected || circuitIsolated}
+                                    pulled={isPulled}
+                                >
+                                    <CircuitDiagramNodeValueText>
+                                        {cable.tagNo}
+                                    </CircuitDiagramNodeValueText>
+                                    <div onMouseOver={onStatusOpen} onMouseLeave={onStatusClose}>
+                                        <StatusCircle
+                                            statusColor={getCircuitDiagramCompletionStatusColor(
+                                                status
+                                            )}
+                                        />
+                                        {isCableStatusOpen && (
+                                            <CircuitDiagramPopover>{status}</CircuitDiagramPopover>
+                                        )}
+                                    </div>
+                                </CableInfo>
+                                <DisconnectedEnd>
+                                    <CableSpiralRight
+                                        isolated={cable.disconnected || circuitIsolated}
+                                    />
+                                </DisconnectedEnd>
+                            </CableNode>
+                        </CableWrapper>
+                    ) : (
+                        //Terminated both sides. Either solid or dashed cable depending on if it's pulled or not
+                        <CableInfo
+                            borderBottom={borderBottom}
+                            disconnectedCount={0}
+                            disconnected={cable.disconnected || circuitIsolated}
+                            pulled={isPulled}
+                        >
                             <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
-                            <StatusCircle
-                                statusColor={getCircuitDiagramCompletionStatusColor(status)}
-                            />
+                            <div onMouseOver={onStatusOpen} onMouseLeave={onStatusClose}>
+                                <StatusCircle
+                                    statusColor={getCircuitDiagramCompletionStatusColor(status)}
+                                />
+                                {isCableStatusOpen && (
+                                    <CircuitDiagramPopover>{status}</CircuitDiagramPopover>
+                                )}
+                            </div>
                         </CableInfo>
-                        <DisconnectedEnd>
-                            <CableSpiralRight />
-                        </DisconnectedEnd>
-                    </CableNode>
-                </CableWrapper>
-            ) : (
-                <CableInfo borderBottom={borderBottom} disconnectedCount={0}>
-                    <CircuitDiagramNodeValueText>{cable.tagNo}</CircuitDiagramNodeValueText>
-                    <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
-                </CableInfo>
+                    )}
+                </CircuitDiagramNodeGroup>
+            </CableGroupWrapper>
+            {/* Disconnect modal */}
+            {isEditMode && isDisconnecting && (
+                <Modal
+                    title={'Write a comment'}
+                    content={
+                        <DisconnectModal
+                            circuitTagNo={parentCircuitTagNo ?? ''}
+                            cableTagNo={cable.tagNo ?? ''}
+                            setIsDisconnecting={setIsDisconnecting}
+                            comment={comment}
+                            setComment={setComment}
+                            updateDiagram={updateDiagram}
+                        />
+                    }
+                />
             )}
-        </CircuitDiagramNodeGroup>
+        </>
     );
 };
 
-const CableWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 110px;
-`;
-
-export const CableNode = styled.div`
-    display: flex;
-    flex-direction: horizontal;
-    width: 110px;
-`;
-
-const CableInfo = styled.div<{
-    borderBottom?: boolean;
-    disconnectedCount: number;
-}>`
-    display: flex;
-    flex-direction: horizontal;
-    flex: 1;
-    width: ${(p) => 110 - p.disconnectedCount * 9 + 'px'};
-    max-height: 15px;
-    padding-top: 6px;
-    padding-bottom: 3px;
-    text-align: center;
-    margin-top: ${(p) => (p.borderBottom ? '16px' : null)};
-    justify-content: center;
-    border-bottom: ${(p) =>
-        p.borderBottom ? '1px solid ' + tokens.colors.text.static_icons__default.hex : null};
-`;
-
-const DisconnectedStart = styled.div`
-    width: 9px;
-    margin-left: 4px;
-    margin-top: 30px;
-`;
-
-const DisconnectedEnd = styled.div`
-    width: 9px;
-    margin-right: 4px;
-    margin-top: 30px;
-`;
+export default memo(Cable);

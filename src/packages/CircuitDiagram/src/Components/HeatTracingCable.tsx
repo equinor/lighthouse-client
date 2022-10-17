@@ -1,5 +1,3 @@
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 import {
     getCircuitTestStatus,
     getHTSidesheetObjectForHtCable,
@@ -7,8 +5,10 @@ import {
 import { CircuitDiagramHTText, CircuitDiagramNodeGroup } from '../../styles/styles';
 import { EleNetwork } from '../types/eleNetwork';
 import { CheckListStepTag, Pipetest } from '../types/pipetestTypes';
-import { Line } from './Line';
+import Line from './Line';
 import { TestDot } from './TestDot';
+import { ABTestDots, HeatTracingCableNode, Lines } from '../../styles/htCableStyles';
+import { memo } from 'react';
 
 interface HeatTracingCableProps {
     value?: string;
@@ -18,8 +18,9 @@ interface HeatTracingCableProps {
     htCable?: string;
     onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
+    disconnected: boolean;
 }
-export const HeatTracingCable = ({
+const HeatTracingCable = ({
     value,
     pipetests,
     currentPipetest,
@@ -27,12 +28,16 @@ export const HeatTracingCable = ({
     htCable,
     onGroupeSelect,
     onSelect,
+    disconnected,
 }: HeatTracingCableProps): JSX.Element => {
     const pipetestsOnHTCable = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === value));
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
     return (
         <CircuitDiagramNodeGroup>
-            <HeatTracingCableNode pipetestCount={pipetestsOnHTCable.length}>
+            <HeatTracingCableNode
+                pipetestCount={pipetestsOnHTCable.length}
+                disconnected={disconnected}
+            >
                 {htCable === value ? (
                     <CircuitDiagramHTText
                         onClick={() => {
@@ -93,44 +98,4 @@ export const HeatTracingCable = ({
     );
 };
 
-const HeatTracingCableNode = styled.div<{ pipetestCount: number }>`
-    display: flex;
-    flex-direction: horizontal;
-    padding: 3px;
-    padding-top: 6px;
-    text-align: center;
-    margin-bottom: 2px;
-    margin-top: 12px;
-    width: ${(p) =>
-        p.pipetestCount === 0 || p.pipetestCount === 1
-            ? '150px'
-            : 45 + 92 * p.pipetestCount + 'px'};
-    border-bottom: 2px dashed ${tokens.colors.text.static_icons__default.hex};
-
-    &:after {
-        content: '';
-        background: ${tokens.colors.text.static_icons__default.hex};
-        border-radius: 50%;
-        width: 10px;
-        height: 10px;
-
-        position: relative;
-        top: 18px;
-        left: ${(p) =>
-            p.pipetestCount === 0 || p.pipetestCount === 1
-                ? '30px'
-                : 92 * p.pipetestCount - 76 + 'px'};
-    }
-`;
-
-const Lines = styled.div`
-    display: flex;
-    flex: 0 0 100%;
-`;
-
-const ABTestDots = styled.div`
-    display: flex;
-    flex-direction: horizontal;
-    width: 50px;
-    margin-left: 8px;
-`;
+export default memo(HeatTracingCable);

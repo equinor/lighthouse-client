@@ -1,37 +1,36 @@
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
-import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
+import {
+    CircuitDiagramNodeGroup,
+    CircuitDiagramNodeValueText,
+    CircuitDiagramPopover,
+    JunctionBoxNode,
+} from '../../styles/styles';
 import { StatusCircle } from './StatusCircle';
+import { memo, useState } from 'react';
 
 interface JunctionBoxProps {
     value?: string;
     status: string;
+    disconnected: boolean;
 }
-export const JunctionBox = ({ value, status }: JunctionBoxProps): JSX.Element => {
+const JunctionBox = ({ value, status, disconnected }: JunctionBoxProps): JSX.Element => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const onOpen = () => setIsOpen(true);
+    const onClose = () => setIsOpen(false);
     return (
         <CircuitDiagramNodeGroup>
-            <JunctionBoxNode>
+            <JunctionBoxNode disconnected={disconnected}>
                 <CircuitDiagramNodeValueText>
                     <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
                 </CircuitDiagramNodeValueText>
-                <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
+                <div onMouseOver={onOpen} onMouseLeave={onClose}>
+                    <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(status)} />
+                    {isOpen && <CircuitDiagramPopover>{status}</CircuitDiagramPopover>}
+                </div>
             </JunctionBoxNode>
         </CircuitDiagramNodeGroup>
     );
 };
 
-const JunctionBoxNode = styled.div`
-    display: flex;
-    flex-direction: horizontal;
-    flex: 1;
-    width: 60px;
-    border: 1px solid ${tokens.colors.ui.background__medium.hex};
-    border-radius: 10px;
-    padding: 6px;
-    text-align: center;
-    min-height: 60px;
-    box-sizing: border-box;
-    margin-top: 16px;
-    justify-content: center;
-`;
+export default memo(JunctionBox);
