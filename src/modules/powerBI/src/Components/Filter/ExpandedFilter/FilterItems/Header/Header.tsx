@@ -1,9 +1,7 @@
 import { Icon, Search } from '@equinor/eds-core-react';
-import { Case } from '@equinor/JSX-Switch';
-import React, { useState } from 'react';
-import { Switch } from '../../../../../../components/JSXSwitch/Components/Switch';
-import { FilterClearIcon } from '../FilterClearIcon';
-import { FilterController } from '../PowerBIFilter';
+import { Case, Switch } from '@equinor/JSX-Switch';
+import { useState } from 'react';
+import { FilterClearIcon } from '../../../FilterClearIcon';
 import { Container, SearchButton, Title } from './Styles';
 
 type HeaderProps = {
@@ -11,7 +9,6 @@ type HeaderProps = {
     onSearch: (value: string | undefined) => void;
     searchEnabled: boolean;
     handleEnterPress: () => void;
-    controller: FilterController;
     deselectAllValues: () => Promise<void>;
     hasActiveFilters: boolean;
     searchValue: string | undefined;

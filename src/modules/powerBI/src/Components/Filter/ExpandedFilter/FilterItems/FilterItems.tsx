@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
-import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../Types';
-import { Header } from '../Header';
-import { FilterController } from '../PowerBIFilter';
+import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../../Types';
+import { Header } from './Header';
+import { FilterController } from '../../types';
 import { Item } from './Item';
 import { searchFilterItems } from './searchFilterItems';
 import { CheckboxWrap, FilterGroupContainer, VirtualFilterItemWrapper } from './Styles';
@@ -64,7 +64,6 @@ export const FilterItems = ({
                 handleEnterPress={handleEnterPress}
                 title={group.type}
                 hasActiveFilters={Boolean(activeFilters[group.type].length)}
-                controller={controller}
                 deselectAllValues={() => controller.deselectAllValues(group, filterValues[0])}
                 onSearch={handleOnSearchChange}
                 searchEnabled={group.filterVals.length > 7}

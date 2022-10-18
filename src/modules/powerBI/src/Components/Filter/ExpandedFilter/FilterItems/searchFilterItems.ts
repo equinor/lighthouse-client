@@ -1,4 +1,4 @@
-import { PowerBiFilterItem } from '../../../Types';
+import { PowerBiFilterItem } from '../../../../Types';
 
 export const searchFilterItems = (
     filterItems: PowerBiFilterItem[],
