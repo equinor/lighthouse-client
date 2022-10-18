@@ -9,7 +9,7 @@ import { CompactFilterWrapper } from '../../../../../Core/WorkSpace/src/Componen
 import { ActiveFilter, PowerBiFilterItem } from '../../Types';
 import { ExpandedFilter } from './ExpandedFilter/ExpandedFilter';
 import { PowerBiFilterGroup } from './FilterGroup/FilterGroup';
-import { FilterController } from './PowerBIFilter';
+import { FilterController } from './types';
 
 interface PowerBIQuickFilterProps {
     controller: FilterController;
@@ -56,7 +56,7 @@ export const PowerBIQuickFilter = ({ controller }: PowerBIQuickFilterProps): JSX
         isFilterExpanded,
         setIsFilterExpanded,
     } = controller;
-    let shownFilters: string[] = [];
+    const shownFilters: string[] = [];
 
     return (
         <FilterWrapper>

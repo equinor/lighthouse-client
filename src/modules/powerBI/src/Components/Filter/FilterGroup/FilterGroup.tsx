@@ -5,7 +5,7 @@ import { getFilterHeaderText } from '../../../../../../Core/WorkSpace/src/Compon
 import { FilterGroupWrapper } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterGroup/groupStyles';
 import { PowerBiFilter, PowerBiFilterItem, ActiveFilter } from '../../../Types';
 import { PowerBiGroupPopoverMenu } from '../PopoverGroup/PopoverGroup';
-import { FilterController } from '../PowerBIFilter';
+import { FilterController } from '../types';
 
 interface PowerBiFilterGroupProps {
     controller: FilterController;
