@@ -10,7 +10,7 @@ import {
     ClearButtonWrapper,
 } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterGroup/groupStyles';
 import { PowerBiFilterItem, ActiveFilter, PowerBiFilter } from '../../../Types';
-import { FilterController } from '../PowerBIFilter';
+import { FilterController } from '../types';
 import { VirtualList } from './VirtualList';
 
 interface PowerBiGroupPopoverMenuProps {

@@ -3,9 +3,9 @@ import { FilterExpandIcon } from '../../../../../../Core/WorkSpace/src/Component
 import { ToggleHideFilterPopover } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/ToggleHideFilterPopover';
 import { PowerBiFilter } from '../../../Types';
 import { FilterClearIcon } from '../FilterClearIcon';
-import { FilterItems } from '../FilterItems';
-import { FilterController } from '../PowerBIFilter';
+import { FilterItems } from './FilterItems';
 import { ExpandedFilterWrapper, FilterItemsWrapper, Sidebar } from '../Styles';
+import { FilterController } from '../types';
 
 interface ExpandedFilterProps {
     controller: FilterController;
