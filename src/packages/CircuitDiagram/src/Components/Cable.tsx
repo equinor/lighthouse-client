@@ -43,7 +43,7 @@ interface CableProps {
         circuitTagNo: string
     ) => void;
     circuitIsolated: boolean;
-    parentCircuitTagNo?: string;
+    parentCircuitTagNo: string;
 }
 const Cable = ({
     cable,
@@ -78,15 +78,11 @@ const Cable = ({
                             checked={!cable.disconnected}
                             onChange={async () => {
                                 const updatedCable = await reconnectCable(
-                                    parentCircuitTagNo ?? '',
+                                    parentCircuitTagNo,
                                     cable.tagNo
                                 );
                                 if (updatedCable) {
-                                    updateDiagram(
-                                        updatedCable,
-                                        undefined,
-                                        parentCircuitTagNo ?? ''
-                                    );
+                                    updateDiagram(updatedCable, undefined, parentCircuitTagNo);
                                 }
                             }}
                             size={12}
@@ -299,8 +295,8 @@ const Cable = ({
                     title={'Write a comment'}
                     content={
                         <DisconnectModal
-                            circuitTagNo={parentCircuitTagNo ?? ''}
-                            cableTagNo={cable.tagNo ?? ''}
+                            circuitTagNo={parentCircuitTagNo}
+                            cableTagNo={cable.tagNo}
                             setIsDisconnecting={setIsDisconnecting}
                             comment={comment}
                             setComment={setComment}
