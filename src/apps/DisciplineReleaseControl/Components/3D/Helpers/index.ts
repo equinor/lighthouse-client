@@ -40,7 +40,7 @@ export function getTagOverlay(data: EleNetwork[] | undefined): TagMap {
             overlay[checkList.tagNo] = {
                 tagNo: checkList.tagNo,
                 type:
-                    checkList.tagNo === eleNetwork.switchBoardTagNo
+                    checkList.tagNo === eleNetwork.circuitAndStarterTagNo
                         ? 'CIRCUIT'
                         : eleNetwork.circuits.find((i) => i.tagNo === checkList.tagNo)
                               ?.eleSymbolCode || 'unknown',

@@ -29,6 +29,8 @@ export const tableConfig: TableOptions<Pipetest> = {
         'htCableRfc',
         'lineNos',
         'mcPkgId',
+        'hasDisconnectedEquipment',
+        'hasIsolatedEquipment',
     ],
     enableSelectRows: true,
     headers: [
