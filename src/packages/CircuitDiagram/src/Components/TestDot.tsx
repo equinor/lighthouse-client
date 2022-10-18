@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
+import { TestDotCircle, TestDotCircleText, TestDotWrapper } from '../../styles/styles';
 import { getCircuitDiagramCompletionStatusColor } from '../../Utils/circuitDiagramHelpers';
 import { PipetestCompletionStatusColors } from '../types/pipetestTypes';
 
@@ -38,34 +38,3 @@ export const TestDot = ({ value, status }: TestDotProps): JSX.Element => {
         </TestDotWrapper>
     );
 };
-
-const TestDotWrapper = styled.div`
-    display: flex;
-    flex-direction: horizontal;
-    flex: 1;
-    justify-content: center;
-    padding-bottom: 3px;
-`;
-
-const TestDotCircle = styled.div<{ color: string }>`
-    display: flex;
-    flex-direction: horizontal;
-    justify-content: center;
-    text-align: center;
-    width: 30px;
-    height: 16px;
-    margin-right: 2px;
-    border-radius: 100px;
-    background-color: ${(p) => p.color};
-    color: ${(p) =>
-        p.color === PipetestCompletionStatusColors.OK ||
-        p.color === PipetestCompletionStatusColors.PA
-            ? tokens.colors.text.static_icons__primary_white.hex
-            : tokens.colors.text.static_icons__default.hex};
-`;
-
-export const TestDotCircleText = styled.div`
-    font-size: 16px;
-    font-weight: 400, regular;
-    cursor: default;
-`;

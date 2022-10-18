@@ -8,12 +8,13 @@ type StatusIconProps = {
 };
 
 const Circle = styled.div<StatusIconProps>`
-    width: ${(props) => (props.size ? props.size + 'px' : '14px')};
-    height: ${(props) => (props.size ? props.size + 'px' : '14px')};
+    width: ${(props) => (props.size ? props.size + 'px' : '12px')};
+    height: ${(props) => (props.size ? props.size + 'px' : '12px')};
     outline: 1px solid ${tokens.colors.text.static_icons__primary_white.rgba};
     background-color: ${(props) => props.statusColor};
     border-radius: 50%;
     margin-left: 4px;
+    margin-top: 2px;
 `;
 /**
  * Component displaying a circle with some predefined styles for the Garden package item.
