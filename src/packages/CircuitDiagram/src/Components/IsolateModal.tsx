@@ -33,7 +33,7 @@ export const IsolateModal = ({
         setComment(e.target.value);
     };
 
-    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = async (event) => {
         if (event.key === 'Escape') {
             event.preventDefault();
             isolate();
@@ -41,6 +41,10 @@ export const IsolateModal = ({
         //Allow shift+enter linebreak
         if (event.key === 'Enter' && !event.shiftKey && comment !== '') {
             event.preventDefault();
+            const updatedCircuit = await isolateCircuit(circuitAndStarterTagNo, comment);
+            if (updatedCircuit) {
+                updateDiagram(undefined, updatedCircuit, circuitAndStarterTagNo ?? '');
+            }
             setIsIsolating(false);
         }
     };
