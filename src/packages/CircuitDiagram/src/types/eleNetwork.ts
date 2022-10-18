@@ -1,6 +1,14 @@
+export interface Switchboard {
+    eleNetworks: EleNetwork[];
+}
+
 export interface EleNetwork {
     eleNetId: number;
-    switchBoardTagNo: string;
+    circuitAndStarterTagNo: string;
+    isolated: boolean;
+    isolatedBy?: Person;
+    isolatedDate?: string;
+    isolatedComment?: string;
     circuits: EleNetworkCircuit[];
     cables: EleNetworkCable[];
     checkLists: EleNetworkCheckList[];
@@ -26,6 +34,10 @@ export interface EleNetworkCable {
     terminatedFromDate: string;
     terminatedToDate: string;
     testedDate: string;
+    disconnected?: boolean;
+    disconnectedBy?: Person;
+    disconnectedDate?: string;
+    disconnectedComment?: string;
 }
 
 export interface EleNetworkCheckList {
@@ -34,6 +46,14 @@ export interface EleNetworkCheckList {
     formularType: string;
     formularGroup: string;
     status: string;
+}
+
+export interface Person {
+    id: string;
+    oid: string;
+    firstName: string;
+    lastName: string;
+    email: string;
 }
 
 export enum CircuitTypes {

@@ -3,36 +3,45 @@ import { CircuitNode } from './Components/CircuitNode';
 import {
     getCircuitDiagramCompletionStatusColor,
     getNodeStatus,
+    updateDisconnection,
+    updateIsolation,
 } from '../Utils/circuitDiagramHelpers';
 import {
     CircuitDiagramContainer,
+    CircuitDiagramEditMode,
     CircuitDiagramFillerDiv,
     CircuitDiagramNodeGroupRow,
     CircuitDiagramNodeText,
+    CircuitDiagramPopover,
     CircuitDiagramRow,
     CircuitDiagramWrapper,
     SwitchBoardBorderContainer,
     SwitchBoardContainer,
 } from '../styles/styles';
-import { EleNetwork } from './types/eleNetwork';
+import { EleNetwork, EleNetworkCable } from './types/eleNetwork';
 import { getEleNetworks } from './Api/getEleNetworks';
 import { Pipetest } from './types/pipetestTypes';
 import { NoCircuitDiagramFound } from './Components/NoCircuitDiagramFound';
 import { StatusCircle } from './Components/StatusCircle';
+import { useEffect, useMemo, useState } from 'react';
+import { Button } from '@equinor/eds-core-react';
 
 interface CircuitDiagramProps {
+    /* Current pipetest */
     pipetest: Pipetest | null;
+    /* All pipetests (used to find another pipetest to change sidesheet) */
     pipetests: Pipetest[];
     width: number;
     /* HT cable tagNo if htCable should be the focus of the diagram (HT sidesheet) */
     htCable?: string;
     /* list of circuitAndStarterTagNos to fetch eleNetworks from and display */
     circuitAndStarterTagNos: string[];
+    /* For opening a different sidesheet, for example by clicking on a HT-cable (opens HT sidesheet) */
     onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
+    /* For opening same sidesheet but with a different pipetest */
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
 }
 
-// If this component gets logic that causes it to need re-renders, it should be rewritten to use more useMemo()/hooks to avoid re-calculating static logic
 export const CircuitDiagram = ({
     pipetest,
     pipetests,
@@ -42,16 +51,100 @@ export const CircuitDiagram = ({
     onGroupeSelect,
     onSelect,
 }: CircuitDiagramProps): JSX.Element => {
+    const [switchboards, setSwitchboards] = useState<EleNetwork[][]>([]);
+    //Global component state for edit mode and (reusable) comment
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const [comment, setComment] = useState<string>('');
+
     const circuitStarterTagNoString = circuitAndStarterTagNos?.toString();
+    const buttonText = isEditMode
+        ? 'Exit edit mode'
+        : 'Edit which circuits/lines that are isolated and equipment that is disconnected';
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const onOpen = () => setIsOpen(true);
+    const onClose = () => setIsOpen(false);
 
     let { data } = useQuery(
         [circuitStarterTagNoString],
         () => getEleNetworks(circuitStarterTagNoString ?? ''),
         {
             staleTime: Infinity,
-            cacheTime: Infinity,
+            //no cache time since we need to fetch new updates every time because of possible isolations/disconnections
+            cacheTime: 0,
         }
     );
+
+    //Alphabetical sorting
+    useMemo(
+        () =>
+            data?.map((x) => {
+                x.circuits.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+                x.cables.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+                return x;
+            }),
+        [data]
+    );
+
+    let switchboardArray;
+
+    //If ht cable sidesheet => filter out data that is not connected to said ht cable
+    data = useMemo(
+        () => (htCable ? data?.filter((x) => x.circuits.some((x) => x.tagNo === htCable)) : data),
+        [data, htCable]
+    );
+
+    //Group by switchboard. One array of eleNetworks to one switchboard.
+    switchboardArray = useMemo(
+        () =>
+            data
+                ? Object.values(
+                      data?.reduce((acc, item) => {
+                          const circuitAndStarterTagNo = item.circuitAndStarterTagNo.split('-'); //split to find common switchboard tagNo
+                          acc[circuitAndStarterTagNo[0]] = [
+                              ...(acc[circuitAndStarterTagNo[0]] || []),
+                              item,
+                          ];
+                          return acc;
+                      }, {})
+                  )
+                : [],
+        [data]
+    );
+
+    // Sort circuits
+    useMemo(
+        () =>
+            switchboardArray?.forEach((x) =>
+                x.sort((a, b) =>
+                    a?.circuitAndStarterTagNo
+                        .split('-')[1]
+                        ?.localeCompare(b?.circuitAndStarterTagNo.split('-')[1])
+                )
+            ),
+        [switchboardArray]
+    );
+
+    //Sort switchboards
+    useMemo(
+        () =>
+            switchboardArray?.sort((a, b) =>
+                a[0]?.circuitAndStarterTagNo
+                    ?.split('-')[0]
+                    ?.localeCompare(b[0]?.circuitAndStarterTagNo?.split('-')[0])
+            ),
+        [switchboardArray]
+    );
+
+    //Update switchboards/diagram if there is new circuitTagNos/data
+    useEffect(() => {
+        if (switchboardArray) {
+            setSwitchboards(switchboardArray);
+        } else {
+            setSwitchboards([]);
+        }
+    }, [circuitAndStarterTagNos, data]);
 
     if (circuitStarterTagNoString === '' || circuitStarterTagNoString === undefined) {
         return (
@@ -62,44 +155,19 @@ export const CircuitDiagram = ({
         );
     }
 
-    let switchboardArray;
-
-    if (htCable && data) {
-        data = data.filter((x) => x.circuits.some((x) => x.tagNo === htCable));
-    }
-
-    if (data !== undefined) {
-        for (let i = 0; i < data.length; i++) {
-            data[i].switchBoardTagNo = circuitAndStarterTagNos[i];
+    const updateDiagram = (
+        updatedCable: EleNetworkCable | undefined,
+        updatedCircuit: EleNetwork | undefined,
+        circuitTagNo: string
+    ): void => {
+        if (updatedCable) {
+            switchboardArray = updateDisconnection(switchboardArray, updatedCable, circuitTagNo);
         }
-
-        //Alphabetical sorting
-        data?.map((x) => {
-            x.circuits.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
-            x.cables.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
-            return x;
-        });
-        //Group by switchboard. One array of EleNetwork to one switchboard.
-        switchboardArray = Object.values(
-            data?.reduce((acc, item) => {
-                const switchboardTagNo = item.switchBoardTagNo.split('-'); //split to find common switchboard tagNo
-                acc[switchboardTagNo[0]] = [...(acc[switchboardTagNo[0]] || []), item];
-                return acc;
-            }, {})
-        );
-        // Sort circuits
-        switchboardArray.forEach((x) =>
-            x.sort((a, b) =>
-                a?.switchBoardTagNo.split('-')[1]?.localeCompare(b?.switchBoardTagNo.split('-')[1])
-            )
-        );
-        //Sort switchboards
-        switchboardArray.sort((a, b) =>
-            a[0]?.switchBoardTagNo
-                ?.split('-')[0]
-                ?.localeCompare(b[0]?.switchBoardTagNo?.split('-')[0])
-        );
-    }
+        if (updatedCircuit) {
+            switchboardArray = updateIsolation(switchboardArray, updatedCircuit, circuitTagNo);
+        }
+        setSwitchboards([...switchboardArray]);
+    };
 
     return (
         <>
@@ -108,16 +176,19 @@ export const CircuitDiagram = ({
                     {!data && <h3 style={{ marginLeft: '8px' }}>Loading circuit diagram...</h3>}
                     <CircuitDiagramWrapper width={width}>
                         <CircuitDiagramContainer width={width}>
-                            {switchboardArray?.map((eleNetworksForSwitchboard: EleNetwork[]) => {
+                            {/* Switchboard array that gets rendered here is an array of switchboards.
+                             Each switchboard contains an array of eleNetworks where each array which renders one circuit on the switchboard*/}
+
+                            {switchboards?.map((eleNetworksForSwitchboard: EleNetwork[]) => {
                                 const switchboardTagNo =
-                                    eleNetworksForSwitchboard[0].switchBoardTagNo.split('-');
+                                    eleNetworksForSwitchboard[0].circuitAndStarterTagNo.split('-');
                                 const switchboardStatus = getNodeStatus(
                                     eleNetworksForSwitchboard[0].checkLists,
                                     switchboardTagNo[0]
                                 );
                                 return (
                                     <SwitchBoardContainer
-                                        key={eleNetworksForSwitchboard[0].switchBoardTagNo}
+                                        key={eleNetworksForSwitchboard[0].circuitAndStarterTagNo}
                                     >
                                         <SwitchBoardBorderContainer>
                                             <CircuitDiagramNodeGroupRow>
@@ -148,6 +219,13 @@ export const CircuitDiagram = ({
                                                                 htCable={htCable}
                                                                 onGroupeSelect={onGroupeSelect}
                                                                 onSelect={onSelect}
+                                                                isEditMode={isEditMode}
+                                                                disconnected={
+                                                                    eleNetwork?.isolated === true
+                                                                }
+                                                                comment={comment}
+                                                                setComment={setComment}
+                                                                updateDiagram={updateDiagram}
                                                             />
                                                         </CircuitDiagramRow>
                                                     );
@@ -157,7 +235,31 @@ export const CircuitDiagram = ({
                                     </SwitchBoardContainer>
                                 );
                             })}
+                            <CircuitDiagramEditMode onMouseOver={onOpen} onMouseLeave={onClose}>
+                                {!isEditMode && (
+                                    <Button onClick={() => setIsEditMode(true)}>
+                                        Edit isolations
+                                    </Button>
+                                )}
+                                {isEditMode && (
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => {
+                                            setIsEditMode(false);
+                                            setComment('');
+                                        }}
+                                    >
+                                        Exit edit mode
+                                    </Button>
+                                )}
+                                {isOpen && (
+                                    <CircuitDiagramPopover cornerButton={true}>
+                                        {buttonText}
+                                    </CircuitDiagramPopover>
+                                )}
+                            </CircuitDiagramEditMode>
                         </CircuitDiagramContainer>
+
                         <CircuitDiagramFillerDiv />
                     </CircuitDiagramWrapper>
                 </>
