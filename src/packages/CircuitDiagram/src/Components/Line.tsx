@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { Pipetest } from '../types/pipetestTypes';
+import { memo } from 'react';
 
 type LineProps = {
     value?: string;
@@ -10,13 +11,7 @@ type LineProps = {
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
 };
 
-export const Line = ({
-    value,
-    currentPipetest,
-    pipetest,
-    htCable,
-    onSelect,
-}: LineProps): JSX.Element => {
+const Line = ({ value, currentPipetest, pipetest, htCable, onSelect }: LineProps): JSX.Element => {
     return (
         <LineNode
             currentPipetest={currentPipetest}
@@ -47,3 +42,5 @@ const LineNode = styled.div<{ currentPipetest: boolean; htCable: string | undefi
     margin-top: 4px;
     font-size: 12px;
 `;
+
+export default memo(Line);
