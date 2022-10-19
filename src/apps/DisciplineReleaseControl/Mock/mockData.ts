@@ -320,15 +320,9 @@ export const testData1: Pipetest = {
             ],
         },
     ],
-    lineNos: [
-        '20L00503A',
-        '20L00505A',
-        '20L00503B',
-        '20L00503A',
-        '20L00505A',
-        '20L00505A',
-        '20L00503B',
-        '20L00503A',
+    lines: [
+        { tagNo: '20L00503A', isCritical: false },
+        { tagNo: '20L00505A', isCritical: true },
     ],
     heatTraces: [
         {

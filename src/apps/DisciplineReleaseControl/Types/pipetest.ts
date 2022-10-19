@@ -19,7 +19,7 @@ export type Pipetest = {
     overdue: string;
     dueDateTimePeriod: string;
     location: string;
-    lineNos: string[];
+    lines: Line[];
     mcPkgId: string;
     hasDisconnectedEquipment: boolean;
     hasIsolatedEquipment: boolean;
@@ -80,6 +80,11 @@ export type InsulationBoxType = {
     objectStatus: string;
     object3dReference: string;
     procosysStatus: string;
+};
+
+export type Line = {
+    tagNo: string;
+    isCritical: boolean;
 };
 
 export type HTSidesheet = {
