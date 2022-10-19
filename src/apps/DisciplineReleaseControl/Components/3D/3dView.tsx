@@ -40,7 +40,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
 
     const tagOverlay: TagMap = useMemo(() => getElectroTagOverlay(data), [data]);
 
-    if (pipetest.lines.length === 0 && electroTags.length === 0)
+    if (pipetest.lines?.length === 0 && electroTags.length === 0)
         return (
             <MessageWrapper>
                 <Icon
@@ -55,7 +55,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
     return (
         <ThreeDModel>
             <Viewer
-                tags={pipetest.lines.map((x) => x.tagNo).flat()}
+                tags={pipetest.lines?.map((x) => x.tagNo).flat()}
                 echoPlantId={echoPlantId}
                 padding={1}
                 platformSectionId="Full-Pro"
@@ -79,9 +79,9 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
                                     isElectro
                                         ? [
                                               ...electroTags,
-                                              ...pipetest.lines.map((x) => x.tagNo).flat(),
+                                              ...pipetest.lines?.map((x) => x.tagNo).flat(),
                                           ]
-                                        : pipetest.lines.map((x) => x.tagNo).flat(),
+                                        : pipetest.lines?.map((x) => x.tagNo).flat(),
                                     {
                                         skipLoadingUi: true,
                                     }

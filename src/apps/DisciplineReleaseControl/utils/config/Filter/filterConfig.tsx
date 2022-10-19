@@ -140,6 +140,6 @@ export const filterConfig: FilterOptions<Pipetest> = [
     },
     {
         name: 'Lines tags',
-        valueFormatter: ({ lines }) => (lines.length === 0 ? 'No Line Tags' : 'Has Line Tags'),
+        valueFormatter: ({ lines }) => (lines?.length === 0 ? 'No Line Tags' : 'Has Line Tags'),
     },
 ];
