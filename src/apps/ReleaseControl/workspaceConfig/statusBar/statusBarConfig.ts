@@ -24,7 +24,12 @@ export function statusBarConfig(data: ReleaseControl[]): StatusItem[] {
             title: 'Overdue',
             value: () => {
                 return numberFormat(
-                    data?.filter((x) => DateTime.fromISO(x.plannedDueDate) < DateTime.now())?.length
+                    data?.filter(
+                        (x) =>
+                            DateTime.fromISO(x.plannedDueDate) < DateTime.now() &&
+                            x.state !== 'Voided' &&
+                            x.state !== 'Closed'
+                    )?.length
                 );
             },
         },
