@@ -7,7 +7,7 @@ import {
 import { CircuitDiagramHTText, CircuitDiagramNodeGroup } from '../../styles/styles';
 import { EleNetwork } from '../types/eleNetwork';
 import { CheckListStepTag, Pipetest } from '../types/pipetestTypes';
-import { Line } from './Line';
+import Line from './Line';
 import { TestDot } from './TestDot';
 
 interface HeatTracingCableProps {

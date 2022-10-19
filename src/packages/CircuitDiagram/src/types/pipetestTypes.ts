@@ -12,7 +12,7 @@ export type Pipetest = {
     overdue: string;
     dueDateTimePeriod: string;
     location: string;
-    lineNos: string[];
+    lines: Line[];
     mcPkgId: string;
 };
 
@@ -39,6 +39,11 @@ export type Circuit = {
     switchBoardTagNo: string;
     circuitAndStarterTagNo: string;
     checkLists: CheckList[];
+};
+
+export type Line = {
+    tagNo: string;
+    isCritical: boolean;
 };
 
 export type HeatTrace = CheckList;
