@@ -139,7 +139,8 @@ export const filterConfig: FilterOptions<Pipetest> = [
                 .filter((v, i, a) => a.indexOf(v) === i),
     },
     {
-        name: 'Lines tags',
-        valueFormatter: ({ lineNos }) => (lineNos.length === 0 ? 'No Line Tags' : 'Has Line Tags'),
+        name: 'Critical lines',
+        valueFormatter: ({ lines }) =>
+            lines?.some((line) => line.isCritical === true) ? 'Yes' : 'No',
     },
 ];
