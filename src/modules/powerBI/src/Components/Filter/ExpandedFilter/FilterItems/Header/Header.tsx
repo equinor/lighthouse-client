@@ -1,29 +1,46 @@
 import { Icon, Search } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
-import { useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { FilterClearIcon } from '../../../FilterClearIcon';
+import { useStore } from '../FilterItemsProvider';
 import { Container, SearchButton, Title } from './Styles';
 
 type HeaderProps = {
     title: string;
-    onSearch: (value: string | undefined) => void;
     searchEnabled: boolean;
     handleEnterPress: () => void;
     deselectAllValues: () => Promise<void>;
     hasActiveFilters: boolean;
-    searchValue: string | undefined;
 };
 
 export const Header = ({
     title,
-    onSearch,
     searchEnabled,
     handleEnterPress,
-    searchValue,
     hasActiveFilters,
     deselectAllValues,
 }: HeaderProps): JSX.Element => {
-    const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+    const [searchValue, setSearchValue] = useStore((store) => store.searchValue);
+    const [isSearchActive, setIsSearchActive] = useStore((store) => store.isSearchActive);
+
+    const handleSearchChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            setSearchValue({ searchValue: e.target.value });
+        },
+        [setSearchValue]
+    );
+
+    const handleOnTitleClick = () => {
+        searchEnabled && setIsSearchActive({ isSearchActive: true });
+    };
+
+    const handleOnSearchButtonClick = () => {
+        setIsSearchActive({ isSearchActive: !isSearchActive });
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        e.key === 'Enter' && handleEnterPress();
+    };
     return (
         <Container>
             <Switch>
@@ -34,26 +51,16 @@ export const Header = ({
                         placeholder="Search"
                         value={searchValue}
                         aria-label="filter group"
-                        onKeyPress={(e) => e.key === 'Enter' && handleEnterPress()}
-                        onChange={(e) => onSearch(e.target.value)}
-                        onBlur={() => {
-                            setIsSearchActive(false);
-                            onSearch(undefined);
-                        }}
+                        onKeyPress={handleKeyPress}
+                        onChange={handleSearchChange}
                     />
                 </Case>
                 <Case when={true}>
-                    <Title
-                        onClick={() => searchEnabled && setIsSearchActive(true)}
-                        hasActiveFilters={hasActiveFilters}
-                    >
+                    <Title onClick={handleOnTitleClick} hasActiveFilters={hasActiveFilters}>
                         {title}
                     </Title>
                     {searchEnabled && (
-                        <SearchButton
-                            onClick={() => setIsSearchActive((s) => !s)}
-                            variant={'ghost_icon'}
-                        >
+                        <SearchButton onClick={handleOnSearchButtonClick} variant={'ghost_icon'}>
                             <Icon id="search" name="search" />
                         </SearchButton>
                     )}
