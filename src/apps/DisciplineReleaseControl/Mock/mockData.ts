@@ -8,6 +8,8 @@ export const testData1: Pipetest = {
     rfccPlanned: '2023-07-21T00:00:00+00:00',
     location: 'AP700',
     mcPkgId: '112744027',
+    hasDisconnectedEquipment: false,
+    hasIsolatedEquipment: false,
     checkLists: [
         {
             tagNo: '82EL056-419',
@@ -318,15 +320,9 @@ export const testData1: Pipetest = {
             ],
         },
     ],
-    lineNos: [
-        '20L00503A',
-        '20L00505A',
-        '20L00503B',
-        '20L00503A',
-        '20L00505A',
-        '20L00505A',
-        '20L00503B',
-        '20L00503A',
+    lines: [
+        { tagNo: '20L00503A', isCritical: false },
+        { tagNo: '20L00505A', isCritical: true },
     ],
     heatTraces: [
         {

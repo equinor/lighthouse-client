@@ -1,6 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { Item } from '../../../../components/ParkView/Styles/item';
 
 export type ReleaseControlItemProps = {
     backgroundColor: string;
@@ -10,49 +9,55 @@ export type ReleaseControlItemProps = {
     isSelected: boolean;
 };
 
-export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
+export const Root = styled.div`
+    height: 80%;
+    width: 100%;
     display: flex;
-    background: ${(props) => props.backgroundColor};
-    color: ${(props) => props.textColor};
-    width: ${(props) => (props.isGrouped ? '90%' : '100%')};
-    margin-left: ${(props) => (props.isGrouped ? '14px' : null)};
-    min-width: 100px;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+`;
+
+export const ReleaseControlItem = styled.div<ReleaseControlItemProps>`
+    display: grid;
+    grid-template-columns: 3fr auto;
+    align-items: center;
     box-sizing: border-box;
-    white-space: nowrap;
-    justify-content: space-between;
+    position: relative;
+    background: ${(props) => props.backgroundColor};
+    color: ${tokens.colors.text.static_icons__default.rgba};
+    cursor: pointer;
+    border: 1px solid #ededed;
+    height: 100%;
+    width: 170px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 13px;
+    padding-left: 20px;
+    padding-right: 2px;
     padding: 0.18rem 0.5rem;
-    border: ${({ isSelected }) =>
-        isSelected ? '2px dashed green' : `1px solid ${tokens.colors.ui.background__medium.hex}`};
+    outline: ${(props) => (props.isSelected ? '2px dashed green' : '')};
+    outline-offset: ${(props) => (props.isSelected ? '2px' : '')};
 `;
 
 export const MidSection = styled.div<{ expanded: boolean }>`
-    display: flex;
-    flex: 1;
-    padding: ${(p) => (p.expanded ? '0px 8px' : '0px')};
+    grid-column: 1/2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 14px;
     font-weight: 500;
-    margin-left: 8px;
-    text-align: end;
     font-variant-numeric: tabular-nums;
 `;
 
 export const Icons = styled.div`
     display: flex;
-    padding-right: 8px;
+    grid-column: 2/3;
+    justify-content: end;
+    align-items: center;
 `;
 
 export const Title = styled.div``;
-
-export const ReleaseControlExpanded = styled.div`
-    display: flex;
-    flex: 1;
-`;
-
-export const ReleaseControlExpandedTitle = styled.div`
-    display: flex;
-    flex: 1;
-    padding: 0px 8px;
-`;
 
 export const SubGroupWrapper = styled.div`
     display: flex;

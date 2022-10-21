@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+## 1.15.4
+- [ProgressStatus] Prod flag
+- [ReleaseControl] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
+- [ReleaseControl] Updated some Tag/HTCable fields after new FAM update.
+
+## 1.15.3
+- [ProgressStatus] New PBI Viewer application
+
+## 1.15.2
+- [Apps] Change Quality Deviation app link to correct Fusion App
+- [Table] Remove option to click on grouped rows
+
+## 1.15.1
+- [Garden] Fix bug with subgrouping and total row count not being updated
+- [PBI] Remove embed of Business Case, Non Conformity, Quality Deviation, Safety Performance and instead redirect to Fusion
+- [ReleaseControl] Remove reject option from RC workflow
+- [ReleaseControl] Split description from item in Garden
+- [PipingAndHeattrace] Split description from item in Garden
+
+## 1.15.0
+
+- [ReleaseControl] Added status bar KPIs
+- [ReleaseControl] Release control PBI analytics (feature flagged test)
+- [PipingAndHeattrace] Improved status bar KPIs
+- [PipingAndHeattrace] Sidesheet styling improvements (scrollbars ++)
+
+## 1.14.0
+
+- [ReleaseControl] Initial prod release (feature flagged prod)
+
+## 1.13.0
+
+- [ReleaseControl] Simultaneous tag/htCable search. Search and select multiple at a time.
+- [ReleaseControl] Scrollbar fix in circuit diagram + RC sidesheet
+- [ReleaseControl] System filter bugfix
+- [PipingAndHeattrace] Better error message when no access to 3D model
+
 ## 1.12.0
 
 - [PowerBI] Refetch token when expired

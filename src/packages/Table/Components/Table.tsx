@@ -155,6 +155,9 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleClick = useCallback(() => {
         //data.setSelected && data.setSelected(row.original);
+        if (row.isGrouped) {
+            return;
+        }
         data?.onSelect && data.onSelect(row.original, row.id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);

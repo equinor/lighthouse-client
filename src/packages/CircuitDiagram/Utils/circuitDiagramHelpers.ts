@@ -105,3 +105,52 @@ export function getHTSidesheetObjectForHtCable(
 
     return htSidesheet;
 }
+
+export const formatDateString = (dateString: string | null): string => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    if (date.toString() === 'Invalid Date') return 'N/A';
+    const dateParts = new Intl.DateTimeFormat(undefined).formatToParts(date);
+    return `${dateParts[0].value}/${dateParts[2].value}/${dateParts[4].value}`;
+};
+
+export const updateDisconnection = (
+    switchboardArray: EleNetwork[][],
+    updatedCable: EleNetworkCable,
+    circuitTagNo: string
+): EleNetwork[][] => {
+    switchboardArray.map((eleNetworks: EleNetwork[]) => {
+        eleNetworks.map((eleNetwork: EleNetwork) => {
+            if (eleNetwork.circuitAndStarterTagNo === circuitTagNo) {
+                const index = eleNetwork.cables.findIndex(
+                    (cable) => cable.tagNo === updatedCable.tagNo
+                );
+                eleNetwork.cables[index] = updatedCable;
+            }
+            return eleNetwork;
+        });
+
+        return eleNetworks;
+    });
+    return switchboardArray;
+};
+
+export const updateIsolation = (
+    switchboardArray: EleNetwork[][],
+    updatedCircuit: EleNetwork,
+    circuitTagNo: string
+): EleNetwork[][] => {
+    switchboardArray.map((eleNetworks: EleNetwork[]) => {
+        if (eleNetworks.some((eleNetwork) => eleNetwork.circuitAndStarterTagNo === circuitTagNo)) {
+            const index = eleNetworks.findIndex(
+                (eleNetwork) => eleNetwork.circuitAndStarterTagNo === circuitTagNo
+            );
+            eleNetworks[index].isolated = updatedCircuit.isolated;
+            eleNetworks[index].isolatedBy = updatedCircuit.isolatedBy;
+            eleNetworks[index].isolatedComment = updatedCircuit.isolatedComment;
+            eleNetworks[index].isolatedDate = updatedCircuit.isolatedDate;
+        }
+        return eleNetworks;
+    });
+    return switchboardArray;
+};

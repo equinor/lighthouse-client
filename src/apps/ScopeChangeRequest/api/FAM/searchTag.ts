@@ -1,7 +1,7 @@
 import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 
-export async function searchTag(value: string, signal?: AbortSignal): Promise<any[]> {
+export async function searchTag(value: string): Promise<any[]> {
     const { FAM } = httpClient();
     const noHtExpression = generateExpressions('Register', 'NotEquals', ['HEAT_TRACING_CABLE']);
     const tagNoExpression = generateExpressions('TagNo', 'Equals', [value]);
@@ -24,8 +24,9 @@ export async function searchTag(value: string, signal?: AbortSignal): Promise<an
             'Status',
             'InstalledCableLength',
             'MountedOn',
-            'RelatedHTCables',
-            'TagMountedOn',
+            'MountedOnTagNo',
+            'MountedOn_HTCables',
+            'HTCables',
             'EstimatedCableLength',
         ],
         'And',
@@ -34,7 +35,6 @@ export async function searchTag(value: string, signal?: AbortSignal): Promise<an
     const res = await FAM.fetch('v0.1/dynamic/completion/custom_scope_tag/JCA', {
         body: JSON.stringify(request),
         method: 'POST',
-        signal,
     });
     return await res.json();
 }

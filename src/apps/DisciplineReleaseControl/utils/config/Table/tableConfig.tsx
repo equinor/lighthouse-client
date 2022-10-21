@@ -27,8 +27,10 @@ export const tableConfig: TableOptions<Pipetest> = {
         'steps',
         'pipeInsulationBoxes',
         'htCableRfc',
-        'lineNos',
+        'lines',
         'mcPkgId',
+        'hasDisconnectedEquipment',
+        'hasIsolatedEquipment',
     ],
     enableSelectRows: true,
     headers: [

@@ -14,12 +14,6 @@ export const NoWorkOrders = styled.div`
     margin: 0em 1em;
 `;
 
-export const Wrapper = styled.div`
-    height: 80%;
-    overflow-x: auto;
-    overflow-y: auto;
-`;
-
 export const Loading = styled.div`
     width: 100%;
     min-width: 750px;
