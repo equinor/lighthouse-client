@@ -18,11 +18,11 @@ import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyle
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const workspace = useWorkSpace();
     const { tabs, viewIsActive } = useConfiguredTabs(workspace);
-    console.log('tabs', tabs);
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
     const { activeWidth, isMinimized } = useSideSheet();
+    console.log('Workspacevioew props', props);
     if (!viewIsActive) return <NoDataView />;
 
     if (dataApi?.isError) {

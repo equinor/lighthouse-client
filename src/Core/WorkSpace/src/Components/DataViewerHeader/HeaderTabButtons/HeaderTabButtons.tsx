@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useLocationContext } from '../../../Context/LocationProvider';
 import { useViewerContext } from '../../../Context/ViewProvider';
 import { TabsConfigItem } from '../../../Util/tabsConfig';
+import { useWorkSpace } from '../../../WorkSpaceApi/useWorkSpace';
 import { TabButton } from '../../ToggleButton';
 import { ANALYTICS } from '../Header';
 import { Divider } from '../HeaderStyles';
@@ -12,13 +13,13 @@ interface HeaderTabButtonsProps {
 }
 
 export const HeaderTabButtons = ({ tabs }: HeaderTabButtonsProps): JSX.Element => {
-    const { hasPowerBi } = useViewerContext();
+    const { powerBiOptions } = useWorkSpace();
     const { handleSetActiveTab, activeTab } = useLocationContext();
     console.log('I rendered HeaderTabBUttons with these tabs', tabs);
 
     return (
         <>
-            {hasPowerBi && (
+            {powerBiOptions !== undefined && (
                 <>
                     <TabButton
                         onClick={() => handleSetActiveTab(ANALYTICS)}
@@ -44,7 +45,7 @@ export const HeaderTabButtons = ({ tabs }: HeaderTabButtonsProps): JSX.Element =
                 return (
                     <TabButton
                         onClick={() => handleSetActiveTab(tab.tabId)}
-                        key={`tab-${tab.icon}`}
+                        key={`tab-${tab.tabId}`}
                         aria-selected={isActiveTab}
                         title={tab.title}
                         color={

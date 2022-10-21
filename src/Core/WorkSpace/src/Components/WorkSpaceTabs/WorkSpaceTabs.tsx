@@ -1,5 +1,6 @@
 import { useLocationContext } from '../../Context/LocationProvider';
 import { TabsConfigItem } from '../../Util/tabsConfig';
+import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { Tab, TabsWrapper } from './WorkSpaceTabsStyles';
 
 interface CompletionViewTabsProps {
@@ -11,9 +12,9 @@ export const WorkSpaceTabs = ({ tabs }: CompletionViewTabsProps): JSX.Element =>
     console.log('workspace tabs', tabs);
     return (
         <TabsWrapper>
-            {tabs.map((tab, index) => {
+            {tabs.map((tab) => {
                 return activeTab === tab.tabId ? (
-                    <Tab key={`${index}-${tab.title}`}>{<tab.viewComponent />}</Tab>
+                    <Tab key={`${tab.title}`}>{<tab.viewComponent />}</Tab>
                 ) : null;
             })}
         </TabsWrapper>

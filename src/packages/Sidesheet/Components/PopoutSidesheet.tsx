@@ -7,19 +7,22 @@ import { getSidesheetContext } from '../context/sidesheetContext';
 import { ResizableSidesheet } from './ResizableSidesheet';
 
 export const PopoutSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props } = useAtom(getSidesheetContext());
+    const { SidesheetComponent } = useAtom(getSidesheetContext());
     const navigate = useNavigate();
     const location = useLocation();
+    console.log('Hei popoutside');
 
     /**
      * Removes hash from url when closed
      */
     // useEffect(() => {
     //     if (window.location.hash.length > 0) return;
-    //     if (!props) {
+
+    //     return () => {
+    //         console.log('hoi hoih hoi');
     //         navigate(location.pathname + location.search, { replace: true });
-    //     }
-    // }, [props, location.pathname, location.hash.length, navigate]);
+    //     };
+    // }, [location.pathname, location.hash.length, navigate, location.search]);
 
     // if sidesheet
     if (!SidesheetComponent) {
