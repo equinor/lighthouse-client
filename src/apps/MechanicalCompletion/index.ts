@@ -56,6 +56,7 @@ export function setup(addApi: ClientApi): void {
         .registerSearchOptions([
             { name: 'Mc pkg', valueFormatter: ({ mcPkgNumber }) => mcPkgNumber },
             { name: 'Comm pkg', valueFormatter: (pkg) => pkg.commPkgNumber },
+            { name: 'Description', valueFormatter: (pkg) => pkg.description },
         ])
 
         .registerTableOptions(tableConfig)
