@@ -27,7 +27,13 @@ export function setup(appApi: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerPresets(presetConfig)
-        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ name }) => name }])
+        .registerSearchOptions([
+            { name: 'Id', valueFormatter: ({ name }) => name },
+            {
+                name: 'Description',
+                valueFormatter: ({ description }) => description,
+            },
+        ])
         .registerStatusItems(statusBarConfig)
         .registerPowerBIOptions({
             reportURI: 'pp-pipetest-analytics',

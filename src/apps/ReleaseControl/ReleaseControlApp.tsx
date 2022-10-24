@@ -32,6 +32,12 @@ export function setup(appApi: ClientApi): void {
         .registerDataSource(dataSource)
         .registerTableOptions(tableConfig)
         .registerFilterOptions(filterOptions)
+        .registerSearchOptions([
+            {
+                name: 'Title',
+                valueFormatter: (pkg) => pkg.title,
+            },
+        ])
         .registerGardenOptions(gardenOptions)
         .registerPowerBIOptions({
             reportURI: 'pp-release-control-analytics',

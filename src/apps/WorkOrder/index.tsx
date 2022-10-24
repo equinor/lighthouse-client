@@ -53,6 +53,7 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerSearchOptions([
             { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
+            { name: 'Description', valueFormatter: ({ description }) => description ?? '' },
         ])
         .registerTableOptions(tableConfig)
         .registerGardenOptions({
