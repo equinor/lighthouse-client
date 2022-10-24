@@ -33,13 +33,8 @@ export function setup(appApi: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerFilterOptions(filterOptions)
         .registerGardenOptions(gardenOptions)
-        .registerPowerBIOptions(
-            //TODO Remove prod flag when ready
-            !appApi.isProduction
-                ? {
-                      reportURI: 'pp-release-control-analytics',
-                  }
-                : (undefined as unknown as PowerBiOptions)
-        )
+        .registerPowerBIOptions({
+            reportURI: 'pp-release-control-analytics',
+        })
         .registerStatusItems(statusBarConfig);
 }
