@@ -30,6 +30,9 @@ export const Header = ({
                 <Case when={isSearchActive}>
                     <Search
                         autoFocus={isSearchActive}
+                        style={{
+                            width: '150px',
+                        }}
                         id="search-normal"
                         placeholder="Search"
                         value={searchValue}
