@@ -32,22 +32,21 @@ export const FilterItems = ({
     controller,
     group,
 }: FilterItemsProps): JSX.Element | null => {
-    const [searchValue, setSearchValue] = useStore((store) => store.searchValue);
-    const [isSearchActive, setIsSearchActive] = useStore((store) => store.isSearchActive);
+    const [searchStore, setSearchStore] = useStore((store) => store);
 
     const parentRef = useRef<HTMLDivElement | null>(null);
     const filterRef = useRef<HTMLDivElement | null>(null);
 
     const closeSearchBox = useCallback(() => {
-        if (isSearchActive) {
-            setIsSearchActive({ isSearchActive: false });
+        if (searchStore.isSearchActive) {
+            setSearchStore({ isSearchActive: false, searchValue: '' });
         }
-    }, [isSearchActive, setIsSearchActive]);
+    }, [searchStore.isSearchActive, setSearchStore]);
 
     const filterValues = Object.values(group.value);
     const searchedFilterItems = useMemo(
-        () => searchFilterItems(filterValues, searchValue),
-        [filterValues, searchValue]
+        () => searchFilterItems(filterValues, searchStore.searchValue),
+        [filterValues, searchStore.searchValue]
     );
     const handleEnterPress = () => {
         handleOnSelectAll(
@@ -55,7 +54,7 @@ export const FilterItems = ({
             filterValues[0],
             searchedFilterItems.map((s) => s.value)
         );
-        setSearchValue({ searchValue: '' });
+        setSearchStore({ searchValue: '' });
     };
 
     const rowLength = useMemo(() => searchedFilterItems.length, [searchedFilterItems]);
