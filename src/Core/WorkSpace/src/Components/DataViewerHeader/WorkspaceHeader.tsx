@@ -1,6 +1,4 @@
 import { useMemo } from 'react';
-
-import { useDataContext } from '../../Context/DataProvider';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Presets } from '../Presets/Presets';
 import { CreatorButton } from './CreatorButton/CreatorButton';
@@ -10,6 +8,7 @@ import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useFilterApiContext } from '@equinor/filter';
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import { ViewSettings } from './ViewSettings/ViewSettings';
+import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 
 interface WorkspaceHeaderProps {
     tabs: TabsConfigItem[];
@@ -23,9 +22,9 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
     } = useFilterApiContext();
 
     const data = getFilteredData();
-    const { statusFunc, key } = useDataContext();
+    const { statusFunc } = useWorkSpace();
 
-    const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
+    const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc]);
     return (
         <>
             <LeftSection>
