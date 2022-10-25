@@ -25,7 +25,6 @@ const Context = createContext({} as LocationContext);
 
 export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
     const [activeTab, setActiveTab] = useState<WorkspaceTab>('table');
-    console.log('Active tab', activeTab);
 
     const { defaultTab } = useWorkSpace();
 

@@ -15,7 +15,6 @@ interface HeaderTabButtonsProps {
 export const HeaderTabButtons = ({ tabs }: HeaderTabButtonsProps): JSX.Element => {
     const { powerBiOptions } = useWorkSpace();
     const { handleSetActiveTab, activeTab } = useLocationContext();
-    console.log('I rendered HeaderTabBUttons with these tabs', tabs);
 
     return (
         <>
