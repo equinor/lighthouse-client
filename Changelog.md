@@ -5,11 +5,14 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 1.16.0
+- [ReleaseControl/PipingAndHeattrace] Added functionality to isolate and disconnect equipment in circuit diagram
 - [Apps] Add ability to search for description/title in several workspaces
 - [PowerBI] Fix issue with clicking outside/inside of advanced filter search when trying to select a filter item
 - [PowerBI] Fix issue with filter groups overflowing out of screen when selecting multiple filter groups
 - [ReleaseControl] Remove production flag for PBI report
+- [ReleaseControl] Fixed bug with overdue release controls calculation
 - [Notification] Fix issue with SVG icon resizing
+- [PipingAndHeattrace] Added critical line filter
 
 ## 1.15.4
 - [ProgressStatus] Prod flag
