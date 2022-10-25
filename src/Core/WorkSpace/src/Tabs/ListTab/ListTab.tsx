@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useResizeObserver } from '@equinor/hooks';
-import { defaultGroupByFn, Table, TableAPI, TableData, useColumns, Column } from '@equinor/Table';
+import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
 import { TableOptions, useWorkSpace } from '@equinor/WorkSpace';
 import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { WorkspaceFilter } from '../../Components/WorkspaceFilter/WorkspaceFilter';
-import { useDataContext } from '../../Context/DataProvider';
 import { tabApis } from '../../Context/LocationProvider';
 import { useWorkspaceBookmarks } from '../../Util/bookmarks/hooks';
 const COLUMN_HEADER_HEIGHT = 32;
