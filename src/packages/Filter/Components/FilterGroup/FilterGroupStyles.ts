@@ -77,9 +77,10 @@ export const FilterHeaderGroup = styled.div<{ isActive: boolean }>`
     min-height: 50px;
     box-sizing: border-box;
     border-bottom: ${({ isActive }) =>
-        `2px solid ${isActive
-            ? tokens.colors.interactive.primary__resting.hex
-            : tokens.colors.ui.background__medium.hex
+        `2px solid ${
+            isActive
+                ? tokens.colors.interactive.primary__resting.hex
+                : tokens.colors.ui.background__medium.hex
         }`};
 
     color: ${({ isActive }) =>
@@ -93,6 +94,10 @@ export const FilterHeaderGroup = styled.div<{ isActive: boolean }>`
 export const SearchButton = styled(Button)`
     width: 36px;
     height: 36px;
+    ::after {
+        width: 36px;
+        height: 36px;
+    }
 `;
 
 export const AllCheckbox = styled(Checkbox)`
