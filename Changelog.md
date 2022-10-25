@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.16.0
+- [Apps] Add ability to search for description/title in several workspaces
+- [PowerBI] Fix issue with clicking outside/inside of advanced filter search when trying to select a filter item
+- [PowerBI] Fix issue with filter groups overflowing out of screen when selecting multiple filter groups
+- [ReleaseControl] Remove production flag for PBI report
+- [Notification] Fix issue with SVG icon resizing
+
 ## 1.15.4
 - [ProgressStatus] Prod flag
 - [ReleaseControl] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
