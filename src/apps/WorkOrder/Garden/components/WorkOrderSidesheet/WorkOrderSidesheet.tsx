@@ -2,10 +2,12 @@ import { Progress, Tabs } from '@equinor/eds-core-react';
 import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
+import { ModelViewerContextProvider } from '../../../../../packages/ModelViewer/context/modelViewerContext';
 import { proCoSysUrls } from '../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';
+import { ThreeDView } from './Tabs/3dView';
 import { MaterialTab } from './Tabs/MaterialTab';
 
 interface WorkorderSideSheetProps {
@@ -48,6 +50,7 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
                     <Tabs.Tab>
                         Material {materialIsFetching ? <Loading /> : `(${material?.length || 0})`}
                     </Tabs.Tab>
+                    <Tabs.Tab>3D</Tabs.Tab>
                 </Tabs.List>
 
                 <Tabs.Panels>
@@ -63,6 +66,13 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
                             isFetching={materialIsFetching}
                             error={materialError}
                         />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        {activeTab === 3 && (
+                            <ModelViewerContextProvider>
+                                <ThreeDView isLoading={mccrIsFetching} mccr={mccr} />
+                            </ModelViewerContextProvider>
+                        )}
                     </Tabs.Panel>
                 </Tabs.Panels>
             </Tabs>
