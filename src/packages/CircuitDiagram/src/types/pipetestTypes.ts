@@ -46,6 +46,11 @@ export type Circuit = {
     checkLists: CheckList[];
 };
 
+export type Line = {
+    tagNo: string;
+    isCritical: boolean;
+};
+
 export type HeatTrace = CheckList;
 
 export type HTSidesheet = {
