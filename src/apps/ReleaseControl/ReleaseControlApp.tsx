@@ -32,14 +32,15 @@ export function setup(appApi: ClientApi): void {
         .registerDataSource(dataSource)
         .registerTableOptions(tableConfig)
         .registerFilterOptions(filterOptions)
+        .registerSearchOptions([
+            {
+                name: 'Title',
+                valueFormatter: (pkg) => pkg.title,
+            },
+        ])
         .registerGardenOptions(gardenOptions)
-        .registerPowerBIOptions(
-            //TODO Remove prod flag when ready
-            !appApi.isProduction
-                ? {
-                      reportURI: 'pp-release-control-analytics',
-                  }
-                : (undefined as unknown as PowerBiOptions)
-        )
+        .registerPowerBIOptions({
+            reportURI: 'pp-release-control-analytics',
+        })
         .registerStatusItems(statusBarConfig);
 }

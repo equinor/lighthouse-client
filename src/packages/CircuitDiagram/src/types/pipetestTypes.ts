@@ -35,15 +35,15 @@ export type CheckList = {
     underline?: string;
 };
 
+export type Line = {
+    tagNo: string;
+    isCritical: boolean;
+};
+
 export type Circuit = {
     switchBoardTagNo: string;
     circuitAndStarterTagNo: string;
     checkLists: CheckList[];
-};
-
-export type Line = {
-    tagNo: string;
-    isCritical: boolean;
 };
 
 export type HeatTrace = CheckList;

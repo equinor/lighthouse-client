@@ -21,6 +21,8 @@ export type Pipetest = {
     location: string;
     lines: Line[];
     mcPkgId: string;
+    hasDisconnectedEquipment: boolean;
+    hasIsolatedEquipment: boolean;
 };
 
 export type CheckList = {

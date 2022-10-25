@@ -1,43 +1,144 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
-import { CircuitDiagramNodeGroup, CircuitDiagramNodeValueText } from '../../styles/styles';
+import { Modal } from '@equinor/modal';
+import { memo, useState } from 'react';
+import {
+    CircuitAndStarterNode,
+    CircuitAndStarterWrapper,
+    DeisolateButton,
+    IsolateButton,
+} from '../../styles/circuitStyles';
+import {
+    CircuitDiagramNodeGroup,
+    CircuitDiagramNodeValueText,
+    CircuitDiagramPopover,
+    DisconnectedPopover,
+} from '../../styles/styles';
+import { formatDateString } from '../../Utils/circuitDiagramHelpers';
+import { deisolateCircuit } from '../Api/deisolateCircuit';
+import { EleNetwork, EleNetworkCable } from '../types/eleNetwork';
+import { IsolateModal } from './IsolateModal';
 import { TestDot } from './TestDot';
 
 interface CircuitAndStarterProps {
     value?: string;
+    eleNetwork?: EleNetwork;
     cTestStatus: string;
+    isEditMode: boolean;
+    disconnected: boolean;
+    comment: string;
+    setComment: (comment: string) => void;
+    updateDiagram: (
+        updatedCable: EleNetworkCable | undefined,
+        updatedCircuit: EleNetwork | undefined,
+        circuitTagNo: string
+    ) => void;
 }
-export const CircuitAndStarter = ({ value, cTestStatus }: CircuitAndStarterProps): JSX.Element => {
+const CircuitAndStarter = ({
+    value,
+    eleNetwork,
+    cTestStatus,
+    isEditMode,
+    disconnected,
+    comment,
+    setComment,
+    updateDiagram,
+}: CircuitAndStarterProps): JSX.Element => {
+    const [isIsolating, setIsIsolating] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const onOpen = () => setIsOpen(true);
+    const onClose = () => setIsOpen(false);
+
     return (
-        <CircuitDiagramNodeGroup>
-            <CircuitAndStarterNode>
-                <TestDot value="C" status={cTestStatus} />
-                <CircuitDiagramNodeValueText>
-                    <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
-                </CircuitDiagramNodeValueText>
-                <Icon
-                    size={16}
-                    style={{ transform: 'rotate(90deg)' }}
-                    color={tokens.colors.text.static_icons__default.hex}
-                    name="circuit"
+        <>
+            <CircuitDiagramNodeGroup>
+                <CircuitAndStarterWrapper>
+                    <CircuitAndStarterNode disconnected={disconnected}>
+                        <CircuitDiagramNodeValueText>
+                            <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
+                        </CircuitDiagramNodeValueText>
+                        <TestDot value="C" status={cTestStatus} />
+                    </CircuitAndStarterNode>
+
+                    {isEditMode && !disconnected && (
+                        <div>
+                            <IsolateButton
+                                onMouseOver={onOpen}
+                                onMouseLeave={onClose}
+                                onClick={() => setIsIsolating(true)}
+                            >
+                                <Icon
+                                    name={'lock'}
+                                    color={tokens.colors.interactive.danger__resting.hex}
+                                    size={16}
+                                />
+                                Isolate
+                            </IsolateButton>
+                            {isOpen && (
+                                <CircuitDiagramPopover>
+                                    {'Connected. Click to isolate'}
+                                </CircuitDiagramPopover>
+                            )}
+                        </div>
+                    )}
+                    {isEditMode && disconnected && (
+                        <div>
+                            <DeisolateButton
+                                onMouseOver={onOpen}
+                                onMouseLeave={onClose}
+                                onClick={async () => {
+                                    const updatedCircuit = await deisolateCircuit(value ?? '');
+                                    if (updatedCircuit) {
+                                        updateDiagram(undefined, updatedCircuit, value ?? '');
+                                    }
+                                }}
+                            >
+                                <Icon
+                                    name={'lock'}
+                                    color={tokens.colors.ui.background__light.hex}
+                                    size={16}
+                                />
+                                Deisolate
+                            </DeisolateButton>
+                            {isOpen && (
+                                <CircuitDiagramPopover>
+                                    {
+                                        <DisconnectedPopover>
+                                            <div>
+                                                Isolated by{' '}
+                                                {eleNetwork?.isolatedBy?.firstName +
+                                                    ' ' +
+                                                    eleNetwork?.isolatedBy?.lastName}{' '}
+                                                {formatDateString(eleNetwork?.isolatedDate ?? '')}
+                                            </div>
+                                            <div>Comment: {eleNetwork?.isolatedComment}</div>
+                                            <div>Click to deisolate</div>
+                                        </DisconnectedPopover>
+                                    }
+                                </CircuitDiagramPopover>
+                            )}
+                        </div>
+                    )}
+                </CircuitAndStarterWrapper>
+            </CircuitDiagramNodeGroup>
+
+            {isEditMode && isIsolating && (
+                <Modal
+                    title={'Write a comment'}
+                    content={
+                        <IsolateModal
+                            circuitAndStarterTagNo={value ?? ''}
+                            setIsIsolating={setIsIsolating}
+                            comment={comment}
+                            setComment={setComment}
+                            updateDiagram={updateDiagram}
+                        />
+                    }
                 />
-            </CircuitAndStarterNode>
-        </CircuitDiagramNodeGroup>
+            )}
+        </>
     );
 };
 
-const CircuitAndStarterNode = styled.div`
-    display: flex;
-    flex-direction: horizontal;
-    flex: 1;
-    border: 1px solid ${tokens.colors.ui.background__medium.hex};
-    border-radius: 10px;
-    padding: 6px;
-    text-align: center;
-    margin-top: 16px;
-    justify-content: center;
-    max-height: 40px;
-    width: 84px;
-    background: ${tokens.colors.ui.background__default.hex};
-`;
+export default memo(CircuitAndStarter);
