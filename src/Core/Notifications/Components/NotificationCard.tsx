@@ -13,6 +13,7 @@ import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
 import { notificationsBaseKey } from '../queries/notificationQueries';
 import { Notification } from '../Types/Notification';
+import { StatusCircle } from './StatusCircle';
 
 interface NotificationCardProps {
     notification: Notification;
@@ -34,46 +35,31 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
     const handleClick = () => {
         isExternalApp
             ? window.open(
-                notification.card?.actions?.find(({ type }) => type === 'Action.OpenUrl')?.url,
-                '_blank'
-            )
+                  notification.card?.actions?.find(({ type }) => type === 'Action.OpenUrl')?.url,
+                  '_blank'
+              )
             : handleActionClick(
-                notification.sourceSystem.subSystem,
-                notification.sourceSystem.identifier
-            );
+                  notification.sourceSystem.subSystem,
+                  notification.sourceSystem.identifier
+              );
 
         markAsRead({ notificationId: notification?.id });
     };
 
     return (
-        <>
-            <Wrapper onClick={handleClick}>
-                <LeftSection>
-                    <svg
-                        width={15}
-                        height={15}
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle
-                            cx="6"
-                            cy="6"
-                            r="5.5"
-                            fill={notification.seenByUser ? '#E7DEEA' : '#B276B2'}
-                        />
-                    </svg>
-                    <DetailText>
-                        <NotificationTitle>{notification.title}</NotificationTitle>
-                    </DetailText>
-                </LeftSection>
-                <RightSection></RightSection>
-                <TimeStamp>
-                    {DateTime.fromJSDate(new Date(notification.created)).toRelative({
-                        locale: 'en-GB',
-                    })}
-                </TimeStamp>
-            </Wrapper>
-        </>
+        <Wrapper onClick={handleClick}>
+            <LeftSection>
+                <StatusCircle seenByUser={notification.seenByUser} />
+                <DetailText>
+                    <NotificationTitle>{notification.title}</NotificationTitle>
+                </DetailText>
+            </LeftSection>
+            <RightSection></RightSection>
+            <TimeStamp>
+                {DateTime.fromJSDate(new Date(notification.created)).toRelative({
+                    locale: 'en-GB',
+                })}
+            </TimeStamp>
+        </Wrapper>
     );
 };

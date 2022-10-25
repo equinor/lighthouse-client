@@ -20,7 +20,6 @@ export const FilterGroupWrap = styled.div`
 export const FilterItemsWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    width: 100%;
     height: 100%;
     overflow-x: auto;
     overflow-y: hidden;
@@ -40,7 +39,8 @@ export const Item = styled(Button)`
 `;
 
 export const ExpandedFilterWrapper = styled.div`
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     height: 250px;
     overflow: hidden;
     border-bottom: 1px solid ${tokens.colors.ui.background__medium.hex};

@@ -58,7 +58,13 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlighColumn,
             customDescription: customDescription,
         })
-        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ swcrNo }) => swcrNo }])
+        .registerSearchOptions([
+            { name: 'Id', valueFormatter: ({ swcrNo }) => swcrNo },
+            {
+                name: 'Description',
+                valueFormatter: (pkg) => pkg.description,
+            },
+        ])
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
             reportURI: 'pp-swcr-analytics',

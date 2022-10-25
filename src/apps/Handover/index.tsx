@@ -68,7 +68,10 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlightedColumn,
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
-        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ commpkgNo }) => commpkgNo }])
+        .registerSearchOptions([
+            { name: 'Id', valueFormatter: ({ commpkgNo }) => commpkgNo },
+            { name: 'Title', valueFormatter: ({ description }) => description },
+        ])
         .registerStatusItems(statusBarConfig)
         .registerPowerBIOptions({
             reportURI: 'pp-handover-analytics',

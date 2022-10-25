@@ -348,5 +348,9 @@ export const eleTestData: EleNetwork = {
             status: 'OK',
         },
     ],
-    switchBoardTagNo: '82EL065-409',
+    circuitAndStarterTagNo: '82EL065-409',
+    isolated: false,
+    isolatedBy: undefined,
+    isolatedComment: '',
+    isolatedDate: '',
 };

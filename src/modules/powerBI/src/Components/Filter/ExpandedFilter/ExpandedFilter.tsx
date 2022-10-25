@@ -3,9 +3,10 @@ import { FilterExpandIcon } from '../../../../../../Core/WorkSpace/src/Component
 import { ToggleHideFilterPopover } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/ToggleHideFilterPopover';
 import { PowerBiFilter } from '../../../Types';
 import { FilterClearIcon } from '../FilterClearIcon';
-import { FilterItems } from '../FilterItems';
-import { FilterController } from '../PowerBIFilter';
+import { FilterItems } from './FilterItems';
 import { ExpandedFilterWrapper, FilterItemsWrapper, Sidebar } from '../Styles';
+import { FilterController } from '../types';
+import { FilterItemsProvider } from './FilterItems/FilterItemsProvider';
 
 interface ExpandedFilterProps {
     controller: FilterController;
@@ -28,14 +29,15 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
         <ExpandedFilterWrapper>
             <FilterItemsWrapper>
                 {visibleFilters.map((groupName) => (
-                    <FilterItems
-                        controller={controller}
-                        handleOnChange={handleOnChange}
-                        handleOnSelectAll={controller.handleOnSelectAll}
-                        activeFilters={activeFilters}
-                        group={slicerFilters.find((s) => s.type === groupName) as PowerBiFilter}
-                        key={groupName}
-                    />
+                    <FilterItemsProvider key={groupName}>
+                        <FilterItems
+                            controller={controller}
+                            handleOnChange={handleOnChange}
+                            handleOnSelectAll={controller.handleOnSelectAll}
+                            activeFilters={activeFilters}
+                            group={slicerFilters.find((s) => s.type === groupName) as PowerBiFilter}
+                        />
+                    </FilterItemsProvider>
                 ))}
             </FilterItemsWrapper>
             <Sidebar>

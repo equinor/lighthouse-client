@@ -1,11 +1,13 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useVirtual } from 'react-virtual';
-import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../Types';
-import { Header } from '../Header';
-import { FilterController } from '../PowerBIFilter';
+import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../../Types';
+import { Header } from './Header';
+import { FilterController } from '../../types';
 import { Item } from './Item';
 import { searchFilterItems } from './searchFilterItems';
 import { CheckboxWrap, FilterGroupContainer, VirtualFilterItemWrapper } from './Styles';
+import { useStore } from './FilterItemsProvider';
+import { useClickOutside } from '@equinor/lighthouse-utils';
 
 type FilterItemsProps = {
     handleOnChange: (
@@ -30,16 +32,21 @@ export const FilterItems = ({
     controller,
     group,
 }: FilterItemsProps): JSX.Element | null => {
-    const [searchValue, setSearchValue] = useState<string | undefined>();
+    const [searchStore, setSearchStore] = useStore((store) => store);
+
     const parentRef = useRef<HTMLDivElement | null>(null);
-    const handleOnSearchChange = (value: string | undefined) => {
-        setSearchValue(value);
-    };
+    const filterRef = useRef<HTMLDivElement | null>(null);
+
+    const closeSearchBox = useCallback(() => {
+        if (searchStore.isSearchActive) {
+            setSearchStore({ isSearchActive: false, searchValue: '' });
+        }
+    }, [searchStore.isSearchActive, setSearchStore]);
 
     const filterValues = Object.values(group.value);
     const searchedFilterItems = useMemo(
-        () => searchFilterItems(filterValues, searchValue),
-        [filterValues, searchValue]
+        () => searchFilterItems(filterValues, searchStore.searchValue),
+        [filterValues, searchStore.searchValue]
     );
     const handleEnterPress = () => {
         handleOnSelectAll(
@@ -47,7 +54,7 @@ export const FilterItems = ({
             filterValues[0],
             searchedFilterItems.map((s) => s.value)
         );
-        handleOnSearchChange('');
+        setSearchStore({ searchValue: '' });
     };
 
     const rowLength = useMemo(() => searchedFilterItems.length, [searchedFilterItems]);
@@ -57,16 +64,15 @@ export const FilterItems = ({
         parentRef,
     });
 
+    useClickOutside(filterRef, closeSearchBox);
+
     return (
-        <FilterGroupContainer>
+        <FilterGroupContainer ref={filterRef}>
             <Header
-                searchValue={searchValue}
                 handleEnterPress={handleEnterPress}
                 title={group.type}
                 hasActiveFilters={Boolean(activeFilters[group.type].length)}
-                controller={controller}
                 deselectAllValues={() => controller.deselectAllValues(group, filterValues[0])}
-                onSearch={handleOnSearchChange}
                 searchEnabled={group.filterVals.length > 7}
             />
             <CheckboxWrap ref={parentRef}>
