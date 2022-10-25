@@ -25,7 +25,6 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
     const { statusFunc } = useWorkSpace();
 
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc]);
-    console.log('I rendered workspace header with these tabs', tabs);
     return (
         <>
             <LeftSection>

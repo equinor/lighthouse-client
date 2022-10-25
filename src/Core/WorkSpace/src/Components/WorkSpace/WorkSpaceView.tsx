@@ -22,7 +22,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     const navigate = useNavigate();
     const { activeWidth, isMinimized } = useSideSheet();
-    console.log('Workspacevioew props', props);
     if (!viewIsActive) return <NoDataView />;
 
     if (dataApi?.isError) {
@@ -50,7 +49,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
             </Loading>
         );
     }
-
     return (
         <WorkspaceWrapper>
             {!props.hasSidesheet && (

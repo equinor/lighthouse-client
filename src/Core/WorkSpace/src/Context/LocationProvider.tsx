@@ -10,7 +10,7 @@ import {
     useMemo,
     useState,
 } from 'react';
-import { useLocation, useNavigate, useParams, useRe } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
@@ -58,10 +58,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
      * Add default tab to url if id is undefined
      */
     useEffect(() => {
-        console.log('Id', id);
         if (!id) {
-            console.log('Default:)', defaultTab);
-
             navigate(`${defaultTab}${location.hash}` + location.search, {
                 replace: true,
             });
