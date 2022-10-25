@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useResizeObserver } from '@equinor/hooks';
-import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
-import { useWorkSpace } from '@equinor/WorkSpace';
+import { defaultGroupByFn, Table, TableAPI, TableData, useColumns, Column } from '@equinor/Table';
+import { TableOptions, useWorkSpace } from '@equinor/WorkSpace';
 import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { WorkspaceFilter } from '../../Components/WorkspaceFilter/WorkspaceFilter';
+import { useDataContext } from '../../Context/DataProvider';
 import { tabApis } from '../../Context/LocationProvider';
 import { useWorkspaceBookmarks } from '../../Util/bookmarks/hooks';
 const COLUMN_HEADER_HEIGHT = 32;
@@ -28,12 +30,17 @@ export const ListTab = (): JSX.Element => {
     } = useFilterApiContext();
 
     const data = getFilteredData() as TableData[];
-    const { tableOptions } = useWorkSpace();
+    const workspace = useWorkSpace();
+
+    // Casting as TableOptions because tsc doesn't like DeepImmutable<TableOptions> type.
+    const tableOptions = workspace.tableOptions as
+        | TableOptions<Record<PropertyKey, unknown>>
+        | undefined;
+    // const {tableOptions} = useDataContext()
     useWorkspaceBookmarks();
 
     const ref = useRef<HTMLDivElement>(null);
     const [_width, height] = useResizeObserver(ref);
-
     const columns = useColumns(data[0], Boolean(tableOptions?.preventAutoGenerateColumns), {
         customCellView: tableOptions?.customCellView,
         headers: tableOptions?.headers,
