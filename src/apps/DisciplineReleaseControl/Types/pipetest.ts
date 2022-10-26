@@ -23,6 +23,7 @@ export type Pipetest = {
     mcPkgId: string;
     hasDisconnectedEquipment: boolean;
     hasIsolatedEquipment: boolean;
+    htCableExposed: string | null;
 };
 
 export type CheckList = {
@@ -42,6 +43,7 @@ export type CheckList = {
     m03Forecast?: string;
     m04Actual?: string;
     underline?: string;
+    signedDate?: string;
 };
 
 export type InsulationBox = {
