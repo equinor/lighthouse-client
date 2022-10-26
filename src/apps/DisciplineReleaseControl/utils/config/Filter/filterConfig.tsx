@@ -1,4 +1,4 @@
-import { FilterOptions } from '@equinor/filter';
+import { FilterOptions, FilterValueType } from '@equinor/filter';
 import {
     StepFilterContainer,
     StepFilterText,
@@ -7,6 +7,7 @@ import {
 import { PipetestStep } from '../../../Types/drcEnums';
 import { Pipetest } from '../../../Types/pipetest';
 import { getGardenItemColor } from '../../helpers/gardenFunctions';
+import { sortFilterValueDateDurations } from '../../helpers/statusHelpers';
 import { getStatusLetterFromStatus } from '../../helpers/tableHelpers';
 
 export const filterConfig: FilterOptions<Pipetest> = [
@@ -116,6 +117,7 @@ export const filterConfig: FilterOptions<Pipetest> = [
     {
         name: 'Overdue',
         valueFormatter: ({ overdue }) => overdue,
+        sort: (s) => s.sort(sortOnYesNo),
     },
     {
         name: 'Completion status',
@@ -141,6 +143,24 @@ export const filterConfig: FilterOptions<Pipetest> = [
     {
         name: 'Critical lines',
         valueFormatter: ({ lines }) =>
-            lines?.some((line) => line.isCritical === true) ? 'Yes' : 'No',
+            lines?.some((line) => line.isCritical === true)
+                ? booleanToHumanReadable(true)
+                : booleanToHumanReadable(false),
+        sort: (s) => s.sort(sortOnYesNo),
+    },
+    {
+        name: 'HT cable exposed',
+        valueFormatter: ({ htCableExposed }) => htCableExposed,
+        sort: (values) => {
+            return sortFilterValueDateDurations(values);
+        },
     },
 ];
+
+function booleanToHumanReadable(val: boolean | undefined) {
+    return val ? 'Yes' : 'No';
+}
+
+function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
+    return b === 'No' ? -1 : 1;
+}

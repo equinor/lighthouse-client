@@ -10,6 +10,7 @@ export const testData1: Pipetest = {
     mcPkgId: '112744027',
     hasDisconnectedEquipment: false,
     hasIsolatedEquipment: false,
+    htCableExposed: null,
     checkLists: [
         {
             tagNo: '82EL056-419',
