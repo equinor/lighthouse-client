@@ -27,8 +27,7 @@ export function statusBarConfig(data: ReleaseControl[]): StatusItem[] {
                     data?.filter(
                         (x) =>
                             DateTime.fromISO(x.plannedDueDate) < DateTime.now() &&
-                            x.state !== 'Voided' &&
-                            x.state !== 'Closed'
+                            x.state === 'Open'
                     )?.length
                 );
             },
