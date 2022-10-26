@@ -10,6 +10,7 @@ import {
     PipetestCompletionStatus,
 } from '../../Types/drcEnums';
 import { CheckList, Circuit, InsulationBox, Pipetest } from '../../Types/pipetest';
+import { FilterValueType } from '@equinor/filter';
 
 export async function fetchAndChewPipetestDataFromApi(): Promise<Pipetest[]> {
     let data = await getPipetests();
@@ -59,13 +60,7 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
 
         pipetest.htCableRfc = getHTCableRfc(pipetest.checkLists.filter((x) => x.isHeatTrace));
 
-        // Check if a htCable is exposed. A-test is signed and complete but no insulation is completed.
-        // Gets amount of time the cable has been exposed.
-        if (
-            getPipetestStatusSortValue(pipetest) <= PipetestStatusOrder.Insulation &&
-            !isCheckListStepOk(pipetest.checkLists, CheckListStepTag.Insulation) &&
-            isCheckListTestOk(pipetest.checkLists, CheckListStepTag.HtTest)
-        ) {
+        if (isHTCableExposed(pipetest)) {
             pipetest.htCableExposed = getHTCableExposedTime(pipetest.checkLists);
         }
 
@@ -666,6 +661,16 @@ export function sortCheckListsForTable(checkLists: CheckList[]): CheckList[] {
     return checkLists;
 }
 
+// Check if a htCable is exposed. A-test is signed and complete but no insulation is completed.
+// Gets amount of time the cable has been exposed.
+export function isHTCableExposed(pipetest: Pipetest): boolean {
+    return getPipetestStatusSortValue(pipetest) <= PipetestStatusOrder.Insulation &&
+        !isCheckListStepOk(pipetest.checkLists, CheckListStepTag.Insulation) &&
+        isCheckListTestOk(pipetest.checkLists, CheckListStepTag.HtTest)
+        ? true
+        : false;
+}
+
 export function getHTCableExposedTime(checkLists: CheckList[]): string | null {
     //Gets signed dates for A-test (HtTest)
     const aTestDates: DateTime[] = checkLists
@@ -704,4 +709,32 @@ export function getFilterValueFromDuration(duration: Duration): string {
     } else {
         return '';
     }
+}
+
+export function sortFilterValueDateDurations(values: FilterValueType[]): FilterValueType[] {
+    values.sort((a, b) => {
+        const map = new Map<string, number>();
+
+        //Different values for days/weeks/months/years
+        map.set('d', 1);
+        map.set('w', 2);
+        map.set('m', 3);
+        map.set('y', 4);
+
+        if (typeof a !== 'string' || a === null) return -1;
+        if (typeof b !== 'string' || b === null) return -1;
+
+        let result = 0;
+        //If time format (days/weeks/months/years) is different we calculate based on the map above
+        if (a.substring(a.length - 1) !== b.substring(b.length - 1)) {
+            result =
+                (map.get(a.substring(a.length - 1)) ?? -0) -
+                (map.get(b.substring(b.length - 1)) ?? -0);
+            //If time format is the same we calculate based on the number before the letter
+        } else {
+            result = Number(a.substring(0, a.length - 1)) - Number(b.substring(0, b.length - 1));
+        }
+        return result;
+    });
+    return values;
 }
