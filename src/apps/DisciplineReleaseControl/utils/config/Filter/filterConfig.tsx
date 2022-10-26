@@ -1,4 +1,4 @@
-import { FilterOptions } from '@equinor/filter';
+import { FilterOptions, FilterValueType } from '@equinor/filter';
 import {
     StepFilterContainer,
     StepFilterText,
@@ -116,6 +116,7 @@ export const filterConfig: FilterOptions<Pipetest> = [
     {
         name: 'Overdue',
         valueFormatter: ({ overdue }) => overdue,
+        sort: (s) => s.sort(sortOnYesNo),
     },
     {
         name: 'Completion status',
@@ -141,6 +142,49 @@ export const filterConfig: FilterOptions<Pipetest> = [
     {
         name: 'Critical lines',
         valueFormatter: ({ lines }) =>
-            lines?.some((line) => line.isCritical === true) ? 'Yes' : 'No',
+            lines?.some((line) => line.isCritical === true)
+                ? booleanToHumanReadable(true)
+                : booleanToHumanReadable(false),
+        sort: (s) => s.sort(sortOnYesNo),
+    },
+    {
+        name: 'HT cable exposed',
+        valueFormatter: ({ htCableExposed }) => htCableExposed,
+        sort: (values) => {
+            values.sort((a, b) => {
+                const map = new Map<string, number>();
+
+                //Different values for days/weeks/months/years
+                map.set('d', 1);
+                map.set('w', 2);
+                map.set('m', 3);
+                map.set('y', 4);
+
+                if (typeof a !== 'string' || a === null) return -1;
+                if (typeof b !== 'string' || b === null) return -1;
+
+                let result = 0;
+                //If time format (days/weeks/months/years) is different we calculate based on the map above
+                if (a.substring(a.length - 1) !== b.substring(b.length - 1)) {
+                    result =
+                        (map.get(a.substring(a.length - 1)) ?? -0) -
+                        (map.get(b.substring(b.length - 1)) ?? -0);
+                    //If time format is the same we calculate based on the number before the letter
+                } else {
+                    result =
+                        Number(a.substring(0, a.length - 1)) - Number(b.substring(0, b.length - 1));
+                }
+                return result;
+            });
+            return values;
+        },
     },
 ];
+
+function booleanToHumanReadable(val: boolean | undefined) {
+    return val ? 'Yes' : 'No';
+}
+
+function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
+    return b === 'No' ? -1 : 1;
+}

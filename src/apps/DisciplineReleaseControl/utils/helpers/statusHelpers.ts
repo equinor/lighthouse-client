@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { getPipetests } from '../api/getPipetests';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import {
@@ -58,6 +58,16 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
                 : 'No';
 
         pipetest.htCableRfc = getHTCableRfc(pipetest.checkLists.filter((x) => x.isHeatTrace));
+
+        // Check if a htCable is exposed. A-test is signed and complete but no insulation is completed.
+        // Gets amount of time the cable has been exposed.
+        if (
+            getPipetestStatusSortValue(pipetest) <= PipetestStatusOrder.Insulation &&
+            !isCheckListStepOk(pipetest.checkLists, CheckListStepTag.Insulation) &&
+            isCheckListTestOk(pipetest.checkLists, CheckListStepTag.HtTest)
+        ) {
+            pipetest.htCableExposed = getHTCableExposedTime(pipetest.checkLists);
+        }
 
         //Find insulation checklists and add them to pipeInsulationBox array.
         pipetest.pipeInsulationBoxes = [];
@@ -654,4 +664,44 @@ export function getCheckListStatusSortValue(checkList: CheckList): number {
 export function sortCheckListsForTable(checkLists: CheckList[]): CheckList[] {
     checkLists.sort((a, b) => getCheckListStatusSortValue(a) - getCheckListStatusSortValue(b));
     return checkLists;
+}
+
+export function getHTCableExposedTime(checkLists: CheckList[]): string | null {
+    //Gets signed dates for A-test (HtTest)
+    const aTestDates: DateTime[] = checkLists
+        .filter(
+            (x) => x.formularType.startsWith(CheckListStepTag.HtTest) && x.signedDate !== undefined
+        )
+        .map((checkList: CheckList) => {
+            return DateTime.fromISO(checkList.signedDate ? checkList.signedDate : '');
+        });
+
+    //Gets earliest date from all dates
+    const timeExposed = DateTime.min.apply(null, aTestDates);
+
+    //If we have an earliest date, we transform it into a duration based on todays date going back in time
+    if (timeExposed !== undefined) {
+        const durationDiff = DateTime.now()
+            .diff(timeExposed, ['years', 'months', 'weeks', 'days'])
+            .toObject();
+
+        const duration = Duration.fromObject(durationDiff);
+        //We turn it into a filter-friendly value, to not get too many unique filter options
+        return getFilterValueFromDuration(duration);
+    }
+    return null;
+}
+
+export function getFilterValueFromDuration(duration: Duration): string {
+    if (duration.years > 0) {
+        return duration.years + 'y';
+    } else if (duration.months > 0) {
+        return duration.months + 'm';
+    } else if (duration.weeks > 0) {
+        return duration.weeks + 'w';
+    } else if (duration.days > 0) {
+        return duration.days.toFixed(0) + 'd';
+    } else {
+        return '';
+    }
 }
