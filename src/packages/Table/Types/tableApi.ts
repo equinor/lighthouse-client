@@ -6,6 +6,7 @@ export interface TableAPI {
     toggleHideColumn: (colId: string) => void;
     setColumnOrder: (updater: string[] | ((columnOrder: string[]) => string[])) => void;
     getVisibleColumns: () => ColumnInstance<TableData, TableData>[];
+    getHiddenColumns: () => string[];
     getHeaderGroups: () => HeaderGroup<TableData>[];
     getSelectedRowId: () => string | null;
     setSelectedRowId: (callbackOrId: SelectedRowCallback | string) => void;
