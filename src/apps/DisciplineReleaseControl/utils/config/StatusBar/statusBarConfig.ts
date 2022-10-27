@@ -23,7 +23,8 @@ export function statusBarConfig(data: Pipetest[]): StatusItem[] {
                 return numberFormat(
                     data?.filter(
                         (x) =>
-                            getPipetestStatusSortValue(x) <= PipetestCheckListOrder.Bolttensioning
+                            getPipetestStatusSortValue(x.step) <=
+                            PipetestCheckListOrder.Bolttensioning
                     )?.length
                 );
             },
@@ -37,7 +38,7 @@ export function statusBarConfig(data: Pipetest[]): StatusItem[] {
                             (100 *
                                 data?.filter(
                                     (x) =>
-                                        getPipetestStatusSortValue(x) >
+                                        getPipetestStatusSortValue(x.step) >
                                         PipetestCheckListOrder.Bolttensioning
                                 )?.length) /
                             data?.length
@@ -57,7 +58,7 @@ export function statusBarConfig(data: Pipetest[]): StatusItem[] {
             value: () => {
                 return numberFormat(
                     pipetestsWithHTCable.filter(
-                        (x) => getPipetestStatusSortValue(x) <= PipetestCheckListOrder.HtTest
+                        (x) => getPipetestStatusSortValue(x.step) <= PipetestCheckListOrder.HtTest
                     )?.length
                 );
             },
@@ -67,7 +68,7 @@ export function statusBarConfig(data: Pipetest[]): StatusItem[] {
             value: () => {
                 return numberFormat(
                     pipetestsWithHTCable.filter(
-                        (x) => getPipetestStatusSortValue(x) <= PipetestCheckListOrder.HtRetest
+                        (x) => getPipetestStatusSortValue(x.step) <= PipetestCheckListOrder.HtRetest
                     )?.length
                 );
             },

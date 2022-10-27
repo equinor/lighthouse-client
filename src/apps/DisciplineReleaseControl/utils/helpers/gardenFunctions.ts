@@ -20,7 +20,7 @@ export const sortByPipetestStatus = (a: string, b: string): number => {
     return PipetestStatusOrder[getPipetestStatusEnumByValue(a)]
         ?.toString()
         ?.localeCompare(
-            PipetestStatusOrder[getPipetestStatusEnumByValue(b)].toString(),
+            PipetestStatusOrder[getPipetestStatusEnumByValue(b)]?.toString(),
             undefined,
             {
                 numeric: true,
@@ -235,8 +235,8 @@ export function createChecklistTestSteps(
 }
 
 export function getPipetestStatusValueForHTCable(pipetests: Pipetest[]): PipetestStatusOrder {
-    const statusValues = pipetests.map((x) => getPipetestStatusSortValue(x));
-    return statusValues.reduce((a, b) => Math.min(a, b));
+    const statusValues = pipetests.map((x) => getPipetestStatusSortValue(x.step));
+    return statusValues.reduce((a, b) => Math.min(a, b), 0);
 }
 
 export function shouldHaveUnderline(
