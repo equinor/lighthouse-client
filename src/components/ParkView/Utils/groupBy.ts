@@ -152,7 +152,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
     /** List of all unique identifiers in child array of all arr entries  */
     const groupNames = preGroupFiltering(arr, String(key)).reduce((prev, curr) => {
         let childArray = new Array<unknown>();
-        let children = curr[key];
+        const children = curr[key];
         if (Array.isArray(children)) {
             childArray = children
                 .map((nestedObject) =>
