@@ -40,6 +40,10 @@ export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
         getKey: (item) => getYearAndWeekFromString(item.htCableRfc),
         getColumnSort: sortByNumber,
     },
+    circuits: {
+        label: 'Circuit',
+        key: 'circuitAndStarterTagNo',
+    },
 };
 
 export const getHighlightedColumn = (groupByKey: string) => {
