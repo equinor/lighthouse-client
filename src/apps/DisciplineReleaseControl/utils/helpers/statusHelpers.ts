@@ -813,10 +813,10 @@ export function getWorstStepForHeatTrace(heatTraceGrouped: HeatTraceGrouped): Pi
 
 export function getWorstStepForPipetestHeatTraces(pipetest: Pipetest): PipetestStep {
     const worstHeatTrace = pipetest.heatTraces?.reduce((prev, curr) =>
-        getPipetestStatusSortValue(prev.worstPipetestStep) <
-        getPipetestStatusSortValue(curr.worstPipetestStep)
+        getPipetestStatusSortValue(prev.worstPipetestStep ?? PipetestStep.Unknown) <
+        getPipetestStatusSortValue(curr.worstPipetestStep ?? PipetestStep.Unknown)
             ? prev
             : curr
     );
-    return worstHeatTrace.worstPipetestStep;
+    return worstHeatTrace.worstPipetestStep ?? PipetestStep.Unknown;
 }

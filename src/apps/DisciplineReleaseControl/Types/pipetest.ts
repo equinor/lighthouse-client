@@ -45,7 +45,7 @@ export type CheckList = {
     m04Actual?: string;
     underline?: string;
     signedDate?: string;
-    worstPipetestStep: PipetestStep;
+    worstPipetestStep?: PipetestStep;
 };
 
 export type InsulationBox = {
