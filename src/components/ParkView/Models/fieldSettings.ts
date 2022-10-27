@@ -10,6 +10,7 @@ export type FieldSetting<ItemType> = {
     label?: string;
     getKey?: GetKeyFunction<ItemType>;
     getColumnSort?: GetSortFunction;
+    lastStep?: boolean;
 };
 
 /**

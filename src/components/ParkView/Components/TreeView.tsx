@@ -3,7 +3,7 @@ import { createTree } from '../Services/createTree';
 import { Wrapper, Col } from '../Styles/common';
 import { TreeColumn } from './TreeColumn';
 import { useParkViewContext } from '../Context/ParkViewProvider';
-import { FilterSelector } from './GroupingSelector';
+import { GroupingSelector } from './GroupBySelectors';
 
 export function TreeView<T extends Record<PropertyKey, unknown>>(): JSX.Element | null {
     const { groupByKeys, options, status, data } = useParkViewContext<T>();
@@ -22,7 +22,7 @@ export function TreeView<T extends Record<PropertyKey, unknown>>(): JSX.Element 
 
     return (
         <>
-            <FilterSelector<T> />
+            <GroupingSelector<T> />
             <Wrapper>
                 {tree && (
                     <Col>
