@@ -155,6 +155,17 @@ export const filterConfig: FilterOptions<Pipetest> = [
             return sortFilterValueDateDurations(values);
         },
     },
+    {
+        name: 'Isolated',
+        valueFormatter: ({ hasIsolatedEquipment }) => booleanToHumanReadable(hasIsolatedEquipment),
+        sort: (s) => s.sort(sortOnYesNo),
+    },
+    {
+        name: 'Disconnected',
+        valueFormatter: ({ hasDisconnectedEquipment }) =>
+            booleanToHumanReadable(hasDisconnectedEquipment),
+        sort: (s) => s.sort(sortOnYesNo),
+    },
 ];
 
 function booleanToHumanReadable(val: boolean | undefined) {
