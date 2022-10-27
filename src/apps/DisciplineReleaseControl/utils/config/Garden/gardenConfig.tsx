@@ -23,6 +23,11 @@ export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
         getKey: (item) => item.step,
         getColumnSort: sortByPipetestStatus,
     },
+    htStep: {
+        label: 'Current step (HT)',
+        getKey: (item) => item.htStep,
+        getColumnSort: sortByPipetestStatus,
+    },
     system: { label: 'System', getKey: getSystemKey, getColumnSort: groupBySystem },
     heatTraces: {
         label: 'HT cable',

@@ -9,7 +9,13 @@ import {
     CheckListStepTag,
     PipetestCompletionStatus,
 } from '../../Types/drcEnums';
-import { CheckList, Circuit, InsulationBox, Pipetest } from '../../Types/pipetest';
+import {
+    CheckList,
+    Circuit,
+    HeatTraceGrouped,
+    InsulationBox,
+    Pipetest,
+} from '../../Types/pipetest';
 import { FilterValueType } from '@equinor/filter';
 
 export async function fetchAndChewPipetestDataFromApi(): Promise<Pipetest[]> {
@@ -91,6 +97,27 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
         );
         return pipetest;
     });
+
+    //Find the worst step for all heatTraces related to the pipetest
+    const pipetestsGroupedByHeatTrace = getPipetestsGroupedByHeatTrace(pipetests);
+    pipetests.map((pipetest: Pipetest) => {
+        if (pipetest.heatTraces.length !== 0) {
+            pipetest.heatTraces.map((heatTrace: CheckList) => {
+                const pipetestGroupedByHeatTrace = pipetestsGroupedByHeatTrace.find(
+                    (x) => x.htTagNo === heatTrace.tagNo
+                );
+                if (pipetestGroupedByHeatTrace !== undefined) {
+                    heatTrace.worstPipetestStep = getWorstStepForHeatTrace(
+                        pipetestGroupedByHeatTrace
+                    );
+                }
+                return heatTrace;
+            });
+            pipetest.htStep = getWorstStepForPipetestHeatTraces(pipetest);
+        }
+        return pipetest;
+    });
+
     sortPipetests(pipetests);
     return pipetests;
 }
@@ -120,7 +147,9 @@ export function getHTCableRfc(checkLists: CheckList[]): string {
 }
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {
-    pipetests.sort((a, b) => getPipetestStatusSortValue(a) - getPipetestStatusSortValue(b));
+    pipetests.sort(
+        (a, b) => getPipetestStatusSortValue(a.step) - getPipetestStatusSortValue(b.step)
+    );
     return pipetests;
 }
 
@@ -467,9 +496,9 @@ export function getPipetestStatusEnumByValue(enumValue: string): string {
     return Object.keys(PipetestStep).filter((x) => PipetestStep[x] === enumValue)[0];
 }
 
-export function getPipetestStatusSortValue(pipetest: Pipetest): number {
+export function getPipetestStatusSortValue(step: PipetestStep): number {
     let number: number = PipetestStatusOrder.Unknown;
-    switch (pipetest.step) {
+    switch (step) {
         case PipetestStep.Unknown:
             number = PipetestStatusOrder.Unknown;
             break;
@@ -664,7 +693,7 @@ export function sortCheckListsForTable(checkLists: CheckList[]): CheckList[] {
 // Check if a htCable is exposed. A-test is signed and complete but no insulation is completed.
 // Gets amount of time the cable has been exposed.
 export function isHTCableExposed(pipetest: Pipetest): boolean {
-    return getPipetestStatusSortValue(pipetest) <= PipetestStatusOrder.Insulation &&
+    return getPipetestStatusSortValue(pipetest.step) <= PipetestStatusOrder.Insulation &&
         !isCheckListStepOk(pipetest.checkLists, CheckListStepTag.Insulation) &&
         isCheckListTestOk(pipetest.checkLists, CheckListStepTag.HtTest)
         ? true
@@ -737,4 +766,57 @@ export function sortFilterValueDateDurations(values: FilterValueType[]): FilterV
         return result;
     });
     return values;
+}
+
+export function getPipetestsByHeatTrace(htTagNo: string, pipetests: Pipetest[]): HeatTraceGrouped {
+    const pipetestChildren = pipetests.filter(
+        (pipetest, index, array) =>
+            pipetest.heatTraces.map((x) => x.tagNo)?.includes(htTagNo) &&
+            array.indexOf(pipetest) === index
+    );
+    return {
+        htTagNo: htTagNo,
+        pipetests: pipetestChildren,
+        count: pipetestChildren.length,
+    };
+}
+
+export function getPipetestsGroupedByHeatTrace(pipetests: Pipetest[]): HeatTraceGrouped[] {
+    let pipetestsGroupedByHeatTrace: HeatTraceGrouped[] = [];
+    pipetestsGroupedByHeatTrace = pipetests
+        .reduce(
+            (prev: string[], curr) => [
+                ...prev,
+                ...curr.heatTraces?.map((x) => x.tagNo)?.filter((ht) => !prev.includes(ht)),
+            ],
+            []
+        )
+        .map((htCheckList) => getPipetestsByHeatTrace(htCheckList, pipetests));
+
+    /** Pipetest that has no heatTraces */
+    const pipetestChildren = pipetests?.filter(({ heatTraces }) => heatTraces.length === 0);
+    pipetestsGroupedByHeatTrace.push({
+        htTagNo: 'No HT cables',
+        pipetests: pipetestChildren,
+        count: pipetestChildren.length,
+    });
+
+    return pipetestsGroupedByHeatTrace;
+}
+
+export function getWorstStepForHeatTrace(heatTraceGrouped: HeatTraceGrouped): PipetestStep {
+    const worstPipetest = heatTraceGrouped.pipetests.reduce((prev, curr) =>
+        getPipetestStatusSortValue(prev.step) < getPipetestStatusSortValue(curr.step) ? prev : curr
+    );
+    return worstPipetest.step;
+}
+
+export function getWorstStepForPipetestHeatTraces(pipetest: Pipetest): PipetestStep {
+    const worstHeatTrace = pipetest.heatTraces?.reduce((prev, curr) =>
+        getPipetestStatusSortValue(prev.worstPipetestStep ?? PipetestStep.Unknown) <
+        getPipetestStatusSortValue(curr.worstPipetestStep ?? PipetestStep.Unknown)
+            ? prev
+            : curr
+    );
+    return worstHeatTrace.worstPipetestStep ?? PipetestStep.Unknown;
 }
