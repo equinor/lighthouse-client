@@ -145,6 +145,8 @@ export type ReleaseControl = {
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
     attachments: Attachment[];
+    hasDisconnectedEquipment: boolean;
+    hasIsolatedEquipment: boolean;
 
     systems: string[];
     areas: string[];
