@@ -1,6 +1,6 @@
 import { useResizeObserver } from '@equinor/hooks';
 import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
-import { useCallback, useMemo, useRef } from 'react';
+import { MutableRefObject, useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
@@ -8,6 +8,7 @@ import { WorkspaceFilter } from '../../Components/WorkspaceFilter/WorkspaceFilte
 import { useDataContext } from '../../Context/DataProvider';
 import { tabApis } from '../../Context/LocationProvider';
 import { useWorkspaceBookmarks } from '../../Util/bookmarks/hooks';
+
 const COLUMN_HEADER_HEIGHT = 32;
 const Container = styled.div`
     display: grid;
@@ -19,7 +20,18 @@ const Wrapper = styled.section`
     overflow-y: hidden;
     overflow-x: scroll;
 `;
-
+const getHiddenColumns = (
+    getApi: MutableRefObject<GetTableApi | null>,
+    hiddenColumns: PropertyKey[] | undefined
+) => {
+    if (getApi.current && getApi.current().getHiddenColumns().length > 0) {
+        return getApi.current().getHiddenColumns();
+    } else if (hiddenColumns) {
+        return hiddenColumns;
+    } else {
+        return [];
+    }
+};
 export type GetTableApi = () => TableAPI;
 
 export const ListTab = (): JSX.Element => {
@@ -54,7 +66,7 @@ export const ListTab = (): JSX.Element => {
             tableOptions?.onSelect && tableOptions.onSelect(item, id);
             getApi.current && getApi.current().setSelectedRowId(id);
         },
-        [getApi, tableOptions?.onSelect]
+        [tableOptions]
     );
 
     const options = useMemo(
@@ -63,17 +75,18 @@ export const ListTab = (): JSX.Element => {
             enableSelectRow: tableOptions?.enableSelectRows,
             onCellClick: tableOptions?.onCellClick,
             initialState: {
-                hiddenColumns: (tableOptions?.hiddenColumns ?? []) as string[],
+                hiddenColumns: getHiddenColumns(getApi, tableOptions?.hiddenColumns) as string[],
             },
             columnOrder: tableOptions?.columnOrder,
             groupByFn: defaultGroupByFn,
             onSelect: onSelect,
         }),
         [
-            // columns,
+            columns,
             onSelect,
             tableOptions?.columnOrder,
             tableOptions?.enableSelectRows,
+            tableOptions?.hiddenColumns,
             tableOptions?.onCellClick,
         ]
     );

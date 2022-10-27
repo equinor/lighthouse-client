@@ -39,17 +39,17 @@ export function Table<TData extends TableData = TableData>({
     height,
     onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const ref = useRef<HTMLDivElement>(null);
+
     const hooks = RegisterReactTableHooks<TData>({
         rowSelect: (options && options.enableSelectRows) || false,
     });
-    const ref = useRef<HTMLDivElement>(null);
     const defaultColumn = useDefaultColumn({
         data: data,
         columns: dataColumns,
         ...(options ?? {}),
     });
-
-    const [selectedId, setSelectedId] = useState<string | null>(null);
 
     const {
         prepareRow,
@@ -67,23 +67,29 @@ export function Table<TData extends TableData = TableData>({
         hooks
     ) as TableInstance<TableData>;
 
-    const getVisibleColumns = () => visibleColumns;
-
-    const getTableApi = (): TableAPI => ({
-        getHeaderGroups: () => headerGroups,
+    const getVisibleColumns = useCallback(() => visibleColumns, [visibleColumns]);
+    const getTableApi = useCallback((): TableAPI => {
+        return {
+            getHeaderGroups: () => headerGroups,
+            getVisibleColumns,
+            getHiddenColumns: () => allColumns.filter((col) => !col.isVisible).map((col) => col.id),
+            setColumnOrder,
+            toggleHideColumn,
+            getSelectedRowId: () => selectedId,
+            setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
+                setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
+            getColumns: () => allColumns,
+            getRows: () => rows,
+        };
+    }, [
+        allColumns,
         getVisibleColumns,
+        headerGroups,
+        rows,
+        selectedId,
         setColumnOrder,
         toggleHideColumn,
-        getSelectedRowId: () => selectedId,
-        setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
-            setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
-        getColumns: () => allColumns,
-        getRows: () => rows,
-    });
-
-    useEffect(() => {
-        onTableReady && onTableReady(getTableApi);
-    }, [getTableApi, onTableReady]);
+    ]);
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
         (cell, e) => {
@@ -98,6 +104,9 @@ export function Table<TData extends TableData = TableData>({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options?.columnOrder]);
 
+    useEffect(() => {
+        onTableReady && onTableReady(getTableApi);
+    }, [getTableApi, onTableReady]);
     return (
         <TableWrapper {...getTableProps()}>
             <div>
@@ -149,18 +158,17 @@ interface RenderRowProps {
 }
 const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null => {
     const row = data.rows[index];
-    if (!row) return null;
-    data.prepareRow(row);
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleClick = useCallback(() => {
-        //data.setSelected && data.setSelected(row.original);
         if (row.isGrouped) {
             return;
         }
         data?.onSelect && data.onSelect(row.original, row.id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
+
+    if (!row) return null;
+
+    data.prepareRow(row);
 
     data.selectedId === row.id &&
         (style = {
