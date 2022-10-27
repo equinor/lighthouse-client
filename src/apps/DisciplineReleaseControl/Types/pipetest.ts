@@ -3,6 +3,7 @@ import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEn
 export type Pipetest = {
     name: string;
     step: PipetestStep;
+    htStep: PipetestStep;
     steps: PipetestStep[];
     completionStatus: PipetestCompletionStatus;
     pipetestProcessDoneInRightOrder: boolean;
@@ -44,6 +45,7 @@ export type CheckList = {
     m04Actual?: string;
     underline?: string;
     signedDate?: string;
+    worstPipetestStep: PipetestStep;
 };
 
 export type InsulationBox = {
@@ -92,4 +94,10 @@ export type Line = {
 export type HTSidesheet = {
     value: string;
     items: Pipetest[];
+};
+
+export type HeatTraceGrouped = {
+    htTagNo: string;
+    pipetests: Pipetest[];
+    count: number;
 };
