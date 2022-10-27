@@ -10,6 +10,7 @@ export type FieldSetting<ItemType> = {
     label?: string;
     getKey?: GetKeyFunction<ItemType>;
     getColumnSort?: GetSortFunction;
+    /** Set to true if no other grouping should be available after this */
     lastStep?: boolean;
 };
 
