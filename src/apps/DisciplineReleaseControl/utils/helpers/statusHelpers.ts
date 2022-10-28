@@ -63,6 +63,7 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
             DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                 ? 'Yes'
                 : 'No';
+        pipetest.hasCriticalLine = pipetest.lines?.some((line) => line.isCritical === true);
 
         pipetest.htCableRfc = getHTCableRfc(pipetest.checkLists.filter((x) => x.isHeatTrace));
 

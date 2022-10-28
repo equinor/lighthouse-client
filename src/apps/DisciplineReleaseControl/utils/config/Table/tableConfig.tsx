@@ -32,6 +32,7 @@ export const tableConfig: TableOptions<Pipetest> = {
         'hasDisconnectedEquipment',
         'hasIsolatedEquipment',
         'htCableExposed',
+        'hasCriticalLine',
     ],
     enableSelectRows: true,
     headers: [

@@ -68,6 +68,7 @@ const HeatTracingCable = ({
                     <TestDot
                         value="A"
                         status={getCircuitTestStatus(CheckListStepTag.HtTest, checkListsForHTCable)}
+                        hasLightningIcon={true}
                     />
                     <TestDot
                         value="B"
@@ -75,7 +76,11 @@ const HeatTracingCable = ({
                             CheckListStepTag.HtRetest,
                             checkListsForHTCable
                         )}
+                        hasLightningIcon={true}
                     />
+                    {pipetestsOnHTCable?.some((x) => x.hasCriticalLine) && (
+                        <TestDot value="CL" status={'PA'} hasLightningIcon={false} />
+                    )}
                 </ABTestDots>
             </HeatTracingCableNode>
             <Lines>
