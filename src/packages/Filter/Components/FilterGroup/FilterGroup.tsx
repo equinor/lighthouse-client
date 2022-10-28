@@ -1,5 +1,6 @@
 import { Icon, Search } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
+import { useClickOutside } from '@equinor/lighthouse-utils';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
 import { FilterClearIcon } from '../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
@@ -34,6 +35,8 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [searchActive, setSearchActive] = useState(false);
 
+    const filterRef = useRef<HTMLDivElement | null>(null);
+
     function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
         setFilterSearchValue(value);
@@ -43,9 +46,10 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         setSearchActive((isActive) => !isActive);
     }
 
-    const isSearchable = filterGroup.values.length > 10;
-    const hasAnyActiveFilters = Boolean(getInactiveGroupValues(filterGroup.name).length);
-
+    const handleClickOutside = useCallback(() => {
+        setSearchActive(false);
+        setFilterSearchValue('');
+    }, []);
     const groupsMatchingSearch = useMemo(
         () =>
             searchByValue(
@@ -55,41 +59,42 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         [filterGroup.values, filterSearchValue]
     );
 
+    const handleOnKeyPress = useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter') {
+                setFilterState([
+                    ...getFilterState().filter((s) => s.name !== filterGroup.name),
+                    {
+                        name: filterGroup.name,
+                        values: filterGroup.values.filter(
+                            (s) => !groupsMatchingSearch.includes(s?.toString() ?? '(Blank)')
+                        ),
+                    },
+                ]);
+                setFilterSearchValue('');
+                setSearchActive(false);
+            }
+        },
+        [filterGroup.name, filterGroup.values, getFilterState, groupsMatchingSearch, setFilterState]
+    );
+
+    const isSearchable = filterGroup.values.length > 10;
+    const hasAnyActiveFilters = Boolean(getInactiveGroupValues(filterGroup.name).length);
+
+    useClickOutside(filterRef, handleClickOutside);
+
     return (
-        <Wrapper>
+        <Wrapper ref={filterRef}>
             <FilterHeaderGroup isActive={hasAnyActiveFilters}>
                 <Switch>
                     <Case when={searchActive}>
                         <Search
                             autoFocus={searchActive}
-                            onBlur={() => {
-                                setSearchActive(false);
-                                setFilterSearchValue('');
-                            }}
                             aria-label="in filter group"
                             id="search-normal"
                             placeholder="Search"
                             onChange={handleOnChange}
-                            onKeyPress={(e) => {
-                                if (e.key === 'Enter') {
-                                    setFilterState([
-                                        ...getFilterState().filter(
-                                            (s) => s.name !== filterGroup.name
-                                        ),
-                                        {
-                                            name: filterGroup.name,
-                                            values: filterGroup.values.filter(
-                                                (s) =>
-                                                    !groupsMatchingSearch.includes(
-                                                        s?.toString() ?? '(Blank)'
-                                                    )
-                                            ),
-                                        },
-                                    ]);
-                                    setFilterSearchValue('');
-                                    setSearchActive(false);
-                                }
-                            }}
+                            onKeyPress={handleOnKeyPress}
                         />
                     </Case>
                     <Case when={true}>
