@@ -1,11 +1,10 @@
 import { deref, swap } from '@dbeining/react-atom';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { Garden } from '../../../../components/ParkView/Components/Garden';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
-import { useDataContext } from '../Context/DataProvider';
 import { tabApis } from '../Context/LocationProvider';
 import {
     gardenApiAtom,
@@ -26,31 +25,34 @@ export const GardenTab = (): JSX.Element => {
     const {
         filterState: { getFilteredData },
     } = useFilterApiContext();
-    const data = getFilteredData();
     useWorkspaceBookmarks();
-    const { gardenOptions } = useDataContext();
+    const { gardenOptions, name } = useWorkSpace();
 
-    const { name } = useWorkSpace();
+    const data = getFilteredData();
+
+    const onGardenReady = useCallback((api) => {
+        tabApis.updateAtom({ garden: api });
+        swap(gardenApiAtom, () => api);
+    }, []);
+
     useEffect(
         () => () => {
             const api = deref(gardenApiAtom);
             if (!api) return;
             saveGardenSnapshot(api, name);
         },
-        []
+        [name]
     );
 
     if (!gardenOptions) return <></>;
+
     return (
         <GardenTabWrapper>
             <WorkspaceFilter />
             <Garden
                 data={data}
                 gardenOptions={interceptGardenOptions(gardenOptions, name)}
-                onGardenReady={(api) => {
-                    tabApis.updateAtom({ garden: api });
-                    swap(gardenApiAtom, () => api);
-                }}
+                onGardenReady={onGardenReady}
             />
         </GardenTabWrapper>
     );

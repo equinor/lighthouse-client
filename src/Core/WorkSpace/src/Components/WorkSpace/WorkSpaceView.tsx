@@ -18,15 +18,13 @@ import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyle
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const workspace = useWorkSpace();
     const { tabs, viewIsActive } = useConfiguredTabs(workspace);
-
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
     const { activeWidth, isMinimized } = useSideSheet();
-
     if (!viewIsActive) return <NoDataView />;
 
-    if (dataApi.isError) {
+    if (dataApi?.isError) {
         return (
             <WorkspaceErrorPage>
                 <DumpsterFireDialog
@@ -43,7 +41,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         );
     }
 
-    if (dataApi.isLoading) {
+    if (dataApi?.isLoading) {
         return (
             <Loading>
                 <CircularProgress color="primary" value={0} size={48} />
@@ -51,7 +49,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
             </Loading>
         );
     }
-
     return (
         <WorkspaceWrapper>
             {!props.hasSidesheet && (
