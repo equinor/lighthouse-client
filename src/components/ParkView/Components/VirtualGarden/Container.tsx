@@ -50,13 +50,15 @@ export const VirtualContainer = <T extends Record<PropertyKey, unknown>>({
         });
     }, [
         data,
-        gardenKey,
         groupByKeys,
+        collapseSubGroupsByDefault,
+        gardenKey,
         status,
         options?.groupDescriptionFunc,
         fieldSettings,
         customGroupByKeys,
-        onGardenReady,
+        intercepters?.postGroupSorting,
+        intercepters?.preGroupFiltering,
     ]);
     const setSelectedCallback = useCallback(
         (callback: SelectedRowCallback | string) =>
@@ -70,7 +72,7 @@ export const VirtualContainer = <T extends Record<PropertyKey, unknown>>({
 
     useEffect(() => {
         onGardenReady && onGardenReady(createGardenApi());
-    }, []);
+    }, [createGardenApi, onGardenReady]);
 
     useEffect(() => {
         if (garden && amountOfColumns > 0) {
@@ -78,7 +80,7 @@ export const VirtualContainer = <T extends Record<PropertyKey, unknown>>({
                 (itemWidth && itemWidth(garden, gardenKey.toString(), customGroupByKeys)) || 300;
             setWidths(new Array(amountOfColumns).fill(width));
         }
-    }, [amountOfColumns, gardenKey, itemWidth]);
+    }, [amountOfColumns, customGroupByKeys, garden, gardenKey, itemWidth]);
 
     //TODO: Handle widths = 0 better
     if (widths.length === 0 || amountOfColumns !== widths.length) {

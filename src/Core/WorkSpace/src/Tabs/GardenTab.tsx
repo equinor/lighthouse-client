@@ -41,7 +41,7 @@ export const GardenTab = (): JSX.Element => {
             if (!api) return;
             saveGardenSnapshot(api, name);
         },
-        []
+        [name]
     );
 
     if (!gardenOptions) return <></>;
