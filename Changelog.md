@@ -4,19 +4,45 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.17.0
+
+- [ReleaseControl/PipingAndHeattrace] Added filters for isolated and disconnected equipment
+- [PipingAndHeattrace] Added filter for exposed HT cable duration
+- [PipingAndHeattrace] Added grouping option for circuits
+- [PipingAndHeattrace] Added grouping option for "Current step (HT)"
+- [PipingAndHeattrace] Added search option for HT cable
+- [ReleaseControl] Bugfix: Overdue release controls only apply to open state
+- [PowerBI] Bugfix: height/width fix for button
+- [Garden] Bugfix: Fixed for array grouping in hanging garden
+
+## 1.16.0
+
+- [ReleaseControl/PipingAndHeattrace] Added functionality to isolate and disconnect equipment in circuit diagram
+- [Apps] Add ability to search for description/title in several workspaces
+- [PowerBI] Fix issue with clicking outside/inside of advanced filter search when trying to select a filter item
+- [PowerBI] Fix issue with filter groups overflowing out of screen when selecting multiple filter groups
+- [ReleaseControl] Remove production flag for PBI report
+- [ReleaseControl] Fixed bug with overdue release controls calculation
+- [Notification] Fix issue with SVG icon resizing
+- [PipingAndHeattrace] Added critical line filter
+
 ## 1.15.4
+
 - [ProgressStatus] Prod flag
 - [ReleaseControl] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
 - [ReleaseControl] Updated some Tag/HTCable fields after new FAM update.
 
 ## 1.15.3
+
 - [ProgressStatus] New PBI Viewer application
 
 ## 1.15.2
+
 - [Apps] Change Quality Deviation app link to correct Fusion App
 - [Table] Remove option to click on grouped rows
 
 ## 1.15.1
+
 - [Garden] Fix bug with subgrouping and total row count not being updated
 - [PBI] Remove embed of Business Case, Non Conformity, Quality Deviation, Safety Performance and instead redirect to Fusion
 - [ReleaseControl] Remove reject option from RC workflow

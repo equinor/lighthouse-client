@@ -25,4 +25,8 @@ export const Title = styled.div<{ hasActiveFilters: boolean }>`
 export const SearchButton = styled(Button)`
     width: 36px;
     height: 36px;
+    ::after {
+        width: 36px;
+        height: 36px;
+    }
 `;
