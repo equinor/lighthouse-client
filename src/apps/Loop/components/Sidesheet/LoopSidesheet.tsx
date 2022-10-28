@@ -1,12 +1,11 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
+import { useGetWorkorders } from '../../hooks';
 import { Loop } from '../../types';
-import { workorderColumnNames } from '../../utility/api';
 import { Status } from '../Status';
 import { ThreeDView } from './3D/3dView';
 import { Banner } from './Banner';
@@ -14,6 +13,7 @@ import { BannerItem } from './BannerItem';
 import { Checklists } from './Checklists';
 import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
+import { LoopWorkOrderTab } from './LoopWorkorderTable';
 import {
     ItemLink,
     OverviewPanel,
@@ -23,6 +23,7 @@ import {
     SidesheetTabs,
     TabsWrapper,
 } from './sidesheet-styles';
+import { TabTitle } from './TabTitle';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -30,27 +31,17 @@ type LoopSidesheetProps = {
 };
 export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     const [activeTab, setActiveTab] = useState<number>(0);
+
+    const { isLoadingWorkorders, workorderError, workorders } = useGetWorkorders(item.loopNo);
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
+
     useEffect(() => {
         actions.setTitle(`${item.loopNo}, ${item.description}`);
     }, [item.loopNo, item.description]);
-    const workorderExpressions = generateExpressions('checklistID', 'Equals', [
-        item.checklistId || '',
-    ]);
-    const workorderRequestArgs = generateFamRequest(
-        workorderColumnNames,
-        'Or',
-        workorderExpressions
-    );
-    // const {
-    //     data: workorders,
-    //     isLoading: isLoadingWorkorders,
-    //     error: workorderError,
-    // } = useQuery(['workorder', item.checklistId], ({ signal }) =>
-    //     getWorkorders(workorderRequestArgs, signal)
-    // );
+
     return (
         <div style={{ height: '100%' }}>
             <Banner padding="0 1.2em">
@@ -105,6 +96,10 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                 <SidesheetTabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
                         <Tabs.Tab>Overview</Tabs.Tab>
+                        <Tabs.Tab>
+                            Work orders{' '}
+                            <TabTitle isLoading={isLoadingWorkorders} data={workorders} />
+                        </Tabs.Tab>
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
                     <SidesheetPanels>
@@ -115,9 +110,16 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                                 <LoopContentDetails item={item} />
                             </PanelContentWrapper>
                         </OverviewPanel>
+                        <Tabs.Panel>
+                            <LoopWorkOrderTab
+                                error={workorderError instanceof Error ? workorderError : null}
+                                isLoading={isLoadingWorkorders}
+                                workorders={workorders}
+                            />
+                        </Tabs.Panel>
 
                         <Tabs.Panel style={{ height: '100%' }}>
-                            {activeTab === 1 && (
+                            {activeTab === 2 && (
                                 <ModelViewerContextProvider>
                                     <ThreeDView loop={item} />
                                 </ModelViewerContextProvider>
