@@ -1,7 +1,6 @@
 import {
     getBoxInsulationStatus,
     getChecklistSortValue,
-    getDotsColor,
     getHTCableRfc,
     getPipetestCompletionStatus,
     getPipetestStatus,
