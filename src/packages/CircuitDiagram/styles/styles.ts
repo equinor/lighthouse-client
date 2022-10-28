@@ -47,7 +47,7 @@ export const SwitchBoardContainer = styled.div`
 export const SwitchBoardBorderContainer = styled.div`
     border: 1px solid ${tokens.colors.ui.background__medium.hex};
     padding: 8px;
-    width: 100px;
+    width: 110px;
     background: ${tokens.colors.ui.background__light.hex};
 `;
 
@@ -84,6 +84,7 @@ export const CircuitDiagramNodeValueText = styled.div<{ clickable?: boolean }>`
     font-size: 12px;
     font-weight: 400, regular;
     margin-left: 4px;
+    margin-right: 4px;
     padding-top: 4px;
     font-variant-numeric: tabular-nums;
     cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
