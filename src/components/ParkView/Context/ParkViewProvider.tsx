@@ -6,6 +6,17 @@ import { actions } from './ParkViewActions';
 import { ParkViewContext, ParkViewProviderProps, ParkViewState } from './ParkViewContext';
 import { GardenReducer } from './ParkViewReducer';
 
+const init = (parkViewState: ParkViewState<Record<PropertyKey, unknown>>) => {
+    return {
+        ...parkViewState,
+        data: parkViewState.data,
+        objectIdentifier: parkViewState.objectIdentifier,
+        groupByKeys: parkViewState?.groupByKeys || [],
+        onSelect: parkViewState.onSelect as (item: unknown) => string,
+        onGroupeSelect: parkViewState.onGroupeSelect as (item: unknown) => string,
+        gardenKey: (parkViewState as GardenOptions<any>)?.gardenKey,
+    };
+};
 export function ParkViewProvider<T extends Record<PropertyKey, unknown>>({
     children,
     data,
@@ -20,7 +31,7 @@ export function ParkViewProvider<T extends Record<PropertyKey, unknown>>({
         onGroupeSelect: parkViewOptions.onGroupeSelect as (item: unknown) => string,
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey,
     };
-    const [state, dispatch] = useReducer(GardenReducer, initialState);
+    const [state, dispatch] = useReducer(GardenReducer, initialState, init);
 
     function setGroupKeys(groupKeys: string[]): void {
         const keys = groupKeys;

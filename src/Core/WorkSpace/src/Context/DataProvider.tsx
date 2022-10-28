@@ -116,12 +116,6 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
-    useEffect(() => {
-        dispatch(actions.setOptions({ ...resetConfig, ...initialState }));
-        queryApi.remove();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [key]);
-
     const queryApi = useQuery(
         [key],
         async ({ signal }) => {
@@ -150,7 +144,12 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
 
     useEffect(() => {
         queryApi.refetch();
-    }, [dataSource]);
+
+        return () => {
+            dispatch(actions.setOptions({ ...resetConfig, ...initialState }));
+            queryApi.remove();
+        };
+    }, [key]);
 
     const workspaceInternalApi: QueryCacheArgs<unknown> = {
         key,
