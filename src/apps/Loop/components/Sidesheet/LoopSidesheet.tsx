@@ -1,5 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { statusColorMap } from '@equinor/GardenUtils';
+import { statusColorMap, WorkOrderTab } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
@@ -13,7 +13,6 @@ import { BannerItem } from './BannerItem';
 import { Checklists } from './Checklists';
 import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
-import { LoopWorkOrderTab } from './LoopWorkorderTable';
 import {
     ItemLink,
     OverviewPanel,
@@ -111,7 +110,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                             </PanelContentWrapper>
                         </OverviewPanel>
                         <Tabs.Panel>
-                            <LoopWorkOrderTab
+                            <WorkOrderTab
                                 error={workorderError instanceof Error ? workorderError : null}
                                 isLoading={isLoadingWorkorders}
                                 workorders={workorders}
