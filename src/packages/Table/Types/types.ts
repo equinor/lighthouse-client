@@ -11,7 +11,7 @@ import {
     HeaderProps,
 } from 'react-table';
 
-export type TableData = Record<string | number, unknown>;
+export type TableData = Record<PropertyKey, unknown>;
 
 export type CellAttributeFn<T> = (content: T) => HTMLAttributes<HTMLDivElement>;
 
@@ -170,4 +170,4 @@ declare module 'react-table' {
             UseExpandedState<D> {}
 }
 
-export type { TableOptions, Cell, TableInstance, CellProps } from 'react-table';
+export type { TableOptions, Cell, TableInstance, CellProps, Row } from 'react-table';

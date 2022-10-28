@@ -1,6 +1,6 @@
+import { EleNetwork, EleNetworkCheckList } from '@equinor/CircuitDiagram';
 import { tokens } from '@equinor/eds-tokens';
 import { TagMap } from '../../../../../packages/ModelViewer/components/tagOverlay';
-import { EleNetwork, EleNetworkCheckList } from '../../../Types/eleNetwork';
 
 export function getIconName(type: string): string {
     switch (type) {
@@ -40,7 +40,7 @@ export function getTagOverlay(data: EleNetwork[] | undefined): TagMap {
             overlay[checkList.tagNo] = {
                 tagNo: checkList.tagNo,
                 type:
-                    checkList.tagNo === eleNetwork.switchBoardTagNo
+                    checkList.tagNo === eleNetwork.circuitAndStarterTagNo
                         ? 'CIRCUIT'
                         : eleNetwork.circuits.find((i) => i.tagNo === checkList.tagNo)
                               ?.eleSymbolCode || 'unknown',

@@ -1,6 +1,6 @@
 import { TypedSelectOption } from '../api/Search/searchType';
 
-export interface ScopeChangeCreateEditModel {
+export type ScopeChangeCreateEditModel = {
     id?: string;
     title: string;
     description: string;
@@ -34,12 +34,12 @@ export interface ScopeChangeCreateEditModel {
     materialsIdentifiedInStorage: boolean;
     materialsToBeBoughtByContractor: boolean;
     materialsNote?: string;
-}
+};
 
-export interface DisciplineGuesstimate {
+export type DisciplineGuesstimate = {
     disciplineCode: string;
     guesstimateHours: number | null;
-}
+};
 
 export type OriginType =
     | 'NCR'
@@ -53,17 +53,17 @@ export type OriginType =
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
-export interface ChangeCategory {
+export type ChangeCategory = {
     id: string;
     name: string;
-}
+};
 
-export interface Scope {
+export type Scope = {
     id: string;
     name: string;
-}
+};
 
-export interface ScopeChangeBaseModel {
+export type ScopeChangeBaseModel = {
     id: string;
     title: string;
     description: string;
@@ -80,20 +80,20 @@ export interface ScopeChangeBaseModel {
     materialsIdentifiedInStorage: boolean;
     materialsToBeBoughtByContractor: boolean;
     materialsNote?: string;
-}
+};
 
-export interface ScopeChangeDisciplineGuesstimates {
+export type ScopeChangeDisciplineGuesstimates = {
     id: string;
     guesstimate: number;
     discipline: ScopeChangeDiscipline;
-}
-export interface ScopeChangeDiscipline {
+};
+export type ScopeChangeDiscipline = {
     id: string;
     procosysCode: string;
     procosysId: number;
-}
+};
 
-export interface LogEntry {
+export type LogEntry = {
     createdAtUtc: string;
     createdBy: {
         id: string;
@@ -116,9 +116,9 @@ export interface LogEntry {
     eventType: string;
     objectType: string;
     details: string;
-}
+};
 
-export interface ScopeChangeRequest extends ScopeChangeBaseModel {
+export type ScopeChangeRequest = ScopeChangeBaseModel & {
     workflowStatus: string | null;
     createdAtUtc: string;
     createdBy: Person;
@@ -144,31 +144,39 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
     revisionNumber: number;
     serialNumber: string;
-}
+    workOrdersTotalEstimatedManHours: number;
+    workOrdersTotalExpendedManHours: number;
+    workOrdersTotalRemainingManHours: number;
+};
 
-export interface ScopeChangeWorkOrder {
+export type ScopeChangeWorkOrder = {
     id: string;
     jobNumber: string;
-}
+    description: string | null;
+    estimatedManHours: number | null;
+    expendedManHours: number | null;
+    remainingManHours: number | null;
+    sourceIdentity: string | null;
+};
 
-export interface ScopeChangeArea {
+export type ScopeChangeArea = {
     id: string;
     procosysCode: string;
     procosysId: number;
-}
+};
 
-export interface ScopeChangeDocument {
+export type ScopeChangeDocument = {
     id: string;
     stidDocumentNumber: string;
     stidDocumentRevisionNumber: string;
-}
+};
 
-export interface ScopeChangePunch {
+export type ScopeChangePunch = {
     id: string;
     procosysId: number;
-}
+};
 
-export interface Attachment {
+export type Attachment = {
     blobPath: string;
     createdAtUtc: string;
     createdBy: Person;
@@ -177,34 +185,34 @@ export interface Attachment {
     modifiedAtUtc: string | null;
     modifiedBy: string | null;
     fileSize: number;
-}
+};
 
-export interface ScopeChangeCommissioningPackage {
+export type ScopeChangeCommissioningPackage = {
     id: string;
     procosysId: number;
     procosysNumber: string;
-}
+};
 
-export interface ScopeChangeTag {
+export type ScopeChangeTag = {
     id: string;
     procosysId: number;
     procosysNumber: string;
-}
+};
 
-export interface ScopeChangeSystem {
+export type ScopeChangeSystem = {
     id: string;
     procosysId: number;
     procosysCode: string;
-}
+};
 
-export interface Person {
+export type Person = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
-}
+};
 
-export interface WorkflowStep {
+export type WorkflowStep = {
     id: string;
     name: string;
     order: number;
@@ -212,9 +220,9 @@ export interface WorkflowStep {
     isCurrent: boolean;
     criterias: Criteria[];
     contributors: Contributor[];
-}
+};
 
-export interface Criteria {
+export type Criteria = {
     id: string;
     type: string;
     value: string;
@@ -223,9 +231,9 @@ export interface Criteria {
     signedComment: string | null;
     signedState: CriteriaSignState | null;
     valueDescription: string | null;
-}
+};
 
-export interface Contributor {
+export type Contributor = {
     createdAtUtc: Date | null;
     createdBy: Person;
     modifiedAtUtc: Date;
@@ -234,9 +242,9 @@ export interface Contributor {
     instructionsToContributor: string;
     person: Person;
     contribution: Contribution | null;
-}
+};
 
-export interface Contribution {
+export type Contribution = {
     createdAtUtc: Date;
     createdBy: Person;
     modifiedAtUtc: Date;
@@ -244,6 +252,6 @@ export interface Contribution {
     id: string;
     comment: string;
     suggestion: string;
-}
+};
 
 export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';

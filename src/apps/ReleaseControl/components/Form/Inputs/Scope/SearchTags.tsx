@@ -1,13 +1,16 @@
+import { Progress } from '@equinor/eds-core-react';
+import { useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
-import styled from 'styled-components';
 import { useCancellationToken } from '../../../../../../hooks/cancellationToken/useCancellationToken';
 import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
 import {
     FAMTypes,
     useFAMSearch,
 } from '../../../../../ScopeChangeRequest/hooks/Search/useFAMSearch';
+import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { FamTagType } from '../../../../types/releaseControl';
 import { Select } from './ScopeSelect';
+import { LoadingWrapper, SearchWrapper, Section } from './search.styles';
 import { TagTable } from './TagTable';
 
 interface SearchTagsProps {
@@ -16,9 +19,10 @@ interface SearchTagsProps {
 }
 
 export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => {
+    const { searchFAM } = useFAMSearch();
     const { getSignal, abort } = useCancellationToken();
 
-    const { searchFAM } = useFAMSearch();
+    const [loading, setLoading] = useState<boolean>(false);
 
     async function loadOptions(
         type: FAMTypes,
@@ -36,12 +40,16 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         callback: (
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
-    ) => loadOptions('famtag', inputValue, callback);
+    ) => loadOptions('famtagno', inputValue, callback);
 
-    const addTag = (value: TypedSelectOption | TypedSelectOption[]) => {
-        const newValues = Array.isArray(value) ? value : [value];
-        onChange([...tags, ...newValues]);
-    };
+    async function addTag(value: TypedSelectOption) {
+        setLoading(true);
+        const newValues = searchFAM(value.value, 'famtag');
+        if (await newValues) {
+            onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), ...(await newValues)]);
+        }
+        setLoading(false);
+    }
 
     return (
         <div>
@@ -60,6 +68,9 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                         onInputChange={abort}
                         value={tags}
                     />
+                    <LoadingWrapper>
+                        {loading ? <Progress.Dots color="primary" /> : null}
+                    </LoadingWrapper>
                 </SearchWrapper>
                 <div>
                     <TagTable
@@ -75,13 +86,3 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         </div>
     );
 };
-
-const SearchWrapper = styled.div`
-    width: 250px;
-`;
-
-const Section = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-`;

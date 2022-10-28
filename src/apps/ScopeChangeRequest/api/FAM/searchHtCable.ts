@@ -1,11 +1,10 @@
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { generateExpressions, generateFamRequest } from '../../functions/FAM/generateFAMRequest';
 
-export async function searchHtCable(value: string, signal?: AbortSignal): Promise<any[]> {
+export async function searchHtCable(value: string): Promise<any[]> {
     const { FAM } = httpClient();
     const htExpression = generateExpressions('Register', 'Equals', ['HEAT_TRACING_CABLE']);
-    const tagNoExpression = generateExpressions('TagNo', 'Like', [value]);
-
+    const tagNoExpression = generateExpressions('TagNo', 'Equals', [value]);
     const request = generateFamRequest(
         [
             'Facility',
@@ -20,13 +19,14 @@ export async function searchHtCable(value: string, signal?: AbortSignal): Promis
             'MechanicalCompletionPackageId',
             'Location',
             'TagId',
-            'ChecklistIds',
+            'OpenWorkOrderIds',
             'OpenWorkOrders',
             'Status',
             'InstalledCableLength',
-            'MountedOn',
-            'RelatedHTCables',
             'TagHeated',
+            'EstimatedCableLength',
+            'SwitchBoardTagNos',
+            'CircuitTagNos',
         ],
         'And',
         [...htExpression, ...tagNoExpression]
@@ -34,7 +34,6 @@ export async function searchHtCable(value: string, signal?: AbortSignal): Promis
     const res = await FAM.fetch('v0.1/dynamic/completion/custom_scope_tag/JCA', {
         body: JSON.stringify(request),
         method: 'POST',
-        signal,
     });
     return await res.json();
 }

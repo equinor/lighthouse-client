@@ -1,7 +1,6 @@
 import {
     getBoxInsulationStatus,
     getChecklistSortValue,
-    getDotsColor,
     getHTCableRfc,
     getPipetestCompletionStatus,
     getPipetestStatus,
@@ -13,7 +12,7 @@ import {
     isCheckListStepsInRightOrder,
     isCheckListTestOk,
     isPipetestProcessDoneInRightOrder,
-} from '../Functions/statusHelpers';
+} from '../utils/helpers/statusHelpers';
 import { testData1 } from '../Mock/mockData';
 import {
     CheckListStatus,

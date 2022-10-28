@@ -19,6 +19,13 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
         return isProduction() ? url : url.replace('procosys', 'procosystest');
     };
 
+    //Remove duplicates
+    workOrders = workOrders.filter(
+        (v, i, a) => a.findIndex((wo) => wo.workOrderNo === v.workOrderNo) === i
+    );
+
+    const rowHeight = 35;
+
     const someColumns: Column<any>[] = [
         generateColumn(
             'WO',
@@ -85,6 +92,15 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
     ];
 
     return (
-        <div>{workOrders && <Table data={workOrders} columns={someColumns} options={{}} />}</div>
+        <div>
+            {workOrders && (
+                <Table
+                    data={workOrders}
+                    columns={someColumns}
+                    options={{}}
+                    height={rowHeight + workOrders?.length * rowHeight}
+                />
+            )}
+        </div>
     );
 }

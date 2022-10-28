@@ -1,8 +1,9 @@
 import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEnums';
 
-export interface Pipetest {
+export type Pipetest = {
     name: string;
     step: PipetestStep;
+    htStep: PipetestStep;
     steps: PipetestStep[];
     completionStatus: PipetestCompletionStatus;
     pipetestProcessDoneInRightOrder: boolean;
@@ -19,11 +20,14 @@ export interface Pipetest {
     overdue: string;
     dueDateTimePeriod: string;
     location: string;
-    lineNos: string[];
+    lines: Line[];
     mcPkgId: string;
-}
+    hasDisconnectedEquipment: boolean;
+    hasIsolatedEquipment: boolean;
+    htCableExposed: string | null;
+};
 
-export interface CheckList {
+export type CheckList = {
     tagNo: string;
     responsible: string;
     formularType: string;
@@ -40,24 +44,26 @@ export interface CheckList {
     m03Forecast?: string;
     m04Actual?: string;
     underline?: string;
-}
+    signedDate?: string;
+    worstPipetestStep?: PipetestStep;
+};
 
-export interface InsulationBox {
+export type InsulationBox = {
     objectNo: string;
     objectName: string;
     objectStatusName: string;
     objectStatus: string;
     object3dReference: string;
     procosysStatus: string;
-}
+};
 
-export interface Circuit {
+export type Circuit = {
     switchBoardTagNo: string;
     circuitAndStarterTagNo: string;
     checkLists: CheckList[];
-}
+};
 
-export interface HeatTrace extends CheckList {}
+export type HeatTrace = CheckList;
 
 export type CheckListType = {
     tagNo: string;
@@ -80,7 +86,18 @@ export type InsulationBoxType = {
     procosysStatus: string;
 };
 
-export interface HTSidesheet {
+export type Line = {
+    tagNo: string;
+    isCritical: boolean;
+};
+
+export type HTSidesheet = {
     value: string;
     items: Pipetest[];
-}
+};
+
+export type HeatTraceGrouped = {
+    htTagNo: string;
+    pipetests: Pipetest[];
+    count: number;
+};

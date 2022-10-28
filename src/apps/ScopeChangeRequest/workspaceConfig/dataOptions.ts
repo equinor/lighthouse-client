@@ -4,7 +4,7 @@ import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { scopeChange } = httpClient();
-    return await scopeChange.fetch(`api/scope-change-requests`, {
+    return await scopeChange.fetch(`api/scope-change-requests?includeWorkOrdersData=true`, {
         signal: signal,
     });
 }

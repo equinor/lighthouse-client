@@ -3,36 +3,36 @@ import { TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceS
 import { DataSet } from '../Models/data';
 import { GardenOptions } from '../Models/gardenOptions';
 
-export interface CustomItemViewProps<T> {
+export type CustomItemViewProps<T> = {
     data: T;
     itemKey: string;
     onClick: () => void;
-}
+};
 
-export interface CustomGroupViewProps<T> {
+export type CustomGroupViewProps<T extends Record<PropertyKey, unknown>> = {
     data: DataSet<T>;
     onClick: () => void;
-}
+};
 
-export type ParkViewState<T extends unknown> = GardenOptions<T> & {
+export type ParkViewState<T extends Record<PropertyKey, unknown>> = GardenOptions<T> & {
     data: T[] | undefined;
     onSelect: (item: unknown) => string;
     onGroupeSelect: (item: unknown) => string;
 };
 
-export type ParkViewContextState = ParkViewState<unknown> & {
+export type ParkViewContextState = ParkViewState<Record<PropertyKey, unknown>> & {
     setGroupKeys: (groupKeys: string[]) => void;
     setCustomGroupKeys: (groupKeys: Record<string, unknown>) => void;
-    setGardenKey: (groupeKey?: string) => void;
+    setGardenKey: (groupeKey?: PropertyKey) => void;
     setCustomState: (customState: Record<string, unknown>) => void;
     customState?: Record<string, unknown>;
 };
 
-export interface ParkViewProviderProps<T> {
+export type ParkViewProviderProps<T extends Record<PropertyKey, unknown>> = {
     children: React.ReactNode;
     parkViewOptions: GardenOptions<T> | TreeOptions<T>;
     data: T[] | undefined;
-}
+};
 
 export enum DataAction {
     setGroupKeys = 'setGroupKeys',

@@ -1,5 +1,5 @@
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { generateExpressions, generateFamRequest } from '../../functions/FAM/generateFAMRequest';
 import { WorkOrder } from '../../types/FAM/workOrder';
 
 export async function getWorkOrderByIds(ids: string[]): Promise<WorkOrder[]> {

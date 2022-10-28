@@ -1,12 +1,18 @@
+import { Chip, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 44px;
+    flex: 0 0 100%;
+    position: relative;
+    max-height: ${() => window.innerHeight - 264 + 'px'};
+    overflow: auto;
+`;
+//Filler div to place scrollbar at the bottom of screen
+export const WrapperFillerDiv = styled.div`
+    height: 100vh;
 `;
 
 export const FlexColumn = styled.div`
@@ -63,14 +69,13 @@ export const SectionWrapper = styled.div`
     margin-left: 5px;
 `;
 
-export const Banner = styled.div<{ padding?: string }>`
+export const Banner = styled.div`
     height: 76px;
     width: 100%;
     background-color: ${tokens.colors.ui.background__light.hex};
     display: flex;
     flex-direction: row;
     gap: 5rem;
-    padding: ${({ padding = 0 }) => `${padding}`};
     align-items: center;
 `;
 
@@ -97,4 +102,34 @@ export const BannerWarningTriangle = styled.div`
 export const NoScope = styled.div`
     font-size: 14px;
     font-weight: 400;
+`;
+
+export const SpinnerChip = styled(Chip)`
+    margin-left: 10px;
+    margin-top: 12px;
+    background-color: ${tokens.colors.interactive.primary__selected_hover.hex};
+`;
+
+export const ChipText = styled.div`
+    font-size: 16px;
+    text-align: center;
+`;
+
+export const HeaderTab = styled(Tabs.Tab)``;
+export const SidesheetTabList = styled(Tabs.List)`
+    background-color: ${tokens.colors.ui.background__light.hex};
+`;
+export const TabList = styled(Tabs.Panels)`
+    margin-left: 16px;
+`;
+
+export const Tab = styled(Tabs.Panel)`
+    height: 100%;
+    padding-bottom: 50px;
+`;
+
+export const SidesheetWrapper = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
 `;

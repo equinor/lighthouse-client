@@ -9,7 +9,7 @@ import {
 } from '../components/Form/WorkflowEditor/WorkflowEditorHelpers';
 import { testSteps } from '../Mock/mockData';
 
-describe('electroViewHelpers tests', () => {
+describe('statusHelpers tests', () => {
     it('should return one step which is "Initiate" step', () => {
         expect(getNewWorkflowSteps()).toHaveLength(1);
         expect(getNewWorkflowSteps()[0].name).toStrictEqual('Initiate');
@@ -21,7 +21,13 @@ describe('electroViewHelpers tests', () => {
     it('should update responsible', () => {
         const steps = testSteps;
         expect(
-            updateStepResponsible(steps[1], steps, 'RC - Insulation')[1].criteriaTemplates[0].value
+            updateStepResponsible(
+                steps[1],
+                steps,
+                'RC - Insulation',
+                '',
+                'RequireProcosysFunctionalRoleSignature'
+            )[1].criteriaTemplates[0].value
         ).toStrictEqual('RC - Insulation');
     });
     it('should add empty step after and at the right position', () => {

@@ -1,37 +1,37 @@
 import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
-export interface CreatedBy {
+export type CreatedBy = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface ModifiedBy {
+export type ModifiedBy = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface SignedBy {
+export type SignedBy = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface Person {
+export type Person = {
     id: string;
     oid: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export interface Contribution {
+export type Contribution = {
     createdAtUtc: Date;
     createdBy: CreatedBy;
     modifiedAtUtc: Date;
@@ -39,9 +39,9 @@ export interface Contribution {
     id: string;
     comment: string;
     suggestion: string;
-}
+};
 
-export interface Contributor {
+export type Contributor = {
     id: string;
     instructionsToContributor: string;
     person: Person;
@@ -51,14 +51,14 @@ export interface Contributor {
     modifiedAtUtc;
     modifiedBy;
     plant;
-}
+};
 
-export interface DraggableReleaseControlStep {
+export type DraggableReleaseControlStep = {
     id: string;
     item: CreateReleaseControlStepModel;
-}
+};
 
-export interface ReleaseControlStep {
+export type ReleaseControlStep = {
     id: string;
     name: string;
     order: number;
@@ -70,9 +70,9 @@ export interface ReleaseControlStep {
     allowContributors: boolean;
     criteriaTemplates: CriteriaTemplate[];
     workflowStepCriteriaTemplates?: CriteriaTemplate[];
-}
+};
 
-export interface CreateReleaseControlStepModel {
+export type CreateReleaseControlStepModel = {
     id?: string;
     name: string;
     order: number;
@@ -88,9 +88,9 @@ export interface CreateReleaseControlStepModel {
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
     workflowStepCriteriaTemplates?: CriteriaTemplate[];
-}
+};
 
-export interface Criteria {
+export type Criteria = {
     id: string;
     type: string;
     value: string;
@@ -99,27 +99,27 @@ export interface Criteria {
     signedBy: SignedBy;
     signedComment: string;
     signedState: CriteriaSignState | null;
-}
-export interface CriteriaTemplate {
+};
+export type CriteriaTemplate = {
     id?: string;
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
     assignToCreator: boolean;
     //I.E functional role name or azure oid
     value?: string;
     valueDescription?: string;
-}
+};
 
-export interface ReleaseControlDocument {
+export type ReleaseControlDocument = {
     id: string;
     stidDocumentNumber: string;
     stidDocumentRevisionNumber: string;
-}
+};
 
-export interface ReleaseControlPunch {
+export type ReleaseControlPunch = {
     id: string;
     procosysId: number;
-}
-export interface ReleaseControl {
+};
+export type ReleaseControl = {
     createdAtUtc: Date;
     createdBy: CreatedBy;
     modifiedAtUtc: Date;
@@ -141,83 +141,121 @@ export interface ReleaseControl {
     editedWorkflowSteps: ReleaseControlStep[];
     documents: ReleaseControlDocument[];
     punchListItems: ReleaseControlPunch[];
+    scopeChangeRequestReferences: ScopeChangeRequestReference[];
     scopeTags?: FamTag[];
     scopeHTTags?: FamTag[];
-}
+    attachments: Attachment[];
+    hasDisconnectedEquipment: boolean;
+    hasIsolatedEquipment: boolean;
 
-export interface ReleaseControlWorkflow {
+    systems: string[];
+    areas: string[];
+    switchboards: string[];
+    circuits: string[];
+    commPkIds: string[];
+    commPkNos: string[];
+};
+
+export type ReleaseControlWorkflow = {
     id: string;
     name: string;
-}
+};
 
-export interface ReleaseControlWorkflowTemplate {
+export type ReleaseControlWorkflowTemplate = {
     id: string;
     isPublished: boolean;
     workflowStepTemplates: CreateReleaseControlStepModel[];
-}
+};
 
-export interface FamTag {
+export type FamTag = {
     facility: string;
     project: string;
     tagNo: string;
     tagId: string;
-    description: string;
     register: string | null;
-    tagType: string | null;
     function: string | null;
+    functionalSystem: string | null;
     mechanicalCompletionPackageNo: string;
     mechanicalCompletionPackageId: string;
     commissioningPackageNo: string;
     commissioningPackageId: string;
-    packageNo: string | null;
-    callOffNo: string | null;
     status: string | null;
-    discipline: string | null;
-    functionalSystem: string | null;
-    system: string | null;
     location: string | null;
-    area: string | null;
-    isVoided: string | null;
-    createdDate: string | null;
-    updatedDate: string | null;
     mountedOn: string | null;
-    relatedHTCables: string | null;
     openWorkOrders: string | null;
+    openWorkOrderIds: string | null;
     installedCableLength: string | null;
+    estimatedCableLength: string | null;
     tagHeated: string | null;
-    checklistIds: string | null;
-}
+    mountedOnTagNo: string | null;
+    relatedHTCables: string | null;
+    mountedOn_HTCables: string | null;
+    htCables: string | null;
+    switchBoardTagNos: string | null;
+    circuitTagNos: string | null;
+
+    //Sent to release control api
+    area: string | null;
+    tagType: string | null;
+    system: string | null;
+};
 
 export type FamTagType = {
     facility: string;
     project: string;
     tagNo: string;
     tagId: string;
-    description: string;
     register: string | null;
-    tagType: string | null;
     function: string | null;
+    functionalSystem: string | null;
     mechanicalCompletionPackageNo: string;
     mechanicalCompletionPackageId: string;
     commissioningPackageNo: string;
     commissioningPackageId: string;
-    packageNo: string | null;
-    callOffNo: string | null;
     status: string | null;
-    discipline: string | null;
-    functionalSystem: string | null;
-    system: string | null;
     location: string | null;
-    area: string | null;
-    isVoided: string | null;
-    createdDate: string | null;
-    updatedDate: string | null;
     mountedOn: string | null;
-    relatedHTCables: string | null;
     openWorkOrders: string | null;
+    openWorkOrderIds: string | null;
     installedCableLength: string | null;
+    estimatedCableLength: string | null;
     tagHeated: string | null;
-    checklistIds: string | null;
+    mountedOnTagNo: string | null;
+    relatedHTCables: string | null;
+    mountedOn_HTCables: string | null;
+    htCables: string | null;
+    switchBoardTagNos: string | null;
+    circuitTagNos: string | null;
+
+    //Sent to release control api
+    area: string | null;
+    tagType: string | null;
+    system: string | null;
+};
+
+export type Attachment = {
+    blobPath: string;
+    createdAtUtc: string;
+    createdBy: Person;
+    fileName: string;
+    id: string;
+    modifiedAtUtc: string | null;
+    modifiedBy: string | null;
+    fileSize: number;
+};
+
+export type UserObject = {
+    AzureOid: string;
+    FirstName: string;
+    LastName: string;
+    UserName: string;
+    Email: string;
+};
+
+export type ScopeChangeRequestReference = {
+    scopeChangeReferenceId: string;
+    scopeChangeReferenceSerialNumber: string;
+    scopeChangeReferenceTitle: string;
 };
 
 export enum ReleaseControlStepNames {

@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import React, {
+import {
     PropsWithChildren,
     useCallback,
     useEffect,
@@ -19,14 +19,14 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
-interface DataTableProps<TData extends TableData> {
+type DataTableProps<TData extends TableData> = {
     options?: Partial<TableOptions<TData>>;
     data: TData[];
     columns: Column<TData>[];
     height?: number;
     itemSize?: number;
     onTableReady?: (getApi: () => TableAPI) => void;
-}
+};
 
 const DEFAULT_HEIGHT = 600;
 const DEFAULT_ITEM_SIZE = 35;
@@ -78,6 +78,7 @@ export function Table<TData extends TableData = TableData>({
         setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
             setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
         getColumns: () => allColumns,
+        getRows: () => rows,
     });
 
     useEffect(() => {
@@ -154,6 +155,9 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleClick = useCallback(() => {
         //data.setSelected && data.setSelected(row.original);
+        if (row.isGrouped) {
+            return;
+        }
         data?.onSelect && data.onSelect(row.original, row.id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
@@ -183,11 +187,11 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                             {cell.isGrouped ? (
                                 <GroupCell row={row} cell={cell} />
                             ) : cell.isAggregated &&
-                                cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
-                                    // For cells with repeated values, render null
-                                    // Otherwise, just render the regular cell
-                                    cell.render('Cell')
-                                )}
+                              cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
+                                // For cells with repeated values, render null
+                                // Otherwise, just render the regular cell
+                                cell.render('Cell')
+                            )}
                         </span>
                     </TableCell>
                 );

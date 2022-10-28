@@ -5,12 +5,11 @@ import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { TagMap, TagOverlay } from '../../../../packages/ModelViewer/components/tagOverlay';
-import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
-import { getEleNetworks } from '../Electro/getEleNetworks';
 import { MessageWrapper, ThreeDModel } from './3dViewStyles';
 import { getIconName, getStatusColor, getTagOverlay as getElectroTagOverlay } from './Helpers';
 import { ElectroIcon } from './icons/ElectroIcon';
+import { EleNetwork, getEleNetworks } from '@equinor/CircuitDiagram';
 
 interface I3DViewProp {
     pipetest: Pipetest;
@@ -41,7 +40,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
 
     const tagOverlay: TagMap = useMemo(() => getElectroTagOverlay(data), [data]);
 
-    if (pipetest.lineNos.length === 0 && electroTags.length === 0)
+    if (pipetest.lines?.length === 0 && electroTags.length === 0)
         return (
             <MessageWrapper>
                 <Icon
@@ -56,7 +55,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
     return (
         <ThreeDModel>
             <Viewer
-                tags={pipetest.lineNos}
+                tags={pipetest.lines?.map((x) => x.tagNo).flat()}
                 echoPlantId={echoPlantId}
                 padding={1}
                 platformSectionId="Full-Pro"
@@ -78,8 +77,11 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
                                 isElectro = !isElectro;
                                 selectTags(
                                     isElectro
-                                        ? [...electroTags, ...pipetest.lineNos]
-                                        : pipetest.lineNos,
+                                        ? [
+                                              ...electroTags,
+                                              ...pipetest.lines?.map((x) => x.tagNo).flat(),
+                                          ]
+                                        : pipetest.lines?.map((x) => x.tagNo).flat(),
                                     {
                                         skipLoadingUi: true,
                                     }

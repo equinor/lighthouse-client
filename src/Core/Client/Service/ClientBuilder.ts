@@ -6,14 +6,17 @@ import { AppConfigResult } from '../../Client/Types/AppConfig';
 import { ClientApi } from '../Types/App';
 import { AppManifest } from '../Types/AppManifest';
 
-export interface ClientBuilderConfig extends AppManifest {
+export type ClientBuilderConfig = AppManifest & {
     appConfig: AppConfigResult;
     authProvider: AuthenticationProvider;
     openSidesheet: (SidesheetContent?: React.FC<any> | undefined, props?: any) => void;
     isProduction: boolean;
-}
+};
 
-export type WorkspaceViewerOptions<T, SideSheetIds extends string> = Omit<
+export type WorkspaceViewerOptions<
+    T extends Record<PropertyKey, unknown>,
+    SideSheetIds extends string
+> = Omit<
     WorkspaceOptions<T, SideSheetIds>,
     'viewerId' | 'initialState' | 'dataFactoryCreator' | 'openSidesheet'
 >;
@@ -25,9 +28,10 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
 
     return {
         ...config,
-        createWorkSpace<T, SideSheetIds extends string = string>(
-            options: WorkspaceViewerOptions<T, SideSheetIds>
-        ) {
+        createWorkSpace<
+            T extends Record<PropertyKey, unknown>,
+            SideSheetIds extends string = string
+        >(options: WorkspaceViewerOptions<T, SideSheetIds>) {
             return createWorkSpace({
                 ...options,
                 initialState: [],

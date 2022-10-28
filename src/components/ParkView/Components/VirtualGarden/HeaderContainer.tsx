@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { GardenItem } from './types/gardenItem';
 import { tokens } from '@equinor/eds-tokens';
 
-type HeaderContainerProps<T> = {
+type HeaderContainerProps<T extends Record<PropertyKey, unknown>> = {
     columnVirtualizer: { virtualItems: VirtualItem[] };
     headerChild?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     garden: GardenGroups<T>;
@@ -18,7 +18,9 @@ type HeaderContainerProps<T> = {
     customDescription?: (item: T | GardenItem<T>) => string;
     groupByKey: string;
 };
-export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T>): JSX.Element => {
+export const HeaderContainer = <T extends Record<PropertyKey, unknown>>(
+    props: HeaderContainerProps<T>
+): JSX.Element => {
     const {
         columnVirtualizer,
         garden,

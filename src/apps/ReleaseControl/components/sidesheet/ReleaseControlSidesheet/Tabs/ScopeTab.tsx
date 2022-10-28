@@ -1,4 +1,6 @@
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
+import { Attachments } from '../../../Attachments/AttachmentsView';
+import { HotUpload } from '../../../Attachments/HotUpload';
 import { HtCableTable } from '../../../Form/Inputs/Scope/HtCableTable';
 import { TagTable } from '../../../Form/Inputs/Scope/TagTable';
 import { ReferencesList } from '../../../RelatedObjects/ReferencesList';
@@ -12,18 +14,33 @@ import {
     SubSectionText,
     SubSectionTitle,
     Wrapper,
+    WrapperFillerDiv,
 } from '../sidesheetStyles';
 
 export const ScopeTab = (): JSX.Element => {
-    const { description, dueDate, tags, htCables, documents, punchListItems } =
-        useReleaseControlContext(({ releaseControl }) => ({
-            dueDate: new Date(releaseControl.plannedDueDate),
-            description: releaseControl.description,
-            tags: releaseControl.scopeTags,
-            htCables: releaseControl.scopeHTTags,
-            documents: releaseControl.documents,
-            punchListItems: releaseControl.punchListItems,
-        }));
+    const {
+        description,
+        dueDate,
+        tags,
+        htCables,
+        documents,
+        punchListItems,
+        id,
+        attachments,
+        scopeChangeRequestReferences,
+    } = useReleaseControlContext(({ releaseControl }) => ({
+        dueDate: new Date(releaseControl.plannedDueDate),
+        description: releaseControl.description,
+        tags: releaseControl.scopeTags,
+        htCables: releaseControl.scopeHTTags,
+        documents: releaseControl.documents,
+        punchListItems: releaseControl.punchListItems,
+        id: releaseControl.id,
+        attachments: releaseControl.attachments,
+        scopeChangeRequestReferences: releaseControl.scopeChangeRequestReferences,
+    }));
+
+    const { requestAccess } = useReleaseControlContext();
 
     return (
         <Wrapper>
@@ -69,12 +86,17 @@ export const ScopeTab = (): JSX.Element => {
                                 <ReferencesList
                                     documents={documents}
                                     punchListItems={punchListItems}
+                                    scopeChangeRequestReferences={scopeChangeRequestReferences}
                                 />
                             </SubSectionText>
                         </SectionWrapper>
+                        <SectionHeading>Attachments</SectionHeading>
+                        {requestAccess.canPatch && <HotUpload />}
+                        <Attachments attachments={attachments} releaseControlId={id} />
                     </InnerSection>
                 </FlexColumn>
             </FormWrapper>
+            <WrapperFillerDiv />
         </Wrapper>
     );
 };

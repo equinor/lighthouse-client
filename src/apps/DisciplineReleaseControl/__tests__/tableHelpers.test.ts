@@ -1,4 +1,4 @@
-import { createChecklistSteps } from '../Functions/tableHelpers';
+import { createChecklistSteps } from '../utils/helpers/tableHelpers';
 import { testData1 } from '../Mock/mockData';
 
 describe('tableHelpers tests', () => {

@@ -1,7 +1,6 @@
-import { Fragment, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import { Fragment, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
-import { useRefresh } from '../../hooks/useRefresh';
 import { DataSet, GardenGroups } from '../../Models/data';
 import { CustomVirtualView } from '../../Models/gardenOptions';
 import { defaultSortFunction } from '../../Utils/utilities';
@@ -11,19 +10,22 @@ import { useExpand, useVirtualScrolling } from './hooks';
 import { Layout } from './Layout';
 import { getGardenItems, getRowCount } from './utils';
 
-type VirtualGardenProps<T> = {
+type VirtualGardenProps<T extends Record<PropertyKey, unknown>> = {
     garden: GardenGroups<T>;
     width?: number;
     selectedItem: string | null;
     handleOnItemClick: (item: T) => void;
 };
 
-export const VirtualGarden = <T extends unknown>({
+export const VirtualGarden = <T extends Record<PropertyKey, unknown>>({
     garden,
     width,
     handleOnItemClick,
     selectedItem,
 }: VirtualGardenProps<T>): JSX.Element => {
+    /** Hacky state to force a rerender and re-calculation of a memo rowCount variable */
+    const [subGroupExpanded, setSubGroupExpanded] = useState(false);
+
     const parentRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,13 +41,12 @@ export const VirtualGarden = <T extends unknown>({
         groupByKeys,
         customGroupByKeys,
     } = useParkViewContext<T>();
-    const refresh = useRefresh();
 
     const { isScrolling, scrollOffsetFn } = useVirtualScrolling(parentRef);
     const { widths: contextWidths } = useExpand();
 
     const columnCount = useMemo(() => garden.length, [garden]);
-    const rowCount = useMemo(() => getRowCount(garden), [garden]);
+    const rowCount = useMemo(() => getRowCount(garden), [garden, subGroupExpanded]);
 
     const sortedColumns = useMemo(
         () =>
@@ -82,12 +83,11 @@ export const VirtualGarden = <T extends unknown>({
         (customView?.customItemView as CustomVirtualView<T>['customItemView']) ?? undefined;
 
     const handleExpand = useCallback(
-        <T extends unknown>(subGroup: DataSet<T>): void => {
+        <T extends Record<PropertyKey, unknown>>(subGroup: DataSet<T>): void => {
             subGroup.isExpanded = !subGroup.isExpanded;
-
-            refresh();
+            setSubGroupExpanded((prev) => !prev);
         },
-        [refresh]
+        []
     );
     const highlightedColumn = useMemo(
         () =>

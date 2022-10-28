@@ -4,14 +4,13 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
-import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
-import { Wrapper } from '../../Styles/SidesheetWrapper';
+import { fetchAndChewPipetestDataFromApi } from '../../utils/helpers/statusHelpers';
 import { HTSidesheet } from '../../Types/pipetest';
-import { ElectroView } from '../Electro/ElectroView';
 import { CheckListTable } from './CheckListTable';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
-import { SidesheetTabList } from './SidesheetTabs';
-import { TablesTab } from './styles';
+import { SidesheetTabList, Tab, TabList } from './sidesheetStyles';
+import { CircuitDiagram } from '@equinor/CircuitDiagram';
+import { useWorkSpace } from '@equinor/WorkSpace';
 
 interface ReleaseControlHTSidesheetProps {
     item: HTSidesheet;
@@ -48,34 +47,39 @@ export const ReleaseControlHTSidesheet = ({
         cacheTime: Infinity,
     });
 
+    const { onGroupeSelect, onSelect } = useWorkSpace();
+
     return (
-        <Wrapper>
+        <>
             <ReleaseControlErrorBanner message={errorMessage} />
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <Tabs.Tab>Circuit diagram</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
                 </SidesheetTabList>
-                <Tabs.Panels>
-                    <Tabs.Panel>
-                        <ElectroView
+                <TabList>
+                    <Tab>
+                        <CircuitDiagram
                             pipetest={item.items[0]}
                             pipetests={data !== undefined ? data : []}
                             width={width}
                             htCable={item.value}
+                            circuitAndStarterTagNos={item.items[0]?.circuits?.map(
+                                (c) => c.circuitAndStarterTagNo
+                            )}
+                            onGroupeSelect={onGroupeSelect}
+                            onSelect={onSelect}
                         />
-                    </Tabs.Panel>
-                    <Tabs.Panel>
-                        <TablesTab>
-                            <CheckListTable
-                                checkLists={item.items[0]?.checkLists?.filter(
-                                    (x) => x.tagNo === item.value
-                                )}
-                            />
-                        </TablesTab>
-                    </Tabs.Panel>
-                </Tabs.Panels>
+                    </Tab>
+                    <Tab>
+                        <CheckListTable
+                            checkLists={item.items[0]?.checkLists?.filter(
+                                (x) => x.tagNo === item.value
+                            )}
+                        />
+                    </Tab>
+                </TabList>
             </Tabs>
-        </Wrapper>
+        </>
     );
 };

@@ -1,6 +1,6 @@
+import { FamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { Workorder } from '../../types';
-import { FamRequest } from '../helpers/fam';
 export const workorderColumnNames = [
     'WorkOrderId',
     'WorkOrderNo',

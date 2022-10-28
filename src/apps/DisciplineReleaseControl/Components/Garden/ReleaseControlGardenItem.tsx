@@ -1,31 +1,17 @@
-import {
-    ReleaseControlItem,
-    MidSection,
-    Title,
-    Icons,
-    ReleaseControlExpanded,
-    ReleaseControlExpandedTitle,
-} from './GardenItemStyles';
+import { ReleaseControlItem, MidSection, Title, Icons, Root } from './GardenItemStyles';
 import { Pipetest } from '../../Types/pipetest';
 import { CustomItemView } from '@equinor/ParkView';
 import {
     getGardenContentColor,
     getGardenItemColor,
     getGardenItemCompletionColor,
-} from './gardenFunctions';
+} from '../../utils/helpers/gardenFunctions';
 import { useParkViewContext } from '@equinor/ParkView';
 import { memo } from 'react';
 import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
 import { StatusCircle } from '@equinor/GardenUtils';
 import { WarningTriangleContainer } from '../Workflow/Styles/styles';
 
-export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.Element {
-    return (
-        <ReleaseControlExpanded>
-            <ReleaseControlExpandedTitle>{data.description}</ReleaseControlExpandedTitle>
-        </ReleaseControlExpanded>
-    );
-}
 const ReleaseControlGardenItem = ({
     data,
     itemKey,
@@ -37,7 +23,7 @@ const ReleaseControlGardenItem = ({
     const contentColor = getGardenContentColor(data.step);
 
     return (
-        <>
+        <Root>
             <ReleaseControlItem
                 isSelected={isSelected}
                 backgroundColor={getGardenItemColor(data.step)}
@@ -48,7 +34,6 @@ const ReleaseControlGardenItem = ({
             >
                 <MidSection expanded={columnExpanded}>
                     <Title>{data[itemKey]}</Title>
-                    {columnExpanded && <ReleaseControlExpandedView data={data} />}
                 </MidSection>
                 <Icons>
                     {!data.pipetestProcessDoneInRightOrder ? (
@@ -61,7 +46,8 @@ const ReleaseControlGardenItem = ({
                     />
                 </Icons>
             </ReleaseControlItem>
-        </>
+            {columnExpanded && data.description}
+        </Root>
     );
 };
 

@@ -46,7 +46,7 @@ export function useUnpackReferences({ releaseControl }: UseUnpackReferencesParam
         const appendReferences = (x: TypedSelectOption) =>
             handleReferencesChanged([...(readAtomValue().references ?? []), x]);
 
-        releaseControl.punchListItems.forEach(async (x) => {
+        releaseControl.punchListItems?.forEach(async (x) => {
             const punchSelectedOption: TypedSelectOption = {
                 label: `${x.procosysId}`,
                 object: x,
@@ -68,7 +68,7 @@ export function useUnpackReferences({ releaseControl }: UseUnpackReferencesParam
             });
         });
 
-        releaseControl.documents.forEach(async (x) => {
+        releaseControl.documents?.forEach(async (x) => {
             const documentSelectOption: TypedSelectOption = {
                 label: `${x.stidDocumentNumber}`,
                 value: x.stidDocumentNumber,
@@ -76,6 +76,7 @@ export function useUnpackReferences({ releaseControl }: UseUnpackReferencesParam
                 searchValue: x.stidDocumentNumber,
                 type: 'document',
             };
+
             appendReferences(documentSelectOption);
 
             const document = await addToQueryCache(
@@ -93,6 +94,24 @@ export function useUnpackReferences({ releaseControl }: UseUnpackReferencesParam
                     document.currentRevision.reasonForIssue &&
                     document.currentRevision.reasonForIssue
                 }`,
+            });
+        });
+
+        releaseControl.scopeChangeRequestReferences?.forEach(async (reference) => {
+            const scopeChangeSelectOption: TypedSelectOption = {
+                label: `${reference.scopeChangeReferenceSerialNumber} - ${reference.scopeChangeReferenceTitle}`,
+                value: reference.scopeChangeReferenceId,
+                object: reference,
+                searchValue: reference.scopeChangeReferenceId,
+                type: 'scopechangerequest',
+            };
+
+            appendReferences(scopeChangeSelectOption);
+
+            updateReferences({
+                ...scopeChangeSelectOption,
+                label: `${reference.scopeChangeReferenceSerialNumber} - ${reference.scopeChangeReferenceTitle}`,
+                object: reference,
             });
         });
     }

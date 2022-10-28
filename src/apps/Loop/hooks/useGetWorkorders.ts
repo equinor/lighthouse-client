@@ -1,6 +1,6 @@
+import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { useQuery } from 'react-query';
 import { getWorkorders, workorderColumnNames } from '../utility/api';
-import { generateExpressions, generateFamRequest } from '../utility/helpers/fam';
 
 export const useGetWorkorders = (loopNo: string) => {
     const workorderExpressions = generateExpressions('loopNo', 'Equals', [loopNo || '']);

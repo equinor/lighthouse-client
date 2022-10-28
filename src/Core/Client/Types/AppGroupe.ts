@@ -1,7 +1,7 @@
 export type AppGroups = Record<string, AppGroupe>;
 
-export interface AppGroupe {
+export type AppGroupe = {
     name: string;
     icon: string | React.FC;
     columnId: number;
-}
+};

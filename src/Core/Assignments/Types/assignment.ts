@@ -1,4 +1,4 @@
-export interface Assignment {
+export type Assignment = {
     externalId: string;
     body: AssignmentBody;
     taskMode: string;
@@ -19,7 +19,7 @@ export interface Assignment {
     url: string;
     assignedTo: AssignedTo;
     type: 'Internal' | 'External';
-}
+};
 
 interface AssignedTo {
     type: string;

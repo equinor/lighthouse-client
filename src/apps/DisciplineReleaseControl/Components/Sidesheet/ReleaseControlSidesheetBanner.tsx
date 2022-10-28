@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { getYearAndWeekFromString } from '../../Functions/statusHelpers';
-import { checklistTagFunc, createChecklistSteps } from '../../Functions/tableHelpers';
+import { getYearAndWeekFromString } from '../../utils/helpers/statusHelpers';
+import { checklistTagFunc, createChecklistSteps } from '../../utils/helpers/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
 import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
 import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
@@ -59,8 +59,8 @@ const Banner = styled.div`
     background-color: ${tokens.colors.ui.background__light.hex};
     display: flex;
     flex-direction: row;
-    gap: 10em;
-    padding: 0em 5em;
+    gap: 5rem;
+    padding-left: 5rem;
     align-items: center;
 `;
 

@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
 import { getWorkSpaceContext, WorkSpaceConfig } from './workspaceState';
 
-export function useWorkSpace(): DeepImmutableObject<WorkSpaceConfig<unknown>> {
+export function useWorkSpace(): DeepImmutableObject<WorkSpaceConfig<Record<PropertyKey, unknown>>> {
     const key = useWorkSpaceKey();
     const state = useAtom(getWorkSpaceContext());
     const currentView = useMemo(() => state[key], [key, state]);

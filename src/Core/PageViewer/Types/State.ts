@@ -1,11 +1,11 @@
 import { Filter } from '@equinor/lighthouse-powerbi';
 import React from 'react';
 
-export interface CoreViewState {
+export type CoreViewState = {
     [key: string]: ViewState;
-}
+};
 
-export interface ViewState {
+export type ViewState = {
     title: string;
     shortName: string;
     icon?: React.FC;
@@ -13,33 +13,33 @@ export interface ViewState {
     pages: {
         [key: string]: PageConfig;
     };
-}
+};
 
 export type PageConfig = PowerBiOptions | FusionPowerBiOptions | DashboardOptions | CustomPage;
 
-export interface PowerBiOptions extends PageBase {
+export type PowerBiOptions = PageBase & {
     type: 'PowerBi';
     test1: string;
-}
+};
 
-export interface FusionPowerBiOptions extends PageBase {
+export type FusionPowerBiOptions = PageBase & {
     type: 'FusionPowerBi';
     reportURI: string;
     filter?: Filter[];
     options?: { showFilter?: boolean; enablePageNavigation?: boolean };
-}
-export interface DashboardOptions extends PageBase {
+};
+export type DashboardOptions = PageBase & {
     type: 'Dashboard';
     dashboardId: string;
     description?: string;
-}
+};
 
-export interface CustomPage extends PageBase {
+export type CustomPage = PageBase & {
     type: 'Custom';
     component: React.FC;
-}
+};
 
-export interface PageBase {
+export type PageBase = {
     title: string;
     icon?: React.FC;
-}
+};

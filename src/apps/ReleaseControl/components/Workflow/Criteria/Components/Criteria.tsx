@@ -14,6 +14,8 @@ import { CriteriaActionOverlay } from './CriteriaActionOverlay';
 import { DetailText, VerticalLine, WorklowIconAndLine } from './criteria.styles';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { Contributor, Criteria } from '../../../../types/releaseControl';
+import { SignWithCommentModal } from './SignWithComment/SignWithCommentModal';
+import { Modal } from '@equinor/modal';
 
 interface CriteriaRenderProps {
     name: string;
@@ -63,10 +65,25 @@ export const CriteriaRender = ({
             </WorklowIconAndLine>
             <WorkflowRow>
                 <RowContent>
-                    {state && state.criteriaId === criteria.id ? (
+                    {state && state.criteriaId === criteria.id && state.action === 'Reassign' ? (
                         <CriteriaActionOverlay />
                     ) : (
                         <>
+                            {state &&
+                                state.criteriaId === criteria.id &&
+                                state.action !== 'Reassign' && (
+                                    <Modal
+                                        title={'Write a comment'}
+                                        content={
+                                            <SignWithCommentModal
+                                                action={state.action}
+                                                buttonText={state.buttonText}
+                                                criteriaId={state.criteriaId}
+                                                stepId={state.stepId}
+                                            />
+                                        }
+                                    />
+                                )}
                             <span>
                                 <div>{name}</div>
                                 {criteria.signedAtUtc ? (

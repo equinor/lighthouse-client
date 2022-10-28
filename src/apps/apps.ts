@@ -16,14 +16,7 @@ import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseContr
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
-import {
-    BusinessCaseReport,
-    NonConformityReport,
-    QualityDeviationReport,
-    SafetyPerformanceReport,
-} from './PowerBI';
 import { setup as MDRSetup } from './MDR';
-import { setup as LCISetup } from './LCI';
 import { setup as punchSetup } from './Punch';
 import { setup as querySetup } from './Query';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
@@ -35,6 +28,9 @@ import { setup as workPreparationSetup } from './workPreparation';
 import { setup as loopSetup } from './Loop';
 import { setup as punchDevSetup } from './Punch_Dev';
 import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
+import { setup as preservationAnalyticsSetup } from './Preservation';
+import { setup as spoolsAnalyticsSetup } from './Spools';
+import { setup as ProgressStatusSetup } from './ProgressStatus';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -145,13 +141,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: BusinessCaseReport,
-        },
-
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/pmt-nonconfidential/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/pmt-nonconfidential/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
-        tags: ['PowerBI'],
     },
     {
         title: 'Milestone',
@@ -191,12 +186,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: SafetyPerformanceReport,
-        },
-        tags: ['PowerBI'],
-
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/tpd-safety'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/tpd-safety',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     {
@@ -227,12 +221,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Engineering,
         icon: '',
-        app: {
-            appType: 'PowerBIViewer',
-            setup: LCISetup,
-        },
-        tags: ['PowerBI'],
-
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/lci-hanging-garden/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/lci-hanging-garden/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     {
@@ -337,6 +330,19 @@ export const apps: AppManifest[] = [
         helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Installation.aspx',
     },
     {
+        title: 'Spools analytics',
+        shortName: 'spools-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: spoolsAnalyticsSetup,
+        },
+        appEnv: 'prod',
+    },
+    {
         title: 'Commissioning Analytics',
         shortName: 'commissioning-analytics',
         color: '#0364B8',
@@ -376,7 +382,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: releaseControlSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
         helpPageUrl:
             'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Release-control.aspx',
     },
@@ -391,6 +397,19 @@ export const apps: AppManifest[] = [
                 isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/Preservation`,
         tags: ['link', 'procosys'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Preservation analytics',
+        shortName: 'preservation-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: preservationAnalyticsSetup,
+        },
         appEnv: 'prod',
     },
     {
@@ -548,6 +567,19 @@ export const apps: AppManifest[] = [
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
+    {
+        title: 'Progress Status',
+        shortName: 'progress-status',
+        color: '#0364B8',
+        groupe: Apps.ProjectControl,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: ProgressStatusSetup,
+        },
+        appEnv: 'test',
+    },
     // QualityAndRisk
     {
         title: 'Dispensations',
@@ -563,11 +595,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndRisk,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: NonConformityReport,
-        },
-        tags: ['PowerBI'],
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/qrm/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/qrm/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     {
@@ -576,11 +608,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndRisk,
         icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: QualityDeviationReport,
-        },
-        tags: ['PowerBI'],
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/quality-deviation/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/quality-deviation/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
     // Collaboration

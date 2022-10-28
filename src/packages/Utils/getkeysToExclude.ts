@@ -1,9 +1,13 @@
-export function getExcludeKeys<T>(data: T[], percentage?: number): string[] {
+export function getExcludeKeys<T extends Record<PropertyKey, unknown>>(
+    data: T[],
+    percentage?: number
+): string[] {
     const keys: string[] = [];
 
     const uniqueItems = data.reduce((items, item) => {
         Object.keys(item).forEach((key) => {
-            items[key] = items[key] || new Set(item[key]);
+            const entry = item[key];
+            items[key] = items[key] || new Set(Array.isArray(entry) ? entry : [entry]);
             items[key].add(item[key]);
         });
         return items;

@@ -4,16 +4,133 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 1.8.1
-[LCI] Update to use PowerBIViewer
-[MDR] Update to use PowerBIViewer
+## 1.17.0
+
+- [ReleaseControl/PipingAndHeattrace] Added filters for isolated and disconnected equipment
+- [PipingAndHeattrace] Added filter for exposed HT cable duration
+- [PipingAndHeattrace] Added grouping option for circuits
+- [PipingAndHeattrace] Added grouping option for "Current step (HT)"
+- [PipingAndHeattrace] Added search option for HT cable
+- [ReleaseControl] Bugfix: Overdue release controls only apply to open state
+- [PowerBI] Bugfix: height/width fix for button
+- [Garden] Bugfix: Fixed for array grouping in hanging garden
+
+## 1.16.0
+
+- [ReleaseControl/PipingAndHeattrace] Added functionality to isolate and disconnect equipment in circuit diagram
+- [Apps] Add ability to search for description/title in several workspaces
+- [PowerBI] Fix issue with clicking outside/inside of advanced filter search when trying to select a filter item
+- [PowerBI] Fix issue with filter groups overflowing out of screen when selecting multiple filter groups
+- [ReleaseControl] Remove production flag for PBI report
+- [ReleaseControl] Fixed bug with overdue release controls calculation
+- [Notification] Fix issue with SVG icon resizing
+- [PipingAndHeattrace] Added critical line filter
+
+## 1.15.4
+
+- [ProgressStatus] Prod flag
+- [ReleaseControl] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
+- [ReleaseControl] Updated some Tag/HTCable fields after new FAM update.
+
+## 1.15.3
+
+- [ProgressStatus] New PBI Viewer application
+
+## 1.15.2
+
+- [Apps] Change Quality Deviation app link to correct Fusion App
+- [Table] Remove option to click on grouped rows
+
+## 1.15.1
+
+- [Garden] Fix bug with subgrouping and total row count not being updated
+- [PBI] Remove embed of Business Case, Non Conformity, Quality Deviation, Safety Performance and instead redirect to Fusion
+- [ReleaseControl] Remove reject option from RC workflow
+- [ReleaseControl] Split description from item in Garden
+- [PipingAndHeattrace] Split description from item in Garden
+
+## 1.15.0
+
+- [ReleaseControl] Added status bar KPIs
+- [ReleaseControl] Release control PBI analytics (feature flagged test)
+- [PipingAndHeattrace] Improved status bar KPIs
+- [PipingAndHeattrace] Sidesheet styling improvements (scrollbars ++)
+
+## 1.14.0
+
+- [ReleaseControl] Initial prod release (feature flagged prod)
+
+## 1.13.0
+
+- [ReleaseControl] Simultaneous tag/htCable search. Search and select multiple at a time.
+- [ReleaseControl] Scrollbar fix in circuit diagram + RC sidesheet
+- [ReleaseControl] System filter bugfix
+- [PipingAndHeattrace] Better error message when no access to 3D model
+
+## 1.12.0
+
+- [PowerBI] Refetch token when expired
+- [ReleaseControl] Added new filters
+- [ReleaseControl] Added new table columns
+- [ReleaseControl] Added new fields for tags/htCables
+- [ReleaseControl] Added circuit diagram
+- [PipingAndHeattrace] Removed duplicate WO
+- [PipingAndHeattrace] Workorder table sorting
+- [PipingAndHeattrace] Checklist table sorting
+  
+
+## 1.11.0
+
+- [ScopeChangeRequest] Updated API call and added WO mhrs data in table
+- [FAMRequestGenerator] Extract duplicate functions from apps to a seperate package for FAM request generation
+- [Components] Remove unused code
+- [Apps] Remove unused code
+- [Workorder] Fix issue in test with dates
+- [Dependencies] Upgrade vite, @vitejs/plugin-react, typescript, ts-node @microsoft/signalr & dexie
+- [ServiceMessage] Add option to delete current service message
+- [DRC] Refactor and fix circular imports
+- [ReleaseControl] Added Scope change request references
+- [ReleaseControl] Fixed bug with release control references in edit-mode sidesheet
+  
+## 1.10.0
+
+- [SpoolsAnalytics] New PowerBIViewer application
+- [General] Update typing for Core/Workspace/Apps
+- [Table] Don't do automatic retries for export to excel
+- [ReleaseControl] Added auto-focus and keyboard shortcuts to sign with comment modal
+- [ReleaseControl] Fixed workflow step responsible field
+
+## 1.9.0
+
+- [PowerBI] Added commissioning analytics Pbi app
+- [PowerBI] Added preservation Pbi app
+- [ReleaseControl] '...' menu only for current step
+- [ReleaseControl] Improved layout of workflow steps
+- [ReleaseControl] Split sign-button into two buttons
+- [ReleaseControl] Tabbed edit-mode
+- [ReleaseControl] Added attachment support for release controls
+- [ReleaseControl] Use person as workflow step responsible
+- [ReleaseControl] Improved tag/htCable search speed
+- [ReleaseControl] Spinner chip when application is fetching/updating
+- [ReleaseControl] Pop-up modal for sign with comment
+- [ScopeChangeRequest] Validation bugfix
+- [ScopeChangeRequest] Export to Excel
+- [Menu] Fix bug where two apps with similar names are both active
+- [Workorder] Add abortsingal to api calls
+- [Handover] Unit tests
+
+## 1.8.1
+
+- [LCI] Update to use PowerBIViewer
+- [MDR] Update to use PowerBIViewer
 
 ## 1.8.0
-[PowerBI] Automatically load PowerBI pages. 
-[PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
-[Workspace] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and pageTitle is allowed anymore.
-[PowerBIViewer] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and pageTitle is allowed anymore.
-[Apps] Remove PowerBI pages config in all apps that uses PowerBI
+
+- [PowerBI] Automatically load PowerBI pages. 
+- [PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
+- [Workspace] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and - pageTitle is allowed anymore.
+- [PowerBIViewer] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId - and pageTitle is allowed anymore.
+- [Apps] Remove PowerBI pages config in all apps that uses PowerBI
 ## 1.7.7
 
 - [Workspace] Changed bookmark icon in workspace
@@ -34,10 +151,12 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [ScopeChangeRequest] Bugfix: NotApplicable -> Not Applicable
 
 ## 1.7.5
+
 - [Workspace] Use ResizeObserver to fix table height when opening/closing filter panel
 - [ScopeChangeRequest] Show workorders with info text if SC workorders length does not equal FAM workorders
   
 ## 1.7.4
+
 - [MechanicalCompletion] Remove new column from API and prevent auto columns
 - [MechanicalCompletion] Remove prod check on PBI tab
 - [PowerBI] Add check for true/false string values and change to bool type

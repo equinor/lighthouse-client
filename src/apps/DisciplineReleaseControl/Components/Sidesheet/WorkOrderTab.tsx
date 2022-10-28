@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import { getWorkOrdersById } from '../../Api/getWorkOrdersById';
-import { Loading, NoWorkOrders, Wrapper } from './workOrderTab.styles';
+import { Wrapper, WrapperFillerDiv } from '../../Styles/SidesheetWrapper';
+import { Loading, NoWorkOrders } from './workOrderTab.styles';
 import { WorkOrderTable } from './WorkOrderTable';
 
 interface WorkOrderTabProps {
@@ -12,6 +13,8 @@ export function WorkOrderTab({ id }: WorkOrderTabProps): JSX.Element {
         cacheTime: 5 * 1000 * 60,
         staleTime: 5 * 1000 * 60,
     });
+
+    data?.sort((a, b) => a.workOrderNo?.localeCompare(b?.workOrderNo));
 
     if (error) {
         return (
@@ -31,9 +34,8 @@ export function WorkOrderTab({ id }: WorkOrderTabProps): JSX.Element {
 
     return (
         <Wrapper>
-            <div>
-                <WorkOrderTable workOrders={data ?? []} />
-            </div>
+            <WorkOrderTable workOrders={data ?? []} />
+            <WrapperFillerDiv />
         </Wrapper>
     );
 }

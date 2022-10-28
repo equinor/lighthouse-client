@@ -7,15 +7,17 @@ import { IconMenu, MiniMenuButton, MenuItem } from '@equinor/overlay-menu';
 import { CriteriaActions } from '../../Types/actions';
 
 import { ButtonContainer } from '../../Contributor/contributor.styles';
-import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { releaseControlQueries } from '../../../../queries/queries';
 import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scopeChangeRequest';
 import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
-import { useWorkflowSigning } from '../../../../hooks/useWorkflowSigning';
 import { unsignCriteria } from '../../../../api/releaseControl/Workflow';
-import { useWorkflowCriteriaOptions } from '../../../../hooks/useWorkflowCriteriaOptions';
-import { useReleaseControlMutation } from '../../../../hooks/useReleaseControlMutation';
+import {
+    useReleaseControlContext,
+    useReleaseControlMutation,
+    useWorkflowCriteriaOptions,
+    useWorkflowSigning,
+} from '../../../../hooks';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
@@ -67,10 +69,6 @@ export const CriteriaActionBar = ({
 
     const setShowSignWithComment = () =>
         swap(actionWithCommentAtom, () => generateAtom('Approved', 'Sign'));
-
-    const setShowRejectWithComment = () =>
-        swap(actionWithCommentAtom, () => generateAtom('Rejected', 'Reject'));
-
     const setShowReassignBar = () =>
         swap(actionWithCommentAtom, () => generateAtom('Reassign', 'Confirm'));
 
@@ -88,13 +86,6 @@ export const CriteriaActionBar = ({
                 label: 'Sign with comment',
                 icon: <Icon name="comment_add" color={iconGrey} />,
                 onClick: setShowSignWithComment,
-                isDisabled: !canSign,
-            });
-
-            actions.push({
-                label: 'Reject with comment',
-                onClick: setShowRejectWithComment,
-                icon: <Icon name="close_circle_outlined" color={iconGrey} />,
                 isDisabled: !canSign,
             });
             if (stepOrder !== 0) {

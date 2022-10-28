@@ -29,6 +29,7 @@ export function setup(addApi: ClientApi): void {
             { name: 'Loop tag', valueFormatter: (pkg) => pkg.loopNo },
             { name: 'Cmpkg', valueFormatter: (pkg) => pkg.commissioningPackageNo ?? '' },
             { name: 'MCpkg', valueFormatter: (pkg) => pkg.mechanicalCompletionPackageNo ?? '' },
+            { name: 'Description', valueFormatter: (pkg) => pkg.description ?? '' },
         ])
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)

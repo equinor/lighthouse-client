@@ -1,22 +1,17 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
-import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
+import { generateCommaSeperatedStringArrayColumn } from '@equinor/Table';
 import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
-import { chewPipetestDataFromApi } from './Functions/statusHelpers';
 import { Pipetest } from './Types/pipetest';
-import { filterConfig, gardenConfig, presetConfig, tableConfig } from './WorkspaceConfig';
+import {
+    filterConfig,
+    gardenConfig,
+    presetConfig,
+    responseAsync,
+    responseParser,
+    statusBarConfig,
+    tableConfig,
+} from './utils/config';
 
-export const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
-    const { FAM } = httpClient();
-    return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal });
-};
-
-export const responseParser = async (response: Response) => {
-    let json = JSON.parse(await response.text());
-    json = chewPipetestDataFromApi(json);
-    return json;
-};
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<Pipetest, 'pt'>({
@@ -33,13 +28,20 @@ export function setup(appApi: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerPresets(presetConfig)
-        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ name }) => name }])
+        .registerSearchOptions([
+            { name: 'Id', valueFormatter: ({ name }) => name },
+            {
+                name: 'Description',
+                valueFormatter: ({ description }) => description,
+            },
+            {
+                name: 'HT cable',
+                valueFormatter: ({ heatTraces }) =>
+                    generateCommaSeperatedStringArrayColumn(heatTraces.map((x) => x.tagNo)),
+            },
+        ])
         .registerStatusItems(statusBarConfig)
-        .registerPowerBIOptions(
-            !appApi.isProduction
-                ? {
-                      reportURI: 'pp-pipetest-analytics',
-                  }
-                : (undefined as unknown as PowerBiOptions)
-        );
+        .registerPowerBIOptions({
+            reportURI: 'pp-pipetest-analytics',
+        });
 }
