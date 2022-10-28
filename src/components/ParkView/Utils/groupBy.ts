@@ -152,7 +152,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
     /** List of all unique identifiers in child array of all arr entries  */
     const groupNames = preGroupFiltering(arr, String(key)).reduce((prev, curr) => {
         let childArray = new Array<unknown>();
-        let children = curr[key];
+        const children = curr[key];
         if (Array.isArray(children)) {
             childArray = children
                 .map((nestedObject) =>
@@ -185,7 +185,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
             isExpanded: Boolean(isExpanded),
             subGroups: [],
             value: String(groupName),
-            count: 0,
+            count: parentsContainingChildren.length,
             items: parentsContainingChildren,
             subGroupCount: 0,
             depth: 0,
@@ -203,7 +203,7 @@ function groupByArray<T extends Record<PropertyKey, unknown>>({
             groupKey: key,
             isExpanded: Boolean(isExpanded),
             subGroups: [],
-            count: 0,
+            count: blanks.length,
             value: '(Blank)',
             items: blanks,
             subGroupCount: 0,

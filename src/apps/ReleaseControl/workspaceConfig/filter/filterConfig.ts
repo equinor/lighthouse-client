@@ -1,4 +1,4 @@
-import { FilterOptions } from '@equinor/filter';
+import { FilterOptions, FilterValueType } from '@equinor/filter';
 import { ReleaseControl } from '../../types/releaseControl';
 
 export const filterOptions: FilterOptions<ReleaseControl> = [
@@ -47,4 +47,23 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
                 ?.map((circuit) => (circuit !== '' ? circuit : null))
                 .filter((v, i, a) => a.indexOf(v) === i),
     },
+    {
+        name: 'Isolated',
+        valueFormatter: ({ hasIsolatedEquipment }) => booleanToHumanReadable(hasIsolatedEquipment),
+        sort: (s) => s.sort(sortOnYesNo),
+    },
+    {
+        name: 'Disconnected',
+        valueFormatter: ({ hasDisconnectedEquipment }) =>
+            booleanToHumanReadable(hasDisconnectedEquipment),
+        sort: (s) => s.sort(sortOnYesNo),
+    },
 ];
+
+function booleanToHumanReadable(val: boolean | undefined) {
+    return val ? 'Yes' : 'No';
+}
+
+function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
+    return b === 'No' ? -1 : 1;
+}

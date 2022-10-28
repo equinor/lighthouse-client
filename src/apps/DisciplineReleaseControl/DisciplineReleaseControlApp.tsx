@@ -1,4 +1,5 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
+import { generateCommaSeperatedStringArrayColumn } from '@equinor/Table';
 import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
 import { Pipetest } from './Types/pipetest';
 import {
@@ -32,6 +33,11 @@ export function setup(appApi: ClientApi): void {
             {
                 name: 'Description',
                 valueFormatter: ({ description }) => description,
+            },
+            {
+                name: 'HT cable',
+                valueFormatter: ({ heatTraces }) =>
+                    generateCommaSeperatedStringArrayColumn(heatTraces.map((x) => x.tagNo)),
             },
         ])
         .registerStatusItems(statusBarConfig)

@@ -31,6 +31,7 @@ export const tableConfig: TableOptions<Pipetest> = {
         'mcPkgId',
         'hasDisconnectedEquipment',
         'hasIsolatedEquipment',
+        'htCableExposed',
     ],
     enableSelectRows: true,
     headers: [
