@@ -6,9 +6,8 @@ import { PipetestCompletionStatusColors } from '../types/pipetestTypes';
 interface TestDotProps {
     value?: string;
     status: string;
-    hasLightningIcon: boolean;
 }
-export const TestDot = ({ value, status, hasLightningIcon }: TestDotProps): JSX.Element => {
+export const TestDot = ({ value, status }: TestDotProps): JSX.Element => {
     const color = getCircuitDiagramCompletionStatusColor(status);
     const LightningIcon = (
         <svg
@@ -33,7 +32,7 @@ export const TestDot = ({ value, status, hasLightningIcon }: TestDotProps): JSX.
     return (
         <TestDotWrapper>
             <TestDotCircle color={color}>
-                {hasLightningIcon && LightningIcon}
+                {LightningIcon}
                 <TestDotCircleText>{value}</TestDotCircleText>
             </TestDotCircle>
         </TestDotWrapper>

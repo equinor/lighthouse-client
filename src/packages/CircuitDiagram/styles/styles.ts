@@ -183,6 +183,21 @@ export const TestDotCircle = styled.div<{ color: string }>`
             : tokens.colors.text.static_icons__default.hex};
 `;
 
+export const CriticalLineVisualStyle = styled.div`
+    display: flex;
+    flex-direction: horizontal;
+    justify-content: center;
+    text-align: center;
+    width: 30px;
+    height: 14px;
+    margin-right: 2px;
+    color: ${tokens.colors.interactive.danger__resting.hex};
+    background-color: ${tokens.colors.ui.background__light.hex};
+    border: 1px solid;
+    border-color: ${tokens.colors.interactive.danger__resting.hex};
+    margin-left: 8px;
+`;
+
 export const TestDotCircleText = styled.div`
     font-size: 16px;
     font-weight: 400, regular;

@@ -18,6 +18,7 @@ import { formatDateString } from '../../Utils/circuitDiagramHelpers';
 import { deisolateCircuit } from '../Api/deisolateCircuit';
 import { EleNetwork, EleNetworkCable } from '../types/eleNetwork';
 import { Pipetest } from '../types/pipetestTypes';
+import { CriticalLineVisual } from './CriticalLineVisual';
 import { IsolateModal } from './IsolateModal';
 import { TestDot } from './TestDot';
 
@@ -67,10 +68,8 @@ const CircuitAndStarter = ({
                         <CircuitDiagramNodeValueText>
                             <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
                         </CircuitDiagramNodeValueText>
-                        <TestDot value="C" status={cTestStatus} hasLightningIcon={true} />
-                        {circuitHasCriticalLine && (
-                            <TestDot value="CL" status={'PA'} hasLightningIcon={false} />
-                        )}
+                        <TestDot value="C" status={cTestStatus} />
+                        {circuitHasCriticalLine && <CriticalLineVisual />}
                     </CircuitAndStarterNode>
 
                     {isEditMode && !disconnected && (
