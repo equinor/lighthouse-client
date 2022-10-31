@@ -42,7 +42,7 @@ export const CircuitAndStarterNode = styled.div<{
     margin-top: 16px;
     justify-content: center;
     max-height: 40px;
-    width: 84px;
+    width: 94px;
     background: ${(p) =>
         p.disconnected
             ? tokens.colors.ui.background__warning.hex
