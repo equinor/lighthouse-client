@@ -1,4 +1,5 @@
 import { TabTable } from '../../TabTable';
+import { StyledContentWrapper } from '../tabs.styles';
 import { columns } from './columns';
 import { WorkOrderBase } from './types';
 
@@ -13,14 +14,14 @@ export const WorkOrderTab = <T extends WorkOrderBase>({
     workorders,
 }: WorkOrderTabProps<T>): JSX.Element => {
     return (
-        <div>
+        <StyledContentWrapper>
             <TabTable
-                packages={workorders}
                 columns={columns()}
                 error={error}
                 isFetching={isLoading}
+                packages={workorders}
                 resourceName="Workorders"
             />
-        </div>
+        </StyledContentWrapper>
     );
 };

@@ -15,11 +15,12 @@ import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
 import {
     ItemLink,
-    OverviewPanel,
+    StyledPanel,
     PanelContentWrapper,
     SidesheetPanels,
     SidesheetTabList,
     SidesheetTabs,
+    StyledSidesheetWrapper,
     TabsWrapper,
 } from './sidesheet-styles';
 import { TabTitle } from './TabTitle';
@@ -42,7 +43,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     }, [item.loopNo, item.description]);
 
     return (
-        <div style={{ height: '100%' }}>
+        <StyledSidesheetWrapper>
             <Banner padding="0 1.2em">
                 <BannerItem
                     title="Checklist status"
@@ -102,21 +103,20 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
                     <SidesheetPanels>
-                        <OverviewPanel>
+                        <StyledPanel>
                             <PanelContentWrapper>
                                 <LoopDetails loop={item} />
                                 <Checklists checklistId={item.checklistId} />
                                 <LoopContentDetails item={item} />
                             </PanelContentWrapper>
-                        </OverviewPanel>
-                        <Tabs.Panel>
+                        </StyledPanel>
+                        <StyledPanel>
                             <WorkOrderTab
                                 error={workorderError instanceof Error ? workorderError : null}
                                 isLoading={isLoadingWorkorders}
                                 workorders={workorders}
                             />
-                        </Tabs.Panel>
-
+                        </StyledPanel>
                         <Tabs.Panel style={{ height: '100%' }}>
                             {activeTab === 2 && (
                                 <ModelViewerContextProvider>
@@ -127,6 +127,6 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                     </SidesheetPanels>
                 </SidesheetTabs>
             </TabsWrapper>
-        </div>
+        </StyledSidesheetWrapper>
     );
 };
