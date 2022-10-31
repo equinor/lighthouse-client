@@ -142,10 +142,8 @@ export const filterConfig: FilterOptions<Pipetest> = [
     },
     {
         name: 'Critical lines',
-        valueFormatter: ({ lines }) =>
-            lines?.some((line) => line.isCritical === true)
-                ? booleanToHumanReadable(true)
-                : booleanToHumanReadable(false),
+        valueFormatter: ({ hasCriticalLine }) =>
+            hasCriticalLine ? booleanToHumanReadable(true) : booleanToHumanReadable(false),
         sort: (s) => s.sort(sortOnYesNo),
     },
     {

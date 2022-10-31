@@ -9,6 +9,7 @@ import Line from './Line';
 import { TestDot } from './TestDot';
 import { ABTestDots, HeatTracingCableNode, Lines } from '../../styles/htCableStyles';
 import { memo } from 'react';
+import { CriticalLineVisual } from './CriticalLineVisual';
 
 interface HeatTracingCableProps {
     value?: string;
@@ -76,6 +77,7 @@ const HeatTracingCable = ({
                             checkListsForHTCable
                         )}
                     />
+                    {pipetestsOnHTCable?.some((x) => x.hasCriticalLine) && <CriticalLineVisual />}
                 </ABTestDots>
             </HeatTracingCableNode>
             <Lines>

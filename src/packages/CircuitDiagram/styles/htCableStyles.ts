@@ -11,7 +11,7 @@ export const HeatTracingCableNode = styled.div<{ pipetestCount: number; disconne
     margin-top: 12px;
     width: ${(p) =>
         p.pipetestCount === 0 || p.pipetestCount === 1
-            ? '150px'
+            ? '180px'
             : 45 + 92 * p.pipetestCount + 'px'};
     border-bottom: 2px dashed
         ${(p) =>
@@ -33,7 +33,7 @@ export const HeatTracingCableNode = styled.div<{ pipetestCount: number; disconne
         top: 18px;
         left: ${(p) =>
             p.pipetestCount === 0 || p.pipetestCount === 1
-                ? '30px'
+                ? '60px'
                 : 92 * p.pipetestCount - 76 + 'px'};
     }
 `;
