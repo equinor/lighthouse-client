@@ -1,4 +1,5 @@
-import { getClientContext, isProduction } from '@equinor/lighthouse-portal-client';
+//TODO: No alias import because it will break tests
+import { isProduction } from '../../Core/Client/Functions/Settings';
 
 interface ProCoSysUrls {
     getCommPkgUrl: (commPkgId: string | number) => string;

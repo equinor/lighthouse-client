@@ -3,9 +3,9 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 import { Workorder } from '../../types';
 export const workorderColumnNames = [
     'WorkOrderId',
-    'ChecklistID',
-    'LoopId',
     'WorkOrderNo',
+    'LoopId',
+    'LoopNo',
     'Facility',
     'Project',
     'HoldBy',
