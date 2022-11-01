@@ -130,6 +130,7 @@ export const CircuitNode = ({
                     <CircuitAndStarter
                         value={eleNetwork.circuitAndStarterTagNo}
                         eleNetwork={eleNetwork}
+                        pipetests={pipetests}
                         cTestStatus={getCircuitTestStatus(
                             CheckListStepTag.HtCTest,
                             eleNetwork.checkLists

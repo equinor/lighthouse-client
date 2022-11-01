@@ -21,6 +21,7 @@ export type Pipetest = {
     dueDateTimePeriod: string;
     location: string;
     lines: Line[];
+    hasCriticalLine: boolean;
     mcPkgId: string;
     hasDisconnectedEquipment: boolean;
     hasIsolatedEquipment: boolean;
