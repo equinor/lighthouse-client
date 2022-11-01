@@ -26,7 +26,7 @@ type LoopSidesheetProps = {
     item: Loop;
     actions: SidesheetApi;
 };
-export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
+export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
     const handleChange = (index: number) => {
         setActiveTab(index);
