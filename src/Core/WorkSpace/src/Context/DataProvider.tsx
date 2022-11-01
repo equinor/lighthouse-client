@@ -1,4 +1,3 @@
-import { AnalyticsOptions } from '@equinor/Diagrams';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
@@ -31,7 +30,6 @@ type DataState = {
     treeOptions?: TreeOptions<Record<PropertyKey, unknown>>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<Record<PropertyKey, unknown>>;
-    analyticsOptions?: AnalyticsOptions<Record<PropertyKey, unknown>>;
     statusFunc?: StatusFunc<Record<PropertyKey, unknown>>;
     powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
