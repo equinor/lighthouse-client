@@ -31,7 +31,7 @@ export type ParkViewContextState = ParkViewState<Record<PropertyKey, unknown>> &
 export type ParkViewProviderProps<T extends Record<PropertyKey, unknown>> = {
     children: React.ReactNode;
     parkViewOptions: GardenOptions<T> | TreeOptions<T>;
-    data: T[] | undefined;
+    data: T[];
 };
 
 export enum DataAction {

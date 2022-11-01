@@ -47,7 +47,7 @@ export const SwitchBoardContainer = styled.div`
 export const SwitchBoardBorderContainer = styled.div`
     border: 1px solid ${tokens.colors.ui.background__medium.hex};
     padding: 8px;
-    width: 100px;
+    width: 110px;
     background: ${tokens.colors.ui.background__light.hex};
 `;
 
@@ -84,6 +84,7 @@ export const CircuitDiagramNodeValueText = styled.div<{ clickable?: boolean }>`
     font-size: 12px;
     font-weight: 400, regular;
     margin-left: 4px;
+    margin-right: 4px;
     padding-top: 4px;
     font-variant-numeric: tabular-nums;
     cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
@@ -180,6 +181,21 @@ export const TestDotCircle = styled.div<{ color: string }>`
         p.color === PipetestCompletionStatusColors.PA
             ? tokens.colors.text.static_icons__primary_white.hex
             : tokens.colors.text.static_icons__default.hex};
+`;
+
+export const CriticalLineVisualStyle = styled.div`
+    display: flex;
+    flex-direction: horizontal;
+    justify-content: center;
+    text-align: center;
+    width: 30px;
+    height: 14px;
+    margin-right: 2px;
+    color: ${tokens.colors.interactive.danger__resting.hex};
+    background-color: ${tokens.colors.ui.background__light.hex};
+    border: 1px solid;
+    border-color: ${tokens.colors.interactive.danger__resting.hex};
+    margin-left: 8px;
 `;
 
 export const TestDotCircleText = styled.div`

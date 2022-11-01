@@ -5,7 +5,7 @@ import { DataSet } from '../../Models/data';
 import { GardenApi } from '../../Models/gardenApi';
 import { PostGroupBySorting, PreGroupByFiltering } from '../../Models/gardenOptions';
 import { createGarden } from '../../Services/createGarden';
-import { FilterSelector } from '../GroupingSelector';
+import { GroupingSelector } from '../GroupBySelectors';
 import { ExpandProvider } from './ExpandProvider';
 import { Container } from './styles';
 import { VirtualGarden } from './VirtualGarden';
@@ -94,7 +94,7 @@ export const VirtualContainer = <T extends Record<PropertyKey, unknown>>({
 
     return (
         <Container>
-            <FilterSelector />
+            <GroupingSelector />
             <ExpandProvider initialWidths={widths}>
                 <VirtualGarden
                     garden={garden}

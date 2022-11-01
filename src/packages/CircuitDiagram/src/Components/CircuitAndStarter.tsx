@@ -17,12 +17,15 @@ import {
 import { formatDateString } from '../../Utils/circuitDiagramHelpers';
 import { deisolateCircuit } from '../Api/deisolateCircuit';
 import { EleNetwork, EleNetworkCable } from '../types/eleNetwork';
+import { Pipetest } from '../types/pipetestTypes';
+import { CriticalLineVisual } from './CriticalLineVisual';
 import { IsolateModal } from './IsolateModal';
 import { TestDot } from './TestDot';
 
 interface CircuitAndStarterProps {
     value?: string;
     eleNetwork?: EleNetwork;
+    pipetests: Pipetest[];
     cTestStatus: string;
     isEditMode: boolean;
     disconnected: boolean;
@@ -37,6 +40,7 @@ interface CircuitAndStarterProps {
 const CircuitAndStarter = ({
     value,
     eleNetwork,
+    pipetests,
     cTestStatus,
     isEditMode,
     disconnected,
@@ -50,6 +54,12 @@ const CircuitAndStarter = ({
     const onOpen = () => setIsOpen(true);
     const onClose = () => setIsOpen(false);
 
+    const circuitHasCriticalLine = pipetests
+        .filter((pipetest) =>
+            pipetest.circuits.some((circuit) => circuit.circuitAndStarterTagNo === value)
+        )
+        .some((x) => x.hasCriticalLine);
+
     return (
         <>
             <CircuitDiagramNodeGroup>
@@ -59,6 +69,7 @@ const CircuitAndStarter = ({
                             <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
                         </CircuitDiagramNodeValueText>
                         <TestDot value="C" status={cTestStatus} />
+                        {circuitHasCriticalLine && <CriticalLineVisual />}
                     </CircuitAndStarterNode>
 
                     {isEditMode && !disconnected && (

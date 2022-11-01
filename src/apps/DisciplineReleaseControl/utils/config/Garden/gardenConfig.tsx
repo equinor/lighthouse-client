@@ -32,6 +32,7 @@ export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
     heatTraces: {
         label: 'HT cable',
         key: 'tagNo',
+        lastStep: true,
     },
     dueAtDate: {
         label: 'Piping RFC',

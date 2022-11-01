@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.18.0
+
+- [ReleaseControl/PipingAndHeattrace] Added critical line visualization in circuit diagram
+- [Garden] Bugfix: Update garden when filter result is empty
+- [Garden] Added last step option for garden grouping. For example HT-cable grouping in P&HT uses this
+- [Loop] Update column names from FAM
+- [Filter] Added useClickOutside on workspace filter
+
 ## 1.17.0
 
 - [ReleaseControl/PipingAndHeattrace] Added filters for isolated and disconnected equipment

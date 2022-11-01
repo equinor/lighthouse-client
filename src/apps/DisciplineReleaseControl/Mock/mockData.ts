@@ -11,6 +11,7 @@ export const testData1: Pipetest = {
     hasDisconnectedEquipment: false,
     hasIsolatedEquipment: false,
     htCableExposed: null,
+    hasCriticalLine: false,
     htStep: PipetestStep.Unknown,
     checkLists: [
         {
