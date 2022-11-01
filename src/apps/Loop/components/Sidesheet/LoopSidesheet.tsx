@@ -1,9 +1,10 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { statusColorMap } from '@equinor/GardenUtils';
+import { statusColorMap, WorkorderTab } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
+import { useGetWorkorders } from '../../hooks';
 import { Loop } from '../../types';
 import { Status } from '../Status';
 import { ThreeDView } from './3D/3dView';
@@ -14,13 +15,15 @@ import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
 import {
     ItemLink,
-    OverviewPanel,
     PanelContentWrapper,
     SidesheetPanels,
     SidesheetTabList,
     SidesheetTabs,
+    StyledPanel,
+    StyledSidesheetWrapper,
     TabsWrapper,
 } from './sidesheet-styles';
+import { TabTitle } from './TabTitle';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -28,15 +31,19 @@ type LoopSidesheetProps = {
 };
 export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
+
+    const { isLoadingWorkorders, workorderError, workorders } = useGetWorkorders(item.loopNo);
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
+
     useEffect(() => {
         actions.setTitle(`${item.loopNo}, ${item.description}`);
     }, [item.loopNo, item.description]);
 
     return (
-        <div style={{ height: '100%' }}>
+        <StyledSidesheetWrapper>
             <Banner padding="0 1.2em">
                 <BannerItem
                     title="Checklist status"
@@ -89,19 +96,31 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Elemen
                 <SidesheetTabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
                         <Tabs.Tab>Overview</Tabs.Tab>
+                        <Tabs.Tab>
+                            Work orders{' '}
+                            <TabTitle isLoading={isLoadingWorkorders} data={workorders} />
+                        </Tabs.Tab>
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
                     <SidesheetPanels>
-                        <OverviewPanel>
+                        <StyledPanel>
                             <PanelContentWrapper>
                                 <LoopDetails loop={item} />
                                 <Checklists checklistId={item.checklistId} />
                                 <LoopContentDetails item={item} />
                             </PanelContentWrapper>
-                        </OverviewPanel>
+                        </StyledPanel>
+
+                        <StyledPanel>
+                            <WorkorderTab
+                                error={workorderError instanceof Error ? workorderError : null}
+                                isLoading={isLoadingWorkorders}
+                                workorders={workorders}
+                            />
+                        </StyledPanel>
 
                         <Tabs.Panel style={{ height: '100%' }}>
-                            {activeTab === 1 && (
+                            {activeTab === 2 && (
                                 <ModelViewerContextProvider>
                                     <ThreeDView loop={item} />
                                 </ModelViewerContextProvider>
@@ -110,6 +129,6 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Elemen
                     </SidesheetPanels>
                 </SidesheetTabs>
             </TabsWrapper>
-        </div>
+        </StyledSidesheetWrapper>
     );
 };

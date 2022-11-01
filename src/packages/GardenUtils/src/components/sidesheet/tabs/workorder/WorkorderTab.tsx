@@ -8,6 +8,7 @@ type WorkOrderTabProps<T extends WorkOrderBase> = {
     isLoading: boolean;
     error: Error | null;
 };
+
 export const WorkorderTab = <T extends WorkOrderBase>({
     error,
     isLoading,
