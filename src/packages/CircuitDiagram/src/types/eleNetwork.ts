@@ -3,7 +3,7 @@ export interface Switchboard {
 }
 
 export interface EleNetwork {
-    eleNetId: number;
+    eleNetId: string;
     circuitAndStarterTagNo: string;
     isolated: boolean;
     isolatedBy?: Person;
@@ -15,8 +15,8 @@ export interface EleNetwork {
 }
 
 export interface EleNetworkCircuit {
-    eleNetId: number;
-    parentEleNetId: number | null;
+    eleNetId: string;
+    parentEleNetId: string | null;
     tagNo: string;
     eleSymbolCode: string;
     circuitSymbolCode: string | null;
