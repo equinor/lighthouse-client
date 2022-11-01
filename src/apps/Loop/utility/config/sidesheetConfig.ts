@@ -5,12 +5,12 @@ import { setupWorkspaceSidesheet } from '../../../../Core/WorkSpace/src/WorkSpac
 
 import { LoopSidesheet } from '../../components';
 import { Loop } from '../../types';
-import { checklistColumnNames } from '../api';
+import { customLoopMccrColumns } from '../api';
 
 const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();
     const expressions = generateExpressions('checklistId', 'Equals', [id]);
-    const requestArgs = generateFamRequest(checklistColumnNames, 'Or', expressions);
+    const requestArgs = generateFamRequest(customLoopMccrColumns, 'Or', expressions);
     const res = await FAM.post('v0.1/dynamic/completion/custom_loopmccr/JCA', {
         body: JSON.stringify(requestArgs),
     });
