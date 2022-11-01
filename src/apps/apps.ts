@@ -505,8 +505,8 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
-        title: 'Commisisoning procedure',
-        shortName: 'commisisoning-procedure',
+        title: 'Commissioning procedure',
+        shortName: 'commissioning-procedure',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
