@@ -1,6 +1,5 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { createPowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
-import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
 import { createWorkSpace, WorkspaceOptions } from '@equinor/WorkSpace';
 import { AppConfigResult } from '../../Client/Types/AppConfig';
 import { ClientApi } from '../Types/App';
@@ -21,8 +20,6 @@ export type WorkspaceViewerOptions<
     'viewerId' | 'initialState' | 'dataFactoryCreator' | 'openSidesheet'
 >;
 
-export type PageViewerOptions = Omit<PageOptions, 'viewerId'>;
-
 export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
     const { shortName, title } = config;
 
@@ -35,13 +32,6 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
             return createWorkSpace({
                 ...options,
                 initialState: [],
-                viewerId: shortName,
-                openSidesheet: config.openSidesheet,
-            });
-        },
-        createPageViewer() {
-            return createPageViewer({
-                title,
                 viewerId: shortName,
                 openSidesheet: config.openSidesheet,
             });
