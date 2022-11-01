@@ -8,10 +8,7 @@ import { AppManifest } from './AppManifest';
 // Todo cleanup app types and  maybe create another system: look at fusion manifest for this.
 type AppType = 'Workspace' | 'CustomApp' | 'PowerBI' | 'PowerBIViewer';
 
-export type CustomClientApi = Omit<
-    ClientApi,
-    'createWorkSpace' | 'createPageViewer' | 'createPowerBiViewer'
->;
+export type CustomClientApi = Omit<ClientApi, 'createWorkSpace' | 'createPowerBiViewer'>;
 
 export type App = {
     appType?: AppType;
