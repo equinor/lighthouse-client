@@ -70,6 +70,10 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         <div style={{ height: '100%' }}>
             <Resizable
                 size={{ width: width, height: '100%' }}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
                 maxWidth={'100vw'}
                 onResizeStop={(e, direction, ref, d) => {
                     if (width + d.width < minWidth) {
@@ -101,7 +105,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                 </Header>
 
                 <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
-                    <div style={{ height: '95%' }}>
+                    <div style={{ height: '-webkit-fill-available' }}>
                         <SidesheetComponent {...sidesheetProps} />
                     </div>
                 </ErrorBoundary>
