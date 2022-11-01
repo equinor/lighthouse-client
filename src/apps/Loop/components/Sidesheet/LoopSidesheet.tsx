@@ -1,12 +1,10 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
-import { workorderColumnNames } from '../../utility/api';
 import { Status } from '../Status';
 import { ThreeDView } from './3D/3dView';
 import { Banner } from './Banner';
@@ -36,21 +34,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     useEffect(() => {
         actions.setTitle(`${item.loopNo}, ${item.description}`);
     }, [item.loopNo, item.description]);
-    const workorderExpressions = generateExpressions('checklistID', 'Equals', [
-        item.checklistId || '',
-    ]);
-    const workorderRequestArgs = generateFamRequest(
-        workorderColumnNames,
-        'Or',
-        workorderExpressions
-    );
-    // const {
-    //     data: workorders,
-    //     isLoading: isLoadingWorkorders,
-    //     error: workorderError,
-    // } = useQuery(['workorder', item.checklistId], ({ signal }) =>
-    //     getWorkorders(workorderRequestArgs, signal)
-    // );
+
     return (
         <div style={{ height: '100%' }}>
             <Banner padding="0 1.2em">
