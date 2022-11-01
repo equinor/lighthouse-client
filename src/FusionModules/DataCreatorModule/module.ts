@@ -1,4 +1,4 @@
-import type { Module } from '@equinor/fusion-framework-module';
+import { Module } from '@equinor/fusion-framework-module';
 import { DataCreatorConfigurator, IDataCreatorConfigurator } from './configurator';
 import { DataCreationProvider, IDataCreationProvider } from './provider';
 
@@ -16,9 +16,3 @@ export const module: DataCreatorModule = {
 };
 
 export default module;
-
-declare module '@equinor/lighthouse-fusion-modules' {
-    interface Modules {
-        dataCreator: DataCreatorModule;
-    }
-}
