@@ -36,8 +36,6 @@ export function ParkViewProvider<T extends Record<PropertyKey, unknown>>({
     }
     //Runs on every filter update
     useEffect(() => {
-        if (!(data && data?.length > 0)) return;
-
         dispatch(actions.setData(data as unknown[]));
 
         const customState = (parkViewOptions as GardenOptions<T>)?.customStateFunction?.(data);
