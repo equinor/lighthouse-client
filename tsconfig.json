@@ -30,7 +30,6 @@
             "@equinor/GroupView": ["./src/Core/GroupView"],
             "@equinor/lighthouse-workspace-api": ["./src/Core/WorkSpaceApi"],
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
-            "@equinor/PageViewer": ["./src/Core/PageViewer"],
             "@equinor/Form": ["./src/packages/Form"],
             "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
             "@equinor/procosys-urls": ["./src/packages/ProCoSysUrls"],

@@ -27,7 +27,6 @@ export default {
         '^@equinor\\/atom(.*)$': '<rootDir>/src/Core/Atom$1',
         '^@equinor\\/lighthouse-powerbi-viewer(.*)$': '<rootDir>/src/Core/PowerBiViewer$1',
         '^@equinor\\/lighthouse-powerbi(.*)': '<rootDir>/src/modules/powerBI/index.ts$1',
-        '^@equinor\\/PageViewer(.*)': '<rootDir>/src/Core/PageViewer$1',
         '^@equinor\\/Kpi(.*)': '<rootDir>/src/packages/KPI$1',
         '^@equinor\\/authentication(.*)': '<rootDir>/src/packages/authentication$1',
         '^@equinor\\/procosys-urls(.*)': '<rootDir>/src/packages/ProCoSysUrls$1',

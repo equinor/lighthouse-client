@@ -36,7 +36,6 @@ export default defineConfig({
             '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
             '@equinor/WorkSpace': path.resolve(__dirname, './src/Core/WorkSpace'),
             '@equinor/lighthouse-workspace-api': path.resolve(__dirname, './src/Core/WorkSpaceApi'),
-            '@equinor/PageViewer': path.resolve(__dirname, './src/Core/PageViewer'),
             '@equinor/GroupView': path.resolve(__dirname, './src/Core/GroupView'),
             '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),
             '@equinor/ErrorBoundary': path.resolve(__dirname, './src/Core/ErrorBoundary'),
