@@ -16,9 +16,3 @@ export const module: DataCreatorModule = {
 };
 
 export default module;
-
-declare module '@equinor/lighthouse-fusion-modules' {
-    interface Modules {
-        dataCreator: DataCreatorModule;
-    }
-}
