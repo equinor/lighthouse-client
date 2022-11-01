@@ -1,5 +1,4 @@
 import { Atom } from '@dbeining/react-atom';
-import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 import { StatusItem } from '@equinor/lighthouse-status-bar';
@@ -106,7 +105,6 @@ export type WorkSpaceConfig<T extends Record<PropertyKey, unknown>> = {
     treeOptions?: TreeOptions<T>;
     timelineOptions?: TimeLineOptions;
     gardenOptions?: GardenOptions<T>;
-    analyticsOptions?: AnalyticsOptions<T>;
     statusFunc?: StatusFunc<T>;
     powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;

@@ -1,4 +1,3 @@
-import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterGroup, FilterOptions } from '@equinor/filter';
 import { GardenOptions } from '@equinor/ParkView';
 import { OpenSidesheetFunc } from '@equinor/sidesheet';
@@ -66,7 +65,6 @@ export type WorkSpaceApi<T extends Record<PropertyKey, unknown>> = {
     registerTableOptions: (options: TableOptions<T>) => WorkSpaceApi<T>;
     registerTreeOptions: (options: TreeOptions<T>) => WorkSpaceApi<T>;
     registerGardenOptions: (options: GardenOptions<T>) => WorkSpaceApi<T>;
-    registerAnalyticsOptions: (options: AnalyticsOptions<T>) => WorkSpaceApi<T>;
     registerStatusItems: (options: StatusFunc<T>) => WorkSpaceApi<T>;
     registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;

@@ -41,7 +41,6 @@ export default defineConfig({
             '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),
             '@equinor/ErrorBoundary': path.resolve(__dirname, './src/Core/ErrorBoundary'),
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
-            '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
             '@equinor/Table': path.resolve(__dirname, './src/packages/Table'),
             '@equinor/authentication': path.resolve(__dirname, './src/packages/authentication'),
             '@equinor/http-client': path.resolve(__dirname, './src/Core/httpClient/'),
