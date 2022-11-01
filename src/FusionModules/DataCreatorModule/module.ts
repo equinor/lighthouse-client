@@ -1,4 +1,4 @@
-import type { Module } from '@equinor/fusion-framework-module';
+import { Module } from '@equinor/fusion-framework-module';
 import { DataCreatorConfigurator, IDataCreatorConfigurator } from './configurator';
 import { DataCreationProvider, IDataCreationProvider } from './provider';
 
