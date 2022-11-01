@@ -1,4 +1,4 @@
-import { getClientContext, isProduction } from '@equinor/lighthouse-portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 
 interface ProCoSysUrls {
     getCommPkgUrl: (commPkgId: string | number) => string;

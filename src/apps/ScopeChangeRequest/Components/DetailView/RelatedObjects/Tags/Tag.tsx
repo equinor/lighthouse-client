@@ -4,7 +4,7 @@ import { Link, Wrapper, TextWrapper, MainText, MetaData } from '../WrapperStyles
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Tag as TagInterface } from '../../../../types/ProCoSys/Tag';
-import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 
 interface TagProps {
     tag: ScopeChangeTag;

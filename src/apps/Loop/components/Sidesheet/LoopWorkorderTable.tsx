@@ -1,6 +1,6 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { CellProps, Column, DescriptionCell, ProgressCell } from '@equinor/Table';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
+import { proCoSysUrls } from '@equinor/procosys-urls';
+import { Column, DescriptionCell, ProgressCell } from '@equinor/Table';
 import { Workorder } from '../../types';
 
 const columns: Column<Workorder>[] = [

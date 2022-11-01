@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Column, Table } from '@equinor/Table';
 import styled from 'styled-components';
-import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 import { FamTagType } from '../../../../types/releaseControl';
 import { RemoveTagCell } from './RemoveTagCell';
 

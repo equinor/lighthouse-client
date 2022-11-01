@@ -8,7 +8,7 @@ import {
     CustomYearAndWeekCell,
     StatusCustomCell,
 } from '@equinor/Table';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 
 const customColumns: CustomColumn<McPackage>[] = [
     {

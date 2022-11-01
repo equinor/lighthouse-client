@@ -1,5 +1,5 @@
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { useQuery } from 'react-query';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { FAMQueries } from '../../../ScopeChangeRequest/keys/FamQueries';
 import { ReleaseControlPunch } from '../../types/releaseControl';
 

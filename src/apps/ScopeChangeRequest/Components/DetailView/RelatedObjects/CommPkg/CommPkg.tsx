@@ -4,7 +4,7 @@ import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { CommissioningPackage } from '../../../../types/ProCoSys/CommissioningPackage';
 import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
-import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;
 }

@@ -1,5 +1,5 @@
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { EstimateBar, ExpendedProgressBar, ProgressBar } from '@equinor/Table';
-import { proCoSysUrls } from '../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../../types/FAM/workOrder';
 import { Columns, Column, Header, Link } from './compactWorkOrder.styles';
 
