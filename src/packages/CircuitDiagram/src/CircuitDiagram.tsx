@@ -25,7 +25,6 @@ import { NoCircuitDiagramFound } from './Components/NoCircuitDiagramFound';
 import { StatusCircle } from './Components/StatusCircle';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@equinor/eds-core-react';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 
 interface CircuitDiagramProps {
     /* Current pipetest */
@@ -236,31 +235,29 @@ export const CircuitDiagram = ({
                                     </SwitchBoardContainer>
                                 );
                             })}
-                            {!isProduction() && ( //TODO - temporarily disabled in prod
-                                <CircuitDiagramEditMode onMouseOver={onOpen} onMouseLeave={onClose}>
-                                    {!isEditMode && (
-                                        <Button onClick={() => setIsEditMode(true)}>
-                                            Edit isolations
-                                        </Button>
-                                    )}
-                                    {isEditMode && (
-                                        <Button
-                                            variant="outlined"
-                                            onClick={() => {
-                                                setIsEditMode(false);
-                                                setComment('');
-                                            }}
-                                        >
-                                            Exit edit mode
-                                        </Button>
-                                    )}
-                                    {isOpen && (
-                                        <CircuitDiagramPopover cornerButton={true}>
-                                            {buttonText}
-                                        </CircuitDiagramPopover>
-                                    )}
-                                </CircuitDiagramEditMode>
-                            )}
+                            <CircuitDiagramEditMode onMouseOver={onOpen} onMouseLeave={onClose}>
+                                {!isEditMode && (
+                                    <Button onClick={() => setIsEditMode(true)}>
+                                        Edit isolations
+                                    </Button>
+                                )}
+                                {isEditMode && (
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => {
+                                            setIsEditMode(false);
+                                            setComment('');
+                                        }}
+                                    >
+                                        Exit edit mode
+                                    </Button>
+                                )}
+                                {isOpen && (
+                                    <CircuitDiagramPopover cornerButton={true}>
+                                        {buttonText}
+                                    </CircuitDiagramPopover>
+                                )}
+                            </CircuitDiagramEditMode>
                         </CircuitDiagramContainer>
 
                         <CircuitDiagramFillerDiv />
