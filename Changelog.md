@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.18.1
+
+- [ReleaseControl/PipingAndHeattrace] Fixed circuit diagram datatypes for new FAM update
+
 ## 1.18.0
 
 - [ReleaseControl/PipingAndHeattrace] Added critical line visualization in circuit diagram

@@ -1,6 +1,5 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
-import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { ReleaseControlSidesheet } from './components/sidesheet/ReleaseControlSidesheet/ReleaseControlSidesheet';
 import { ReleaseControl } from './types/releaseControl';
 import { dataSource, filterOptions, idResolverFunction, tableConfig } from './workspaceConfig';
