@@ -5,7 +5,7 @@ import { System as PCSSystem } from '../../../../types/ProCoSys/system';
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
-import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 
 interface SystemProps {
     system: ScopeChangeSystem;

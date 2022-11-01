@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { getDocumentIdByNo } from '../../api/PCS/getDocumentIdByNo';
 import { OriginType } from '../../types/scopeChangeRequest';
 
