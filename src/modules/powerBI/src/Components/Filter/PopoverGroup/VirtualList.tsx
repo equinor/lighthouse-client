@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import { VirtualFilterItemCheckbox } from '@equinor/WorkSpace';
-import { useRef, useCallback, memo } from 'react';
+import { useRef, useCallback } from 'react';
 import { useVirtual } from 'react-virtual';
 import styled from 'styled-components';
 import { PowerBiFilterItem, ActiveFilter } from '../../../Types';
@@ -36,7 +36,7 @@ export function VirtualList({
                 {rowVirtualizer.virtualItems.map((virtualRow) => {
                     const item = items[virtualRow.index];
                     return (
-                        <FilterItemValue
+                        <VirtualFilterItemCheckbox
                             virtualItem={virtualRow}
                             key={item.value}
                             ValueRender={() => <div>{item.value}</div>}
@@ -57,8 +57,6 @@ const VirtualRowWrapper = styled.div`
     min-width: 180px;
     position: relative;
 `;
-
-export const FilterItemValue = memo(VirtualFilterItemCheckbox);
 
 const Parent = styled.div`
     height: 100%;
