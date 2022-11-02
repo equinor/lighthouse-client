@@ -1,9 +1,9 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { statusColorMap, WorkorderTab } from '@equinor/GardenUtils';
-import { SidesheetApi } from '@equinor/sidesheet';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { useEffect, useState } from 'react';
 import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
+import { statusColorMap, WorkorderTab } from '@equinor/GardenUtils';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useGetWorkorders } from '../../hooks';
 import { Loop } from '../../types';
 import { Status } from '../Status';

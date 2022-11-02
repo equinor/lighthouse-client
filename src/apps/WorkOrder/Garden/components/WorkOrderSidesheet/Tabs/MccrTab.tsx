@@ -1,6 +1,6 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Column } from 'react-table';
-import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrderMccr } from '../../../models';
 
 export type MccrTabProps = {

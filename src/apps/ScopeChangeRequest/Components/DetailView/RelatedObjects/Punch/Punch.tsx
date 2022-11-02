@@ -4,7 +4,7 @@ import { ScopeChangePunch } from '../../../../types/scopeChangeRequest';
 import { Link, TextWrapper, Wrapper, MainText } from '../WrapperStyles';
 import { FAMQueries } from '../../../../keys/FamQueries';
 import { PunchListItem } from '../../../../types/FAM/punchListItem';
-import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 
 interface PunchProps {
     punch: ScopeChangePunch;

@@ -1,9 +1,9 @@
 import { Tabs, Typography } from '@equinor/eds-core-react';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ModelViewerContextProvider } from '../../../packages/ModelViewer/context/modelViewerContext';
-import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 
 import { Tag } from '../Types/tag';
 import { ThreeDView } from './3D/3dView';
@@ -15,7 +15,7 @@ import {
     SidesheetPanels,
     SidesheetTabList,
     SidesheetTabs,
-    TabsWrapper
+    TabsWrapper,
 } from './sidesheet-styles';
 import { TextItem } from './TextItem';
 
