@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Checkbox } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { VirtualItem } from 'react-virtual';
@@ -19,7 +20,7 @@ interface VirtualFilterItemCheckboxProps extends FilterItemCheckboxProps {
     virtualItem: VirtualItem;
 }
 
-export const VirtualFilterItemCheckbox = ({
+const ItemCheckbox = ({
     count,
     filterValue,
     handleFilterItemClick,
@@ -48,6 +49,7 @@ export const VirtualFilterItemCheckbox = ({
         </FilterItemWrap>
     );
 };
+export const VirtualFilterItemCheckbox = memo(ItemCheckbox);
 
 const FilterLabelWrapper = styled.div`
     cursor: pointer;
