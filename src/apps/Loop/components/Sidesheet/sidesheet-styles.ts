@@ -7,6 +7,7 @@ export const StyledSidesheetWrapper = styled.div`
     width: 100%;
     display: grid;
     grid-template-rows: auto 1fr;
+    overflow: hidden;
 `;
 
 export const ItemLink = styled.a`
@@ -19,6 +20,7 @@ export const ItemLink = styled.a`
 `;
 export const TabsWrapper = styled.div`
     height: 100%;
+    overflow: hidden;
 `;
 export const PanelContentWrapper = styled.div`
     display: flex;
