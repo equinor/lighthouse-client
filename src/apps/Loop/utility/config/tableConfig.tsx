@@ -1,5 +1,6 @@
 import { Atom, deref, swap } from '@dbeining/react-atom';
 import { statusColorMap } from '@equinor/GardenUtils';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import {
     CustomColumn,
     CustomLinkCellWithTextDecoration,
@@ -7,7 +8,6 @@ import {
     StatusCustomCell,
 } from '@equinor/Table';
 import { TableOptions } from '@equinor/WorkSpace';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types/loop';
 const remainingHoursMaxAtom = Atom.of<number>(-1);
 const customColumns: CustomColumn<Loop>[] = [

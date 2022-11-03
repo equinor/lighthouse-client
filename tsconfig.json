@@ -32,7 +32,7 @@
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
             "@equinor/Form": ["./src/packages/Form"],
             "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
-            "@equinor/procosys-urls": ["./src/packages/ProCoSysUrls"],
+            "@equinor/procosys-urls": ["./src/packages/ProcosysUrls"],
             "@equinor/worker": ["./src/packages/WebWorkers"],
             "@equinor/filter": ["./src/packages/Filter"],
             "@equinor/DataFactory": ["./src/Core/DataFactory"],

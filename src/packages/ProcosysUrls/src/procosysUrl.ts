@@ -1,5 +1,5 @@
 //TODO: No alias import because it will break tests
-import { isProduction } from '../../Core/Client/Functions/Settings';
+import { isProduction } from '../../../Core/Client/Functions/Settings';
 
 interface ProCoSysUrls {
     getCommPkgUrl: (commPkgId: string | number) => string;

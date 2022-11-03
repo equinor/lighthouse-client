@@ -1,5 +1,6 @@
 import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { statusColorMap, TabTable } from '@equinor/GardenUtils';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import {
     CellProps,
     Column,
@@ -7,7 +8,6 @@ import {
     StatusCustomCell,
 } from '@equinor/Table';
 import { useQuery } from 'react-query';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop, LoopContent } from '../../types';
 import { getLoopContent, loopContentColumnNames } from '../../utility/api';
 

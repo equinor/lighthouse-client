@@ -1,9 +1,9 @@
 import { Progress, Tabs } from '@equinor/eds-core-react';
 import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { ModelViewerContextProvider } from '../../../../../packages/ModelViewer/context/modelViewerContext';
-import { proCoSysUrls } from '../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';

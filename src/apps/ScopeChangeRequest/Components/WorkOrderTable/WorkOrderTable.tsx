@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { EstimateBar, ExpendedProgressBar, ProgressBar, Table } from '@equinor/Table';
 import styled from 'styled-components';
-import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../types/FAM/workOrder';
 import { generateColumn } from './Utils/generateColumn';
 

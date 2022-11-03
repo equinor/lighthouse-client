@@ -6,8 +6,8 @@ import {
     EstimateBar,
     ProgressBar,
 } from '@equinor/Table';
-import { proCoSysUrls } from '../../../../../../ProCoSysUrls/procosysUrl';
 import { CellWithLink } from '../../../cells/CellWithLink';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { WorkOrderBase } from './types';
 
 export const columns = (): Column<WorkOrderBase>[] => {
