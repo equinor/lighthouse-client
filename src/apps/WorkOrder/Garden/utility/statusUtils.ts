@@ -85,7 +85,7 @@ const woHasMaterialStatus = (workOrder: WorkOrder, ...statuses: MaterialStatus[]
 const materialOk = (workOrder: WorkOrder) => woHasMaterialStatus(workOrder, 'M12', 'M13', 'MN');
 
 const materialAvailable = (workOrder: WorkOrder) =>
-    woHasMaterialStatus(workOrder, 'M7', 'M9', 'M10', 'M11', 'MN');
+    woHasMaterialStatus(workOrder, 'M7', 'M9', 'M10', 'M11', 'M12', 'MN');
 
 /**
  * Function to retrieve "follow up" status of a package based on the package's projectProgress
@@ -96,7 +96,7 @@ export const getFollowUpStatus = (workOrder: WorkOrder) => {
     const status = getWoStatus(workOrder);
     const statusIndex = orderedProCoSysStatuses.indexOf(status);
 
-    if (workOrder?.projectProgress === '100') {
+    if (workOrder.projectProgress && parseFloat(workOrder.projectProgress) >= 100) {
         return FollowUpStatuses.WOFinished;
     } else if (materialOk(workOrder) && [4, 5, 6, 7, 8, 9, 10].indexOf(statusIndex) > -1) {
         return FollowUpStatuses.MaterialAndWoOk;
