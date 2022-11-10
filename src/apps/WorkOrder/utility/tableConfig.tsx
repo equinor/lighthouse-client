@@ -1,5 +1,6 @@
 import { Atom, deref, swap } from '@dbeining/react-atom';
 import { tokens } from '@equinor/eds-tokens';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import {
     CellProps,
     CustomLinkCellWithTextDecoration,
@@ -10,7 +11,6 @@ import {
     StatusCustomCell,
 } from '@equinor/Table';
 import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../Garden/models';
 import { getMatStatusColorByStatus, getMccrStatusColorByStatus } from '../Garden/utility';
 const remainingHoursMaxAtom = Atom.of<number>(-1);

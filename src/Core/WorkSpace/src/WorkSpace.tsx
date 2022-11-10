@@ -4,10 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { WorkspaceProviders } from './Context/WorkspaceProviders';
 
-export type WorkspaceProps = Omit<
-    ClientApi,
-    'createWorkSpace' | 'createPageViewer' | 'createPowerBiViewer'
->;
+export type WorkspaceProps = Omit<ClientApi, 'createWorkSpace' | 'createPowerBiViewer'>;
 
 export const WorkSpace = (props: WorkspaceProps): JSX.Element => {
     return (

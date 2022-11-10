@@ -127,6 +127,7 @@ export function addStepAfter(
     steps: CreateReleaseControlStepModel[]
 ): CreateReleaseControlStepModel[] {
     const newStep: CreateReleaseControlStepModel = {
+        id: Math.random().toString(), //Needs temporary unique id for drag/drop sorting
         order: currentStep.order + 1,
         name: '',
         allowContributors: true,
@@ -153,6 +154,7 @@ export function addStepBefore(
     steps: CreateReleaseControlStepModel[]
 ): CreateReleaseControlStepModel[] {
     const newStep: CreateReleaseControlStepModel = {
+        id: Math.random().toString(), //Needs temporary unique id for drag/drop sorting
         order: currentStep.order,
         name: '',
         allowContributors: true,
@@ -208,6 +210,7 @@ export function addStep(steps: CreateReleaseControlStepModel[]): void {
     updateAtom({
         workflowSteps: addStepAfter(
             {
+                id: Math.random().toString(), //Needs temporary unique id for drag/drop sorting
                 order: steps.length,
                 name: '',
                 allowContributors: true,
