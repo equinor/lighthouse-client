@@ -1,4 +1,3 @@
-import { AnalyticsOptions } from '@equinor/Diagrams';
 import { DataSet, GardenOptions } from '@equinor/ParkView';
 import React from 'react';
 import { dispatch } from './CoreActions';
@@ -165,17 +164,6 @@ export function createWorkSpace<
             updateState({
                 searchOptions: searchOptions as SearchOption<unknown>[],
             });
-            return workspaceAPI;
-        },
-        registerAnalyticsOptions<T extends Record<PropertyKey, unknown>>(
-            analyticsOptions: AnalyticsOptions<T>
-        ) {
-            updateState({
-                analyticsOptions: analyticsOptions as AnalyticsOptions<
-                    Record<PropertyKey, unknown>
-                >,
-            });
-
             return workspaceAPI;
         },
         registerStatusItems<T extends Record<PropertyKey, unknown>>(statusFunc: StatusFunc<T>) {

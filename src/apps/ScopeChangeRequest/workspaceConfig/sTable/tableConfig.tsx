@@ -140,7 +140,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             render: (_scr, _val, cell) => <WORemMhrsRender cell={cell} />,
         }),
         defineColumn({
-            header: 'Change cateogry',
+            header: 'Change category',
             accessor: (s) => s?.changeCategory?.name,
             width: 150,
         }),

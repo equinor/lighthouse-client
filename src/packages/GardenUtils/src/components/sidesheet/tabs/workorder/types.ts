@@ -1,9 +1,10 @@
-export type Workorder = {
+export type WorkOrderBase = {
     actualCompletionDate: string | null;
     description: string | null;
     discipline: string | null;
     disciplineDescription: string | null;
     estimatedManHours: number | null;
+    expendedManHours?: number | null;
     facility: string | null;
     holdBy: string | null;
     jobStatus: string | null;
