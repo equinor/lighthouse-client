@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.19.0
+- [CommissioningProcedure] Fix spelling mistake in app name
+- [ScopeChangeRequest] Fix spelling mistake in change category column header
+- [Loop] Add workorder tab to sidesheet
+- [Workorder] Add 3D tab to sidesheet
+- [Workorder] Fix Material available status and parse project progress differently
+- [Filter] Export memoed component
+- [ProcosysUrls] Refactor files
+- [ReleaseControl] Fix workflow step drag and drop
+
 ## 1.18.2
 
 - [ReleaseControl/PipingAndHeattrace] Circuit diagram: Enable "Edit isolations" button in prod
