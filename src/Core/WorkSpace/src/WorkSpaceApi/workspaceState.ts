@@ -14,6 +14,7 @@ import {
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import {
+    AdminOptions,
     DataSource,
     DataViewerProps,
     HelpPageOptions,
@@ -87,7 +88,15 @@ export interface PrefetchQueriesOptions {
     options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
 }
 
-export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor' | 'help';
+export type WorkspaceTab =
+    | 'tree'
+    | 'table'
+    | 'garden'
+    | 'analytics'
+    | 'gantt'
+    | 'editor'
+    | 'help'
+    | 'admin';
 
 export type WorkSpaceConfig<T extends Record<PropertyKey, unknown>> = {
     name: string;
@@ -111,6 +120,7 @@ export type WorkSpaceConfig<T extends Record<PropertyKey, unknown>> = {
     presetOptions?: PresetOption[];
     searchOptions?: SearchOption<T>[];
     helpPageOptions?: HelpPageOptions;
+    adminOptions?: AdminOptions;
 };
 
 export type PowerBiOptions = {

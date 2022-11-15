@@ -3,6 +3,7 @@ import { Analytics } from '../Icons/Analytics';
 import { Gantt } from '../Icons/Gantt';
 import { Garden } from '../Icons/Garden';
 import { HelpPageIcon } from '../Icons/Help';
+import { AdminIcon } from '../Icons/Admin';
 import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
 import { GardenTab } from '../Tabs/GardenTab';
@@ -14,6 +15,7 @@ import { TimelineTab } from '../Tabs/TimeLineTAb';
 import { TreeTab } from '../Tabs/TreeTab';
 import { VisualEditorTab } from '../Tabs/VisualEditorTab';
 import { WorkSpaceConfig, WorkspaceTab } from '../WorkSpaceApi/workspaceState';
+import { AdminTab } from '../Tabs/AdminTab';
 
 export interface TabsConfigItem {
     title: string;
@@ -67,6 +69,12 @@ const tabsConfig: TabsConfigItem[] = [
         icon: HelpPageIcon,
         viewComponent: HelpPageTab,
     },
+    {
+        title: 'Admin',
+        tabId: 'admin',
+        icon: AdminIcon,
+        viewComponent: AdminTab,
+    },
 ];
 
 interface ActiveTabs {
@@ -83,6 +91,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         workflowEditorOptions,
         powerBiOptions,
         helpPageOptions,
+        adminOptions,
     }: WorkSpaceConfig<Record<PropertyKey, unknown>>): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
             if (treeOptions && item.title === 'Tree') return true;
@@ -92,6 +101,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
             if (workflowEditorOptions && item.title === 'Editor') return true;
             if (powerBiOptions && item.title === 'PowerBI') return true;
             if (helpPageOptions && item.title === 'Help') return true;
+            if (adminOptions && item.title === 'Admin') return true;
         });
         return {
             tabs,

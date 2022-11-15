@@ -71,6 +71,7 @@ export type WorkSpaceApi<T extends Record<PropertyKey, unknown>> = {
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
     registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
     registerHelpPage: (options: HelpPageOptions) => WorkSpaceApi<T>;
+    registerAdminOptions: (options: AdminOptions) => WorkSpaceApi<T>;
 };
 
 export type PresetOption = GardenPresetOption | TablePresetOption;
@@ -108,4 +109,9 @@ export type SearchOption<T> = {
 
 export type HelpPageOptions = {
     Component: () => JSX.Element;
+};
+
+export type AdminOptions = {
+    app?: string;
+    component: JSX.Element | null;
 };

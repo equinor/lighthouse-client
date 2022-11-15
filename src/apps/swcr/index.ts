@@ -1,5 +1,5 @@
 import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
-import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
+import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
