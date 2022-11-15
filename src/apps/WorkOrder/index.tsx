@@ -1,5 +1,5 @@
 import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
-import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
+import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
 import { WorkorderSideSheet } from './Garden/components';
 import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';

@@ -7,7 +7,7 @@ import { Workflow } from '@equinor/Workflow';
 import { WorkflowSidesheet } from '../Sidesheet/WorkflowSidesheet';
 import { WorkflowsTable } from './WorkflowsTable';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { setupWorkspaceSidesheet } from '../../../../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
+import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
 
 export async function idResolverFunction(id: string): Promise<Workflow> {
     const { scopeChange } = httpClient();
