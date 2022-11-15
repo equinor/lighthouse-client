@@ -69,6 +69,8 @@ export default defineConfig({
                 './src/packages/FamRequestBuilder'
             ),
             '@equinor/CircuitDiagram': path.resolve(__dirname, './src/packages/CircuitDiagram'),
+            '@equinor/Admin': path.resolve(__dirname, './src/packages/Admin'),
+            '@equinor/Workflow': path.resolve(__dirname, './src/packages/Workflow'),
         },
     },
     build: {

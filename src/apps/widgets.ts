@@ -2,13 +2,17 @@ import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
-    actionCenterSidesheetWidgetManifest
+    actionCenterSidesheetWidgetManifest,
 } from '../components/ActionCenter/ActionCenterSidesheet';
+import {
+    workflowComponent,
+    workflowWidgetManifest,
+} from '../packages/Admin/src/Components/Workspace/Workflows';
 import {
     htSidesheetWidgetComponent,
     htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetManifest
+    ReleaseControlSidesheetWidgetManifest,
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
@@ -16,15 +20,15 @@ import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
-    releaseCreatorManifest
+    releaseCreatorManifest,
 } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import {
     changeSideSheetWidgetComponent,
-    changeSideSheetWidgetManifest
+    changeSideSheetWidgetManifest,
 } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import {
     changeCreatorComponent,
-    changeCreatorManifest
+    changeCreatorManifest,
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
 import { tagWidgetComponent, tagWidgetManifest } from './Tags';
@@ -41,6 +45,7 @@ const _widgets: WidgetManifest[] = [
     handoverCreatorManifest,
     workOrderCreatorManifest,
     releaseCreatorManifest,
+    workflowWidgetManifest,
 
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
@@ -54,6 +59,7 @@ const _widgetComponents: ComponentManifest[] = [
     actionCenterSidesheetWidgetComponent,
     changeCreatorComponent,
     releaseComponent,
+    workflowComponent,
     swcrCreatorComponent,
     handoverCreatorComponent,
     workOrderCreatorComponent,

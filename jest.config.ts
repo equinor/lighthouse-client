@@ -38,6 +38,8 @@ export default {
         '^@equinor\\/modal(.*)$': '<rootDir>/src/packages/Modal$1',
         '^@equinor\\/fam-request-builder(.*)$': '<rootDir>/src/packages/FamRequestBuilder$1',
         '^@equinor\\/CircuitDiagram(.*)$': '<rootDir>/src/packages/CircuitDiagram$1',
+        '^@equinor\\/Admin(.*)$': '<rootDir>/src/packages/Admin$1',
+        '^@equinor\\/Workflow(.*)$': '<rootDir>/src/packages/Workflow$1',
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     modulePathIgnorePatterns: ['<rootDir>/packages'],
