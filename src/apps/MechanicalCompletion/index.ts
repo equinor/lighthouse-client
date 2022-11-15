@@ -1,5 +1,5 @@
 import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
-import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
+import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
 import { McSideSheet } from './components';
 import { McPackage } from './types';
 import { filterConfig } from './utils/config/filterConfig';
