@@ -1,6 +1,7 @@
-import { Column, Table } from '@equinor/Table';
+import { Table } from '@equinor/Table';
 import { TableWrapper } from '../../../styles/styles';
 import { WorkflowStatus } from '@equinor/Workflow';
+import { statusColumns } from './columns';
 
 type TableProps = {
     statuses: WorkflowStatus[] | undefined;
@@ -11,21 +12,12 @@ export const StatusesTable = ({ statuses }: TableProps): JSX.Element => {
 
     const rowHeight = 35;
 
-    const columns: Column<WorkflowStatus>[] = [
-        {
-            id: 'name',
-            Header: 'Workflow status',
-            accessor: (item) => item.name,
-            width: 250,
-        },
-    ];
-
     return (
         <TableWrapper>
             <div>
                 <Table
                     data={statuses}
-                    columns={columns}
+                    columns={statusColumns}
                     options={{}}
                     height={rowHeight + statuses?.length * rowHeight}
                 />

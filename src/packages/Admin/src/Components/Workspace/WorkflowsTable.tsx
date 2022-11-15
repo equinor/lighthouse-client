@@ -1,7 +1,8 @@
-import { Column, Table } from '@equinor/Table';
+import { Table } from '@equinor/Table';
 import { TableWrapper } from '../../../styles/styles';
 import { Workflow } from '@equinor/Workflow';
 import { openWorkflowSidesheet } from './Workflows';
+import { workflowColumns } from './columns';
 
 type TableProps = {
     workflows: Workflow[] | undefined;
@@ -13,21 +14,12 @@ export const WorkflowsTable = ({ workflows }: TableProps): JSX.Element => {
 
     const rowHeight = 35;
 
-    const columns: Column<Workflow>[] = [
-        {
-            id: 'workflowTemplate',
-            Header: 'Workflow template',
-            accessor: (item) => item.name,
-            width: 250,
-        },
-    ];
-
     return (
         <TableWrapper>
             <div>
                 <Table
                     data={workflows}
-                    columns={columns}
+                    columns={workflowColumns}
                     options={{
                         onCellClick: (cell) => {
                             openWorkflowSidesheet(cell.row.original as Workflow);
