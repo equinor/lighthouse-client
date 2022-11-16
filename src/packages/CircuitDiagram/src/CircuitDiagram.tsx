@@ -204,7 +204,7 @@ export const CircuitDiagram = ({
                                             {eleNetworksForSwitchboard?.map(
                                                 (eleNetwork: EleNetwork) => {
                                                     const startNode = eleNetwork.circuits.find(
-                                                        (x) => x.parentEleNetId === null
+                                                        (x) => x.parentEleNetId === ''
                                                     );
                                                     return (
                                                         <CircuitDiagramRow
