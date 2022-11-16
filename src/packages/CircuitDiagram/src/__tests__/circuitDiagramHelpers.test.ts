@@ -11,19 +11,19 @@ describe('circuitDiagramHelpers tests', () => {
     it('should return the circuit (junction box) that connects to the circuit starter', () => {
         const result = getCircuitChildren(
             eleTestData,
-            eleTestData.circuits.filter((x) => x.parentEleNetId === null)[0]
+            eleTestData.circuits.filter((x) => x.parentEleNetId === '')[0]
         );
         expect(result.length).toBe(1);
         expect(result[0].tagNo).toStrictEqual('82EL065-409-B01');
         expect(result[0].parentEleNetId).toStrictEqual(
-            eleTestData.circuits.filter((x) => x.parentEleNetId === null)[0].eleNetId
+            eleTestData.circuits.filter((x) => x.parentEleNetId === '')[0].eleNetId
         );
     });
 
     it('should return the cable that goes out from circuit starter', () => {
         const result = getCableChildren(
             eleTestData,
-            eleTestData.circuits.filter((x) => x.parentEleNetId === null)[0]
+            eleTestData.circuits.filter((x) => x.parentEleNetId === '')[0]
         );
         expect(result.length).toBe(1);
         expect(result[0].tagNo).toStrictEqual('PT201609A');
