@@ -16,7 +16,7 @@ export interface EleNetwork {
 
 export interface EleNetworkCircuit {
     eleNetId: string;
-    parentEleNetId: string | null;
+    parentEleNetId: string;
     tagNo: string;
     eleSymbolCode: string;
     circuitSymbolCode: string | null;
