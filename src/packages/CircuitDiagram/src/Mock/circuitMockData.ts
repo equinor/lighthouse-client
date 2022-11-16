@@ -5,7 +5,7 @@ export const eleTestData: EleNetwork = {
     circuits: [
         {
             eleNetId: '78780',
-            parentEleNetId: null,
+            parentEleNetId: '',
             tagNo: '82EL065',
             eleSymbolCode: 'TAVLE',
             circuitSymbolCode: 'KURS',

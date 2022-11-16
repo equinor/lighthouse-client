@@ -13,6 +13,7 @@ import {
     WorkSpaceState,
 } from './workspaceState';
 import {
+    AdminOptions,
     DataSource,
     DataViewerProps,
     HelpPageOptions,
@@ -183,6 +184,13 @@ export function createWorkSpace<
         },
         registerHelpPage(helpPageOptions: HelpPageOptions) {
             updateState({ helpPageOptions });
+
+            return workspaceAPI;
+        },
+        registerAdminOptions(adminOptions: AdminOptions) {
+            updateState({
+                adminOptions: adminOptions,
+            });
 
             return workspaceAPI;
         },

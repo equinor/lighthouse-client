@@ -1,5 +1,4 @@
-import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
-
+import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
 import { TagDetail } from './Components/TagsDetails';
 import { tagResolver } from './Functions/resolver';
 import { Tag } from './Types/tag';

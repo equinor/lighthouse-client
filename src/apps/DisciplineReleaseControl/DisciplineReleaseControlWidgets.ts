@@ -1,4 +1,4 @@
-import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
+import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
 import { ReleaseControlHTSidesheet } from './Components/Sidesheet/ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { HTSidesheet, Pipetest } from './Types/pipetest';

@@ -57,7 +57,9 @@
             "@equinor/overlay-menu": ["./src/components/OverlayMenu"],
             "@equinor/modal": ["./src/packages/Modal"],
             "@equinor/fam-request-builder": ["./src/packages/FamRequestBuilder"],
-            "@equinor/CircuitDiagram": ["./src/packages/CircuitDiagram"]
+            "@equinor/CircuitDiagram": ["./src/packages/CircuitDiagram"],
+            "@equinor/Admin": ["./src/packages/Admin"],
+            "@equinor/Workflow": ["./src/packages/Workflow"],
         }
     },
     "compileOnSave": true,
