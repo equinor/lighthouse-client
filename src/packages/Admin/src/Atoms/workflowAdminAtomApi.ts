@@ -30,11 +30,7 @@ function useIsValid(api: DefaultAtomAPI<WorkflowTemplateModel>): boolean {
     return isValid;
 }
 
-const MANDATORY_PROPERTIES: (keyof WorkflowTemplateModel)[] = [];
-
-// function checkString(value?: string) {
-//     return !value || value.length <= 0;
-// }
+const MANDATORY_PROPERTIES: (keyof WorkflowTemplateModel)[] = ['workflowStepTemplates'];
 
 function prepareWorkflowTemplate(): WorkflowTemplateModel {
     const { readAtomValue } = WorkflowAdminAtomApi;
@@ -49,19 +45,18 @@ function prepareWorkflowTemplate(): WorkflowTemplateModel {
     return template as WorkflowTemplateModel;
 }
 
-function checkFormState(workflowTemplate: Pick<WorkflowTemplateModel, 'id'>): boolean {
+function checkFormState(
+    workflowTemplate: Pick<WorkflowTemplateModel, 'id' | 'workflowStepTemplates'>
+): boolean {
     if (MANDATORY_PROPERTIES.every((k) => Object.keys(workflowTemplate).includes(k))) {
         /** Validate content */
-        // switch (true) {
-        //     case checkString(releaseControl.title):
-        //         return false;
-        //     case checkString(releaseControl.phase):
-        //         return false;
-        //     case checkString(releaseControl.description):
-        //         return false;
-        //     case checkString(releaseControl.plannedDueDate):
-        //         return false;
-        // }
+        switch (true) {
+            case workflowTemplate?.workflowStepTemplates?.length === 0:
+                return false;
+            case workflowTemplate.workflowStepTemplates !== undefined &&
+                workflowTemplate?.workflowStepTemplates[0]?.name !== 'Initiate':
+                return false;
+        }
 
         return true;
     } else {

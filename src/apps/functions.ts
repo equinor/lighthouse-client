@@ -1,5 +1,6 @@
 import { FunctionManifest } from '@equinor/lighthouse-functions';
 import { workflowResolverFunction } from '../packages/Admin/src/Components/Workspace/Workflows';
+import { workflowStepResolverFunction } from '../packages/Admin/src/Components/Workspace/WorkflowSteps';
 import {
     htResolverFunction,
     rcResolverFunction,
@@ -29,6 +30,7 @@ export const functions: FunctionManifest[] = [
     tagResolverFunction,
     loopResolverFunction,
     workflowResolverFunction,
+    workflowStepResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {

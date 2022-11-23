@@ -18,8 +18,9 @@ export type WorkflowTemplate = {
 };
 
 export type WorkflowStepTemplate = {
-    id?: string;
+    id: string;
     name: string;
+    description?: string;
     order: number;
     allowContributors: boolean;
     completedStatusName?: string;
@@ -64,7 +65,7 @@ export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';
 export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';
 
 export type WorkflowStatus = {
-    id?: string;
+    id: string;
     name: string;
 };
 
@@ -114,6 +115,7 @@ export type Contribution = {
 };
 
 export type WorkflowTemplateModel = Partial<WorkflowTemplate>;
+export type WorkflowStepModel = Partial<WorkflowStepTemplate>;
 
 export enum ReleaseControlStepNames {
     Coordinator = 'Coordinator',
@@ -130,21 +132,4 @@ export enum ReleaseControlStepNames {
     BTest = 'Recheck (or new) HT/B-test',
     CircuitPowerUp = 'Circuit power-up',
     CTest = 'Recheck (or new) HT/C-test',
-}
-
-export enum ReleaseControlStatuses {
-    Initiated = 'Initiated',
-    Engineering = 'Engineered',
-    Material = 'Material completed',
-    WorkPrep = 'Work prep completed',
-    Scaffolding = 'Scaffolded',
-    CircuitIsolation = 'Circuit isolation completed',
-    DemountISO = 'Demount ISO completed',
-    CheckHT = 'Check/demount HT completed',
-    DemountMech = 'Demount Mech./Piping completed',
-    ATest = 'Remount (or new) HT/A-test completed',
-    RemountISO = 'Remount (or new) ISO completed',
-    BTest = 'Recheck (or new) HT/B-test completed',
-    CircuitPowerUp = 'Circuit power-up completed',
-    CTest = 'Recheck (or new) HT/C-test completed',
 }

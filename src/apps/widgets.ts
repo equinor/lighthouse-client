@@ -9,6 +9,10 @@ import {
     workflowWidgetManifest,
 } from '../packages/Admin/src/Components/Workspace/Workflows';
 import {
+    workflowStepComponent,
+    workflowStepWidgetManifest,
+} from '../packages/Admin/src/Components/Workspace/WorkflowSteps';
+import {
     htSidesheetWidgetComponent,
     htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetComponent,
@@ -46,6 +50,7 @@ const _widgets: WidgetManifest[] = [
     workOrderCreatorManifest,
     releaseCreatorManifest,
     workflowWidgetManifest,
+    workflowStepWidgetManifest,
 
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
@@ -60,6 +65,7 @@ const _widgetComponents: ComponentManifest[] = [
     changeCreatorComponent,
     releaseComponent,
     workflowComponent,
+    workflowStepComponent,
     swcrCreatorComponent,
     handoverCreatorComponent,
     workOrderCreatorComponent,

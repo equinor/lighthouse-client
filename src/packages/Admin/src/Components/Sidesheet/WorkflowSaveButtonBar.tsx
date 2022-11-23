@@ -4,14 +4,14 @@ import { WorkflowAdminAtomApi } from '../../Atoms/workflowAdminAtomApi';
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useAdminMutation } from '../../Hooks/useAdminMutation';
 import { useAdminMutations } from '../../Hooks/useAdminMutations';
-import { adminMutationKeys } from '../../Queries/workflowMutationKeys';
+import { adminMutationKeys } from '../../Queries/adminMutationKeys';
 import { ActionBar, ButtonContainer } from './sidesheet.styles';
 
 interface WorkflowButtonBarProps {
     actions: SidesheetApi;
 }
 
-export const WorkflowButtonBar = ({ actions }: WorkflowButtonBarProps): JSX.Element => {
+export const WorkflowSaveButtonBar = ({ actions }: WorkflowButtonBarProps): JSX.Element => {
     const workflow = useAdminContext(({ workflow }) => workflow);
     const { patchKey } = adminMutationKeys(workflow?.id);
 
