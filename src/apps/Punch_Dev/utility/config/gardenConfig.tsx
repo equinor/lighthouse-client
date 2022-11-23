@@ -1,69 +1,64 @@
-import {
-    getYearAndWeekAndDayFromString,
-    getYearAndWeekFromDate,
-    sortByNumber,
-} from '@equinor/GardenUtils';
 import { FieldSettings, GardenOptions } from '@equinor/ParkView';
-import { PunchGroupBySelect } from '../../components';
-import { CustomGroupByKeys } from '../../types';
+import PunchGardenItem from '../../components/PunchGardenItem/PunchGardenItem';
+import {
+    getYearAndWeekFromString,
+    getYearAndWeekFromDate,
+    sortByDate,
+} from '../../components/PunchGardenItem/utils';
 import { Punch } from '../../types/punch';
-import { getDateKey } from '../helpers';
 export type ExtendedGardenFields = 'RFC' | 'RFO';
 
 export const fieldSettings: FieldSettings<Punch, ExtendedGardenFields> = {
-    responsible: {
-        label: 'Responsible',
+    handoverPlan: {
+        label: 'Handover plan',
+        getKey: (item) => [getYearAndWeekFromString(item.handoverPlan)],
+        getColumnSort: sortByDate,
     },
-    functionalSystem: {
+    dueDate: {
+        label: 'Due date',
+        getKey: (item) => [getYearAndWeekFromString(item.dueDate)],
+        getColumnSort: sortByDate,
+    },
+    createdDate: {
+        label: 'Created date',
+        getKey: (item) => [getYearAndWeekFromString(item.createdDate)],
+        getColumnSort: sortByDate,
+    },
+    clearedAtDate: {
+        label: 'Cleared date',
+        getKey: (item) => [getYearAndWeekFromString(item.clearedAtDate)],
+        getColumnSort: sortByDate,
+    },
+    verifiedAtDate: {
+        label: 'Verified date',
+        getKey: (item) => [getYearAndWeekFromString(item.verifiedAtDate)],
+        getColumnSort: sortByDate,
+    },
+    cleardBy: {
+        label: 'Clearing by',
+    },
+    commissioningPackageNo: {
+        label: 'Commpkg',
+    },
+    system: {
         label: 'System',
     },
-    formularType: {
-        label: 'Form type',
-    },
-    RFC: {
-        label: 'RFC',
-        getKey: getDateKey,
-        getColumnSort: sortByNumber,
-    },
-    RFO: {
-        label: 'RFO',
-        getKey: getDateKey,
-        getColumnSort: sortByNumber,
-    },
-    punchListSorting: {
-        label: 'PL Sorting',
-    },
-    punchListType: {
-        label: 'PL Type',
-    },
 };
 
-const customGroupByKeys: CustomGroupByKeys = {
-    plannedForecast: 'Planned',
-    weeklyDaily: 'Weekly',
+export const getHighlightedColumn = (groupByKey: string): string | undefined => {
+    return groupByKey === 'handoverPlan' || groupByKey === 'dueDate'
+        ? getYearAndWeekFromDate(new Date())
+        : undefined;
 };
 
-const getHighlightedColumn = (groupByKey, customGroupByKeys) => {
-    const { weeklyDaily } = customGroupByKeys as CustomGroupByKeys;
-
-    switch (groupByKey) {
-        case 'RFO':
-        case 'RFC':
-            return weeklyDaily === 'Daily'
-                ? getYearAndWeekAndDayFromString(new Date().toString())
-                : getYearAndWeekFromDate(new Date());
-
-        default:
-            return undefined;
-    }
-};
 export const gardenConfig: GardenOptions<Punch> = {
-    gardenKey: 'RFC' as keyof Punch,
+    gardenKey: 'handoverPlan' as keyof Punch,
     itemKey: 'punchItemNo',
     objectIdentifier: 'punchItemNo',
-    customGroupByKeys,
+    itemWidth: () => 200,
+    rowHeight: 25,
     customViews: {
-        customGroupByView: PunchGroupBySelect,
+        customItemView: PunchGardenItem,
     },
     fieldSettings,
     highlightColumn: getHighlightedColumn,
