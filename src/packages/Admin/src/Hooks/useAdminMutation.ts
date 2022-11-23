@@ -7,7 +7,7 @@ import {
     UseMutationResult,
     useQueryClient,
 } from 'react-query';
-import { adminQueryKeys } from '../Queries/workflowQueryKeys';
+import { adminQueryKeys } from '../Queries/adminQueryKeys';
 
 export function useAdminMutation<
     TData = unknown,

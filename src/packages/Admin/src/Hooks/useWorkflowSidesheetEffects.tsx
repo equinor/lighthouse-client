@@ -1,60 +1,38 @@
-// import { deref, useAtom } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { MenuItem } from '@equinor/overlay-menu';
 import { useAdminContext } from './useAdminContext';
+import { adminMutationKeys } from '../Queries/adminMutationKeys';
+import { useAdminMutation } from './useAdminMutation';
+import { useAdminMutations } from './useAdminMutations';
+import { updateContext } from '../Atoms/updateContext';
 
 export function useWorkflowSidesheetEffects(actions: SidesheetApi, workflowId: string): void {
-    const { canPatch, canVoid, canUnVoid, id, name, isVoided } = useAdminContext((s) => ({
+    const { canDelete, id, name } = useAdminContext((s) => ({
         ...s.requestAccess,
         ...s.workflow,
     }));
-    // const { unvoidKey, voidKey } = releaseControlMutationKeys(releaseControlId);
-    // const { mutate: voidRequestMutation } = useReleaseControlMutation(
-    //     releaseControlId,
-    //     voidKey,
-    //     voidReleaseControl
-    // );
-    // const { mutate: unVoidRequestMutation } = useReleaseControlMutation(
-    //     releaseControlId,
-    //     unvoidKey,
-    //     unVoidReleaseControl
-    // );
+
+    const { deleteWorkflowMutation } = useAdminMutations();
+    const { deleteKey } = adminMutationKeys(workflowId);
+    const { mutate } = useAdminMutation(workflowId, deleteKey, deleteWorkflowMutation);
 
     const makeMenuItems = () => {
         const menuItems: MenuItem[] = [];
-
-        menuItems.push(
-            isVoided
-                ? {
-                      label: 'Unvoid',
-                      //   onClick: () => unVoidRequestMutation({ workflowId }),
-                      isDisabled: !canUnVoid,
-                      icon: (
-                          <Icon
-                              name="restore_from_trash"
-                              color={tokens.colors.interactive.primary__resting.hex}
-                          />
-                      ),
-                  }
-                : {
-                      label: 'Void',
-                      //   onClick: () => voidRequestMutation({ workflowId }),
-                      isDisabled: !canVoid,
-                      icon: (
-                          <Icon
-                              name="delete_to_trash"
-                              color={tokens.colors.interactive.primary__resting.hex}
-                          />
-                      ),
-                  }
-        );
+        menuItems.push({
+            label: 'Rename',
+            onClick: () => {
+                updateContext(undefined, undefined, undefined, undefined, undefined, true, false);
+            },
+            // isDisabled: !canPatch, //TODO - comment in when permissions are fixed
+            icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
+        });
         menuItems.push({
             label: 'Delete',
-            // onClick: () => deleteMutation({ workflowId }),
-            isDisabled: !canVoid,
+            onClick: () => mutate({ workflowId }),
+            // isDisabled: !canDelete, //TODO - comment in when permissions are fixed
             icon: (
                 <Icon
                     name="delete_forever"
@@ -67,7 +45,7 @@ export function useWorkflowSidesheetEffects(actions: SidesheetApi, workflowId: s
 
     useEffect(() => {
         actions.setMenuItems(makeMenuItems());
-    }, [canVoid, canUnVoid, canPatch, isVoided]);
+    }, [canDelete]);
 
     useEffect(() => {
         actions.setTitle(`${name}`);

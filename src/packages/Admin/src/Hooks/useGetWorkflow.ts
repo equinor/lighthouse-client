@@ -14,7 +14,7 @@ export function useGetWorkflow(
         ...baseQuery(id),
         initialData: initialData,
         onSuccess: (s) => {
-            updateContext(app, workflowOwner, s);
+            updateContext(app, workflowOwner, s, undefined, undefined, false, false);
         },
     });
 }

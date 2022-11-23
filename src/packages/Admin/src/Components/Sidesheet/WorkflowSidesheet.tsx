@@ -1,7 +1,21 @@
 import { SidesheetApi } from '@equinor/sidesheet';
 import { WorkflowAdminAtomApi } from '../../Atoms/workflowAdminAtomApi';
-import { addStep, NewStepButton, Workflow, WorkflowEditor } from '@equinor/Workflow';
-import { Wrapper } from './sidesheet.styles';
+import {
+    addStep,
+    adminQueries,
+    getNewWorkflowSteps,
+    NewStepButton,
+    SelectWorkflowTemplate,
+    Workflow,
+    WorkflowEditor,
+    WorkflowStepTemplate,
+} from '@equinor/Workflow';
+import {
+    SelectExistingWorkflow,
+    SelectionRow,
+    SelectTemplateText,
+    Wrapper,
+} from './sidesheet.styles';
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useWorkflowSidesheetEffects } from '../../Hooks/useWorkflowSidesheetEffects';
 import { useAdminAccess } from '../../Hooks/useAdminAccess';
@@ -9,7 +23,11 @@ import { useGetWorkflow } from '../../Hooks/useGetWorkflow';
 import { useEffect } from 'react';
 import { updateContext } from '../../Atoms/updateContext';
 import { useGetWorkflowTemplates } from '../../Hooks/useGetWorkflowTemplates';
-import { WorkflowButtonBar } from './WorkflowButtonBar';
+import { WorkflowSaveButtonBar } from './WorkflowSaveButtonBar';
+import { WorkflowCreateButtonBar } from './WorkflowCreateButtonBar';
+import { useAdminMutationWatcher } from '../../Hooks/useAdminMutationWatcher';
+import { useIsTemplateLoading } from '../../Hooks/useIsTemplateLoading';
+import { Button, Progress } from '@equinor/eds-core-react';
 
 interface WorkflowSidesheetProps {
     item: Workflow;
@@ -19,38 +37,90 @@ interface WorkflowSidesheetProps {
 export function WorkflowSidesheet({ item, actions }: WorkflowSidesheetProps): JSX.Element {
     const app = useAdminContext((s) => s.app);
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
+
     useGetWorkflow(app, workflowOwner, item.id, item);
-    useAdminAccess(item.id);
-    useWorkflowSidesheetEffects(actions, item.id);
     useGetWorkflowTemplates(item.id);
+    useWorkflowSidesheetEffects(actions, item.id);
+    useAdminAccess(item.id);
+    useAdminMutationWatcher(item.id);
 
-    // useScopeChangeMutationWatcher(item.id);
-    // useOctopusErrorHandler();
-
-    // if (false) {
-    //     return <></>;
-    // }
-
-    const { useAtomState, clearState } = WorkflowAdminAtomApi;
+    const { useAtomState, clearState, updateAtom } = WorkflowAdminAtomApi;
     const steps = useAtomState(({ workflowStepTemplates }) => workflowStepTemplates ?? []);
+    const templateId = useAtomState(({ id }) => id ?? '');
+
+    const { workflowsQuery, workflowTemplatesQuery } = adminQueries;
+
+    const isLoading = useIsTemplateLoading();
 
     useEffect(() => {
         clearState();
-        updateContext(app, workflowOwner, item);
+        updateContext(app, workflowOwner, item, undefined, undefined, false, false);
     }, [item?.id]);
 
     return (
         <Wrapper>
             <div>
-                {/* <ErrorBanner clearOnPropChange={item.id} /> */}
-                <WorkflowEditor atomApi={WorkflowAdminAtomApi} app={app} />
-                {steps.length !== 0 && (
-                    <NewStepButton onClick={() => addStep(steps, WorkflowAdminAtomApi)}>
-                        Add step
-                    </NewStepButton>
+                <SelectTemplateText>
+                    Select relevant workflow steps. The responsible role can stay empty, but must be
+                    filled in by the user when the template is selected in an app.
+                </SelectTemplateText>
+                {isLoading ? (
+                    <Button variant="ghost_icon" disabled>
+                        <Progress.Dots color="primary" />
+                    </Button>
+                ) : (
+                    <div>
+                        <WorkflowEditor
+                            atomApi={WorkflowAdminAtomApi}
+                            app={app}
+                            workflowOwner={workflowOwner}
+                        />
+                        <SelectionRow>
+                            {steps.length !== 0 && (
+                                <NewStepButton onClick={() => addStep(steps, WorkflowAdminAtomApi)}>
+                                    Add step
+                                </NewStepButton>
+                            )}
+                            {steps.length === 0 && (
+                                <NewStepButton
+                                    onClick={() =>
+                                        addStep(getNewWorkflowSteps(), WorkflowAdminAtomApi)
+                                    }
+                                >
+                                    New flow
+                                </NewStepButton>
+                            )}
+                            <SelectExistingWorkflow>
+                                <SelectWorkflowTemplate
+                                    workflowOwner={workflowOwner}
+                                    workflowsQuery={workflowsQuery}
+                                    workflowTemplatesQuery={workflowTemplatesQuery}
+                                    updateAtom={(data) => {
+                                        if (data.length !== 0) {
+                                            updateAtom({
+                                                workflowStepTemplates:
+                                                    (data as any)[0]?.workflowStepTemplates?.map(
+                                                        (x: WorkflowStepTemplate) => {
+                                                            x.criteriaTemplates =
+                                                                x.workflowStepCriteriaTemplates ??
+                                                                [];
+                                                            return x;
+                                                        }
+                                                    ) ?? [],
+                                            });
+                                        }
+                                    }}
+                                />
+                            </SelectExistingWorkflow>
+                        </SelectionRow>
+                    </div>
                 )}
             </div>
-            <WorkflowButtonBar actions={actions} />
+            {templateId === '' ? (
+                <WorkflowCreateButtonBar actions={actions} />
+            ) : (
+                <WorkflowSaveButtonBar actions={actions} />
+            )}
         </Wrapper>
     );
 }

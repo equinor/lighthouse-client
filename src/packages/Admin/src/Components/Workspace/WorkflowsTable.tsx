@@ -6,11 +6,10 @@ import { workflowColumns } from './columns';
 
 type TableProps = {
     workflows: Workflow[] | undefined;
-    app: string;
 };
 
 export const WorkflowsTable = ({ workflows }: TableProps): JSX.Element => {
-    if (!workflows || !workflows?.length) return <h2>No templates found</h2>;
+    if (!workflows || !workflows?.length) return <h2>No workflows found</h2>;
 
     const rowHeight = 35;
 
@@ -19,10 +18,12 @@ export const WorkflowsTable = ({ workflows }: TableProps): JSX.Element => {
             <div>
                 <Table
                     data={workflows}
-                    columns={workflowColumns}
+                    columns={workflowColumns()}
                     options={{
                         onCellClick: (cell) => {
-                            openWorkflowSidesheet(cell.row.original as Workflow);
+                            if (cell.column.id !== 'menu') {
+                                openWorkflowSidesheet(cell.row.original as Workflow);
+                            }
                         },
                     }}
                     height={rowHeight + workflows?.length * rowHeight}

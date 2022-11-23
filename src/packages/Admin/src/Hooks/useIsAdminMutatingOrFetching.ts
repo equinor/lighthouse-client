@@ -1,5 +1,5 @@
 import { useIsFetching, useIsMutating } from 'react-query';
-import { adminQueryKeys } from '../Queries/workflowQueryKeys';
+import { adminQueryKeys } from '../Queries/adminQueryKeys';
 
 export function useIsAdminMutatingOrFetching(id: string): boolean {
     const { baseKey } = adminQueryKeys(id);
