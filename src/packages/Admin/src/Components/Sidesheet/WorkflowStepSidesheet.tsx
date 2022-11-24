@@ -33,7 +33,10 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
         clearState();
         updateContext(app, workflowOwner, undefined, item, undefined, false, false);
         updateAtom({
+            id: item.id,
             name: item.name,
+            description: item.description,
+            completedStatusName: item.completedStatusName,
         });
     }, [item?.id]);
 
@@ -45,7 +48,7 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
                     <StepDescriptionInput />
                     When signed, change workflow status to:
                     <StepCompletedStatusSelect />
-                    <StepRejectedStatusSelect />
+                    {app !== 'releasecontrol' && <StepRejectedStatusSelect />}
                 </FlexColumn>
             </div>
             {item.id === '' ? (

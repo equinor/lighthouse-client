@@ -30,6 +30,7 @@ export type WorkflowStepTemplate = {
     workflowStepCriteriaTemplates: CriteriaTemplate[];
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
+    owner?: string;
 };
 
 export type CriteriaTemplate = {

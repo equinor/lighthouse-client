@@ -38,12 +38,12 @@ export const stepColumns = (): Column<WorkflowStepTemplate>[] => {
             accessor: (item) => item.completedStatusName,
             width: 250,
         },
-        {
-            id: 'rejectedStatusName',
-            Header: 'Rejected status name',
-            accessor: (item) => item.rejectedStatusName,
-            width: 250,
-        },
+        // {
+        //     id: 'rejectedStatusName',
+        //     Header: 'Rejected status name',
+        //     accessor: (item) => item.rejectedStatusName,
+        //     width: 250,
+        // },
     ];
 };
 

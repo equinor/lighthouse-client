@@ -15,6 +15,4 @@ export const deleteWorkflow = async ({ workflowId }: QueryProps): Promise<void> 
     const res = await scopeChange.fetch(`api/workflows/${workflowId}`, requestOptions);
 
     throwOnError(res, 'Failed to delete workflow');
-
-    return await res.json();
 };

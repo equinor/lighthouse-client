@@ -18,6 +18,4 @@ export const deleteWorkflowStep = async ({ stepId }: QueryProps): Promise<void> 
     );
 
     throwOnError(res, 'Failed to delete workflow step');
-
-    return await res.json();
 };

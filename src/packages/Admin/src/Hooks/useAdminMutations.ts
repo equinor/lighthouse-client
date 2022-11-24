@@ -17,6 +17,7 @@ import { useQueryClient } from 'react-query';
 import { WorkflowTemplateModel } from '../Atoms/workflowAdminAtomApi';
 import { WorkflowStepModel } from '../Atoms/workflowStepAdminAtomApi';
 import { openNewWorkflow } from '../Components/Workspace/OpenNewWorkflow';
+import { openNewWorkflowStep } from '../Components/Workspace/OpenNewWorkflowStep';
 import { adminQueryKeys } from '../Queries/adminQueryKeys';
 
 interface CreateWorkflowParams {
@@ -115,7 +116,8 @@ export function useAdminMutations(): AdminMutations {
 
     const deleteWorkflowMutation = async ({ workflowId }: DeleteWorkflowParams) => {
         deleteWorkflow({ workflowId });
-        queryClient.invalidateQueries();
+        const { baseKey } = adminQueryKeys('');
+        queryClient.invalidateQueries(baseKey);
         closeSidesheet();
     };
 
@@ -152,7 +154,7 @@ export function useAdminMutations(): AdminMutations {
         if (result) {
             const { baseKey } = adminQueryKeys(result);
             queryClient.invalidateQueries(baseKey);
-            openNewWorkflow(result);
+            openNewWorkflowStep(result);
             return result;
         }
     };
@@ -165,6 +167,7 @@ export function useAdminMutations(): AdminMutations {
         await deleteWorkflowStep({ stepId });
         const { baseKey } = adminQueryKeys('');
         queryClient.invalidateQueries(baseKey);
+        closeSidesheet();
     };
 
     const createWorkflowStatusMutation = async ({

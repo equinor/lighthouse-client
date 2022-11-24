@@ -12,7 +12,7 @@ import { Modal } from '@equinor/modal';
 import { EditStepModal } from '../Modal/EditStepModal';
 import { CreateStepModal } from '../Modal/CreateStepModal';
 
-export async function idResolverFunction(id: string): Promise<WorkflowStepTemplate> {
+export async function workflowStepsIdResolverFunction(id: string): Promise<WorkflowStepTemplate> {
     const { scopeChange } = httpClient();
     const res = await scopeChange.fetch(`api/workflows/workflow-available-steps/${id}`);
     if (!res.ok) {
@@ -29,7 +29,7 @@ const sidesheetCreator = setupWorkspaceSidesheet<WorkflowStepTemplate, 'workflow
     props: {
         objectIdentifier: 'id',
         parentApp: 'admin',
-        function: idResolverFunction,
+        function: workflowStepsIdResolverFunction,
     },
 });
 

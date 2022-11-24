@@ -18,6 +18,4 @@ export const deleteWorkflowStatus = async ({ id }: QueryProps): Promise<void> =>
     );
 
     throwOnError(res, 'Failed to delete workflow status');
-
-    return await res.json();
 };

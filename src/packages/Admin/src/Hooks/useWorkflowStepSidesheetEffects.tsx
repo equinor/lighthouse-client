@@ -24,7 +24,7 @@ export function useWorkflowStepSidesheetEffects(actions: SidesheetApi, stepId: s
         menuItems.push({
             label: 'Rename',
             onClick: () => {
-                updateContext(undefined, undefined, undefined, undefined, undefined, true, false);
+                updateContext(undefined, undefined, undefined, undefined, undefined, false, true);
             },
             // isDisabled: !canPatch, //TODO - comment in when permissions are fixed
             icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,

@@ -5,14 +5,14 @@ import { WorkflowStepTemplate } from '@equinor/Workflow';
 export interface FormAtomApi extends DefaultAtomAPI<WorkflowStepModel> {
     useIsValid: () => boolean;
     clearState: () => void;
-    prepareWorkflowStep: () => WorkflowStepModel;
+    prepareWorkflowStep: (owner: string) => WorkflowStepModel;
 }
 
 export type WorkflowStepModel = Partial<WorkflowStepTemplate>;
 
 export const WorkflowStepAdminAtomApi = createAtom<WorkflowStepModel, FormAtomApi>({}, (api) => ({
     useIsValid: () => useIsValid(api),
-    prepareWorkflowStep: () => prepareWorkflowStep(),
+    prepareWorkflowStep: (owner) => prepareWorkflowStep(owner),
     clearState: () =>
         api.updateAtom({
             id: '',
@@ -21,6 +21,7 @@ export const WorkflowStepAdminAtomApi = createAtom<WorkflowStepModel, FormAtomAp
             completedStatusName: '',
             rejectedStatusName: '',
             order: 0,
+            owner: '',
         }),
 }));
 
@@ -38,11 +39,12 @@ function checkString(value?: string) {
     return !value || value.length <= 0;
 }
 
-function prepareWorkflowStep(): WorkflowStepModel {
+function prepareWorkflowStep(owner: string): WorkflowStepModel {
     const { readAtomValue } = WorkflowStepAdminAtomApi;
 
     const template: WorkflowStepModel = {
         ...readAtomValue(),
+        owner: owner,
     };
 
     return template as WorkflowStepModel;

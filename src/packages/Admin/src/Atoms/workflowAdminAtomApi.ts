@@ -39,7 +39,12 @@ function prepareWorkflowTemplate(): WorkflowTemplateModel {
         ...readAtomValue(),
     };
     template.workflowStepTemplates?.map((step: WorkflowStepTemplate) => {
-        step.criteriaTemplates = step.workflowStepCriteriaTemplates;
+        if (
+            !step.criteriaTemplates ||
+            step.workflowStepCriteriaTemplates[0].type === 'RequireProcosysFunctionalRoleSignature'
+        ) {
+            step.criteriaTemplates = step.workflowStepCriteriaTemplates;
+        }
         return step;
     });
     return template as WorkflowTemplateModel;

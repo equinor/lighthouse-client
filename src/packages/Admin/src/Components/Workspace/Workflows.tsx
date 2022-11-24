@@ -13,7 +13,7 @@ import { CreateWorkflowModal } from '../Modal/CreateWorkflowModal';
 import { useState } from 'react';
 import { EditWorkflowModal } from '../Modal/EditWorkflowModal';
 
-export async function idResolverFunction(id: string): Promise<Workflow> {
+export async function workflowsIdResolverFunction(id: string): Promise<Workflow> {
     const { scopeChange } = httpClient();
     const res = await scopeChange.fetch(`api/workflows/${id}`);
     if (!res.ok) {
@@ -30,7 +30,7 @@ const sidesheetCreator = setupWorkspaceSidesheet<Workflow, 'workflow'>({
     props: {
         objectIdentifier: 'id',
         parentApp: 'admin',
-        function: idResolverFunction,
+        function: workflowsIdResolverFunction,
     },
 });
 

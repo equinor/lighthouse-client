@@ -39,6 +39,9 @@ export function updateStep(
     newStep: WorkflowStepTemplate
 ): WorkflowStepTemplate[] {
     const index = steps.findIndex((x) => x.order === step.order);
+    newStep.workflowStepCriteriaTemplates = [
+        { id: '', type: 'RequireProcosysUserSignature', assignToCreator: true },
+    ];
     steps[index] = newStep;
     return [...steps];
 }

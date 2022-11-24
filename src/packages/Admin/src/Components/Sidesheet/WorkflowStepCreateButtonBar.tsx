@@ -2,6 +2,7 @@ import { Button, Progress } from '@equinor/eds-core-react';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useMutation } from 'react-query';
 import { WorkflowStepAdminAtomApi } from '../../Atoms/workflowStepAdminAtomApi';
+import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useAdminMutations } from '../../Hooks/useAdminMutations';
 import { ActionBar, ButtonContainer } from './sidesheet.styles';
 
@@ -12,6 +13,7 @@ interface WorkflowStepButtonBarProps {
 export const WorkflowStepCreateButtonBar = ({
     actions,
 }: WorkflowStepButtonBarProps): JSX.Element => {
+    const workflowOwner = useAdminContext((s) => s.workflowOwner);
     const isValid = WorkflowStepAdminAtomApi.useIsValid();
 
     const { createWorkflowStepMutation } = useAdminMutations();
@@ -20,7 +22,7 @@ export const WorkflowStepCreateButtonBar = ({
     const handleCreate = () => {
         const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
         mutate({
-            workflowStep: prepareWorkflowStep(),
+            workflowStep: prepareWorkflowStep(workflowOwner),
         });
     };
 
