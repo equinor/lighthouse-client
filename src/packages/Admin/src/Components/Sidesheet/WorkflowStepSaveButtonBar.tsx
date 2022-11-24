@@ -12,6 +12,7 @@ interface WorkflowStepButtonBarProps {
 }
 
 export const WorkflowStepSaveButtonBar = ({ actions }: WorkflowStepButtonBarProps): JSX.Element => {
+    const workflowOwner = useAdminContext((s) => s.workflowOwner);
     const workflowStep = useAdminContext(({ workflowStep }) => workflowStep);
     const { patchKey } = adminMutationKeys(workflowStep?.id);
 
@@ -28,7 +29,7 @@ export const WorkflowStepSaveButtonBar = ({ actions }: WorkflowStepButtonBarProp
     const handleSave = () => {
         const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
         mutate({
-            workflowStep: prepareWorkflowStep(),
+            workflowStep: prepareWorkflowStep(workflowOwner),
         });
     };
 
