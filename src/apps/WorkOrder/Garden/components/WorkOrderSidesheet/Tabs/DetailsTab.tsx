@@ -1,4 +1,4 @@
-import { formatDateString, materialStatusMap, StringCell, Table } from '@equinor/GardenUtils';
+import { formatDateString, getMappedMaterialStatus, StringCell, Table } from '@equinor/GardenUtils';
 import styled from 'styled-components';
 import { WorkOrder } from '../../../models';
 import { getWoStatus } from '../../../utility';
@@ -117,7 +117,7 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                         <td key={'21'}>
                             {workOrder.materialStatus}{' '}
                             {workOrder.materialStatus !== null &&
-                                materialStatusMap[workOrder.materialStatus]}
+                                getMappedMaterialStatus(workOrder.materialStatus)}
                         </td>
                     </tr>
                     <tr key={'materialcomments'}>

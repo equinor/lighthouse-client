@@ -1,25 +1,25 @@
-import { MaterialStatus, statusColorMap } from '@equinor/GardenUtils';
+import { getMappedMaterialStatus, MaterialStatus, statusColorMap } from '@equinor/GardenUtils';
 import { WorkOrder } from '../models';
 
 type MatStatus = 'OK' | 'AVAILABLE' | 'NOT_AVAILABLE';
 
 const materialColorMap: Record<MatStatus, string> = {
     OK: statusColorMap.OK,
-    AVAILABLE: statusColorMap.PA,
-    NOT_AVAILABLE: statusColorMap.PB,
+    AVAILABLE: statusColorMap.PB,
+    NOT_AVAILABLE: statusColorMap.PA,
 };
-const materialPackageStatusMap: Partial<Record<MaterialStatus, string>> = {
+const materialPackageStatusMap: Partial<Record<MaterialStatus, MatStatus>> = {
     MN: 'OK',
     M10: 'OK',
     M11: 'OK',
     M12: 'OK',
-    M5: 'AVAILABLE',
-    M6: 'AVAILABLE',
-    M7: 'AVAILABLE',
-    M9: 'AVAILABLE',
-    M2: 'NOT_AVAILABLE',
-    M3: 'NOT_AVAILABLE',
-    M4: 'NOT_AVAILABLE',
+    M05: 'AVAILABLE',
+    M06: 'AVAILABLE',
+    M07: 'AVAILABLE',
+    M09: 'AVAILABLE',
+    M02: 'NOT_AVAILABLE',
+    M03: 'NOT_AVAILABLE',
+    M04: 'NOT_AVAILABLE',
 };
 
 export const getMccrStatusColor = (workOrder: WorkOrder): string => {
@@ -33,18 +33,24 @@ export const getMccrStatusColor = (workOrder: WorkOrder): string => {
 export const getMccrStatusColorByStatus = (mccrStatus: string): string => {
     return statusColorMap[mccrStatus];
 };
+export const getMatStatusColorByStatus = (matStatus: string | null): string => {
+    if (!matStatus) return statusColorMap.OS;
+    const materialStatus = getMappedMaterialStatus(matStatus, materialPackageStatusMap);
 
-export const getMatStatusColor = (workOrder: WorkOrder): string => {
-    if (workOrder?.materialStatus === null) {
-        return statusColorMap.OS;
-    }
-    const materialStatus = materialPackageStatusMap[workOrder.materialStatus];
-    return materialColorMap[materialStatus] || statusColorMap.OS;
-};
+    const materialStatusColor = materialStatus
+        ? materialColorMap[materialStatus] || statusColorMap.OS
+        : statusColorMap.OS;
 
-export const getMatStatusColorByStatus = (matStatus: string): string => {
-    const materialStatus = materialPackageStatusMap[matStatus];
-    return materialColorMap[materialStatus] || statusColorMap.OS;
+    return materialStatusColor;
 };
-export const getMatStatus = (workOrder: WorkOrder): string =>
-    materialPackageStatusMap[workOrder?.materialStatus ?? 'M4'];
+export const getMatStatusColor = (workOrder: WorkOrder): string =>
+    getMatStatusColorByStatus(workOrder.materialStatus);
+
+export const getMatStatus = (workOrder: WorkOrder): string => {
+    if (!workOrder.materialStatus) return 'NOT_AVAILABLE';
+    const mappedStatus = getMappedMaterialStatus(
+        workOrder.materialStatus,
+        materialPackageStatusMap
+    );
+    return mappedStatus || 'NOT_AVAILABLE';
+};
