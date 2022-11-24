@@ -1,6 +1,6 @@
 /* API */
 
-export * from './Api/Access/canVoid';
+export * from './Api/Access/canDelete';
 export * from './Api/Access/optionsRequestChecker';
 export * from './Api/Access/requestAccess';
 
@@ -18,6 +18,15 @@ export * from './Api/patchWorkflow';
 export * from './Api/postWorkflowTemplate';
 export * from './Api/patchWorkflowTemplate';
 export * from './Api/getWorkflowById';
+export * from './Api/getWorkflowStepById';
+export * from './Api/postWorkflowStatus';
+export * from './Api/patchWorkflowStatus';
+export * from './Api/deleteWorkflow';
+export * from './Api/getWorkflowStatuses';
+export * from './Api/postWorkflowStep';
+export * from './Api/patchWorkflowStep';
+export * from './Api/deleteWorkflowStatus';
+export * from './Api/deleteWorkflowStep';
 
 /* Types */
 export * from './Types/WorkflowTypes';
@@ -35,6 +44,8 @@ export * from './Components/Workflow/InsertBefore';
 export * from './Components/Workflow/WorkflowEditor';
 export * from './Components/Workflow/WorkflowStep';
 export * from './Components/Workflow/WorkflowEditorHelpers';
+export * from './Components/Workflow/SelectWorkflowTemplate';
+
 // export * from './Components/Workflow/Criteria';
 
 export * from './Hooks/observers/useGlobalMutationListener';
