@@ -1,17 +1,15 @@
+import {
+    workflowComponent,
+    workflowStepComponent,
+    workflowStepWidgetManifest,
+    workflowWidgetManifest,
+} from '@equinor/Admin';
 import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
     actionCenterSidesheetWidgetManifest,
 } from '../components/ActionCenter/ActionCenterSidesheet';
-import {
-    workflowComponent,
-    workflowWidgetManifest,
-} from '../packages/Admin/src/Components/Workspace/Workflows';
-import {
-    workflowStepComponent,
-    workflowStepWidgetManifest,
-} from '../packages/Admin/src/Components/Workspace/WorkflowSteps';
 import {
     htSidesheetWidgetComponent,
     htSidesheetWidgetManifest,

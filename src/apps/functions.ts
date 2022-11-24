@@ -1,6 +1,5 @@
+import { workflowResolverFunction, workflowStepResolverFunction } from '@equinor/Admin';
 import { FunctionManifest } from '@equinor/lighthouse-functions';
-import { workflowResolverFunction } from '../packages/Admin/src/Components/Workspace/Workflows';
-import { workflowStepResolverFunction } from '../packages/Admin/src/Components/Workspace/WorkflowSteps';
 import {
     htResolverFunction,
     rcResolverFunction,
