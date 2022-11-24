@@ -6,33 +6,22 @@ import { useAdminContext } from './useAdminContext';
 import { adminQueries } from './../Queries/queries';
 
 export interface AdminAccess extends OptionRequestResult {
-    canVoid: boolean;
-    canUnVoid: boolean;
+    canDelete: boolean;
 }
 
 export function useAdminAccess(id: string): void {
-    const { canUnvoidQuery, canVoidQuery, permissionsQuery } = adminQueries.permissionQueries;
+    const { canDeleteQuery, permissionsQuery } = adminQueries.permissionQueries;
     const app = useAdminContext((s) => s.app);
 
     useQuery({
-        ...canVoidQuery(id, app),
-        onSuccess: (canVoid) => {
+        ...canDeleteQuery(id, app),
+        onSuccess: (canDelete) => {
             swap(adminAtom, (old) => ({
                 ...old,
-                requestAccess: { ...old.requestAccess, canVoid: canVoid },
+                requestAccess: { ...old.requestAccess, canDelete: canDelete },
             }));
         },
     });
-    useQuery({
-        ...canUnvoidQuery(id, app),
-        onSuccess: (canUnVoid) => {
-            swap(adminAtom, (old) => ({
-                ...old,
-                requestAccess: { ...old.requestAccess, canUnVoid: canUnVoid },
-            }));
-        },
-    });
-
     useQuery({
         ...permissionsQuery(id, app),
         onSuccess: (data) => {
