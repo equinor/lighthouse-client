@@ -9,19 +9,6 @@ export function PunchGroupBySelect(): JSX.Element {
     return (
         <>
             <SingleSelect
-                key={'plannedForecast'}
-                items={['Planned', 'Forecast']}
-                label={''}
-                selectedOption={customGroupByKeys.plannedForecast}
-                handleSelectedItemChange={(changes) =>
-                    setCustomGroupKeys({
-                        ...customGroupByKeys,
-                        plannedForecast: changes.selectedItem || 'Planned',
-                    })
-                }
-            />
-
-            <SingleSelect
                 key={'weeklyDaily'}
                 items={['Weekly', 'Daily']}
                 label={''}

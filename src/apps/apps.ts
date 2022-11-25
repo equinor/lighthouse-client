@@ -17,7 +17,6 @@ import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import { setup as MDRSetup } from './MDR';
-import { setup as punchSetup } from './Punch';
 import { setup as querySetup } from './Query';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
@@ -26,7 +25,7 @@ import { setup as tasksSetup } from './Tasks/TasksApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
 import { setup as loopSetup } from './Loop';
-import { setup as punchDevSetup } from './Punch_Dev';
+import { setup as punchSetup } from './Punch';
 import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
 import { setup as preservationAnalyticsSetup } from './Preservation';
 import { setup as spoolsAnalyticsSetup } from './Spools';
@@ -457,23 +456,10 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        tags: ['PowerBI'],
-        app: {
-            appType: 'PowerBIViewer',
-            setup: punchSetup,
-        },
-        appEnv: 'prod',
-    },
-    {
-        title: 'Dev punch',
-        shortName: '_punch_dev',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
         tags: [],
         app: {
             appType: 'Workspace',
-            setup: punchDevSetup,
+            setup: punchSetup,
         },
         appEnv: 'dev',
     },

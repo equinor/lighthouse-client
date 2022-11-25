@@ -7,13 +7,13 @@ const getFieldKeyBasedOnPlannedForecast = (
     plannedForecast: CustomGroupByKeys['plannedForecast']
 ): keyof Punch => {
     switch (groupBy) {
-        case 'RFC':
-            return plannedForecast === 'Forecast' ? 'c01ForecastDate' : 'c01PlannedDate';
+        case 'handoverPlan':
+            return plannedForecast === 'HandoverPlan' ? 'handoverPlan' : 'dueDate';
         case 'RFO':
-            return plannedForecast === 'Forecast' ? 'c07ForecastDate' : 'c07PlannedDate';
+            return plannedForecast === 'DueDate' ? 'dueDate' : 'handoverPlan';
 
         default:
-            return 'c01PlannedDate';
+            return 'handoverPlan';
     }
 };
 
