@@ -1,7 +1,12 @@
 import { TableOptions } from '@equinor/WorkSpace';
 import { Punch } from '../../types/punch';
 import { proCoSysUrls } from '@equinor/procosys-urls';
-import { CellProps, CustomLinkCellWithTextDecoration, StatusCustomCell } from '@equinor/Table';
+import {
+    CellProps,
+    CustomDescriptionCell,
+    CustomLinkCellWithTextDecoration,
+    StatusCustomCell,
+} from '@equinor/Table';
 import {
     getMaterialRequired,
     getPunchCategoryColor,
@@ -40,6 +45,9 @@ export const tableConfig: TableOptions<Punch> = {
             Aggregated: () => null,
             aggregate: 'count',
             width: 300,
+            Cell: (cellProps) => {
+                return <CustomDescriptionCell description={cellProps.value} />;
+            },
         },
         {
             id: 'cateogry',

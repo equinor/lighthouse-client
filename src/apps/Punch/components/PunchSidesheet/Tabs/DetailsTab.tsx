@@ -15,7 +15,7 @@ const TabContent = styled.div`
 type DetailsTabProps = {
     punch: Punch;
 };
-export const DetailsTab = ({ punch }: DetailsTabProps) => {
+export const DetailsTab = ({ punch }: DetailsTabProps): JSX.Element => {
     return (
         <TabContent>
             <h3>Details</h3>

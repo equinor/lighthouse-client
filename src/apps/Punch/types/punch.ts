@@ -9,7 +9,7 @@ export type Punch = {
     category: string | null;
     raisedBy: string | null;
     cleardBy: string | null;
-    dueDate: string;
+    dueDate: string | null;
     sorting: string | null;
     type: string | null;
     priority: string | null;
@@ -27,10 +27,10 @@ export type Punch = {
     materialRequired: boolean | null;
     materialEstimatedTimeOfArrival: string;
     externalMaterialNo: string | null;
-    clearedAtDate: string;
+    clearedAtDate: string | null;
     rejectedAtDate: string | null;
-    verifiedAtDate: string;
-    createdDate: string;
+    verifiedAtDate: string | null;
+    createdDate: string | null;
     formularGroup: string | null;
     formularType: string | null;
     formularDiscipline: string | null;

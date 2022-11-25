@@ -1,9 +1,7 @@
 import { memo, useMemo } from 'react';
 import { Punch } from '../../types';
 import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
-//import { PopoverWrapper } from '@equinor/GardenUtils';
 import styled from 'styled-components';
-//import { tokens } from '@equinor/eds-tokens';
 import { getPunchStatusColors, getPunchStatusTextColors } from './utils';
 
 type PunchItemProps = { backgroundColor: string; textColor: string; isSelected: boolean };

@@ -1,37 +1,36 @@
+import { getYearAndWeekFromDate } from '@equinor/GardenUtils';
 import { FieldSettings, GardenOptions } from '@equinor/ParkView';
 import PunchGardenItem from '../../components/PunchGardenItem/PunchGardenItem';
-import {
-    getYearAndWeekFromString,
-    getYearAndWeekFromDate,
-    sortByDate,
-} from '../../components/PunchGardenItem/utils';
+
 import { Punch } from '../../types/punch';
+import { getDateKey } from '../helpers/getKey';
+import { sortByDate } from '../helpers/sortPackages';
 export type ExtendedGardenFields = 'RFC' | 'RFO';
 
 export const fieldSettings: FieldSettings<Punch, ExtendedGardenFields> = {
     handoverPlan: {
         label: 'Handover plan',
-        getKey: (item) => [getYearAndWeekFromString(item.handoverPlan)],
+        getKey: (item) => getDateKey(item.handoverPlan),
         getColumnSort: sortByDate,
     },
     dueDate: {
         label: 'Due date',
-        getKey: (item) => [getYearAndWeekFromString(item.dueDate)],
+        getKey: (item) => getDateKey(item.dueDate),
         getColumnSort: sortByDate,
     },
     createdDate: {
         label: 'Created date',
-        getKey: (item) => [getYearAndWeekFromString(item.createdDate)],
+        getKey: (item) => getDateKey(item.createdDate),
         getColumnSort: sortByDate,
     },
     clearedAtDate: {
         label: 'Cleared date',
-        getKey: (item) => [getYearAndWeekFromString(item.clearedAtDate)],
+        getKey: (item) => getDateKey(item.clearedAtDate),
         getColumnSort: sortByDate,
     },
     verifiedAtDate: {
         label: 'Verified date',
-        getKey: (item) => [getYearAndWeekFromString(item.verifiedAtDate)],
+        getKey: (item) => getDateKey(item.verifiedAtDate),
         getColumnSort: sortByDate,
     },
     cleardBy: {
@@ -46,9 +45,17 @@ export const fieldSettings: FieldSettings<Punch, ExtendedGardenFields> = {
 };
 
 export const getHighlightedColumn = (groupByKey: string): string | undefined => {
-    return groupByKey === 'handoverPlan' || groupByKey === 'dueDate'
-        ? getYearAndWeekFromDate(new Date())
-        : undefined;
+    switch (groupByKey) {
+        case 'dueDate':
+        case 'handoverPlan':
+        case 'createdDate':
+        case 'clearedAtDate':
+        case 'verifiedAtDate':
+            return getYearAndWeekFromDate(new Date());
+
+        default:
+            return undefined;
+    }
 };
 
 export const gardenConfig: GardenOptions<Punch> = {

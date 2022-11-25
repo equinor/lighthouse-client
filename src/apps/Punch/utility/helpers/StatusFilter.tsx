@@ -22,7 +22,7 @@ const Title = styled.div`
 type StatusFilterProps = {
     status: PunchStatus;
 };
-export const StatusFilter = ({ status }: StatusFilterProps) => {
+export const StatusFilter = ({ status }: StatusFilterProps): JSX.Element => {
     return (
         <Container>
             <StatusColor color={getPunchStatusColors(status)}></StatusColor>

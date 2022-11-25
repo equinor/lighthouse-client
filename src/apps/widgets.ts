@@ -17,6 +17,10 @@ import {
 import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
+import {
+    punchSidesheetWidgetComponent,
+    punchSidesheetWidgetManifest,
+} from './Punch/utility/config';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
@@ -46,7 +50,7 @@ const _widgets: WidgetManifest[] = [
     workOrderCreatorManifest,
     releaseCreatorManifest,
     workflowWidgetManifest,
-
+    punchSidesheetWidgetManifest,
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
     tagWidgetManifest,
@@ -65,7 +69,7 @@ const _widgetComponents: ComponentManifest[] = [
     workOrderCreatorComponent,
     workOrderCreatorComponent,
     releaseCreatorComponent,
-
+    punchSidesheetWidgetComponent,
     mcCreatorComponent,
     tagWidgetComponent,
     loopSidesheetWidgetComponent,

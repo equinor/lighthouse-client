@@ -1,11 +1,10 @@
 import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
 import { Punch } from './types/punch';
-import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
-import { PunchSideSheet } from './components';
 import {
     analyticsConfig,
     filterConfig,
     gardenConfig,
+    sidesheetConfig,
     statusBarConfig,
     tableConfig,
 } from './utility/config';
@@ -24,26 +23,11 @@ async function responseParser(response: Response) {
     return parsedResponse.sort(sortPackagesByStatus);
 }
 
-const creator = setupWorkspaceSidesheet<Punch, 'punchDetails'>({
-    id: 'punchDetails',
-    color: '#0364B8',
-    component: PunchSideSheet,
-    props: {
-        objectIdentifier: 'punchItemNo',
-        parentApp: 'punch',
-        function: async (id: string) => {
-            // TODO: Add Proper resolver function
-            const items = await responseParser(await responseAsync());
-            return items.find((item) => item.punchItemNo === id);
-        },
-    },
-});
-
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<Punch>({
             objectIdentifier: 'punchItemNo',
-            customSidesheetOptions: creator('WorkspaceSideSheet'),
+            customSidesheetOptions: sidesheetConfig('WorkspaceSideSheet'),
         })
         .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
         .registerTableOptions(tableConfig)

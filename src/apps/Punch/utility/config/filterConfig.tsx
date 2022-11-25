@@ -51,11 +51,10 @@ export const filterConfig: FilterOptions<Punch> = [
         name: 'Material',
         valueFormatter: (pkg) => getMaterialRequired(pkg),
     },
-    {
-        name: 'Commpkg',
-        valueFormatter: (punch) => punch.commissioningPackageNo,
-        isQuickFilter: true,
-    },
+    // {
+    //     name: 'Commpkg',
+    //     valueFormatter: (punch) => punch.commissioningPackageNo,
+    // },
     {
         name: 'System',
         valueFormatter: (punch) => punch.system,

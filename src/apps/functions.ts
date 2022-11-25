@@ -7,6 +7,7 @@ import {
 import { handoverResolverFunction } from './Handover';
 import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
+import { punchResolverFunction } from './Punch/utility/config';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
 import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
@@ -29,6 +30,7 @@ export const functions: FunctionManifest[] = [
     tagResolverFunction,
     loopResolverFunction,
     workflowResolverFunction,
+    punchResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {
