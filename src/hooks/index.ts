@@ -8,3 +8,4 @@ export * from './useTimeoutWithCancel/useTimeooutWithCancel';
 export * from './useOutsideClick';
 export * from './useLocationKey/useLocationKey';
 export * from './useResizeObserver';
+export * from './useGetUser';
