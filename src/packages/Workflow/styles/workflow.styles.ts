@@ -55,6 +55,12 @@ export const ResponsibleSelect = styled.div`
     width: 400px;
 `;
 
+export const CompletedStatusText = styled.div`
+    font-size: 16px;
+    margin-top: 12px;
+    margin-left: 8px;
+`;
+
 export const SelectText = styled.div`
     font-size: 12px;
     font-weight: 500;

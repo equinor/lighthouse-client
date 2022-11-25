@@ -1,18 +1,18 @@
 interface AdminMutationKeys {
     baseKey: string[];
+    postKey: string[];
     patchKey: string[];
-    voidKey: string[];
-    unvoidKey: string[];
+    deleteKey: string[];
 }
 
 export function adminMutationKeys(workflowId: string): AdminMutationKeys {
-    const baseKey = ['workflow', workflowId];
+    const baseKey = ['admin', workflowId];
 
     const adminKeys = {
         baseKey: baseKey,
+        postKey: [...baseKey, 'post'],
         patchKey: [...baseKey, 'patch'],
-        voidKey: [...baseKey, 'void'],
-        unvoidKey: [...baseKey, 'unvoid'],
+        deleteKey: [...baseKey, 'delete'],
     };
 
     return adminKeys;

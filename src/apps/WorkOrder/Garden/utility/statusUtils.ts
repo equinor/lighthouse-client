@@ -58,7 +58,11 @@ export const getWoStatus = (workOrder: WorkOrder): ProcosysStatuses => {
 
     return getWoStatusFromDates(workOrder);
 };
-
+/**
+ * Because material statuses can be inconsistent we need to check for both possibilities of a material status.
+ * For example we can have material status M01 and M1 which are the same.
+ * This function returns an array such as: ['m01', 'm1'] and uses this to see if the workorder's material status matches any of the array values.
+ */
 const prepareMaterialStatus = (status: MaterialStatus): string[] => {
     const statusLower = status.toLowerCase();
 
@@ -85,7 +89,7 @@ const woHasMaterialStatus = (workOrder: WorkOrder, ...statuses: MaterialStatus[]
 const materialOk = (workOrder: WorkOrder) => woHasMaterialStatus(workOrder, 'M12', 'M13', 'MN');
 
 const materialAvailable = (workOrder: WorkOrder) =>
-    woHasMaterialStatus(workOrder, 'M7', 'M9', 'M10', 'M11', 'M12', 'MN');
+    woHasMaterialStatus(workOrder, 'M07', 'M09', 'M10', 'M11', 'M12', 'MN');
 
 /**
  * Function to retrieve "follow up" status of a package based on the package's projectProgress

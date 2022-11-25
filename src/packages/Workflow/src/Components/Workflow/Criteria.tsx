@@ -1,7 +1,22 @@
 // import { useState } from 'react';
 // import { useAtom } from '@dbeining/react-atom';
 // import { Modal } from '@equinor/modal';
-// import { Contributor, Criteria, CriteriaStatus } from '@equinor/Workflow';
+// import {
+//     Contributor,
+//     Criteria,
+//     CriteriaStatus,
+//     DetailText,
+//     RowContent,
+//     VerticalLine,
+//     WorkflowRow,
+//     WorkflowStepTemplate,
+//     WorkflowWrapper,
+//     WorklowIconAndLine,
+// } from '@equinor/Workflow';
+// import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
+// import { WorkflowIcon } from './WorkflowIcon';
+// import { CriteriaActionOverlay } from './CriteriaActionOverlay';
+// import { actionWithCommentAtom } from '../../Atom/signingAtom';
 
 // interface CriteriaRenderProps {
 //     name: string;
@@ -13,6 +28,8 @@
 //     isLastCriteria: boolean;
 //     stepId: string;
 //     hideOptions?: boolean;
+//     steps: WorkflowStepTemplate[];
+//     itemId: string;
 // }
 
 // export const CriteriaRender = ({
@@ -25,16 +42,21 @@
 //     order,
 //     stepId,
 //     hideOptions,
+//     steps,
+//     itemId,
 // }: CriteriaRenderProps): JSX.Element => {
-//     const { workflowStepsLength, isPast } = useReleaseControlContext(
-//         ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
-//             requestId: id,
-//             workflowStepsLength: workflowSteps.length,
-//             isPast:
-//                 (currentWorkflowStep?.order ?? 0) >
-//                 (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
-//         })
-//     );
+//     // const { workflowStepsLength, isPast } = useReleaseControlContext(
+//     //     ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
+//     //         requestId: id,
+//     //         workflowStepsLength: workflowSteps.length,
+//     //         isPast:
+//     //             (currentWorkflowStep?.order ?? 0) >
+//     //             (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
+//     //     })
+//     // );
+
+//     const workflowStepsLength = steps?.length;
+//     const isPast = steps.find((x) => x.isCurrent === true);
 
 //     const state = useAtom(actionWithCommentAtom);
 
@@ -52,7 +74,7 @@
 //             <WorkflowRow>
 //                 <RowContent>
 //                     {state && state.criteriaId === criteria.id && state.action === 'Reassign' ? (
-//                         <CriteriaActionOverlay />
+//                         <CriteriaActionOverlay itemId={itemId} />
 //                     ) : (
 //                         <>
 //                             {state &&
