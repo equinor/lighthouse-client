@@ -105,11 +105,18 @@ function unPackReferencesAndScope(
         x.area = x.location;
         x.tagType = x.register;
         x.system = x.functionalSystem;
+        x.circuitTagNos = x.circuitAndStarterTagNos;
+        x.mountedOn = x.tagMountedOn;
+        x.tagMountedOn = x.tagMountedOnNo;
     });
     htCables.forEach((x) => {
         x.area = x.location;
         x.tagType = x.register;
         x.system = x.functionalSystem;
+        x.circuitTagNos = x.circuitAndStarterTagNos;
+        x.mountedOn = x.tagMountedOn;
+        x.tagMountedOn = x.tagMountedOnNo;
+        x.tagHeated = x.heatedTagNos;
     });
     return {
         scopeTags: tags,
