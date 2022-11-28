@@ -8,8 +8,8 @@ interface AdminQueryKeys {
     canDeleteKey: () => string[];
 }
 
-export function adminQueryKeys(workflowId: string): AdminQueryKeys {
-    const baseKey = ['admin', workflowId];
+export function adminQueryKeys(): AdminQueryKeys {
+    const baseKey = ['admin'];
 
     const adminKeys = {
         baseKey: baseKey,
