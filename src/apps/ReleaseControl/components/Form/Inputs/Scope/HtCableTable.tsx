@@ -44,17 +44,22 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'circuitTagNos',
         Header: 'Circuit',
-        accessor: (item) => item.circuitTagNos,
+        accessor: (item) => item.circuitAndStarterTagNos,
     },
     {
         id: 'installedCableLength',
         Header: 'Cable length (m)',
-        accessor: (item) => item.installedCableLength,
+        accessor: (item) =>
+            item.installedCableLength !== null
+                ? item.installedCableLength + ' (installed)'
+                : item.estimatedCableLength !== null
+                ? item.estimatedCableLength + ' (estimated)'
+                : '',
     },
     {
         id: 'tagHeated',
         Header: 'Tag(s) heated',
-        accessor: (item) => item.tagHeated,
+        accessor: (item) => item.heatedTagNos,
     },
     {
         id: 'commissioningPackageNo',

@@ -23,16 +23,18 @@ export async function searchTag(value: string): Promise<any[]> {
             'OpenWorkOrders',
             'Status',
             'InstalledCableLength',
-            'MountedOn',
-            'MountedOnTagNo',
-            'MountedOn_HTCables',
-            'HTCables',
+            'TagMountedOn',
+            'TagMountedOnNo',
+            'HeatedTagNos',
+            'MountedOnHeatTracingCableTagNos',
+            'HeatTracingCableTagNos',
             'EstimatedCableLength',
+            'CableTagNos',
         ],
         'And',
         [...noHtExpression, ...tagNoExpression]
     );
-    const res = await FAM.fetch('v0.1/dynamic/completion/custom_scope_tag/JCA', {
+    const res = await FAM.fetch('v1/dynamic/completion/custom_scope_tag/JCA', {
         body: JSON.stringify(request),
         method: 'POST',
     });

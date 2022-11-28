@@ -42,9 +42,18 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.register,
     },
     {
-        id: 'mountedOn', //TODO - change to mountedOnTagNo (also accessor) when backend is updated
+        id: 'tagMountedOnNo',
         Header: 'Mounted on',
-        accessor: (item) => item.mountedOn,
+        accessor: ({ tagMountedOn, tagMountedOnNo }) => (
+            <Link
+                hideUnderline
+                onClick={() => {
+                    window.open(proCoSysUrls.getTagUrl(tagMountedOn || ''), '_blank');
+                }}
+            >
+                {tagMountedOnNo}
+            </Link>
+        ),
     },
     {
         id: 'relatedHTCables',
