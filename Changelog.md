@@ -9,6 +9,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [ReleaseControl] Added admin UI for release control workflows, steps, statuses.
 - [ReleaseControl] Changed tag search endpoint to v1 - better performance
 - [ReleaseControl] Added PCS link to mountedOn in table
+- [Punch] New workspace
+- [Workorder] Fixed bug for material status not showing correct color/text in garden view
 
 ## 1.19.1
 
