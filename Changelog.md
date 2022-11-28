@@ -4,10 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.20.0
+
+- [ReleaseControl] Added admin UI for release control workflows, steps, statuses.
+- [ReleaseControl] Changed tag search endpoint to v1 - better performance
+- [ReleaseControl] Added PCS link to mountedOn in table
+
 ## 1.19.1
+
 - [ReleaseControl/PipingAndHeattrace] Fixed bug with circuit diagram not displaying correctly
 
 ## 1.19.0
+
 - [CommissioningProcedure] Fix spelling mistake in app name
 - [ScopeChangeRequest] Fix spelling mistake in change category column header
 - [Loop] Add workorder tab to sidesheet
