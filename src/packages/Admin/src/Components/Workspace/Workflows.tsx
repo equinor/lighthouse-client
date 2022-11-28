@@ -1,5 +1,5 @@
 import { openSidesheet } from '@equinor/sidesheet';
-import { getWorkflows } from '@equinor/Workflow';
+import { getWorkflows, workflowsKey } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { ButtonText, Loading, NewButton } from '../../../styles/styles';
 import { useAdminContext } from '../../Hooks/useAdminContext';
@@ -46,7 +46,7 @@ export const Workflows = (): JSX.Element | null => {
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
     const isEditing = useAdminContext((s) => s.isEditingWorkflow);
 
-    const { data, error, isLoading } = useQuery([workflowOwner], () =>
+    const { data, error, isLoading } = useQuery(workflowsKey(), () =>
         getWorkflows({ workflowOwner })
     );
 

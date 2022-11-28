@@ -19,19 +19,19 @@ export interface QueryContext {
     signal?: AbortSignal;
 }
 
-const adminBaseKey = (id: string): string[] => ['admin', id];
+export const adminBaseKey = 'admin';
 
-const workflowsKey = (id: string) => [...adminBaseKey(id), 'workflows'];
+export const workflowsKey = (): string[] => [adminBaseKey, 'workflows'];
 
-const workflowTemplatesKey = (id: string) => [...adminBaseKey(id), 'templates'];
+export const workflowTemplatesKey = (): string[] => [adminBaseKey, 'templates'];
 
-const workflowStepKey = (id: string) => [...adminBaseKey(id), 'step'];
+export const workflowStepKey = (): string[] => [adminBaseKey, 'step'];
 
-const workflowStepsKey = (id: string) => [...adminBaseKey(id), 'steps'];
+export const workflowStepsKey = (): string[] => [adminBaseKey, 'steps'];
 
-const workflowStatusesKey = (id: string) => [...adminBaseKey(id), 'statuses'];
+export const workflowStatusesKey = (): string[] => [adminBaseKey, 'statuses'];
 
-const permissionsKey = (id: string) => [...adminBaseKey(id), 'permissions'];
+export const permissionsKey = (): string[] => [adminBaseKey, 'permissions'];
 
 type QueryFunction<Return> = UseQueryOptions<unknown, unknown, Return, QueryKey>;
 
@@ -53,37 +53,37 @@ interface AdminQueries {
 export const adminQueries: AdminQueries = {
     baseQuery: (id: string) => ({
         queryFn: (): Promise<Workflow> => getWorkflowById({ workflowId: id }),
-        queryKey: adminBaseKey(id),
+        queryKey: adminBaseKey,
     }),
     workflowsQuery: (workflowOwner: string) => ({
         queryFn: (): Promise<Workflow[]> => getWorkflows({ workflowOwner }),
-        queryKey: workflowsKey(''),
+        queryKey: workflowsKey(),
     }),
     workflowTemplatesQuery: (id: string) => ({
         queryFn: (): Promise<WorkflowTemplate[]> => getWorkflowTemplates({ workflowId: id }),
-        queryKey: workflowTemplatesKey(id),
+        queryKey: workflowTemplatesKey(),
     }),
     workflowStepQuery: (stepId: string) => ({
         queryFn: (): Promise<WorkflowStepTemplate> => getWorkflowStepById({ stepId }),
-        queryKey: workflowStepKey(''),
+        queryKey: workflowStepKey(),
     }),
     workflowStepsQuery: (workflowOwner: string) => ({
         queryFn: (): Promise<WorkflowStepTemplate[]> =>
             getWorkflowSteps({ workflowOwner: workflowOwner }),
-        queryKey: workflowStepsKey(''),
+        queryKey: workflowStepsKey(),
     }),
     workflowStatusesQuery: (workflowOwner: string) => ({
         queryFn: (): Promise<WorkflowStatus[]> => getWorkflowStatuses(workflowOwner),
-        queryKey: workflowStatusesKey(''),
+        queryKey: workflowStatusesKey(),
     }),
     permissionQueries: {
         canDeleteQuery: (id: string, app: string) => ({
             queryFn: ({ signal }) => canDelete(id, app, signal),
-            queryKey: [...permissionsKey(id), 'canDelete'],
+            queryKey: [...permissionsKey(), 'canDelete'],
         }),
         permissionsQuery: (id: string, app: string) => ({
             queryFn: ({ signal }) => getRequestAccess(id, app, signal),
-            queryKey: [...permissionsKey(id), 'requestAccess'],
+            queryKey: [...permissionsKey(), 'requestAccess'],
         }),
     },
 };

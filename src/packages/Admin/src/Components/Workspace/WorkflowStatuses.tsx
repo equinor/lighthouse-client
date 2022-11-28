@@ -1,5 +1,5 @@
 import { ButtonText, Loading, NewButton } from '../../../styles/styles';
-import { getWorkflowStatuses } from '@equinor/Workflow';
+import { getWorkflowStatuses, workflowStatusesKey } from '@equinor/Workflow';
 import { StatusesTable } from './StatusesTable';
 import { useState } from 'react';
 import { Modal } from '@equinor/modal';
@@ -12,7 +12,9 @@ export const WorkflowStatuses = (): JSX.Element | null => {
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
-    const { data, error } = useQuery([], () => getWorkflowStatuses(workflowOwner));
+    const { data, error } = useQuery(workflowStatusesKey(), () =>
+        getWorkflowStatuses(workflowOwner)
+    );
 
     if (error) {
         return (

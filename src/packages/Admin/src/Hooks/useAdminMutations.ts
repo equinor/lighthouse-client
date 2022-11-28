@@ -102,22 +102,22 @@ export function useAdminMutations(): AdminMutations {
     const createWorkflowMutation = async ({ workflow }: CreateWorkflowParams) => {
         const result = await postWorkflow(workflow);
         if (result) {
-            const { baseKey } = adminQueryKeys(result);
-            queryClient.invalidateQueries(baseKey);
+            const { workflowsKey } = adminQueryKeys();
+            queryClient.invalidateQueries(workflowsKey);
             openNewWorkflow(result);
             return result;
         }
     };
     const editWorkflowMutation = async ({ workflowId, name }: EditWorkflowParams) => {
         await patchWorkflow(workflowId, name);
-        const { baseKey } = adminQueryKeys('');
-        queryClient.invalidateQueries(baseKey);
+        const { workflowsKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowsKey);
     };
 
     const deleteWorkflowMutation = async ({ workflowId }: DeleteWorkflowParams) => {
-        deleteWorkflow({ workflowId });
-        const { baseKey } = adminQueryKeys('');
-        queryClient.invalidateQueries(baseKey);
+        await deleteWorkflow({ workflowId });
+        const { workflowsKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowsKey);
         closeSidesheet();
     };
 
@@ -152,21 +152,21 @@ export function useAdminMutations(): AdminMutations {
     const createWorkflowStepMutation = async ({ workflowStep }: CreateWorkflowStepParams) => {
         const result = await postWorkflowStep(workflowStep);
         if (result) {
-            const { baseKey } = adminQueryKeys(result);
-            queryClient.invalidateQueries(baseKey);
+            const { workflowStepsKey } = adminQueryKeys();
+            queryClient.invalidateQueries(workflowStepsKey);
             openNewWorkflowStep(result);
             return result;
         }
     };
     const editWorkflowStepMutation = async ({ workflowStep }: EditWorkflowStepParams) => {
         await patchWorkflowStep(workflowStep);
-        const { baseKey } = adminQueryKeys('');
-        queryClient.invalidateQueries(baseKey);
+        const { workflowStepsKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowStepsKey);
     };
     const deleteWorkflowStepMutation = async ({ stepId }: DeleteWorkflowStepParams) => {
         await deleteWorkflowStep({ stepId });
-        const { baseKey } = adminQueryKeys('');
-        queryClient.invalidateQueries(baseKey);
+        const { workflowStepsKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowStepsKey);
         closeSidesheet();
     };
 
@@ -176,20 +176,20 @@ export function useAdminMutations(): AdminMutations {
     }: CreateWorkflowStatusParams) => {
         const result = await postWorkflowStatus(name, workflowOwner);
         if (result) {
-            const { baseKey } = adminQueryKeys(result);
-            queryClient.invalidateQueries(baseKey);
+            const { workflowStatusesKey } = adminQueryKeys();
+            queryClient.invalidateQueries(workflowStatusesKey);
             return result;
         }
     };
     const editWorkflowStatusMutation = async ({ id, name }: EditWorkflowStatusParams) => {
         await patchWorkflowStatus(id, name);
-        const { baseKey } = adminQueryKeys('');
-        queryClient.invalidateQueries(baseKey);
+        const { workflowStatusesKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowStatusesKey);
     };
     const deleteWorkflowStatusMutation = async ({ id }: DeleteWorkflowStatusParams) => {
         await deleteWorkflowStatus({ id });
-        const { baseKey } = adminQueryKeys('');
-        queryClient.invalidateQueries(baseKey);
+        const { workflowStatusesKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowStatusesKey);
     };
     return {
         createWorkflowMutation,

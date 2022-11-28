@@ -26,7 +26,7 @@ export function useAdminMutation<
     const queryClient = useQueryClient();
     const { appName } = useSideSheet();
 
-    const { baseKey } = adminQueryKeys(workflowId);
+    const { baseKey } = adminQueryKeys();
     function invalidate() {
         queryClient.invalidateQueries(appName);
         queryClient.invalidateQueries(baseKey);
