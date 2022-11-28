@@ -25,14 +25,15 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'tagNo',
         Header: 'Tag number',
-        accessor: ({ tagId, tagNo }) => (
+        accessor: (item) => item.tagNo,
+        Cell: (cell) => (
             <Link
                 hideUnderline
                 onClick={() => {
-                    window.open(proCoSysUrls.getTagUrl(tagId || ''), '_blank');
+                    window.open(proCoSysUrls.getTagUrl(cell.row.original.tagId || ''), '_blank');
                 }}
             >
-                {tagNo}
+                {cell.row.values.tagNo}
             </Link>
         ),
     },
@@ -64,31 +65,38 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'commissioningPackageNo',
         Header: 'Comm',
-        accessor: ({ commissioningPackageId, commissioningPackageNo }) => (
+        accessor: (item) => item.commissioningPackageNo,
+        Cell: (cell) => (
             <Link
                 hideUnderline
                 onClick={() => {
-                    window.open(proCoSysUrls.getCommPkgUrl(commissioningPackageId || ''), '_blank');
+                    window.open(
+                        proCoSysUrls.getCommPkgUrl(cell.row.original.commissioningPackageId || ''),
+                        '_blank'
+                    );
                 }}
             >
-                {commissioningPackageNo}
+                {cell.row.values.commissioningPackageNo}
             </Link>
         ),
     },
     {
         id: 'mechanicalCompletionPackageNo',
         Header: 'MC',
-        accessor: ({ mechanicalCompletionPackageId, mechanicalCompletionPackageNo }) => (
+        accessor: (item) => item.mechanicalCompletionPackageNo,
+        Cell: (cell) => (
             <Link
                 hideUnderline
                 onClick={() => {
                     window.open(
-                        proCoSysUrls.getMcUrl(mechanicalCompletionPackageId || ''),
+                        proCoSysUrls.getMcUrl(
+                            cell.row.original.mechanicalCompletionPackageId || ''
+                        ),
                         '_blank'
                     );
                 }}
             >
-                {mechanicalCompletionPackageNo}
+                {cell.row.values.mechanicalCompletionPackageNo}
             </Link>
         ),
     },
