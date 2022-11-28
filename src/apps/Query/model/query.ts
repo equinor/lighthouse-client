@@ -1,0 +1,32 @@
+export type QueryStatus = 'Open' | 'Closed';
+
+export type Query = {
+    queryId: string;
+    facility: string | null;
+    project: string | null;
+    queryType: string | null;
+    queryNo: string;
+    title: string;
+    costImpact: string | null;
+    consequenceIfNotImplemented: string | null;
+    proposedSolution: string | null;
+    engineeringReply: string | null;
+    milestone: string | null;
+    scheduleImpact: string | null;
+    possibleWarrantyClaim: string | null;
+    requiredAtDate: string;
+    discipline: string | null;
+    disciplineDescription: string | null;
+    createdDate: string | null;
+    updatedDate: string | null;
+    fAMUpsertedTime: string | null;
+    nextToSign: string | null;
+    closedDate: string | null;
+    isOpen: number;
+    queryStatus: QueryStatus;
+    daysToClose: string | null;
+    steps: number;
+    stepsSigned: number;
+    isOverdue: number;
+    signatureProgress: string;
+};
