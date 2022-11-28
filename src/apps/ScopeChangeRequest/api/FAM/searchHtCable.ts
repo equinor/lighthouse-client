@@ -23,15 +23,16 @@ export async function searchHtCable(value: string): Promise<any[]> {
             'OpenWorkOrders',
             'Status',
             'InstalledCableLength',
-            'TagHeated',
+            'HeatedTagNos',
             'EstimatedCableLength',
             'SwitchBoardTagNos',
-            'CircuitTagNos',
+            'CircuitAndStarterTagNos',
+            'CableTagNos',
         ],
         'And',
         [...htExpression, ...tagNoExpression]
     );
-    const res = await FAM.fetch('v0.1/dynamic/completion/custom_scope_tag/JCA', {
+    const res = await FAM.fetch('v1/dynamic/completion/custom_scope_tag/JCA', {
         body: JSON.stringify(request),
         method: 'POST',
     });
