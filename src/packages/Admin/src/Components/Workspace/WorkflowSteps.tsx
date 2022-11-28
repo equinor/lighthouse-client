@@ -1,7 +1,7 @@
 import { openSidesheet } from '@equinor/sidesheet';
 import { useQuery } from 'react-query';
 import { ButtonText, Loading, NewButton } from '../../../styles/styles';
-import { getWorkflowSteps, WorkflowStepTemplate } from '@equinor/Workflow';
+import { getWorkflowSteps, workflowStepsKey, WorkflowStepTemplate } from '@equinor/Workflow';
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { WorkflowStepsTable } from './WorkflowStepsTable';
 import { WorkflowStepSidesheet } from '../Sidesheet/WorkflowStepSidesheet';
@@ -47,8 +47,7 @@ export const WorkflowSteps = (): JSX.Element | null => {
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
     const [isCreating, setIsCreating] = useState<boolean>(false);
-
-    const { data, error } = useQuery([workflowOwner], () => getWorkflowSteps({ workflowOwner }));
+    const { data, error } = useQuery(workflowStepsKey(), () => getWorkflowSteps({ workflowOwner }));
     if (error) {
         return (
             <Loading>
@@ -61,7 +60,7 @@ export const WorkflowSteps = (): JSX.Element | null => {
             <NewButton onClick={() => setIsCreating(true)}>
                 <ButtonText>Add step</ButtonText>
             </NewButton>
-            <WorkflowStepsTable steps={data} />
+            <WorkflowStepsTable steps={data ?? []} />
             {isCreating && (
                 <Modal
                     title={'Create workflow step'}
