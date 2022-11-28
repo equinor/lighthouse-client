@@ -3,9 +3,9 @@ import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import {
     CompletedCriteria,
+    CompletedStatusText,
     FunctionalRole,
     Person,
-    ReleaseControlStepNames,
     SelectionWithTitle,
     SelectText,
     WorkflowStepTemplate,
@@ -26,13 +26,14 @@ import { DraggableHandleSelector } from './WorkflowEditor';
 import {
     getWorkflowStepMenuActions,
     removeStep,
-    updateStepName,
+    updateStep,
     updateStepResponsible,
 } from './WorkflowEditorHelpers';
 
 interface WorkflowStepProps {
     step: WorkflowStepTemplate;
     steps: WorkflowStepTemplate[];
+    availableSteps: WorkflowStepTemplate[];
     functionalRoles?: FunctionalRole[];
     atomApi: any;
     app: string;
@@ -41,6 +42,7 @@ interface WorkflowStepProps {
 export const WorkflowStep = ({
     step,
     steps,
+    availableSteps,
     functionalRoles,
     atomApi,
     app,
@@ -62,6 +64,7 @@ export const WorkflowStep = ({
                             stepIndex={0}
                             stepStatus={getCriteriaStatus(step.criterias[0], false)}
                             hideOptions={true}
+                            steps={steps}
                         /> */}
                     </CompletedCriteria>
                 ) : null
@@ -77,17 +80,21 @@ export const WorkflowStep = ({
                             <SelectText>Step</SelectText>
                             <StepSelect>
                                 <SingleSelect
-                                    items={Object.values(ReleaseControlStepNames)}
+                                    items={availableSteps.map((x) => x.name)}
                                     label=""
                                     size={30}
                                     selectedOption={step.name}
                                     readOnly={true}
                                     handleSelectedItemChange={(change) =>
                                         updateAtom({
-                                            workflowStepTemplates: updateStepName(
+                                            workflowStepTemplates: updateStep(
                                                 step,
                                                 steps,
-                                                !change.selectedItem ? '' : change.selectedItem
+                                                !change.selectedItem
+                                                    ? step
+                                                    : availableSteps.find(
+                                                          (x) => x.name === change.selectedItem
+                                                      ) ?? step
                                             ),
                                         })
                                     }
@@ -121,8 +128,12 @@ export const WorkflowStep = ({
                                 defaultResult={functionalRoles}
                             />
                         </ResponsibleSelect>
+                        <StepSelect>
+                            <SelectText>Workflow status when step is signed</SelectText>
+                            <CompletedStatusText>{step.completedStatusName}</CompletedStatusText>
+                        </StepSelect>
                     </Selections>
-                    <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
+                    <IconMenu items={getWorkflowStepMenuActions(step, steps, atomApi, true)} />
                 </>
             ) : (
                 <>
@@ -135,16 +146,20 @@ export const WorkflowStep = ({
                     <Selections>
                         <StepSelect>
                             <SingleSelect
-                                items={Object.values(ReleaseControlStepNames)}
+                                items={availableSteps.map((x) => x.name)}
                                 label=""
                                 size={30}
                                 selectedOption={step.name}
                                 handleSelectedItemChange={(change) =>
                                     updateAtom({
-                                        workflowStepTemplates: updateStepName(
+                                        workflowStepTemplates: updateStep(
                                             step,
                                             steps,
-                                            !change.selectedItem ? '' : change.selectedItem
+                                            !change.selectedItem
+                                                ? step
+                                                : availableSteps.find(
+                                                      (x) => x.name === change.selectedItem
+                                                  ) ?? step
                                         ),
                                     })
                                 }
@@ -176,6 +191,9 @@ export const WorkflowStep = ({
                                 defaultResult={functionalRoles}
                             />
                         </ResponsibleSelect>
+                        <StepSelect>
+                            <CompletedStatusText>{step.completedStatusName}</CompletedStatusText>
+                        </StepSelect>
                     </Selections>
                     <IconMenu items={getWorkflowStepMenuActions(step, steps, atomApi)} />
                     <div style={{ marginTop: '4px' }}>

@@ -1,6 +1,6 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
-import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
-// import { adminConfig } from './components/Admin/adminConfig';
+import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
+import { adminConfig } from './components/Admin/adminConfig';
 import { ReleaseControlSidesheet } from './components/sidesheet/ReleaseControlSidesheet/ReleaseControlSidesheet';
 import { ReleaseControl } from './types/releaseControl';
 import { dataSource, filterOptions, idResolverFunction, tableConfig } from './workspaceConfig';
@@ -42,7 +42,6 @@ export function setup(appApi: ClientApi): void {
         .registerPowerBIOptions({
             reportURI: 'pp-release-control-analytics',
         })
-        .registerStatusItems(statusBarConfig);
-    //TODO - temporarily commented out until admin is done
-    // .registerAdminOptions(adminConfig);
+        .registerStatusItems(statusBarConfig)
+        .registerAdminOptions(adminConfig);
 }
