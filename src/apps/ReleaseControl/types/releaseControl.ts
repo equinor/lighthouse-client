@@ -181,23 +181,26 @@ export type FamTag = {
     commissioningPackageId: string;
     status: string | null;
     location: string | null;
-    mountedOn: string | null;
     openWorkOrders: string | null;
     openWorkOrderIds: string | null;
     installedCableLength: string | null;
     estimatedCableLength: string | null;
-    tagHeated: string | null;
-    mountedOnTagNo: string | null;
+    heatedTagNos: string | null;
+    tagMountedOn: string | null;
+    tagMountedOnNo: string | null;
     relatedHTCables: string | null;
-    mountedOn_HTCables: string | null;
-    htCables: string | null;
+    mountedOnHeatTracingCableTagNos: string | null;
+    heatTracingCableTagNos: string | null;
     switchBoardTagNos: string | null;
-    circuitTagNos: string | null;
+    circuitAndStarterTagNos: string | null;
 
     //Sent to release control api
     area: string | null;
     tagType: string | null;
     system: string | null;
+    mountedOn: string | null;
+    circuitTagNos: string | null;
+    tagHeated: string | null;
 };
 
 export type FamTagType = {
@@ -214,23 +217,26 @@ export type FamTagType = {
     commissioningPackageId: string;
     status: string | null;
     location: string | null;
-    mountedOn: string | null;
     openWorkOrders: string | null;
     openWorkOrderIds: string | null;
     installedCableLength: string | null;
     estimatedCableLength: string | null;
-    tagHeated: string | null;
-    mountedOnTagNo: string | null;
+    heatedTagNos: string | null;
+    tagMountedOn: string | null;
+    tagMountedOnNo: string | null;
     relatedHTCables: string | null;
-    mountedOn_HTCables: string | null;
-    htCables: string | null;
+    mountedOnHeatTracingCableTagNos: string | null;
+    heatTracingCableTagNos: string | null;
     switchBoardTagNos: string | null;
-    circuitTagNos: string | null;
+    circuitAndStarterTagNos: string | null;
 
     //Sent to release control api
     area: string | null;
     tagType: string | null;
     system: string | null;
+    mountedOn: string | null;
+    circuitTagNos: string | null;
+    tagHeated: string | null;
 };
 
 export type Attachment = {

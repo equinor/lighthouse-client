@@ -286,12 +286,19 @@ export function setData(releaseControl: ReleaseControl | undefined): ReleaseCont
         x.functionalSystem = x.system;
         x.location = x.area;
         x.register = x.tagType;
+        x.circuitAndStarterTagNos = x.circuitTagNos;
+        x.tagMountedOn = x.mountedOn;
+        x.tagMountedOnNo = x.tagMountedOn;
     });
 
     releaseControl?.scopeHTTags?.forEach((x) => {
         x.functionalSystem = x.system;
         x.location = x.area;
         x.register = x.tagType;
+        x.circuitAndStarterTagNos = x.circuitTagNos;
+        x.tagMountedOn = x.mountedOn;
+        x.tagMountedOnNo = x.tagMountedOn;
+        x.heatedTagNos = x.tagHeated;
     });
 
     return releaseControl;

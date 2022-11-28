@@ -1,37 +1,47 @@
-import { openSidesheet } from '@equinor/sidesheet';
-import { ButtonText, NewButton } from '../../../styles/styles';
-import { ReleaseControlStatuses } from '@equinor/Workflow';
-import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper';
+import { ButtonText, Loading, NewButton } from '../../../styles/styles';
+import { getWorkflowStatuses, workflowStatusesKey } from '@equinor/Workflow';
 import { StatusesTable } from './StatusesTable';
-
-async function openAdminSidesheet(id: string): Promise<void> {
-    openSidesheet(SidesheetWrapper, id, undefined);
-}
+import { useState } from 'react';
+import { Modal } from '@equinor/modal';
+import { CreateStatusModal } from '../Modal/CreateStatusModal';
+import { EditStatusModal } from '../Modal/EditStatusModal';
+import { useQuery } from 'react-query';
+import { useAdminContext } from '../../Hooks/useAdminContext';
 
 export const WorkflowStatuses = (): JSX.Element | null => {
-    // const app = useAdminContext((s) => s.app);
-    // const workflowOwner = useAdminContext((s) => s.workflowOwner);
+    const [isCreating, setIsCreating] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const workflowOwner = useAdminContext((s) => s.workflowOwner);
+    const { data, error } = useQuery(workflowStatusesKey(), () =>
+        getWorkflowStatuses(workflowOwner)
+    );
 
-    // const { data, error } = useQuery([app, workflowOwner], () => getStatuses({ app, workflowOwner }));
-
-    // if (error) {
-    //     return (
-    //         <Loading>
-    //             <div>Failed to load statuses</div>
-    //         </Loading>
-    //     );
-    // }
-
-    const statuses = Object.values(ReleaseControlStatuses).map((status) => {
-        return { id: undefined, name: status };
-    });
+    if (error) {
+        return (
+            <Loading>
+                <div>Failed to load statuses</div>
+            </Loading>
+        );
+    }
 
     return (
         <>
-            <NewButton onClick={() => openAdminSidesheet('newstatus')}>
+            <NewButton onClick={() => setIsCreating(true)}>
                 <ButtonText>Add status</ButtonText>
             </NewButton>
-            <StatusesTable statuses={statuses ?? []} />
+            <StatusesTable statuses={data ?? []} setIsEditing={setIsEditing} />
+            {isCreating && (
+                <Modal
+                    title={'Create workflow status'}
+                    content={<CreateStatusModal setIsCreating={setIsCreating} />}
+                />
+            )}
+            {isEditing && (
+                <Modal
+                    title={'Edit workflow status'}
+                    content={<EditStatusModal setIsEditing={setIsEditing} />}
+                />
+            )}
         </>
     );
 };

@@ -1,6 +1,6 @@
 import { Atom } from '@dbeining/react-atom';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { Workflow } from '@equinor/Workflow';
+import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { AdminAccess } from '../Hooks/useAdminAccess';
 
 export interface AdminAtom {
@@ -9,6 +9,11 @@ export interface AdminAtom {
     app: string;
     workflowOwner: string;
     workflow: Workflow;
+    workflowStep: WorkflowStepTemplate;
+    status: WorkflowStatus;
+
+    isEditingWorkflow: boolean;
+    isEditingStep: boolean;
 }
 
 export const adminAtom = Atom.of<AdminAtom>({
@@ -18,11 +23,13 @@ export const adminAtom = Atom.of<AdminAtom>({
         canPatch: false,
         canPost: false,
         canPut: false,
-        canUnVoid: false,
-        canVoid: false,
     },
     actions: {} as SidesheetApi,
     app: '',
     workflowOwner: '',
     workflow: {} as Workflow,
+    workflowStep: {} as WorkflowStepTemplate,
+    status: {} as WorkflowStatus,
+    isEditingWorkflow: false,
+    isEditingStep: false,
 });

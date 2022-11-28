@@ -1,5 +1,5 @@
 import { useFacility } from '@equinor/lighthouse-portal-client';
-import { DraggableStep, FunctionalRole, ProCoSysQueries } from '@equinor/Workflow';
+import { adminQueries, DraggableStep, FunctionalRole, ProCoSysQueries } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
 import { WorkflowStep } from './WorkflowStep';
@@ -9,9 +9,14 @@ export const DraggableHandleSelector = 'globalDraggableHandle';
 interface WorkflowEditorProps {
     atomApi: any;
     app: string;
+    workflowOwner: string;
 }
 
-export const WorkflowEditor = ({ atomApi, app }: WorkflowEditorProps): JSX.Element => {
+export const WorkflowEditor = ({
+    atomApi,
+    app,
+    workflowOwner,
+}: WorkflowEditorProps): JSX.Element => {
     const { useAtomState, updateAtom } = atomApi;
 
     const { workflowSteps = [] } = useAtomState(({ workflowStepTemplates }) => ({
@@ -33,16 +38,21 @@ export const WorkflowEditor = ({ atomApi, app }: WorkflowEditorProps): JSX.Eleme
     const { data: functionalRoles } = useQuery<unknown, unknown, FunctionalRole[]>(
         getFunctionalRolesQuery(procosysPlantId, app.toLocaleUpperCase())
     );
+    const { workflowStepsQuery } = adminQueries;
+
+    const { data: availableSteps } = useQuery(workflowStepsQuery(workflowOwner));
 
     const dragableSteps = workflowSteps.filter((x) => x.item.name !== 'Initiate');
     const undragableSteps = workflowSteps.filter((x) => x.item.name === 'Initiate');
+
     return (
-        <>
+        <div>
             {undragableSteps.map((workflowStep) => (
                 <WorkflowStep
                     key={workflowStep.item.order}
                     step={workflowStep.item}
                     steps={workflowSteps.map(({ item }) => item)}
+                    availableSteps={availableSteps ?? []}
                     functionalRoles={functionalRoles}
                     atomApi={atomApi}
                     app={app}
@@ -63,12 +73,13 @@ export const WorkflowEditor = ({ atomApi, app }: WorkflowEditorProps): JSX.Eleme
                         key={dragItem.item.id}
                         step={dragItem.item}
                         steps={workflowSteps.map(({ item }) => item)}
+                        availableSteps={availableSteps ?? []}
                         functionalRoles={functionalRoles}
                         atomApi={atomApi}
                         app={app}
                     />
                 ))}
             </ReactSortable>
-        </>
+        </div>
     );
 };
