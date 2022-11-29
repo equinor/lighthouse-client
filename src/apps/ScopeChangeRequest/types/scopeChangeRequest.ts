@@ -14,6 +14,7 @@ export type ScopeChangeCreateEditModel = {
     potentialWarrantyCase: boolean;
     originSourceId?: string;
     originSource: OriginType;
+    newRevisionOrVoidReason: string | null;
 
     potentialAtsScope: boolean;
     //Revision id
@@ -147,6 +148,7 @@ export type ScopeChangeRequest = ScopeChangeBaseModel & {
     workOrdersTotalEstimatedManHours: number;
     workOrdersTotalExpendedManHours: number;
     workOrdersTotalRemainingManHours: number;
+    newRevisionOrVoidReason: string | null;
 };
 
 export type ScopeChangeWorkOrder = {

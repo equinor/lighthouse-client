@@ -461,7 +461,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: punchSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'prod',
     },
     {
         title: 'SWCR',
