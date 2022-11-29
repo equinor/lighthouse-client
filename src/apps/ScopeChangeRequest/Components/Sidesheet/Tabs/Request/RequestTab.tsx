@@ -24,12 +24,14 @@ import { Checkbox } from '@equinor/eds-core-react';
 import { CheckboxWrapper } from '../../../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
 import { RevisionsList } from './RevisionList/RevisionList';
 import { AtsDetailCheckbox } from '../../../AtsScopeCheckbox/AtsCheckbox';
+import { VoidedOrRevisionBanner } from './VoidedReasonBanner';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
 
     return (
         <Wrapper>
+            <VoidedOrRevisionBanner />
             <FormWrapper>
                 <FlexColumn>
                     <InnerSection>
