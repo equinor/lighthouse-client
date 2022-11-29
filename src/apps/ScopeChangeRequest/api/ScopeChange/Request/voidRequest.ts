@@ -3,15 +3,17 @@ import { throwOnError } from '../../../functions/throwError';
 
 interface VoidParams {
     requestId: string;
+    reasonForVoiding: string;
 }
 
-export async function voidRequest({ requestId }: VoidParams): Promise<void> {
+export async function voidRequest({ requestId, reasonForVoiding }: VoidParams): Promise<void> {
     const { scopeChange } = httpClient();
 
-    const requestOptions = {
+    const requestOptions: RequestInit = {
         method: 'PATCH',
+        body: JSON.stringify({ newRevisionOrVoidReason: reasonForVoiding }),
     };
-    const res = await scopeChange.fetch(
+    const res = await scopeChange.patch(
         `api/scope-change-requests/${requestId}/void`,
         requestOptions
     );
@@ -19,7 +21,7 @@ export async function voidRequest({ requestId }: VoidParams): Promise<void> {
     await throwOnError(res, 'Failed to void request');
 }
 
-export async function unVoidRequest({ requestId }: VoidParams): Promise<void> {
+export async function unVoidRequest({ requestId }: Pick<VoidParams, 'requestId'>): Promise<void> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
