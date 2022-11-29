@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+## 1.21.0
+- [ScopeChangeRequest] Add reason for voiding and reason for revision.
+- [ReleaseControl] Add empty body for void request.
 
 ## 1.20.0
 

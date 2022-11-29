@@ -1,57 +1,39 @@
-import { Button, Progress } from '@equinor/eds-core-react';
-import { useMutation } from 'react-query';
+import { Button } from '@equinor/eds-core-react';
+import { Modal } from '@equinor/modal';
+import { useState } from 'react';
 
 import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
-import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
-import { useRequestMutations } from '../../../hooks/mutations/useRequestMutations';
 import { ActionBar, ButtonContainer } from '../../Form/ScopeChangeForm.styles';
+import { RevisionModal } from './RevisionModal';
 
 interface SubmitActionBarProps {
     cancel: () => void;
 }
 
 export const RevisionSubmitBar = ({ cancel }: SubmitActionBarProps): JSX.Element => {
-    const { request, actions } = useScopeChangeContext();
-
-    const { createScopeChangeMutation } = useRequestMutations();
-
-    const { prepareRequest } = scopeChangeFormAtomApi;
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const isValid = scopeChangeFormAtomApi.useIsValid();
 
-    const { isLoading, mutate } = useMutation(createScopeChangeMutation);
-
-    const createRevision = () => {
-        actions.setHasUnsavedChanges(false);
-        mutate({
-            draft: false,
-            model: {
-                ...prepareRequest(),
-                attachmentsToDuplicate: request.attachments.map((s) => s.id),
-                originatorId: request.id,
-            },
-        });
-    };
-
     return (
-        <ActionBar>
-            <ButtonContainer>
-                <>
-                    {isLoading ? (
-                        <Button variant="ghost_icon" disabled>
-                            <Progress.Dots color="primary" />
+        <>
+            <ActionBar>
+                <ButtonContainer>
+                    <>
+                        <Button variant="outlined" onClick={cancel}>
+                            Cancel
                         </Button>
-                    ) : (
-                        <>
-                            <Button variant="outlined" onClick={cancel}>
-                                Cancel
-                            </Button>
-                            <Button disabled={!isValid} onClick={createRevision}>
-                                Create revision
-                            </Button>
-                        </>
-                    )}
-                </>
-            </ButtonContainer>
-        </ActionBar>
+                        <Button disabled={!isValid} onClick={() => setIsModalOpen(true)}>
+                            Create revision
+                        </Button>
+                    </>
+                </ButtonContainer>
+            </ActionBar>
+            {isModalOpen && (
+                <Modal
+                    title="Create revision"
+                    content={<RevisionModal closeModal={() => setIsModalOpen(false)} />}
+                />
+            )}
+        </>
     );
 };

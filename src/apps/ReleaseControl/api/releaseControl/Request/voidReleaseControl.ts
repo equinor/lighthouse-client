@@ -10,6 +10,7 @@ export async function voidReleaseControl({ releaseControlId }: VoidParams): Prom
 
     const requestOptions = {
         method: 'PATCH',
+        body: JSON.stringify({}),
     };
     const res = await scopeChange.fetch(
         `api/releasecontrol/${releaseControlId}/void`,
