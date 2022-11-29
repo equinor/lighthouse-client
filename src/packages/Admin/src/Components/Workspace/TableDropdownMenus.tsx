@@ -45,10 +45,38 @@ export const useMakeStepMenuItems = (step: WorkflowStepTemplate): MenuItem[] => 
     const app = useAdminContext((s) => s.app);
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
-    const { deleteWorkflowStepMutation } = useAdminMutations();
+    const { deleteWorkflowStepMutation, moveWorkflowStepUpMutation, moveWorkflowStepDownMutation } =
+        useAdminMutations();
     const { deleteKey } = adminMutationKeys(step?.id);
-    const { mutate } = useAdminMutation(step.id, deleteKey, deleteWorkflowStepMutation);
+    const { postKey } = adminMutationKeys(step?.id);
+    const { mutate: deleteMutation } = useAdminMutation(
+        step.id,
+        deleteKey,
+        deleteWorkflowStepMutation
+    );
+    const { mutate: moveUpMutation } = useAdminMutation(
+        step.id,
+        postKey,
+        moveWorkflowStepUpMutation
+    );
+    const { mutate: moveDownMutation } = useAdminMutation(
+        step.id,
+        postKey,
+        moveWorkflowStepDownMutation
+    );
 
+    menuItems.push({
+        label: 'Move up',
+        onClick: () => moveUpMutation({ id: step.id }),
+        // isDisabled: !canPost, //TODO - comment in when permissions are fixed
+        icon: <Icon name="arrow_up" color={tokens.colors.interactive.primary__resting.hex} />,
+    });
+    menuItems.push({
+        label: 'Move down',
+        onClick: () => moveDownMutation({ id: step.id }),
+        // isDisabled: !canPost, //TODO - comment in when permissions are fixed
+        icon: <Icon name="arrow_down" color={tokens.colors.interactive.primary__resting.hex} />,
+    });
     menuItems.push({
         label: 'Rename',
         onClick: () => {
@@ -59,7 +87,7 @@ export const useMakeStepMenuItems = (step: WorkflowStepTemplate): MenuItem[] => 
     });
     menuItems.push({
         label: 'Delete',
-        onClick: () => mutate({ stepId: step.id }),
+        onClick: () => deleteMutation({ stepId: step.id }),
         // isDisabled: !canDelete, //TODO - comment in when permissions are fixed
         icon: <Icon name="delete_forever" color={tokens.colors.interactive.primary__resting.hex} />,
     });

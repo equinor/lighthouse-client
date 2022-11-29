@@ -27,6 +27,8 @@ export * from './Api/postWorkflowStep';
 export * from './Api/patchWorkflowStep';
 export * from './Api/deleteWorkflowStatus';
 export * from './Api/deleteWorkflowStep';
+export * from './Api/moveStepUp';
+export * from './Api/moveStepDown';
 
 /* Types */
 export * from './Types/WorkflowTypes';
