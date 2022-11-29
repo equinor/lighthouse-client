@@ -27,7 +27,13 @@ export function getNewWorkflowSteps(): WorkflowStepTemplate[] {
                 },
             ],
             criterias: [],
-            criteriaTemplates: [],
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysUserSignature',
+                    assignToCreator: true,
+                    value: '',
+                },
+            ],
         },
     ];
     return baseReleaseControlSteps;
