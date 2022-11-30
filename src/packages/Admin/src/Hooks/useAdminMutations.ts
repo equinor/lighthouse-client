@@ -3,6 +3,8 @@ import {
     deleteWorkflow,
     deleteWorkflowStatus,
     deleteWorkflowStep,
+    moveStepDown,
+    moveStepUp,
     patchWorkflow,
     patchWorkflowStatus,
     patchWorkflowStep,
@@ -69,6 +71,14 @@ interface DeleteWorkflowStatusParams {
     id: string;
 }
 
+interface MoveWorkflowStepUpParams {
+    id: string;
+}
+
+interface MoveWorkflowStepDownParams {
+    id: string;
+}
+
 interface AdminMutations {
     createWorkflowMutation: ({ workflow }: CreateWorkflowParams) => Promise<string | undefined>;
     editWorkflowMutation: ({ workflowId, name }: EditWorkflowParams) => Promise<void>;
@@ -94,6 +104,8 @@ interface AdminMutations {
     }: CreateWorkflowStatusParams) => Promise<string | undefined>;
     editWorkflowStatusMutation: ({ id, name }: EditWorkflowStatusParams) => Promise<void>;
     deleteWorkflowStatusMutation: ({ id }: DeleteWorkflowStatusParams) => Promise<void>;
+    moveWorkflowStepUpMutation: ({ id }: MoveWorkflowStepUpParams) => Promise<void>;
+    moveWorkflowStepDownMutation: ({ id }: MoveWorkflowStepDownParams) => Promise<void>;
 }
 
 export function useAdminMutations(): AdminMutations {
@@ -191,6 +203,16 @@ export function useAdminMutations(): AdminMutations {
         const { workflowStatusesKey } = adminQueryKeys();
         queryClient.invalidateQueries(workflowStatusesKey);
     };
+    const moveWorkflowStepUpMutation = async ({ id }: MoveWorkflowStepUpParams) => {
+        await moveStepUp(id);
+        const { workflowStepsKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowStepsKey);
+    };
+    const moveWorkflowStepDownMutation = async ({ id }: MoveWorkflowStepDownParams) => {
+        await moveStepDown(id);
+        const { workflowStepsKey } = adminQueryKeys();
+        queryClient.invalidateQueries(workflowStepsKey);
+    };
     return {
         createWorkflowMutation,
         editWorkflowMutation,
@@ -203,5 +225,7 @@ export function useAdminMutations(): AdminMutations {
         createWorkflowStatusMutation,
         editWorkflowStatusMutation,
         deleteWorkflowStatusMutation,
+        moveWorkflowStepUpMutation,
+        moveWorkflowStepDownMutation,
     };
 }
