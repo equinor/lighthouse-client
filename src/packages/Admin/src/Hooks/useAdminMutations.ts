@@ -38,19 +38,23 @@ interface DeleteWorkflowStepParams {
 interface CreateWorkflowTemplateParams {
     model: WorkflowTemplateModel;
     workflowId: string;
+    saveAndClose: boolean;
 }
 
 interface EditWorkflowTemplateParams {
     model: WorkflowTemplateModel;
     workflowId: string;
+    saveAndClose: boolean;
 }
 
 interface CreateWorkflowStepParams {
     workflowStep: WorkflowStepModel;
+    saveAndClose: boolean;
 }
 
 interface EditWorkflowStepParams {
     workflowStep: WorkflowStepModel;
+    saveAndClose: boolean;
 }
 
 interface DeleteWorkflowParams {
@@ -87,15 +91,21 @@ interface AdminMutations {
     createWorkflowTemplateMutation: ({
         model,
         workflowId,
+        saveAndClose,
     }: CreateWorkflowTemplateParams) => Promise<string | undefined>;
     editWorkflowTemplateMutation: ({
         model,
         workflowId,
-    }: EditWorkflowTemplateParams) => Promise<string | undefined>;
+        saveAndClose,
+    }: EditWorkflowTemplateParams) => Promise<void>;
     createWorkflowStepMutation: ({
         workflowStep,
+        saveAndClose,
     }: CreateWorkflowStepParams) => Promise<string | undefined>;
-    editWorkflowStepMutation: ({ workflowStep }: EditWorkflowStepParams) => Promise<void>;
+    editWorkflowStepMutation: ({
+        workflowStep,
+        saveAndClose,
+    }: EditWorkflowStepParams) => Promise<void>;
     deleteWorkflowStepMutation: ({ stepId }: DeleteWorkflowStepParams) => Promise<void>;
 
     createWorkflowStatusMutation: ({
@@ -136,6 +146,7 @@ export function useAdminMutations(): AdminMutations {
     const createWorkflowTemplateMutation = async ({
         model,
         workflowId,
+        saveAndClose,
     }: CreateWorkflowTemplateParams) => {
         const validatedModel = model as WorkflowTemplateModel;
         const rcID = await postWorkflowTemplate(
@@ -144,36 +155,56 @@ export function useAdminMutations(): AdminMutations {
             },
             workflowId
         );
+        if (saveAndClose) {
+            closeSidesheet();
+        }
         return rcID;
     };
 
     const editWorkflowTemplateMutation = async ({
         model,
         workflowId,
+        saveAndClose,
     }: EditWorkflowTemplateParams) => {
         const validatedModel = model as WorkflowTemplateModel;
-        const rcID = await patchWorkflowTemplate(
+        await patchWorkflowTemplate(
             {
                 ...validatedModel,
             },
             workflowId
         );
-        return rcID;
+        if (saveAndClose) {
+            closeSidesheet();
+        }
     };
 
-    const createWorkflowStepMutation = async ({ workflowStep }: CreateWorkflowStepParams) => {
+    const createWorkflowStepMutation = async ({
+        workflowStep,
+        saveAndClose,
+    }: CreateWorkflowStepParams) => {
         const result = await postWorkflowStep(workflowStep);
         if (result) {
             const { workflowStepsKey } = adminQueryKeys();
             queryClient.invalidateQueries(workflowStepsKey);
-            openNewWorkflowStep(result);
+            if (!saveAndClose) {
+                openNewWorkflowStep(result);
+            }
+            if (saveAndClose) {
+                closeSidesheet();
+            }
             return result;
         }
     };
-    const editWorkflowStepMutation = async ({ workflowStep }: EditWorkflowStepParams) => {
+    const editWorkflowStepMutation = async ({
+        workflowStep,
+        saveAndClose,
+    }: EditWorkflowStepParams) => {
         await patchWorkflowStep(workflowStep);
         const { workflowStepsKey } = adminQueryKeys();
         queryClient.invalidateQueries(workflowStepsKey);
+        if (saveAndClose) {
+            closeSidesheet();
+        }
     };
     const deleteWorkflowStepMutation = async ({ stepId }: DeleteWorkflowStepParams) => {
         await deleteWorkflowStep({ stepId });

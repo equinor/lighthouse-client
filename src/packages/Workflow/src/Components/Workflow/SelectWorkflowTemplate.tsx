@@ -35,7 +35,7 @@ export const SelectWorkflowTemplate = ({
             <SingleSelect
                 items={workflows?.map((x) => x.name) ?? []}
                 label=""
-                placeholder="Use existing flow"
+                placeholder="Select workflow template"
                 size={35}
                 handleSelectedItemChange={(change) => {
                     const id = workflows?.find((x) => x.name === change.selectedItem)?.id;

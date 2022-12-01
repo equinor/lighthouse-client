@@ -17,14 +17,21 @@ export const useMakeStatusMenuItems = (
     const app = useAdminContext((s) => s.app);
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
-    const { deleteWorkflowStatusMutation } = useAdminMutations();
-    const { deleteKey } = adminMutationKeys(status.id);
-    const { mutate } = useAdminMutation(status.id, deleteKey, deleteWorkflowStatusMutation);
-
     menuItems.push({
         label: 'Rename',
         onClick: () => {
-            updateContext(app, workflowOwner, undefined, undefined, status, false, false);
+            updateContext({
+                app: app,
+                workflowOwner: workflowOwner,
+                workflow: {} as Workflow,
+                workflowStep: {} as WorkflowStepTemplate,
+                status: status,
+                isEditingWorkflow: false,
+                isEditingStep: false,
+                deletingWorkflow: false,
+                deletingStep: false,
+                deletingStatus: false,
+            });
             setIsEditing(true);
         },
         // isDisabled: !canPatch, //TODO - comment in when permissions are fixed
@@ -32,7 +39,19 @@ export const useMakeStatusMenuItems = (
     });
     menuItems.push({
         label: 'Delete',
-        onClick: () => mutate({ id: status.id }),
+        onClick: () =>
+            updateContext({
+                app: '',
+                workflowOwner: '',
+                workflow: {} as Workflow,
+                workflowStep: {} as WorkflowStepTemplate,
+                status: status,
+                isEditingWorkflow: false,
+                isEditingStep: false,
+                deletingWorkflow: false,
+                deletingStep: false,
+                deletingStatus: true,
+            }),
         // isDisabled: !canDelete, //TODO - comment in when permissions are fixed
         icon: <Icon name="delete_forever" color={tokens.colors.interactive.primary__resting.hex} />,
     });
@@ -45,15 +64,9 @@ export const useMakeStepMenuItems = (step: WorkflowStepTemplate): MenuItem[] => 
     const app = useAdminContext((s) => s.app);
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
-    const { deleteWorkflowStepMutation, moveWorkflowStepUpMutation, moveWorkflowStepDownMutation } =
-        useAdminMutations();
-    const { deleteKey } = adminMutationKeys(step?.id);
+    const { moveWorkflowStepUpMutation, moveWorkflowStepDownMutation } = useAdminMutations();
     const { postKey } = adminMutationKeys(step?.id);
-    const { mutate: deleteMutation } = useAdminMutation(
-        step.id,
-        deleteKey,
-        deleteWorkflowStepMutation
-    );
+
     const { mutate: moveUpMutation } = useAdminMutation(
         step.id,
         postKey,
@@ -80,14 +93,37 @@ export const useMakeStepMenuItems = (step: WorkflowStepTemplate): MenuItem[] => 
     menuItems.push({
         label: 'Rename',
         onClick: () => {
-            updateContext(app, workflowOwner, undefined, step, undefined, false, true);
+            updateContext({
+                app: app,
+                workflowOwner: workflowOwner,
+                workflow: {} as Workflow,
+                workflowStep: step,
+                status: {} as WorkflowStatus,
+                isEditingWorkflow: false,
+                isEditingStep: true,
+                deletingWorkflow: false,
+                deletingStep: false,
+                deletingStatus: false,
+            });
         },
         // isDisabled: !canPatch, //TODO - comment in when permissions are fixed
         icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
     });
     menuItems.push({
         label: 'Delete',
-        onClick: () => deleteMutation({ stepId: step.id }),
+        onClick: () =>
+            updateContext({
+                app: '',
+                workflowOwner: '',
+                workflow: {} as Workflow,
+                workflowStep: step,
+                status: {} as WorkflowStatus,
+                isEditingWorkflow: false,
+                isEditingStep: false,
+                deletingWorkflow: false,
+                deletingStep: true,
+                deletingStatus: false,
+            }),
         // isDisabled: !canDelete, //TODO - comment in when permissions are fixed
         icon: <Icon name="delete_forever" color={tokens.colors.interactive.primary__resting.hex} />,
     });
@@ -100,21 +136,40 @@ export const useMakeWorkflowMenuItems = (workflow: Workflow): MenuItem[] => {
     const app = useAdminContext((s) => s.app);
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
-    const { deleteWorkflowMutation } = useAdminMutations();
-    const { deleteKey } = adminMutationKeys(workflow?.id);
-    const { mutate } = useAdminMutation(workflow.id, deleteKey, deleteWorkflowMutation);
-
     menuItems.push({
         label: 'Rename',
         onClick: () => {
-            updateContext(app, workflowOwner, workflow, undefined, undefined, true, false);
+            updateContext({
+                app: app,
+                workflowOwner: workflowOwner,
+                workflow: workflow,
+                workflowStep: {} as WorkflowStepTemplate,
+                status: {} as WorkflowStatus,
+                isEditingWorkflow: true,
+                isEditingStep: false,
+                deletingWorkflow: false,
+                deletingStep: false,
+                deletingStatus: false,
+            });
         },
         // isDisabled: !canPatch, //TODO - comment in when permissions are fixed
         icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
     });
     menuItems.push({
         label: 'Delete',
-        onClick: () => mutate({ workflowId: workflow.id }),
+        onClick: () =>
+            updateContext({
+                app: '',
+                workflowOwner: '',
+                workflow: workflow,
+                workflowStep: {} as WorkflowStepTemplate,
+                status: {} as WorkflowStatus,
+                isEditingWorkflow: false,
+                isEditingStep: false,
+                deletingWorkflow: true,
+                deletingStep: false,
+                deletingStatus: false,
+            }),
         // isDisabled: !canDelete, //TODO - comment in when permissions are fixed
         icon: <Icon name="delete_forever" color={tokens.colors.interactive.primary__resting.hex} />,
     });
