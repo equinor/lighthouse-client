@@ -8,6 +8,7 @@ import {
     SelectWorkflowTemplate,
     Workflow,
     WorkflowEditor,
+    WorkflowStatus,
     WorkflowStepTemplate,
 } from '@equinor/Workflow';
 import {
@@ -40,7 +41,7 @@ export function WorkflowSidesheet({ item, actions }: WorkflowSidesheetProps): JS
 
     useGetWorkflow(app, workflowOwner, item.id, item);
     useGetWorkflowTemplates(item.id);
-    useWorkflowSidesheetEffects(actions, item.id);
+    useWorkflowSidesheetEffects(actions, item);
     useAdminAccess(item.id);
     useAdminMutationWatcher(item.id);
 
@@ -54,7 +55,18 @@ export function WorkflowSidesheet({ item, actions }: WorkflowSidesheetProps): JS
 
     useEffect(() => {
         clearState();
-        updateContext(app, workflowOwner, item, undefined, undefined, false, false);
+        updateContext({
+            app: app,
+            workflowOwner: workflowOwner,
+            workflow: item,
+            workflowStep: {} as WorkflowStepTemplate,
+            status: {} as WorkflowStatus,
+            isEditingWorkflow: false,
+            isEditingStep: false,
+            deletingWorkflow: false,
+            deletingStep: false,
+            deletingStatus: false,
+        });
     }, [item?.id]);
 
     return (
@@ -64,32 +76,16 @@ export function WorkflowSidesheet({ item, actions }: WorkflowSidesheetProps): JS
                     Select relevant workflow steps. The responsible role can stay empty, but must be
                     filled in by the user when the template is selected in an app.
                 </SelectTemplateText>
+                <SelectTemplateText>
+                    Select a workflow template, or start by adding single steps
+                </SelectTemplateText>
                 {isLoading ? (
                     <Button variant="ghost_icon" disabled>
                         <Progress.Dots color="primary" />
                     </Button>
                 ) : (
                     <div>
-                        <WorkflowEditor
-                            atomApi={WorkflowAdminAtomApi}
-                            app={app}
-                            workflowOwner={workflowOwner}
-                        />
                         <SelectionRow>
-                            {steps.length !== 0 && (
-                                <NewStepButton onClick={() => addStep(steps, WorkflowAdminAtomApi)}>
-                                    Add step
-                                </NewStepButton>
-                            )}
-                            {steps.length === 0 && (
-                                <NewStepButton
-                                    onClick={() =>
-                                        addStep(getNewWorkflowSteps(), WorkflowAdminAtomApi)
-                                    }
-                                >
-                                    New flow
-                                </NewStepButton>
-                            )}
                             <SelectExistingWorkflow>
                                 <SelectWorkflowTemplate
                                     workflowOwner={workflowOwner}
@@ -112,6 +108,27 @@ export function WorkflowSidesheet({ item, actions }: WorkflowSidesheetProps): JS
                                     }}
                                 />
                             </SelectExistingWorkflow>
+                        </SelectionRow>
+                        <WorkflowEditor
+                            atomApi={WorkflowAdminAtomApi}
+                            app={app}
+                            workflowOwner={workflowOwner}
+                        />
+                        <SelectionRow>
+                            {steps.length !== 0 && (
+                                <NewStepButton onClick={() => addStep(steps, WorkflowAdminAtomApi)}>
+                                    Add step
+                                </NewStepButton>
+                            )}
+                            {steps.length === 0 && (
+                                <NewStepButton
+                                    onClick={() =>
+                                        addStep(getNewWorkflowSteps(), WorkflowAdminAtomApi)
+                                    }
+                                >
+                                    New flow
+                                </NewStepButton>
+                            )}
                         </SelectionRow>
                     </div>
                 )}

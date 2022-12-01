@@ -1,4 +1,5 @@
 import { Button, TextField } from '@equinor/eds-core-react';
+import { WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { KeyboardEventHandler, useState } from 'react';
 import { updateContext } from '../../Atoms/updateContext';
 import { useAdminContext } from '../../Hooks/useAdminContext';
@@ -19,7 +20,18 @@ export const EditWorkflowModal = (): JSX.Element => {
     async function editWorkflow() {
         mutate({ workflowId: workflow.id, name: name });
         workflow.name = name;
-        updateContext(undefined, undefined, workflow, undefined, undefined, false, false);
+        updateContext({
+            app: '',
+            workflowOwner: '',
+            workflow: workflow,
+            workflowStep: {} as WorkflowStepTemplate,
+            status: {} as WorkflowStatus,
+            isEditingWorkflow: false,
+            isEditingStep: false,
+            deletingWorkflow: false,
+            deletingStep: false,
+            deletingStatus: false,
+        });
     }
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +41,18 @@ export const EditWorkflowModal = (): JSX.Element => {
     const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
         if (event.key === 'Escape') {
             event.preventDefault();
-            updateContext(undefined, undefined, workflow, undefined, undefined, false, false);
+            updateContext({
+                app: '',
+                workflowOwner: '',
+                workflow: workflow,
+                workflowStep: {} as WorkflowStepTemplate,
+                status: {} as WorkflowStatus,
+                isEditingWorkflow: false,
+                isEditingStep: false,
+                deletingWorkflow: false,
+                deletingStep: false,
+                deletingStatus: false,
+            });
         }
         //Allow shift+enter linebreak
         if (event.key === 'Enter' && !event.shiftKey && name !== '') {
@@ -66,15 +89,18 @@ export const EditWorkflowModal = (): JSX.Element => {
                 <Button
                     variant="outlined"
                     onClick={() => {
-                        updateContext(
-                            undefined,
-                            undefined,
-                            workflow,
-                            undefined,
-                            undefined,
-                            false,
-                            false
-                        );
+                        updateContext({
+                            app: '',
+                            workflowOwner: '',
+                            workflow: workflow,
+                            workflowStep: {} as WorkflowStepTemplate,
+                            status: {} as WorkflowStatus,
+                            isEditingWorkflow: false,
+                            isEditingStep: false,
+                            deletingWorkflow: false,
+                            deletingStep: false,
+                            deletingStatus: false,
+                        });
                     }}
                 >
                     Cancel

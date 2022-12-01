@@ -73,7 +73,7 @@ export const SelectText = styled.div`
 
 export const NewStepButton = styled(Button)`
     margin-bottom: 20px;
-    margin-left: 60px;
+    margin-left: 8px;
     margin-top: 16px;
     width: 100px;
 `;

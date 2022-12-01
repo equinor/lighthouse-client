@@ -7,6 +7,7 @@ import { CreateStatusModal } from '../Modal/CreateStatusModal';
 import { EditStatusModal } from '../Modal/EditStatusModal';
 import { useQuery } from 'react-query';
 import { useAdminContext } from '../../Hooks/useAdminContext';
+import { DeleteWorkflowStatusModal } from '../Modal/DeleteWorkflowStatusModal';
 
 export const WorkflowStatuses = (): JSX.Element | null => {
     const [isCreating, setIsCreating] = useState<boolean>(false);
@@ -15,6 +16,8 @@ export const WorkflowStatuses = (): JSX.Element | null => {
     const { data, error } = useQuery(workflowStatusesKey(), () =>
         getWorkflowStatuses(workflowOwner)
     );
+
+    const isDeleting = useAdminContext((s) => s.deletingStatus);
 
     if (error) {
         return (
@@ -41,6 +44,9 @@ export const WorkflowStatuses = (): JSX.Element | null => {
                     title={'Edit workflow status'}
                     content={<EditStatusModal setIsEditing={setIsEditing} />}
                 />
+            )}
+            {isDeleting && (
+                <Modal title={'Delete workflow status?'} content={<DeleteWorkflowStatusModal />} />
             )}
         </>
     );

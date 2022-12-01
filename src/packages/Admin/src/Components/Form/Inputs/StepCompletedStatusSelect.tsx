@@ -3,15 +3,18 @@ import { useQuery } from 'react-query';
 import { WorkflowStepAdminAtomApi } from '../../../Atoms/workflowStepAdminAtomApi';
 import { useAdminContext } from '../../../Hooks/useAdminContext';
 import { adminQueries } from '../../../Queries/queries';
+interface StepCompletedStatusSelectProps {
+    workflowStatus: string;
+}
 
-export const StepCompletedStatusSelect = (): JSX.Element => {
+export const StepCompletedStatusSelect = ({
+    workflowStatus,
+}: StepCompletedStatusSelectProps): JSX.Element => {
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
     const { workflowStatusesQuery } = adminQueries;
     const { data: workflowStatuses } = useQuery(workflowStatusesQuery(workflowOwner));
 
-    const { useAtomState, updateAtom } = WorkflowStepAdminAtomApi;
-
-    const workflowStatus = useAtomState(({ completedStatusName }) => completedStatusName);
+    const { updateAtom } = WorkflowStepAdminAtomApi;
 
     return (
         <SingleSelect
