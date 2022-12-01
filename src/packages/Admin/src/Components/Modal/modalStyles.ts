@@ -5,7 +5,8 @@ export const ModalButtonContainer = styled.div`
     flex-direction: row;
     justify-content: flex-end;
     padding: 0.5em;
-    align-items: center;
+    padding-right: 0em;
+    align-items: right;
     gap: 0.5em;
 `;
 

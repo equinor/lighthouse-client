@@ -1,4 +1,5 @@
 import { Button, TextField } from '@equinor/eds-core-react';
+import { Workflow, WorkflowStepTemplate } from '@equinor/Workflow';
 import { KeyboardEventHandler, useState } from 'react';
 import { updateContext } from '../../Atoms/updateContext';
 import { useAdminContext } from '../../Hooks/useAdminContext';
@@ -23,7 +24,19 @@ export const EditStatusModal = ({ setIsEditing }: EditWorkflowStatusModalProps):
     async function editStatus() {
         mutate({ id: status.id, name: name });
         status.name = name;
-        updateContext(undefined, undefined, undefined, undefined, status, false, false);
+        updateContext({
+            app: '',
+            workflowOwner: '',
+            workflow: {} as Workflow,
+            workflowStep: {} as WorkflowStepTemplate,
+            status: status,
+            isEditingWorkflow: false,
+            isEditingStep: false,
+            deletingWorkflow: false,
+            deletingStep: false,
+            deletingStatus: false,
+        });
+
         setIsEditing(false);
     }
 

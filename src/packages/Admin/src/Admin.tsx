@@ -6,6 +6,7 @@ import { AdminMenu } from './Components/Menu/AdminMenu';
 import { WorkflowStatuses } from './Components/Workspace/WorkflowStatuses';
 import { WorkflowSteps } from './Components/Workspace/WorkflowSteps';
 import { Workflows } from './Components/Workspace/Workflows';
+import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 
 interface AdminProps {
     app: string;
@@ -14,7 +15,19 @@ interface AdminProps {
 
 export function Admin({ app, workflowOwner }: AdminProps): JSX.Element {
     const [activeMenuItem, setActiveMenuItem] = useState<number>(3);
-    updateContext(app, workflowOwner, undefined, undefined, undefined, false, false);
+
+    updateContext({
+        app: app,
+        workflowOwner: workflowOwner,
+        workflow: {} as Workflow,
+        workflowStep: {} as WorkflowStepTemplate,
+        status: {} as WorkflowStatus,
+        isEditingWorkflow: false,
+        isEditingStep: false,
+        deletingWorkflow: false,
+        deletingStep: false,
+        deletingStatus: false,
+    });
 
     const handleChange = (index: number) => {
         setActiveMenuItem(index);

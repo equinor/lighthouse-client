@@ -25,11 +25,12 @@ export const WorkflowSaveButtonBar = ({ actions }: WorkflowButtonBarProps): JSX.
         editWorkflowTemplateMutation
     );
 
-    const handleSave = () => {
+    const handleSave = (saveAndClose: boolean) => {
         const { prepareWorkflowTemplate } = WorkflowAdminAtomApi;
         mutate({
             model: prepareWorkflowTemplate(),
             workflowId: workflow.id,
+            saveAndClose: saveAndClose,
         });
     };
 
@@ -46,8 +47,11 @@ export const WorkflowSaveButtonBar = ({ actions }: WorkflowButtonBarProps): JSX.
                             <Button variant="outlined" onClick={() => actions.closeSidesheet()}>
                                 Cancel
                             </Button>
-                            <Button disabled={!isValid} onClick={() => handleSave()}>
+                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 Save
+                            </Button>
+                            <Button disabled={!isValid} onClick={() => handleSave(true)}>
+                                Save and close
                             </Button>
                         </>
                     )}

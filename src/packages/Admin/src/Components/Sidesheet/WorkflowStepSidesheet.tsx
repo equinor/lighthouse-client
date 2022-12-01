@@ -1,5 +1,5 @@
 import { SidesheetApi } from '@equinor/sidesheet';
-import { WorkflowStepTemplate } from '@equinor/Workflow';
+import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { FlexColumn, Wrapper } from './sidesheet.styles';
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useEffect } from 'react';
@@ -28,26 +28,40 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
     useAdminMutationWatcher(item.id);
 
     const { clearState, updateAtom } = WorkflowStepAdminAtomApi;
-
     useEffect(() => {
         clearState();
-        updateContext(app, workflowOwner, undefined, item, undefined, false, false);
+        updateContext({
+            app: app,
+            workflowOwner: workflowOwner,
+            workflow: {} as Workflow,
+            workflowStep: item,
+            status: {} as WorkflowStatus,
+            isEditingWorkflow: false,
+            isEditingStep: false,
+            deletingWorkflow: false,
+            deletingStep: false,
+            deletingStatus: false,
+        });
         updateAtom({
             id: item.id,
             name: item.name,
             description: item.description,
             completedStatusName: item.completedStatusName,
         });
-    }, [item?.id]);
+    }, [item?.id, item?.name]);
+
+    const { useAtomState } = WorkflowStepAdminAtomApi;
+    const description = useAtomState((s) => s.description);
+    const workflowStatus = useAtomState(({ completedStatusName }) => completedStatusName);
 
     return (
         <Wrapper>
             <div>
                 <FlexColumn>
                     General info
-                    <StepDescriptionInput />
+                    <StepDescriptionInput description={description ?? ''} />
                     When signed, change workflow status to:
-                    <StepCompletedStatusSelect />
+                    <StepCompletedStatusSelect workflowStatus={workflowStatus ?? ''} />
                     {app !== 'releasecontrol' && <StepRejectedStatusSelect />}
                 </FlexColumn>
             </div>

@@ -4,34 +4,55 @@ import { useEffect } from 'react';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { MenuItem } from '@equinor/overlay-menu';
 import { useAdminContext } from './useAdminContext';
-import { useAdminMutations } from './useAdminMutations';
-import { adminMutationKeys } from '../Queries/adminMutationKeys';
-import { useAdminMutation } from './useAdminMutation';
-import { updateContext } from '../Atoms/updateContext';
 
-export function useWorkflowStepSidesheetEffects(actions: SidesheetApi, stepId: string): void {
+import { updateContext } from '../Atoms/updateContext';
+import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
+
+export function useWorkflowStepSidesheetEffects(
+    actions: SidesheetApi,
+    step: WorkflowStepTemplate
+): void {
     const { canDelete, id, name } = useAdminContext((s) => ({
         ...s.requestAccess,
         ...s.workflowStep,
     }));
-
-    const { deleteWorkflowStepMutation } = useAdminMutations();
-    const { deleteKey } = adminMutationKeys(stepId);
-    const { mutate } = useAdminMutation(stepId, deleteKey, deleteWorkflowStepMutation);
 
     const makeMenuItems = () => {
         const menuItems: MenuItem[] = [];
         menuItems.push({
             label: 'Rename',
             onClick: () => {
-                updateContext(undefined, undefined, undefined, undefined, undefined, false, true);
+                updateContext({
+                    app: '',
+                    workflowOwner: '',
+                    workflow: {} as Workflow,
+                    workflowStep: {} as WorkflowStepTemplate,
+                    status: {} as WorkflowStatus,
+                    isEditingWorkflow: false,
+                    isEditingStep: true,
+                    deletingWorkflow: false,
+                    deletingStep: false,
+                    deletingStatus: false,
+                });
             },
             // isDisabled: !canPatch, //TODO - comment in when permissions are fixed
             icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
         });
         menuItems.push({
             label: 'Delete',
-            onClick: () => mutate({ stepId: stepId }),
+            onClick: () =>
+                updateContext({
+                    app: '',
+                    workflowOwner: '',
+                    workflow: {} as Workflow,
+                    workflowStep: step,
+                    status: {} as WorkflowStatus,
+                    isEditingWorkflow: false,
+                    isEditingStep: false,
+                    deletingWorkflow: false,
+                    deletingStep: true,
+                    deletingStatus: false,
+                }),
             // isDisabled: !canDelete, //TODO - comment in when permissions are fixed
             icon: (
                 <Icon
