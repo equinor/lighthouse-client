@@ -17,7 +17,9 @@ export const FlexColumn = styled.div`
     display: flex;
     gap: 10px;
     flex-direction: column;
+    width: 600px;
     max-width: 95%;
+    margin-left: 4px;
 `;
 
 export const ActionBar = styled.div`
@@ -43,17 +45,12 @@ export const SelectionRow = styled.div`
     flex-direction: row;
 `;
 
-export const SelectTemplate = styled.div`
-    margin-left: 60px;
-    margin-bottom: 24px;
-`;
-
 export const SelectTemplateText = styled.div`
     font-weight: 400;
     font-size: 16px;
-    margin-bottom: 24px;
 `;
 export const SelectExistingWorkflow = styled.div`
     margin-top: 16px;
     margin-left: 16px;
+    margin-bottom: 16px;
 `;

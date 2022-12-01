@@ -1,26 +1,19 @@
 import { swap } from '@dbeining/react-atom';
-import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
-import { adminAtom } from './adminAtom';
+import { AdminAtom, adminAtom } from './adminAtom';
 
-export function updateContext(
-    app: string | undefined,
-    workflowOwner: string | undefined,
-    workflow: Workflow | undefined,
-    workflowStep: WorkflowStepTemplate | undefined,
-    status: WorkflowStatus | undefined,
-
-    isEditingWorkflow: boolean,
-    isEditingStep: boolean
-): void {
+export function updateContext(atom: AdminAtom): void {
     swap(adminAtom, (old) => ({
         ...old,
-        app: app ? app : old.app,
-        workflowOwner: workflowOwner ? workflowOwner : old.workflowOwner,
-        workflow: workflow ? workflow : old.workflow,
-        workflowStep: workflowStep ? workflowStep : old.workflowStep,
-        status: status ? status : old.status,
+        app: atom.app !== '' ? atom.app : old.app,
+        workflowOwner: atom.workflowOwner !== '' ? atom.workflowOwner : old.workflowOwner,
+        workflow: atom.workflow.id !== undefined ? atom.workflow : old.workflow,
+        workflowStep: atom.workflowStep.id !== undefined ? atom.workflowStep : old.workflowStep,
+        status: atom.status.id !== undefined ? atom.status : old.status,
 
-        isEditingWorkflow: isEditingWorkflow,
-        isEditingStep: isEditingStep,
+        isEditingWorkflow: atom.isEditingWorkflow,
+        isEditingStep: atom.isEditingStep,
+        deletingWorkflow: atom.deletingWorkflow,
+        deletingStep: atom.deletingStep,
+        deletingStatus: atom.deletingStatus,
     }));
 }

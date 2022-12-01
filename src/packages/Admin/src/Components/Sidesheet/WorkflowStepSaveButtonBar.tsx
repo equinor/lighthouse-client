@@ -26,10 +26,11 @@ export const WorkflowStepSaveButtonBar = ({ actions }: WorkflowStepButtonBarProp
         editWorkflowStepMutation
     );
 
-    const handleSave = () => {
+    const handleSave = (saveAndClose: boolean) => {
         const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
         mutate({
             workflowStep: prepareWorkflowStep(workflowOwner),
+            saveAndClose: saveAndClose,
         });
     };
 
@@ -46,8 +47,11 @@ export const WorkflowStepSaveButtonBar = ({ actions }: WorkflowStepButtonBarProp
                             <Button variant="outlined" onClick={() => actions.closeSidesheet()}>
                                 Cancel
                             </Button>
-                            <Button disabled={!isValid} onClick={() => handleSave()}>
+                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 Save
+                            </Button>
+                            <Button disabled={!isValid} onClick={() => handleSave(true)}>
+                                Save and close
                             </Button>
                         </>
                     )}

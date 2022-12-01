@@ -185,7 +185,7 @@ export const TestDotCircle = styled.div<{ color: string }>`
 
 export const CriticalLineVisualStyle = styled.div`
     display: flex;
-    flex-direction: horizontal;
+    flex-direction: column;
     justify-content: center;
     text-align: center;
     width: 30px;

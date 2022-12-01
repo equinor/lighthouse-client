@@ -12,6 +12,7 @@ import { Modal } from '@equinor/modal';
 import { CreateWorkflowModal } from '../Modal/CreateWorkflowModal';
 import { useState } from 'react';
 import { EditWorkflowModal } from '../Modal/EditWorkflowModal';
+import { DeleteWorkflowModal } from '../Modal/DeleteWorkflowModal';
 
 export async function workflowsIdResolverFunction(id: string): Promise<Workflow> {
     const { scopeChange } = httpClient();
@@ -45,6 +46,7 @@ export async function openWorkflowSidesheet(workflow: Workflow): Promise<void> {
 export const Workflows = (): JSX.Element | null => {
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
     const isEditing = useAdminContext((s) => s.isEditingWorkflow);
+    const isDeleting = useAdminContext((s) => s.deletingWorkflow);
 
     const { data, error, isLoading } = useQuery(workflowsKey(), () =>
         getWorkflows({ workflowOwner })
@@ -74,6 +76,7 @@ export const Workflows = (): JSX.Element | null => {
                 />
             )}
             {isEditing && <Modal title={'Edit workflow'} content={<EditWorkflowModal />} />}
+            {isDeleting && <Modal title={'Delete workflow?'} content={<DeleteWorkflowModal />} />}
         </>
     );
 };

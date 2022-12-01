@@ -3,9 +3,9 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { AdminAccess } from '../Hooks/useAdminAccess';
 
-export interface AdminAtom {
-    requestAccess: AdminAccess;
-    actions: SidesheetApi;
+export type AdminAtom = {
+    requestAccess?: AdminAccess;
+    actions?: SidesheetApi;
     app: string;
     workflowOwner: string;
     workflow: Workflow;
@@ -14,7 +14,10 @@ export interface AdminAtom {
 
     isEditingWorkflow: boolean;
     isEditingStep: boolean;
-}
+    deletingWorkflow: boolean;
+    deletingStep: boolean;
+    deletingStatus: boolean;
+};
 
 export const adminAtom = Atom.of<AdminAtom>({
     requestAccess: {
@@ -32,4 +35,7 @@ export const adminAtom = Atom.of<AdminAtom>({
     status: {} as WorkflowStatus,
     isEditingWorkflow: false,
     isEditingStep: false,
+    deletingWorkflow: false,
+    deletingStep: false,
+    deletingStatus: false,
 });

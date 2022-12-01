@@ -5,7 +5,7 @@ import { throwOnError } from './throwOnError';
 export async function patchWorkflowTemplate(
     template: WorkflowTemplateModel,
     workflowId: string
-): Promise<string> {
+): Promise<void> {
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
@@ -18,6 +18,4 @@ export async function patchWorkflowTemplate(
     );
 
     await throwOnError(res, 'Failed to patch workflow template');
-
-    return await res.json();
 }

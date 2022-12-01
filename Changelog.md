@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+## 1.22.0
+
+- [ReleaseControl] Move workflow step up/down in admin (reorder)
+- [ReleaseControl] Fix initiate step disappearing in RC when using template
+- [ReleaseControl] Workflow admin styling adjustments
+- [ReleaseControl] Workflow admin save and close
+- [ReleaseControl] Workflow admin delete warnings
+- [PipingAndHeattrace] Hover over critical line dialog in circuit diagram
+
 ## 1.21.0
+
 - [ScopeChangeRequest] Add reason for voiding and reason for revision.
 - [ReleaseControl] Add empty body for void request.
 
