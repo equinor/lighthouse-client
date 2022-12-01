@@ -1,10 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
-import {
-    WorkflowStepTemplate,
-    ReleaseControlStepNames,
-    Criteria,
-    CriteriaStatus,
-} from '@equinor/Workflow';
+import { WorkflowStepTemplate, Criteria, CriteriaStatus } from '@equinor/Workflow';
 
 import { InsertAfter } from './InsertAfter';
 import { InsertBefore } from './InsertBefore';
@@ -19,6 +14,7 @@ export interface MenuItem {
 export function getNewWorkflowSteps(): WorkflowStepTemplate[] {
     const baseReleaseControlSteps: WorkflowStepTemplate[] = [
         {
+            id: '',
             order: 1,
             name: 'Initiate',
             allowContributors: true,
@@ -31,71 +27,29 @@ export function getNewWorkflowSteps(): WorkflowStepTemplate[] {
                 },
             ],
             criterias: [],
-            criteriaTemplates: [],
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysUserSignature',
+                    assignToCreator: true,
+                    value: '',
+                },
+            ],
         },
     ];
     return baseReleaseControlSteps;
 }
 
-export function updateStepName(
+export function updateStep(
     step: WorkflowStepTemplate,
     steps: WorkflowStepTemplate[],
-    stepName: string
+    newStep: WorkflowStepTemplate
 ): WorkflowStepTemplate[] {
     const index = steps.findIndex((x) => x.order === step.order);
-    steps[index].name = stepName;
-    steps[index] = getStatusNamesForStep(steps[index]);
+    newStep.workflowStepCriteriaTemplates = [
+        { id: '', type: 'RequireProcosysUserSignature', assignToCreator: true },
+    ];
+    steps[index] = newStep;
     return [...steps];
-}
-
-export function getStatusNamesForStep(step: WorkflowStepTemplate): WorkflowStepTemplate {
-    switch (step.name) {
-        case ReleaseControlStepNames.Coordinator:
-            step.completedStatusName = 'Coordinated';
-            break;
-        case ReleaseControlStepNames.Engineering:
-            step.completedStatusName = 'Engineering completed';
-            break;
-        case ReleaseControlStepNames.Material:
-            step.completedStatusName = 'Material completed';
-            break;
-        case ReleaseControlStepNames.WorkPrep:
-            step.completedStatusName = 'Work prep completed';
-            break;
-        case ReleaseControlStepNames.Scaffolding:
-            step.completedStatusName = 'Scaffolding completed';
-            break;
-        case ReleaseControlStepNames.CircuitIsolation:
-            step.completedStatusName = 'Circuit isolation completed';
-            break;
-        case ReleaseControlStepNames.DemountISO:
-            step.completedStatusName = 'Isolation demounted';
-            break;
-        case ReleaseControlStepNames.CheckHT:
-            step.completedStatusName = 'Check/demount HT completed';
-            break;
-        case ReleaseControlStepNames.DemountMech:
-            step.completedStatusName = 'Demount Mech./Piping completed';
-            break;
-        case ReleaseControlStepNames.ATest:
-            step.completedStatusName = 'A-test completed';
-            break;
-        case ReleaseControlStepNames.RemountISO:
-            step.completedStatusName = 'Isolation completed';
-            break;
-        case ReleaseControlStepNames.BTest:
-            step.completedStatusName = 'B-test completed';
-            break;
-        case ReleaseControlStepNames.CircuitPowerUp:
-            step.completedStatusName = 'Circuit power-up completed';
-            break;
-        case ReleaseControlStepNames.CTest:
-            step.completedStatusName = 'C-test completed';
-            break;
-        default:
-            step.completedStatusName = 'Completed';
-    }
-    return step;
 }
 
 export function updateStepResponsible(
@@ -226,6 +180,7 @@ export function addStep(steps: WorkflowStepTemplate[], atomApi: any): void {
 export function getWorkflowStepMenuActions(
     step: WorkflowStepTemplate,
     steps: WorkflowStepTemplate[],
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     atomApi: any,
     initiateStep?: boolean
 ): MenuItem[] {

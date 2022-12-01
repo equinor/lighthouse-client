@@ -1,5 +1,5 @@
 import { openSidesheet } from '@equinor/sidesheet';
-import { getWorkflows } from '@equinor/Workflow';
+import { getWorkflows, workflowsKey } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { ButtonText, Loading, NewButton } from '../../../styles/styles';
 import { useAdminContext } from '../../Hooks/useAdminContext';
@@ -8,8 +8,12 @@ import { WorkflowSidesheet } from '../Sidesheet/WorkflowSidesheet';
 import { WorkflowsTable } from './WorkflowsTable';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
+import { Modal } from '@equinor/modal';
+import { CreateWorkflowModal } from '../Modal/CreateWorkflowModal';
+import { useState } from 'react';
+import { EditWorkflowModal } from '../Modal/EditWorkflowModal';
 
-export async function idResolverFunction(id: string): Promise<Workflow> {
+export async function workflowsIdResolverFunction(id: string): Promise<Workflow> {
     const { scopeChange } = httpClient();
     const res = await scopeChange.fetch(`api/workflows/${id}`);
     if (!res.ok) {
@@ -25,8 +29,8 @@ const sidesheetCreator = setupWorkspaceSidesheet<Workflow, 'workflow'>({
     component: WorkflowSidesheet,
     props: {
         objectIdentifier: 'id',
-        parentApp: undefined,
-        function: idResolverFunction,
+        parentApp: 'admin',
+        function: workflowsIdResolverFunction,
     },
 });
 
@@ -39,10 +43,14 @@ export async function openWorkflowSidesheet(workflow: Workflow): Promise<void> {
 }
 
 export const Workflows = (): JSX.Element | null => {
-    const app = useAdminContext((s) => s.app);
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
+    const isEditing = useAdminContext((s) => s.isEditingWorkflow);
 
-    const { data, error } = useQuery([workflowOwner], () => getWorkflows({ workflowOwner }));
+    const { data, error, isLoading } = useQuery(workflowsKey(), () =>
+        getWorkflows({ workflowOwner })
+    );
+
+    const [isCreating, setIsCreating] = useState<boolean>(false);
 
     if (error) {
         return (
@@ -51,14 +59,21 @@ export const Workflows = (): JSX.Element | null => {
             </Loading>
         );
     }
+
+    if (isLoading) return <div>Loading</div>;
     return (
         <>
-            <NewButton
-                onClick={() => openWorkflowSidesheet({ id: '', name: '', changeCategory: null })}
-            >
-                <ButtonText>Add template</ButtonText>
+            <NewButton onClick={() => setIsCreating(true)}>
+                <ButtonText>Add workflow</ButtonText>
             </NewButton>
-            <WorkflowsTable workflows={data ?? []} app={app} />
+            <WorkflowsTable workflows={data ?? []} />
+            {isCreating && (
+                <Modal
+                    title={'Create workflow'}
+                    content={<CreateWorkflowModal setIsCreating={setIsCreating} />}
+                />
+            )}
+            {isEditing && <Modal title={'Edit workflow'} content={<EditWorkflowModal />} />}
         </>
     );
 };

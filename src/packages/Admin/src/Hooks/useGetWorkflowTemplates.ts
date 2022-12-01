@@ -9,9 +9,9 @@ export function useGetWorkflowTemplates(workflowId: string): void {
         ...workflowTemplatesQuery(workflowId),
         onSuccess: (workflowTemplates) => {
             updateAtom({
-                id: workflowTemplates ? workflowTemplates[0].id : '',
+                id: workflowTemplates ? workflowTemplates[0]?.id : '',
                 workflowStepTemplates: workflowTemplates
-                    ? workflowTemplates[0].workflowStepTemplates
+                    ? workflowTemplates[0]?.workflowStepTemplates
                     : [],
             });
         },

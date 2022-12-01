@@ -1,5 +1,5 @@
+import { workflowResolverFunction, workflowStepResolverFunction } from '@equinor/Admin';
 import { FunctionManifest } from '@equinor/lighthouse-functions';
-import { workflowResolverFunction } from '../packages/Admin/src/Components/Workspace/Workflows';
 import {
     htResolverFunction,
     rcResolverFunction,
@@ -7,6 +7,7 @@ import {
 import { handoverResolverFunction } from './Handover';
 import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
+import { punchResolverFunction } from './Punch/utility/config';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
 import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
@@ -29,6 +30,8 @@ export const functions: FunctionManifest[] = [
     tagResolverFunction,
     loopResolverFunction,
     workflowResolverFunction,
+    punchResolverFunction,
+    workflowStepResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {

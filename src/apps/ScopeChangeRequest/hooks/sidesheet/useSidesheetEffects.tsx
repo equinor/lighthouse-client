@@ -4,7 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { MenuItem } from '@equinor/overlay-menu';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
-import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
+import { unVoidRequest } from '../../api/ScopeChange/Request';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { WorkflowStep } from '../../types/scopeChangeRequest';
@@ -15,15 +15,15 @@ export function useSidesheetEffects(
     actions: SidesheetApi,
     toggleEditMode: () => void,
     requestId: string,
-    setRevisionMode: () => void
+    setRevisionMode: () => void,
+    toggleVoidMode: () => void
 ): void {
     const { canPatch, canVoid, canUnVoid, title, isVoided, id, serialNumber, workflowSteps } =
         useScopeChangeContext((s) => ({ ...s.requestAccess, ...s.request }));
 
     const editMode = useAtom(sideSheetEditModeAtom);
 
-    const { unvoidKey, voidKey } = scopeChangeMutationKeys(requestId);
-    const { mutate: voidRequestMutation } = useScopeChangeMutation(requestId, voidKey, voidRequest);
+    const { unvoidKey } = scopeChangeMutationKeys(requestId);
     const { mutate: unVoidRequestMutation } = useScopeChangeMutation(
         requestId,
         unvoidKey,
@@ -56,27 +56,27 @@ export function useSidesheetEffects(
         menuItems.push(
             isVoided
                 ? {
-                    label: 'Unvoid request',
-                    onClick: () => unVoidRequestMutation({ requestId }),
-                    isDisabled: !canUnVoid,
-                    icon: (
-                        <Icon
-                            name="restore_from_trash"
-                            color={tokens.colors.interactive.primary__resting.hex}
-                        />
-                    ),
-                }
+                      label: 'Unvoid request',
+                      onClick: () => unVoidRequestMutation({ requestId }),
+                      isDisabled: !canUnVoid,
+                      icon: (
+                          <Icon
+                              name="restore_from_trash"
+                              color={tokens.colors.interactive.primary__resting.hex}
+                          />
+                      ),
+                  }
                 : {
-                    label: 'Void request',
-                    onClick: () => voidRequestMutation({ requestId }),
-                    isDisabled: !canVoid,
-                    icon: (
-                        <Icon
-                            name="delete_to_trash"
-                            color={tokens.colors.interactive.danger__resting.hex}
-                        />
-                    ),
-                }
+                      label: 'Void request',
+                      onClick: () => toggleVoidMode(),
+                      isDisabled: !canVoid,
+                      icon: (
+                          <Icon
+                              name="delete_to_trash"
+                              color={tokens.colors.interactive.danger__resting.hex}
+                          />
+                      ),
+                  }
         );
         return menuItems;
     };

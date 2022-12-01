@@ -1,13 +1,15 @@
+import {
+    workflowComponent,
+    workflowStepComponent,
+    workflowStepWidgetManifest,
+    workflowWidgetManifest,
+} from '@equinor/Admin';
 import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
     actionCenterSidesheetWidgetManifest,
 } from '../components/ActionCenter/ActionCenterSidesheet';
-import {
-    workflowComponent,
-    workflowWidgetManifest,
-} from '../packages/Admin/src/Components/Workspace/Workflows';
 import {
     htSidesheetWidgetComponent,
     htSidesheetWidgetManifest,
@@ -17,6 +19,10 @@ import {
 import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
+import {
+    punchSidesheetWidgetComponent,
+    punchSidesheetWidgetManifest,
+} from './Punch/utility/config';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
@@ -46,6 +52,8 @@ const _widgets: WidgetManifest[] = [
     workOrderCreatorManifest,
     releaseCreatorManifest,
     workflowWidgetManifest,
+    punchSidesheetWidgetManifest,
+    workflowStepWidgetManifest,
 
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
@@ -60,12 +68,13 @@ const _widgetComponents: ComponentManifest[] = [
     changeCreatorComponent,
     releaseComponent,
     workflowComponent,
+    workflowStepComponent,
     swcrCreatorComponent,
     handoverCreatorComponent,
     workOrderCreatorComponent,
     workOrderCreatorComponent,
     releaseCreatorComponent,
-
+    punchSidesheetWidgetComponent,
     mcCreatorComponent,
     tagWidgetComponent,
     loopSidesheetWidgetComponent,

@@ -42,10 +42,11 @@ export function useFAMSearch(): FAMSearch {
                 const items = await searchTag(searchValue);
                 items.map((tag: FamTag) => {
                     tag.relatedHTCables =
-                        (tag.htCables !== null ? tag.htCables : '') +
-                        (tag.htCables !== null ? ', ' : '') +
-                        (tag.mountedOn_HTCables !== null ? tag.mountedOn_HTCables : '');
-                    tag.mountedOn = tag.mountedOnTagNo; //TODO - remove when backend fixed
+                        (tag.heatTracingCableTagNos !== null ? tag.heatTracingCableTagNos : '') +
+                        (tag.heatTracingCableTagNos !== null ? ', ' : '') +
+                        (tag.mountedOnHeatTracingCableTagNos !== null
+                            ? tag.mountedOnHeatTracingCableTagNos
+                            : '');
                     return tag;
                 });
                 return items.map(

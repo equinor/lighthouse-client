@@ -6,9 +6,9 @@ export const getYearAndWeekFromDate = (date: Date): string => {
         dateTime.weekNumber < 10 ? '0' + dateTime.weekNumber : dateTime.weekNumber
     }`;
 };
-export const getYearAndWeekFromString = (dateString: string): string => {
+export const getYearAndWeekFromString = (dateString: string, invalidDateReturn = 'N/A'): string => {
     const date = new Date(dateString);
-    return DateTime.fromJSDate(date).isValid ? getYearAndWeekFromDate(date) : 'N/A';
+    return DateTime.fromJSDate(date).isValid ? getYearAndWeekFromDate(date) : invalidDateReturn;
 };
 export const formatDateString = (dateString: string | null): string => {
     if (!dateString) return 'N/A';

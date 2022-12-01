@@ -14,7 +14,7 @@ interface AdminProps {
 
 export function Admin({ app, workflowOwner }: AdminProps): JSX.Element {
     const [activeMenuItem, setActiveMenuItem] = useState<number>(3);
-    updateContext(app, workflowOwner, undefined);
+    updateContext(app, workflowOwner, undefined, undefined, undefined, false, false);
 
     const handleChange = (index: number) => {
         setActiveMenuItem(index);

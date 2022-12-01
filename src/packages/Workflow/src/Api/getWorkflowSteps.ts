@@ -3,16 +3,15 @@ import { WorkflowStepTemplate } from '@equinor/Workflow';
 import { throwOnError } from './throwOnError';
 
 interface QueryProps {
-    app: string;
     workflowOwner: string;
 }
 
 export const getWorkflowSteps = async ({
-    app,
     workflowOwner,
 }: QueryProps): Promise<WorkflowStepTemplate[]> => {
     const { scopeChange } = httpClient();
-    const res = await scopeChange.fetch(`api/${app}/steps?workflowOwner=${workflowOwner}`);
+
+    const res = await scopeChange.fetch(`api/workflows/workflow-available-steps/${workflowOwner}`);
 
     throwOnError(res, 'Failed to get steps');
 
