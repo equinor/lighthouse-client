@@ -1,4 +1,4 @@
-import { MenuGroup, MenuWrapper, Row } from '../../../styles/styles';
+import { MenuWrapper, Row } from '../../../styles/styles';
 import { MenuItemType } from '../../types/menuTypes';
 import { MenuItem } from './MenuItem';
 
@@ -27,18 +27,16 @@ export const AdminMenu = ({ activeMenuItem, handleChange }: AdminMenuProps): JSX
         <MenuWrapper>
             <Row>
                 <>
-                    <MenuGroup>
-                        <h3>Administration menu</h3>
-                        {menuItems.map((item) => (
-                            <MenuItem
-                                key={`${item.id}`}
-                                id={item.id}
-                                name={item.name}
-                                active={activeMenuItem === Number(item.id)}
-                                handleChange={handleChange}
-                            />
-                        ))}
-                    </MenuGroup>
+                    <h3>Administration menu</h3>
+                    {menuItems.map((item) => (
+                        <MenuItem
+                            key={`${item.id}`}
+                            id={item.id}
+                            name={item.name}
+                            active={activeMenuItem === Number(item.id)}
+                            handleChange={handleChange}
+                        />
+                    ))}
                 </>
             </Row>
         </MenuWrapper>

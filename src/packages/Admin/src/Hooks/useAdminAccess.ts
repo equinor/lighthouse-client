@@ -18,7 +18,18 @@ export function useAdminAccess(id: string): void {
         onSuccess: (canDelete) => {
             swap(adminAtom, (old) => ({
                 ...old,
-                requestAccess: { ...old.requestAccess, canDelete: canDelete },
+                requestAccess: {
+                    ...(old.requestAccess
+                        ? old.requestAccess
+                        : {
+                              canDelete: false,
+                              canGet: false,
+                              canPatch: false,
+                              canPost: false,
+                              canPut: false,
+                          }),
+                    canDelete: canDelete,
+                },
             }));
         },
     });

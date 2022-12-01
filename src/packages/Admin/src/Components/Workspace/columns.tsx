@@ -30,13 +30,13 @@ export const stepColumns = (): Column<WorkflowStepTemplate>[] => {
             id: 'name',
             Header: 'Name',
             accessor: (item) => item.name,
-            width: 250,
+            width: 600,
         },
         {
             id: 'completedStatusName',
             Header: 'Completed status name',
             accessor: (item) => item.completedStatusName,
-            width: 250,
+            width: 400,
         },
         // {
         //     id: 'rejectedStatusName',
@@ -62,7 +62,7 @@ export const workflowColumns = (): Column<Workflow>[] => {
             id: 'workflowTemplate',
             Header: 'Workflow',
             accessor: (item) => item.name,
-            width: 250,
+            width: 600,
         },
     ];
 };
@@ -84,7 +84,7 @@ export const statusColumns = (
             id: 'name',
             Header: 'Workflow status',
             accessor: (item) => item.name,
-            width: 250,
+            width: 600,
         },
     ];
 };

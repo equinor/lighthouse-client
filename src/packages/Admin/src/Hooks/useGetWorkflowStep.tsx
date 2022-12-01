@@ -1,4 +1,4 @@
-import { WorkflowStepTemplate } from '@equinor/Workflow';
+import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { updateContext } from '../Atoms/updateContext';
 import { WorkflowStepAdminAtomApi } from '../Atoms/workflowStepAdminAtomApi';
@@ -22,7 +22,18 @@ export function useGetWorkflowStep(
                 description: workflowStep.description,
                 completedStatusName: workflowStep.completedStatusName,
             });
-            updateContext(app, workflowOwner, undefined, workflowStep, undefined, false, false);
+            updateContext({
+                app: app,
+                workflowOwner: workflowOwner,
+                workflow: {} as Workflow,
+                workflowStep: workflowStep,
+                status: {} as WorkflowStatus,
+                isEditingWorkflow: false,
+                isEditingStep: false,
+                deletingWorkflow: false,
+                deletingStep: false,
+                deletingStatus: false,
+            });
         },
     });
 }

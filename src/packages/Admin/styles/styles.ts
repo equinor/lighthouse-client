@@ -23,10 +23,6 @@ export const MenuWrapper = styled.div`
     flex-direction: column;
 `;
 
-export const MenuGroup = styled.div`
-    padding-left: 48px;
-`;
-
 export const FavoritesDividerWrapper = styled.div`
     padding-left: 48px;
     padding-right: 1rem;
@@ -89,7 +85,7 @@ export const ContentWrapper = styled.div`
 
 export const Title = styled(Typography)<MenuItemProps>`
     font-size: 14px !important;
-    font-weight: 500;
+    font-weight: ${({ active }) => (active ? 'bold' : 500)};
     color: ${({ active }) =>
         active
             ? `${tokens.colors.interactive.primary__hover.rgba}`

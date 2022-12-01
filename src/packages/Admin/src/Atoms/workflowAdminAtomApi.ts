@@ -61,6 +61,9 @@ function checkFormState(
             case workflowTemplate.workflowStepTemplates !== undefined &&
                 workflowTemplate?.workflowStepTemplates[0]?.name !== 'Initiate':
                 return false;
+            case workflowTemplate.workflowStepTemplates !== undefined &&
+                workflowTemplate?.workflowStepTemplates.some((x) => x.name === ''):
+                return false;
         }
 
         return true;

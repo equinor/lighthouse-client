@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Modal } from '@equinor/modal';
 import { EditStepModal } from '../Modal/EditStepModal';
 import { CreateStepModal } from '../Modal/CreateStepModal';
+import { DeleteWorkflowStepModal } from '../Modal/DeleteWorkflowStepModal';
 
 export async function workflowStepsIdResolverFunction(id: string): Promise<WorkflowStepTemplate> {
     const { scopeChange } = httpClient();
@@ -43,6 +44,7 @@ export async function openWorkflowStepSidesheet(step: WorkflowStepTemplate): Pro
 
 export const WorkflowSteps = (): JSX.Element | null => {
     const isEditing = useAdminContext((s) => s.isEditingStep);
+    const isDeleting = useAdminContext((s) => s.deletingStep);
 
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
@@ -68,6 +70,9 @@ export const WorkflowSteps = (): JSX.Element | null => {
                 />
             )}
             {isEditing && <Modal title={'Edit workflow step'} content={<EditStepModal />} />}
+            {isDeleting && (
+                <Modal title={'Delete workflow step?'} content={<DeleteWorkflowStepModal />} />
+            )}
         </>
     );
 };

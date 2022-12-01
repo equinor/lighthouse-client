@@ -1,4 +1,5 @@
 import { Button, TextField } from '@equinor/eds-core-react';
+import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { KeyboardEventHandler, useState } from 'react';
 import { useMutation } from 'react-query';
 import { updateContext } from '../../Atoms/updateContext';
@@ -16,8 +17,19 @@ export const EditStepModal = (): JSX.Element => {
 
     async function editStep() {
         step.name = name;
-        mutate({ workflowStep: step });
-        updateContext(undefined, undefined, undefined, step, undefined, false, false);
+        mutate({ workflowStep: step, saveAndClose: false });
+        updateContext({
+            app: '',
+            workflowOwner: '',
+            workflow: {} as Workflow,
+            workflowStep: step,
+            status: {} as WorkflowStatus,
+            isEditingWorkflow: false,
+            isEditingStep: false,
+            deletingWorkflow: false,
+            deletingStep: false,
+            deletingStatus: false,
+        });
     }
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +39,18 @@ export const EditStepModal = (): JSX.Element => {
     const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
         if (event.key === 'Escape') {
             event.preventDefault();
-            updateContext(undefined, undefined, undefined, undefined, undefined, false, false);
+            updateContext({
+                app: '',
+                workflowOwner: '',
+                workflow: {} as Workflow,
+                workflowStep: {} as WorkflowStepTemplate,
+                status: {} as WorkflowStatus,
+                isEditingWorkflow: false,
+                isEditingStep: false,
+                deletingWorkflow: false,
+                deletingStep: false,
+                deletingStatus: false,
+            });
         }
         //Allow shift+enter linebreak
         if (event.key === 'Enter' && !event.shiftKey && name !== '') {
@@ -64,15 +87,18 @@ export const EditStepModal = (): JSX.Element => {
                 <Button
                     variant="outlined"
                     onClick={() => {
-                        updateContext(
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            false,
-                            false
-                        );
+                        updateContext({
+                            app: '',
+                            workflowOwner: '',
+                            workflow: {} as Workflow,
+                            workflowStep: {} as WorkflowStepTemplate,
+                            status: {} as WorkflowStatus,
+                            isEditingWorkflow: false,
+                            isEditingStep: false,
+                            deletingWorkflow: false,
+                            deletingStep: false,
+                            deletingStatus: false,
+                        });
                     }}
                 >
                     Cancel
