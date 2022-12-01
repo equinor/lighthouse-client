@@ -24,7 +24,7 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
     useGetWorkflowStep(app, workflowOwner, item.id, item);
-    useWorkflowStepSidesheetEffects(actions, item.id);
+    useWorkflowStepSidesheetEffects(actions, item);
     useAdminMutationWatcher(item.id);
 
     const { clearState, updateAtom } = WorkflowStepAdminAtomApi;
