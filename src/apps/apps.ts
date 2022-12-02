@@ -260,8 +260,8 @@ export const apps: AppManifest[] = [
         tags: [],
     },
     {
-        title: 'Overivew',
-        shortName: 'cch-overivew',
+        title: 'Overview',
+        shortName: 'cch-overview',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
