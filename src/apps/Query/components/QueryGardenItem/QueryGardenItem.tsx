@@ -1,9 +1,9 @@
-import { Query } from '../../model';
 import styled from 'styled-components';
 import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
 import { memo, useMemo } from 'react';
-import { getQueryStatusColor } from '../../model/utils';
 import { tokens } from '@equinor/eds-tokens';
+import { Query } from '../../types';
+import { getQueryStatusColor } from '../../utility/helpers';
 
 type QueryItemProps = { backgroundColor: string; textColor: string; isSelected: boolean };
 
@@ -59,4 +59,4 @@ function QueryGardenItem({
         </Root>
     );
 }
-export default memo(QueryGardenItem);
+export const CustomGardenItem = memo(QueryGardenItem);

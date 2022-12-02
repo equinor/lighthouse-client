@@ -1,4 +1,4 @@
-import { QueryStatus } from '../model';
+import { QueryStatus } from '../../types';
 
 export const QueryStatusPriority: Record<QueryStatus, number> = {
     Open: 0,

@@ -1,15 +1,11 @@
 import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { TabTable } from '@equinor/GardenUtils';
-import { sortBySequence } from '../../../helpers/sortFuctions';
-import { Column } from '@equinor/Table';
+import { useGetUser } from '@equinor/hooks';
+import { CellProps, Column } from '@equinor/Table';
 import { useQuery } from 'react-query';
-import {
-    Query,
-    QuerySignature,
-    getQuerySignatures,
-    querySignaturesColumnNames,
-} from '../../../model';
-
+import { Query, QuerySignature } from '../../../types';
+import { getQuerySignatures, querySignaturesColumnNames } from '../../../utility/api';
+import { sortBySequence } from '../../../utility/helpers';
 const columns: Column<QuerySignature>[] = [
     {
         id: 'SignatureRole',
@@ -25,9 +21,19 @@ const columns: Column<QuerySignature>[] = [
         sortType: 'number',
     },
     {
-        id: 'functionalRole',
         Header: 'By',
-        accessor: (pkg) => pkg.functionalRole,
+        accessor: (pkg) => pkg.signedByAzureOid,
+        Cell: (cellProps: CellProps<QuerySignature, string | null>) => {
+            const { error, isLoadingUser, user } = useGetUser(cellProps.value ?? undefined);
+
+            if (isLoadingUser) {
+                return <div>....</div>;
+            }
+            if (error || !user) {
+                return <div>{cellProps.row.original.functionalRole}</div>;
+            }
+            return <div>{user.name}</div>;
+        },
         width: 150,
     },
     {
@@ -42,11 +48,11 @@ const columns: Column<QuerySignature>[] = [
         },
     },
 ];
-type LoopContentProps = {
+type QuerySignatureTableProps = {
     query: Query;
 };
-export const QuerySignatureTable = ({ query }: LoopContentProps) => {
-    const expressions = generateExpressions('queryNo', 'Equals', [query.queryNo || '']);
+export const QuerySignatureTable = ({ query }: QuerySignatureTableProps): JSX.Element => {
+    const expressions = generateExpressions('queryNo', 'Equals', [query.queryNo]);
     const requestArgs = generateFamRequest(querySignaturesColumnNames, 'Or', expressions);
     const { data, isLoading, error } = useQuery(['querySignature', query.queryNo], ({ signal }) =>
         getQuerySignatures(requestArgs, signal)

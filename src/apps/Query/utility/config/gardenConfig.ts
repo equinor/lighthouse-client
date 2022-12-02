@@ -5,13 +5,14 @@ import {
 } from '@equinor/GardenUtils';
 
 import { FieldSettings, GardenOptions } from '@equinor/ParkView';
-import { Query } from '../model/query';
-import QueryGardenItem from '../components/queryGardenItem/queryGardenItem';
+import { CustomGardenItem } from '../../components';
+import { Query } from '../../types';
 
 export const fieldSettings: FieldSettings<Query> = {
     requiredAtDate: {
         label: 'Required date',
-        getKey: (item) => [getYearAndWeekFromString(item.requiredAtDate)],
+        getKey: (item) =>
+            item.requiredAtDate ? getYearAndWeekFromString(item.requiredAtDate) : 'N/A',
         getColumnSort: sortByNumber,
     },
     nextToSign: { label: 'Next to sign' },
@@ -24,7 +25,7 @@ export const getHighlightedColumn = (groupByKey: string): string | undefined => 
     return groupByKey === 'requiredAtDate' ? getYearAndWeekFromDate(new Date()) : undefined;
 };
 
-export const customDescription = (item: Query) => {
+export const customDescription = (item: Query): string => {
     return `${item.title}`;
 };
 
@@ -35,7 +36,7 @@ export const gardenConfig: GardenOptions<Query> = {
     itemWidth: () => 200,
     rowHeight: 25,
     customViews: {
-        customItemView: QueryGardenItem,
+        customItemView: CustomGardenItem,
     },
     fieldSettings,
     highlightColumn: getHighlightedColumn,

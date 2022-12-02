@@ -1,6 +1,9 @@
 import { TableOptions } from '@equinor/WorkSpace';
-import { Query } from '../model/query';
-import { getPossibleWarranty, getScheduleImpact, getSignatureProgress } from './queryItemMapping';
+import {
+    getPossibleWarranty,
+    getScheduleImpact,
+    getSignatureProgress,
+} from '../helpers/queryItemMapping';
 import {
     CellProps,
     CustomProgressCell,
@@ -8,6 +11,7 @@ import {
     CustomLinkCellWithTextDecoration,
 } from '@equinor/Table';
 import { proCoSysUrls } from '@equinor/procosys-urls';
+import { Query } from '../../types';
 export const tableConfig: TableOptions<Query> = {
     objectIdentifierKey: 'queryId',
     preventAutoGenerateColumns: true,

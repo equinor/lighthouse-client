@@ -1,6 +1,6 @@
 import { FamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { QueryCommpkg } from '../sidesheetResources';
+import { QueryCommpkg } from '../../types';
 export const queryCommpkgColumnNames = [
     'QueryNo',
     'Facility',

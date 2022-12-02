@@ -1,6 +1,6 @@
 import { FamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { QuerySignature } from '../sidesheetResources';
+import { QuerySignature } from '../../types';
 export const querySignaturesColumnNames = [
     'QueryNo',
     'SignatureRole',

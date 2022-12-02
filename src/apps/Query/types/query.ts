@@ -14,7 +14,7 @@ export type Query = {
     milestone: string | null;
     scheduleImpact: string | null;
     possibleWarrantyClaim: string | null;
-    requiredAtDate: string;
+    requiredAtDate: string | null;
     discipline: string | null;
     disciplineDescription: string | null;
     createdDate: string | null;
@@ -22,11 +22,11 @@ export type Query = {
     fAMUpsertedTime: string | null;
     nextToSign: string | null;
     closedDate: string | null;
-    isOpen: number;
+    isOpen: number | null;
     queryStatus: QueryStatus;
     daysToClose: string | null;
-    steps: number;
-    stepsSigned: number;
-    isOverdue: number;
-    signatureProgress: string;
+    steps: number | null;
+    stepsSigned: number | null;
+    isOverdue: number | null;
+    signatureProgress: string | null;
 };

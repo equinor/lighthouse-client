@@ -1,4 +1,4 @@
-import { QueryStatus } from './query';
+import { QueryStatus } from '../../types';
 
 const queryStatusColors: Record<QueryStatus, string> = {
     Open: '#D9EAF2',

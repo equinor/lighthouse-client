@@ -1,5 +1,5 @@
 import { StatusItem } from '@equinor/lighthouse-status-bar';
-import { Query } from '../model/query';
+import { Query } from '../../types';
 function numberFormat(number: number): string {
     return parseFloat(Math.round(number).toString()).toLocaleString('no');
 }

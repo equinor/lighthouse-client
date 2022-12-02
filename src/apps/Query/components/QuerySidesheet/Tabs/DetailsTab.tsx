@@ -1,8 +1,8 @@
 import { StringCell, Table, formatDateString } from '@equinor/GardenUtils';
 import styled from 'styled-components';
-import { Query } from '../../../model';
+import { Query } from '../../../types';
+import { getPossibleWarranty, getScheduleImpact } from '../../../utility/helpers';
 import { QuerySignatureTable } from './QuerySignatureTable';
-import { getPossibleWarranty, getScheduleImpact } from '../../../config/queryItemMapping';
 const TabContent = styled.div`
     height: 100%;
     overflow: auto;
@@ -15,7 +15,7 @@ const TabContent = styled.div`
 type DetailsTabProps = {
     query: Query;
 };
-export const DetailsTab = ({ query }: DetailsTabProps) => {
+export const DetailsTab = ({ query }: DetailsTabProps): JSX.Element => {
     return (
         <TabContent>
             <h3>Details</h3>

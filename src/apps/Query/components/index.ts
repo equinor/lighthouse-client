@@ -1,2 +1,2 @@
-export * from './QuerySidesheet/querySidesheet';
-export * from './queryGardenItem/queryGardenItem';
+export { CustomGardenItem } from './QueryGardenItem/QueryGardenItem';
+export { QuerySideSheet } from './QuerySidesheet/QuerySidesheet';

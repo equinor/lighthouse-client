@@ -1,12 +1,12 @@
 import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { TabTable } from '@equinor/GardenUtils';
-//import { sortBySequence } from '../../../helpers/sortFuctions';
 import { Column, CustomLinkCellWithTextDecoration, CellProps } from '@equinor/Table';
 import { useQuery } from 'react-query';
-import { Query, QueryCommpkg, getqueryCommpkg, queryCommpkgColumnNames } from '../../../model';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 
 import styled from 'styled-components';
+import { Query, QueryCommpkg } from '../../../types';
+import { getqueryCommpkg, queryCommpkgColumnNames } from '../../../utility/api';
 
 const columns: Column<QueryCommpkg>[] = [
     {
@@ -15,7 +15,7 @@ const columns: Column<QueryCommpkg>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'contentTagNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId ?? ''),
         }),
         width: 150,
 
@@ -30,8 +30,8 @@ const columns: Column<QueryCommpkg>[] = [
 type QueryCommpkgProps = {
     query: Query;
 };
-export const QueryCommpkgTable = ({ query }: QueryCommpkgProps) => {
-    const expressions = generateExpressions('queryNo', 'Equals', [query.queryNo || '']);
+export const QueryCommpkgTable = ({ query }: QueryCommpkgProps): JSX.Element => {
+    const expressions = generateExpressions('queryNo', 'Equals', [query.queryNo]);
     const requestArgs = generateFamRequest(queryCommpkgColumnNames, 'Or', expressions);
     const { data, isLoading, error } = useQuery(['queryCommpkg', query.queryNo], ({ signal }) =>
         getqueryCommpkg(requestArgs, signal)

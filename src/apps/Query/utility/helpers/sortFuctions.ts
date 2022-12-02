@@ -1,4 +1,4 @@
-import { Query, QuerySignature } from '../model';
+import { Query, QuerySignature } from '../../types';
 import { getQueryStatusPriority } from './getStatus';
 
 export const sortQueryByStatus = (columnA: Query, columnB: Query): number =>
@@ -6,4 +6,4 @@ export const sortQueryByStatus = (columnA: Query, columnB: Query): number =>
     parseInt(columnA.queryNo) - parseInt(columnB.queryNo);
 
 export const sortBySequence = (columnA: QuerySignature, columnB: QuerySignature): number =>
-    parseInt(columnA.sequence) - parseInt(columnB.sequence);
+    parseInt(columnA.sequence ?? '0') - parseInt(columnB.sequence ?? '0');

@@ -1,6 +1,6 @@
 import { FilterOptions } from '@equinor/filter';
-import { Query } from '../model/query';
-import { getOverdue } from './queryItemMapping';
+import { Query } from '../../types';
+import { getOverdue } from '../helpers/queryItemMapping';
 
 export const filterConfig: FilterOptions<Query> = [
     {

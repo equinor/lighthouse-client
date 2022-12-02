@@ -1,4 +1,4 @@
-import { Query } from '../model/query';
+import { Query } from '../../types';
 
 export const getOverdue = (item: Query): string => {
     if (item.isOverdue) return 'Yes';
@@ -16,5 +16,9 @@ export const getPossibleWarranty = (item: Query): string => {
 };
 
 export const getSignatureProgress = (item: Query): number => {
-    return Math.round((item.stepsSigned / item.steps) * 100);
+    if (item.stepsSigned !== null && item.steps !== null) {
+        return Math.round((item.stepsSigned / item.steps) * 100);
+    } else {
+        return 0;
+    }
 };

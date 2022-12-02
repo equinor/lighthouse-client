@@ -3,17 +3,15 @@ import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
-//import { ModelViewerContextProvider } from '../../../../../packages/ModelViewer/context/modelViewerContext';
-import { Query } from '../../model';
-
+import { Query } from '../../types';
 import { DetailsTab, CommpkgTab } from './Tabs';
 
-interface querySideSheetProps {
+type QuerySideSheetProps = {
     item: Query;
     actions: SidesheetApi;
-}
+};
 
-export const QuerySideSheet = ({ item, actions }: querySideSheetProps): JSX.Element => {
+export const QuerySideSheet = ({ item, actions }: QuerySideSheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
     const handleChange = (index: number) => {
         setActiveTab(index);
