@@ -628,19 +628,6 @@ export const apps: AppManifest[] = [
         tags: ['fuison', 'link', 'external'],
         appEnv: 'prod',
     },
-    // {
-    //     title: 'Query analytics',
-    //     shortName: 'query-analytics',
-    //     color: '#0364B8',
-    //     groupe: Apps.Collaboration,
-    //     icon: '',
-    //     app: {
-    //         appType: 'PowerBIViewer',
-    //         setup: querySetup,
-    //     },
-    //     tags: ['PowerBI'],
-    //     appEnv: 'prod',
-    // },
     {
         title: 'Query',
         shortName: 'query-workspace',
