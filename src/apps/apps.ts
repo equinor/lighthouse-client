@@ -30,7 +30,7 @@ import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
 import { setup as preservationAnalyticsSetup } from './Preservation';
 import { setup as spoolsAnalyticsSetup } from './Spools';
 import { setup as ProgressStatusSetup } from './ProgressStatus';
-import { setup as cchOverviewSetup } from './CCH overview';
+import { setup as cchOverviewSetup } from './CCHOverview';
 export function getApps(): AppManifest[] {
     return apps;
 }
