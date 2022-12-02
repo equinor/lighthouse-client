@@ -23,6 +23,10 @@ import {
     punchSidesheetWidgetComponent,
     punchSidesheetWidgetManifest,
 } from './Punch/utility/config';
+import {
+    querySidesheetWidgetComponent,
+    querySidesheetWidgetManifest,
+} from './Query/utility/config';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
@@ -53,6 +57,7 @@ const _widgets: WidgetManifest[] = [
     releaseCreatorManifest,
     workflowWidgetManifest,
     punchSidesheetWidgetManifest,
+    querySidesheetWidgetManifest,
     workflowStepWidgetManifest,
 
     mcCreatorManifest,
@@ -75,6 +80,7 @@ const _widgetComponents: ComponentManifest[] = [
     workOrderCreatorComponent,
     releaseCreatorComponent,
     punchSidesheetWidgetComponent,
+    querySidesheetWidgetComponent,
     mcCreatorComponent,
     tagWidgetComponent,
     loopSidesheetWidgetComponent,

@@ -643,17 +643,17 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
-        title: 'Query analytics',
-        shortName: 'query-analytics',
+        title: 'Query',
+        shortName: 'query-workspace',
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: '',
+        tags: [],
         app: {
-            appType: 'PowerBIViewer',
+            appType: 'Workspace',
             setup: querySetup,
         },
-        tags: ['PowerBI'],
-        appEnv: 'prod',
+        appEnv: 'dev',
     },
     {
         title: 'Queries',
