@@ -12,6 +12,7 @@ import {
     getPunchCategoryColor,
     getPunchStatusColorByStatus,
 } from './punchItemMapping';
+
 export const tableConfig: TableOptions<Punch> = {
     objectIdentifierKey: 'punchItemNo',
     preventAutoGenerateColumns: true,
