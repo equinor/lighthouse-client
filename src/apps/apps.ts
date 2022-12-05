@@ -639,7 +639,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: querySetup,
         },
-        appEnv: 'dev',
+        appEnv: 'prod',
     },
     {
         title: 'Queries',
