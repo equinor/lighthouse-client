@@ -39,6 +39,12 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         isQuickFilter: true,
     },
     {
+        name: 'Commissioning pack',
+        valueFormatter: ({ commissioningPackages }) =>
+            commissioningPackages.map((commPkg) => commPkg.procosysNumber),
+        isQuickFilter: true,
+    },
+    {
         name: 'Has comments',
         valueFormatter: ({ hasComments }) => booleanToHumanReadable(hasComments),
         sort: (a) => a.sort(sortOnYesNo),
@@ -70,8 +76,8 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ disciplineGuesstimates }) =>
             disciplineGuesstimates.length > 0
                 ? calculateGuesstimateHoursGap(
-                    disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
-                )
+                      disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
+                  )
                 : null,
 
         sort: (a) =>

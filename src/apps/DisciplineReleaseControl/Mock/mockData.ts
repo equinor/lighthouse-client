@@ -13,6 +13,7 @@ export const testData1: Pipetest = {
     htCableExposed: null,
     hasCriticalLine: false,
     htStep: PipetestStep.Unknown,
+    circuitStep: PipetestStep.Unknown,
     checkLists: [
         {
             tagNo: '82EL056-419',
