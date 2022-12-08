@@ -2,7 +2,7 @@ import { reassignCriteria } from '../../../api/ScopeChange/Workflow';
 import { PCSPersonRoleSearch } from '../../PersonRoleSearch/PCSPersonRoleSearch';
 import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
-import { resetSigningAtom } from '../Atoms/signingAtom';
+import { resetSigningAtom } from '@equinor/Workflow';
 
 interface ReassignBarProps {
     requestId: string;
@@ -28,10 +28,11 @@ export const ReassignBar = ({ criteriaId, requestId, stepId }: ReassignBarProps)
                     stepId: stepId,
                     criteriaId: criteriaId,
                     reassign: {
-                        type: `${value.type === 'functionalRole'
+                        type: `${
+                            value.type === 'functionalRole'
                                 ? 'RequireProcosysFunctionalRoleSignature'
                                 : 'RequireProcosysUserSignature'
-                            }`,
+                        }`,
                         value: value.value,
                     },
                 });
