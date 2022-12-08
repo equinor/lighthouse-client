@@ -37,7 +37,7 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions(filterConfig)
         .registerPrefetchQueries(prefetchQueriesOptions)
         .registerSearchOptions([
-            { name: 'Id', valueFormatter: ({ sequenceNumber }) => sequenceNumber.toString() },
+            { name: 'Id', valueFormatter: ({ serialNumber }) => serialNumber },
             { name: 'Title', valueFormatter: ({ title }) => title },
             { name: 'Description', valueFormatter: ({ description }) => description },
             {
