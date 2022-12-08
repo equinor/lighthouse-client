@@ -36,8 +36,14 @@ const RevisionBanner = () => {
     const lastRevision = useMemo(() => revisions?.[0], [revisions]);
     return (
         <Container isRevision>
-            Revision {request.revisionNumber}. Reason from the person is:{' '}
-            {request.newRevisionOrVoidReason}.{' '}
+            <div>
+                Revision {request.revisionNumber}. This request has been revisioned{' '}
+                {new Date(request.modifiedAtUtc).toLocaleDateString()}
+                {request.modifiedBy &&
+                    ` by ${request.modifiedBy.firstName} ${request.modifiedBy.lastName}. Reason: `}
+                {request.newRevisionOrVoidReason}. {'  '}
+            </div>
+
             {lastRevision && lastRevision?.id && (
                 <Link onClick={() => openNewScopeChange(lastRevision.id)}>
                     Click here to see the latest.
@@ -49,14 +55,17 @@ const RevisionBanner = () => {
 
 export const VoidedOrRevisionBanner = (): JSX.Element | null => {
     const { request } = useScopeChangeContext();
-    if (!request.isVoided) return null;
+    const { data: revisions, isLoading } = useQuery(scopeChangeQueries.revisionsQuery(request.id));
+    if (!request.isVoided || isLoading) return null;
 
-    if (request.revisionNumber > 1) {
+    if (revisions?.length !== request.revisionNumber) {
         return <RevisionBanner />;
     }
     return (
         <Container isRevision={false}>
-            This request has been voided. Reason from the person is:{' '}
+            This request has been voided {new Date(request.modifiedAtUtc).toLocaleDateString()}{' '}
+            {request.modifiedBy &&
+                ` by ${request.modifiedBy.firstName} ${request.modifiedBy.lastName}. Reason: `}
             {request.newRevisionOrVoidReason}
         </Container>
     );

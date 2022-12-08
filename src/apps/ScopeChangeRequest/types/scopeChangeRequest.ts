@@ -124,7 +124,7 @@ export type ScopeChangeRequest = ScopeChangeBaseModel & {
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
-    modifiedBy: Person;
+    modifiedBy: Person | null;
     state: ScopeChangeRequestState;
     isVoided: boolean;
     currentWorkflowStep?: WorkflowStep;
