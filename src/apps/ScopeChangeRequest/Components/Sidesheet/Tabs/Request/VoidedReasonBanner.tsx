@@ -36,8 +36,14 @@ const RevisionBanner = () => {
     const lastRevision = useMemo(() => revisions?.[0], [revisions]);
     return (
         <Container isRevision>
-            Revision {request.revisionNumber}. This request has been revisioned{' '}
-            {request.modifiedAtUtc} by {request.modifiedBy}: {request.newRevisionOrVoidReason}.{' '}
+            <div>
+                Revision {request.revisionNumber}. This request has been revisioned{' '}
+                {new Date(request.modifiedAtUtc).toLocaleDateString()}
+                {request.modifiedBy &&
+                    ` by ${request.modifiedBy.firstName} ${request.modifiedBy.lastName}. Reason: `}
+                {request.newRevisionOrVoidReason}. {'  '}
+            </div>
+
             {lastRevision && lastRevision?.id && (
                 <Link onClick={() => openNewScopeChange(lastRevision.id)}>
                     Click here to see the latest.
@@ -57,7 +63,9 @@ export const VoidedOrRevisionBanner = (): JSX.Element | null => {
     }
     return (
         <Container isRevision={false}>
-            This request has been voided {request.modifiedAtUtc} by {request.modifiedBy}:{' '}
+            This request has been voided {new Date(request.modifiedAtUtc).toLocaleDateString()}{' '}
+            {request.modifiedBy &&
+                ` by ${request.modifiedBy.firstName} ${request.modifiedBy.lastName}. Reason: `}
             {request.newRevisionOrVoidReason}
         </Container>
     );
