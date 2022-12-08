@@ -6,12 +6,12 @@ export type Punch = {
     punchItemNo: string;
     checklistId: string | null;
     description: string | null;
-    category: string | null;
+    category: string;
     raisedBy: string | null;
     cleardBy: string | null;
     dueDate: string | null;
     sorting: string | null;
-    type: string | null;
+    type: string;
     priority: string | null;
     status: PunchStatus;
     isOpen: string | null;
@@ -52,4 +52,6 @@ export type Punch = {
     mechanicalCompletionStatus: string | null;
     handoverPlan: string;
     m03_PlannedForecastDate: Date | null;
+    rfC_PlannedForecastDate: string | null;
+    rfO_PlannedForecastDate: string | null;
 };
