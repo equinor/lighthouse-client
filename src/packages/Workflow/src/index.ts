@@ -48,6 +48,10 @@ export * from './Components/Workflow/WorkflowStep';
 export * from './Components/Workflow/WorkflowEditorHelpers';
 export * from './Components/Workflow/SelectWorkflowTemplate';
 
+export * from './Components/Modal/SignWithCommentModal';
+
+export * from './Components/Atoms/signingAtom';
+
 // export * from './Components/Workflow/Criteria';
 
 export * from './Hooks/observers/useGlobalMutationListener';
