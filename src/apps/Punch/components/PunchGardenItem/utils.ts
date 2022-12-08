@@ -17,13 +17,7 @@ const punchStatusTextColors: Record<PunchStatus, string> = {
 export const getPunchStatusTextColors = (status: PunchStatus): string =>
     punchStatusTextColors[status];
 
-export const itemSize = (volume: number, maxVolume: number) => {
-    if (maxVolume <= 0) return 'small';
-    const percentage = (volume / maxVolume) * 100;
-    return percentage > 66 ? 'large' : percentage > 33 ? 'medium' : 'small';
-};
-
-export const getDotsColor = (category: string) => {
+export const getDotsColor = (category: string | null): string => {
     switch (category) {
         case 'PA':
             return '#ff4081';
