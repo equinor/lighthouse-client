@@ -1,24 +1,36 @@
 import { Button, TextField } from '@equinor/eds-core-react';
+import {
+    ButtonContainer,
+    CriteriaSignState,
+    InputContainer,
+    OnSignStepAction,
+    WorkflowSigningParams,
+} from '@equinor/Workflow';
 import { KeyboardEventHandler, useState } from 'react';
-import { CriteriaSignState } from '../../../../../../ScopeChangeRequest/types/scopeChangeRequest';
-import { useReleaseControlContext, useWorkflowSigning } from '../../../../../hooks';
-import { resetSigningAtom } from '../../../Atoms/signingAtom';
-import { ButtonContainer, InputContainer } from '../criteria.styles';
+import { UseMutateFunction } from 'react-query';
+import { resetSigningAtom } from '../Atoms/signingAtom';
 
 type SignWithCommentModalProps = {
     action: CriteriaSignState;
     buttonText: string;
     stepId: string;
     criteriaId: string;
+    requestId: string;
+    useWorkflowSigning({
+        requestId,
+        criteriaId,
+        stepId,
+    }: WorkflowSigningParams): UseMutateFunction<void, unknown, OnSignStepAction, unknown>;
 };
 export const SignWithCommentModal = ({
     action,
+    buttonText,
     stepId,
     criteriaId,
+    requestId,
+    useWorkflowSigning,
 }: SignWithCommentModalProps): JSX.Element => {
     const [comment, setComment] = useState<string>('');
-
-    const requestId = useReleaseControlContext(({ releaseControl }) => releaseControl.id);
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteriaId,
@@ -72,7 +84,7 @@ export const SignWithCommentModal = ({
                         resetSigningAtom();
                     }}
                 >
-                    Sign with comment
+                    {buttonText} with comment
                 </Button>
                 <Button
                     variant="outlined"

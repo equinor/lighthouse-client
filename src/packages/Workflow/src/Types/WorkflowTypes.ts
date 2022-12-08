@@ -134,3 +134,14 @@ export enum ReleaseControlStepNames {
     CircuitPowerUp = 'Circuit power-up',
     CTest = 'Recheck (or new) HT/C-test',
 }
+
+export interface OnSignStepAction {
+    action: CriteriaSignState;
+    comment: string | undefined;
+}
+
+export interface WorkflowSigningParams {
+    requestId: string;
+    stepId: string;
+    criteriaId: string;
+}

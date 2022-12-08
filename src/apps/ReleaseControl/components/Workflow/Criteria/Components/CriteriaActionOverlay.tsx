@@ -1,9 +1,9 @@
 import { useAtom } from '@dbeining/react-atom';
 import { Button } from '@equinor/eds-core-react';
-import { actionWithCommentAtom, resetSigningAtom } from '../../Atoms/signingAtom';
 import { ReassignBar } from '../../ReassignBar/ReassignBar';
 import styled from 'styled-components';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
+import { actionWithCommentAtom, resetSigningAtom } from '@equinor/Workflow';
 
 export const CriteriaActionOverlay = (): JSX.Element | null => {
     const state = useAtom(actionWithCommentAtom);
