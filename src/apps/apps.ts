@@ -30,6 +30,7 @@ import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
 import { setup as preservationAnalyticsSetup } from './Preservation';
 import { setup as spoolsAnalyticsSetup } from './Spools';
 import { setup as ProgressStatusSetup } from './ProgressStatus';
+import { setup as cchOverviewSetup } from './CCHOverview';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -257,6 +258,19 @@ export const apps: AppManifest[] = [
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
+    },
+    {
+        title: 'Overview',
+        shortName: 'cch-overview',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: cchOverviewSetup,
+        },
+        appEnv: 'prod',
     },
     {
         title: 'Handover',

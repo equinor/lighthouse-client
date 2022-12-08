@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.23.0
+
+- [PipingAndHeattrace] New garden group option for Current Step (Circuit)
+- [ScopeChangeRequest] Added filter for comm.pkg
+- [ScopeChangeRequest] Change search from sequence to serial number
+- [CCHOverview] Added new CCH overview app
+
 ## 1.22.0
 
 - [ReleaseControl] Move workflow step up/down in admin (reorder)

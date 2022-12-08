@@ -12,6 +12,7 @@ import {
 import {
     CheckList,
     Circuit,
+    CircuitGrouped,
     HeatTraceGrouped,
     InsulationBox,
     Pipetest,
@@ -115,6 +116,24 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
                 return heatTrace;
             });
             pipetest.htStep = getWorstStepForPipetestHeatTraces(pipetest);
+        }
+        return pipetest;
+    });
+
+    //Find the worst step for all circuits related to the pipetest
+    const pipetestsGroupedByCircuit = getPipetestsGroupedByCircuit(pipetests);
+    pipetests.map((pipetest: Pipetest) => {
+        if (pipetest.circuits.length !== 0) {
+            pipetest.circuits.map((circuit: Circuit) => {
+                const pipetestGroupedByCircuit = pipetestsGroupedByCircuit.find(
+                    (x) => x.circuitTagNo === circuit.circuitAndStarterTagNo
+                );
+                if (pipetestGroupedByCircuit !== undefined) {
+                    circuit.worstPipetestStep = getWorstStepForCircuit(pipetestGroupedByCircuit);
+                }
+                return circuit;
+            });
+            pipetest.circuitStep = getWorstStepForPipetestCircuits(pipetest);
         }
         return pipetest;
     });
@@ -782,6 +801,19 @@ export function getPipetestsByHeatTrace(htTagNo: string, pipetests: Pipetest[]):
     };
 }
 
+export function getPipetestsByCircuit(circuitTagNo: string, pipetests: Pipetest[]): CircuitGrouped {
+    const pipetestChildren = pipetests.filter(
+        (pipetest, index, array) =>
+            pipetest.circuits.map((x) => x.circuitAndStarterTagNo)?.includes(circuitTagNo) &&
+            array.indexOf(pipetest) === index
+    );
+    return {
+        circuitTagNo: circuitTagNo,
+        pipetests: pipetestChildren,
+        count: pipetestChildren.length,
+    };
+}
+
 export function getPipetestsGroupedByHeatTrace(pipetests: Pipetest[]): HeatTraceGrouped[] {
     let pipetestsGroupedByHeatTrace: HeatTraceGrouped[] = [];
     pipetestsGroupedByHeatTrace = pipetests
@@ -805,6 +837,31 @@ export function getPipetestsGroupedByHeatTrace(pipetests: Pipetest[]): HeatTrace
     return pipetestsGroupedByHeatTrace;
 }
 
+export function getPipetestsGroupedByCircuit(pipetests: Pipetest[]): CircuitGrouped[] {
+    let pipetestsGroupedByCircuit: CircuitGrouped[] = [];
+    pipetestsGroupedByCircuit = pipetests
+        .reduce(
+            (prev: string[], curr) => [
+                ...prev,
+                ...curr.circuits
+                    ?.map((x) => x.circuitAndStarterTagNo)
+                    ?.filter((circuit) => !prev.includes(circuit)),
+            ],
+            []
+        )
+        .map((circuitCheckList) => getPipetestsByCircuit(circuitCheckList, pipetests));
+
+    /** Pipetest that has no circuits */
+    const pipetestChildren = pipetests?.filter(({ circuits }) => circuits.length === 0);
+    pipetestsGroupedByCircuit.push({
+        circuitTagNo: 'No circuits',
+        pipetests: pipetestChildren,
+        count: pipetestChildren.length,
+    });
+
+    return pipetestsGroupedByCircuit;
+}
+
 export function getWorstStepForHeatTrace(heatTraceGrouped: HeatTraceGrouped): PipetestStep {
     const worstPipetest = heatTraceGrouped.pipetests.reduce((prev, curr) =>
         getPipetestStatusSortValue(prev.step) < getPipetestStatusSortValue(curr.step) ? prev : curr
@@ -820,4 +877,21 @@ export function getWorstStepForPipetestHeatTraces(pipetest: Pipetest): PipetestS
             : curr
     );
     return worstHeatTrace.worstPipetestStep ?? PipetestStep.Unknown;
+}
+
+export function getWorstStepForCircuit(circuitGrouped: CircuitGrouped): PipetestStep {
+    const worstPipetest = circuitGrouped.pipetests.reduce((prev, curr) =>
+        getPipetestStatusSortValue(prev.step) < getPipetestStatusSortValue(curr.step) ? prev : curr
+    );
+    return worstPipetest.step;
+}
+
+export function getWorstStepForPipetestCircuits(pipetest: Pipetest): PipetestStep {
+    const worstCircuit = pipetest.circuits?.reduce((prev, curr) =>
+        getPipetestStatusSortValue(prev.worstPipetestStep ?? PipetestStep.Unknown) <
+        getPipetestStatusSortValue(curr.worstPipetestStep ?? PipetestStep.Unknown)
+            ? prev
+            : curr
+    );
+    return worstCircuit.worstPipetestStep ?? PipetestStep.Unknown;
 }

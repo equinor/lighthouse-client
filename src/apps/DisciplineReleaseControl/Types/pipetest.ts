@@ -4,6 +4,7 @@ export type Pipetest = {
     name: string;
     step: PipetestStep;
     htStep: PipetestStep;
+    circuitStep: PipetestStep;
     steps: PipetestStep[];
     completionStatus: PipetestCompletionStatus;
     pipetestProcessDoneInRightOrder: boolean;
@@ -62,6 +63,7 @@ export type Circuit = {
     switchBoardTagNo: string;
     circuitAndStarterTagNo: string;
     checkLists: CheckList[];
+    worstPipetestStep?: PipetestStep;
 };
 
 export type HeatTrace = CheckList;
@@ -99,6 +101,12 @@ export type HTSidesheet = {
 
 export type HeatTraceGrouped = {
     htTagNo: string;
+    pipetests: Pipetest[];
+    count: number;
+};
+
+export type CircuitGrouped = {
+    circuitTagNo: string;
     pipetests: Pipetest[];
     count: number;
 };
