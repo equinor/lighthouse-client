@@ -13,6 +13,16 @@ export const fieldSettings: FieldSettings<Punch, ExtendedGardenFields> = {
         getKey: (item) => getDateKey(item.handoverPlan),
         getColumnSort: sortByDate,
     },
+    rfC_PlannedForecastDate: {
+        label: 'RFC plan',
+        getKey: (item) => getDateKey(item.rfC_PlannedForecastDate),
+        getColumnSort: sortByDate,
+    },
+    rfO_PlannedForecastDate: {
+        label: 'RFO plan',
+        getKey: (item) => getDateKey(item.rfO_PlannedForecastDate),
+        getColumnSort: sortByDate,
+    },
     dueDate: {
         label: 'Due date',
         getKey: (item) => getDateKey(item.dueDate),
@@ -48,6 +58,8 @@ export const getHighlightedColumn = (groupByKey: string): string | undefined => 
     switch (groupByKey) {
         case 'dueDate':
         case 'handoverPlan':
+        case 'rfC_PlannedForecastDate':
+        case 'rfO_PlannedForecastDate':
         case 'createdDate':
         case 'clearedAtDate':
         case 'verifiedAtDate':
@@ -62,7 +74,7 @@ export const gardenConfig: GardenOptions<Punch> = {
     gardenKey: 'handoverPlan' as keyof Punch,
     itemKey: 'punchItemNo',
     objectIdentifier: 'punchItemNo',
-    itemWidth: () => 200,
+    itemWidth: () => 150,
     rowHeight: 25,
     customViews: {
         customItemView: PunchGardenItem,
