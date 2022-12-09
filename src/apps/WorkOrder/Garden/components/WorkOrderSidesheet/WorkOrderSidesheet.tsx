@@ -24,7 +24,7 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-    const workOrderProcosysUrl = proCoSysUrls.getWorkOrderUrl(item.workOrderId ?? '');
+    const workOrderProcosysUrl = proCoSysUrls.getWorkOrderUrl(item.workOrderUrlId ?? '');
 
     useEffect(() => {
         actions.setTitle(
@@ -36,8 +36,8 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
         material,
         isFetching: materialIsFetching,
         error: materialError,
-    } = useMaterial(item.workOrderId);
-    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(item.workOrderId);
+    } = useMaterial(item.workOrderUrlId);
+    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(item.workOrderUrlId);
 
     return (
         <SideSheetContainer>
