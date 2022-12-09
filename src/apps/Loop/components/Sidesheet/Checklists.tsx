@@ -101,7 +101,7 @@ type ChecklistsProps = {
     checklistId: string;
 };
 export const Checklists = ({ checklistId }: ChecklistsProps) => {
-    const expressions = generateExpressions('checklistUrlID', 'Equals', [checklistId]);
+    const expressions = generateExpressions('checklistUrlId', 'Equals', [checklistId]);
     const requestArgs = generateFamRequest(checklistColumnNames, 'Or', expressions);
     const { data, isLoading, error } = useQuery(['checklists', checklistId], ({ signal }) =>
         getChecklistsForLoop(requestArgs, signal)
