@@ -23,7 +23,7 @@ export const tableConfig: TableOptions<Query> = {
             accessor: (pkg) => ({
                 content: pkg,
                 currentKey: 'queryNo',
-                url: proCoSysUrls.getQueryUrl(pkg.queryId ?? ''),
+                url: proCoSysUrls.getQueryUrl(pkg.queryUrlId ?? ''),
             }),
             Aggregated: () => null,
             aggregate: 'count',
