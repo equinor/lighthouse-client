@@ -13,7 +13,7 @@ import {
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Query } from '../../types';
 export const tableConfig: TableOptions<Query> = {
-    objectIdentifierKey: 'queryId',
+    objectIdentifierKey: 'queryUrlId',
     preventAutoGenerateColumns: true,
 
     customColumns: [
