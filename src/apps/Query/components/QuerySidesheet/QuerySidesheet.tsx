@@ -16,11 +16,11 @@ export const QuerySideSheet = ({ item, actions }: QuerySideSheetProps): JSX.Elem
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-    const queryProcosysUrl = proCoSysUrls.getQueryUrl(item.queryId ?? '');
+    const queryProcosysUrl = proCoSysUrls.getQueryUrl(item.queryUrlId ?? '');
 
     useEffect(() => {
-        actions.setTitle(<SidesheetHeaderContent title={item.queryId} url={queryProcosysUrl} />);
-    }, [item.queryId, queryProcosysUrl]);
+        actions.setTitle(<SidesheetHeaderContent title={item.queryUrlId} url={queryProcosysUrl} />);
+    }, [item.queryUrlId, queryProcosysUrl]);
 
     return (
         <SideSheetContainer>
