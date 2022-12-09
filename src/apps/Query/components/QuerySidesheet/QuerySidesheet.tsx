@@ -20,7 +20,7 @@ export const QuerySideSheet = ({ item, actions }: QuerySideSheetProps): JSX.Elem
 
     useEffect(() => {
         actions.setTitle(<SidesheetHeaderContent title={item.queryUrlId} url={queryProcosysUrl} />);
-    }, [item.queryId, queryProcosysUrl]);
+    }, [item.queryUrlId, queryProcosysUrl]);
 
     return (
         <SideSheetContainer>
