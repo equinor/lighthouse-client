@@ -19,4 +19,5 @@ export type Workorder = {
     title: string | null;
     workOrderId: string;
     workOrderNo: string;
+    workOrderUrlId: string;
 };

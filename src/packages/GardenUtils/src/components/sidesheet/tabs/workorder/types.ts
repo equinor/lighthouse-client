@@ -19,5 +19,6 @@ export type WorkOrderBase = {
     responsibleDescription: string | null;
     title: string | null;
     workOrderId: string;
+    workOrderUrlId: string;
     workOrderNo: string;
 };
