@@ -19,7 +19,7 @@ export const columns = (): Column<WorkOrderBase>[] => {
             Header: 'WO',
             accessor: (pkg) => ({
                 content: pkg,
-                url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderId),
+                url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderUrlId),
                 currentKey: 'workOrderNo',
             }),
             Cell: CellWithLink,

@@ -6,8 +6,8 @@ export type LoopContent = {
     register: string | null;
     mechanicalCompletionStatus: string | null;
     mechanicalCompletionPackageNo: string | null;
-    mechanicalCompletionPackageId: string | null;
+    mechanicalCompletionPackageUrlId: string | null;
     commissioningPackageNo: string | null;
-    commissioningPackageId: string | null;
+    commissioningPackageUrlId: string | null;
     description: string | null;
 };
