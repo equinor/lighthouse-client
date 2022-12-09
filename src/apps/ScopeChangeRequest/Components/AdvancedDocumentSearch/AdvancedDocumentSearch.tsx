@@ -22,6 +22,8 @@ import { QueryFunctionContext, useQuery } from 'react-query';
 import { proCoSysQueries } from '../../keys/ProCoSysQueries';
 import { useFacility } from '../../../../Core/Client/Hooks';
 import { System } from '../../types/ProCoSys/system';
+import { fetchBatchDocuments } from '../../api/PCS/Batch/batchDocuments';
+import { Document } from '../../types/STID/document';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -139,7 +141,8 @@ export const AdvancedDocumentSearch = ({
         referenceType === 'tag' ||
         referenceType === 'punch' ||
         referenceType === 'commpkg' ||
-        referenceType === 'system';
+        referenceType === 'system' ||
+        referenceType === 'document';
 
     function getPlaceholderText() {
         switch (true) {
@@ -264,6 +267,12 @@ async function getResultsFromBatch(
 
         case 'commpkg': {
             return await fetchBatchCommPkg(numbers, signal);
+        }
+
+        case 'document': {
+            return await (
+                await fetchBatchDocuments(numbers, signal)
+            ).filter((doc) => (doc.object as Document).revStatus === 'OF-P'); //filter by OF-P to avoid duplicate documents (OF-P has full dataset)
         }
 
         case 'system': {
