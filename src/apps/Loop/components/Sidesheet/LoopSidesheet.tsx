@@ -108,7 +108,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Elemen
                         <StyledPanel>
                             <PanelContentWrapper>
                                 <LoopDetails loop={item} />
-                                <Checklists checklistId={item.checklistId} />
+                                <Checklists checklistId={item.checklistUrlId} />
                                 <LoopContentDetails item={item} />
                             </PanelContentWrapper>
                         </StyledPanel>
