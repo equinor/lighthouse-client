@@ -29,10 +29,29 @@ export function useSTIDSearch(): StidSearch {
             case 'stidtag': {
                 return await searchTags(searchValue, facilityId, signal);
             }
+
             case 'document': {
-                return await (
-                    await searchDocuments(searchValue, facilityId, signal)
-                ).filter((doc) => (doc.object as Document).revStatus === 'OF-P'); //filter by OF-P to avoid duplicate documents (OF-P has full dataset)
+                const documents = await searchDocuments(searchValue, facilityId, signal);
+                //We have to filter out only the OF-P documents if there are two documents with same docNo
+                const uniqueDocs = documents.reduce((unique: TypedSelectOption[], o) => {
+                    {
+                        if (
+                            documents.some(
+                                (x) =>
+                                    (x.object as Document).docNo === (o.object as Document).docNo &&
+                                    (o.object as Document).revStatus === 'OF-P'
+                            ) ||
+                            documents.filter(
+                                (x) => (x.object as Document).docNo === (o.object as Document).docNo
+                            ).length <= 1
+                        ) {
+                            unique.push(o);
+                        }
+                    }
+                    return unique;
+                }, []);
+
+                return uniqueDocs;
             }
 
             default: {
