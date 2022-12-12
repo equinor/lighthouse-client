@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+## 1.24.0
+
+- [ScopeChangeRequest] Fix issue with when to show revision vs. void banner
+- [ScopeChangeRequest] Generic workflow signing with split sign button and comment modal
+- [Query] New Query workspace & remove old "Queries" link to Procosys
+- [Punch] Flag and category status to Garden items
 
 ## 1.23.0
 

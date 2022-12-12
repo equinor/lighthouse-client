@@ -9,7 +9,6 @@ import { CriteriaActions } from '../../Types/actions';
 import { ButtonContainer } from '../../Contributor/contributor.styles';
 import { releaseControlQueries } from '../../../../queries/queries';
 import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scopeChangeRequest';
-import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
 import { unsignCriteria } from '../../../../api/releaseControl/Workflow';
 import {
@@ -18,6 +17,7 @@ import {
     useWorkflowCriteriaOptions,
     useWorkflowSigning,
 } from '../../../../hooks';
+import { actionWithCommentAtom } from '@equinor/Workflow';
 
 interface CriteriaActionBarProps {
     criteriaId: string;

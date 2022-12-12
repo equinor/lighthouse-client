@@ -1,10 +1,10 @@
 import { swap } from '@dbeining/react-atom';
-import { Icon } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from 'react-query';
 
 import { unsignCriteria } from '../../../../api/ScopeChange/Workflow';
-import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
+import { IconMenu, MenuItem, MiniMenuButton } from '@equinor/overlay-menu';
 import { CriteriaActions } from '../../Types/actions';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { useWorkflowSigning } from '../../../../hooks/mutations/useWorkflowSigning';
@@ -12,9 +12,9 @@ import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflo
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeQueries } from '../../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { CriteriaSignState } from '../../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../../Contributor/contributor.styles';
+import { actionWithCommentAtom } from '@equinor/Workflow';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
@@ -70,6 +70,26 @@ export const CriteriaActionBar = ({
 
     const setShowReassignBar = () =>
         swap(actionWithCommentAtom, () => generateAtom('Reassign', 'Confirm'));
+
+    function getSignButton(): JSX.Element | null {
+        if (canSign) {
+            return (
+                <Button
+                    id="anchor-complex"
+                    aria-controls="menu-complex"
+                    aria-haspopup="true"
+                    onClick={() => {
+                        signMutation({ action: 'Approved', comment: '' });
+                    }}
+                    disabled={!canSign}
+                >
+                    {'Sign'}
+                </Button>
+            );
+        } else {
+            return null;
+        }
+    }
 
     function makeSignOptions(): MenuItem[] {
         const actions: MenuItem[] = [];
@@ -149,9 +169,8 @@ export const CriteriaActionBar = ({
 
     return (
         <ButtonContainer>
-            {makeSignOptions().length > 0 && (
-                <MenuButton items={makeSignOptions()} buttonText="Sign" />
-            )}
+            {getSignButton()}
+            {makeSignOptions().length > 0 && <MiniMenuButton items={makeSignOptions()} />}
             {makeMoreActions().length > 0 && <IconMenu items={makeMoreActions()} />}
         </ButtonContainer>
     );
