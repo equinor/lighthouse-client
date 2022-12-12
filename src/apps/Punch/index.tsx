@@ -37,5 +37,6 @@ export function setup(appApi: ClientApi): void {
         .registerPowerBIOptions(analyticsConfig)
         .registerSearchOptions([
             { name: 'Punch No', valueFormatter: (punch) => punch.punchItemNo },
+            { name: 'Description', valueFormatter: (punch) => punch.description ?? '' },
         ]);
 }
