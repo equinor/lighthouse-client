@@ -70,6 +70,30 @@ export const DetailsTab = ({ query }: DetailsTabProps): JSX.Element => {
                             <StringCell value={formatDateString(query.requiredAtDate)} />
                         </td>
                     </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>
+                            <StringCell value={query.title} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Consequence</td>
+                        <td>
+                            <StringCell value={query.consequenceIfNotImplemented} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Proposed solution</td>
+                        <td>
+                            <StringCell value={query.proposedSolution} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Engineering reply</td>
+                        <td>
+                            <StringCell value={query.engineeringReply} />
+                        </td>
+                    </tr>
                 </tbody>
             </Table>
             <h3>Signatures</h3>
