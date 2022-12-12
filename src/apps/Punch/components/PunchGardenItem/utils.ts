@@ -16,3 +16,12 @@ const punchStatusTextColors: Record<PunchStatus, string> = {
 
 export const getPunchStatusTextColors = (status: PunchStatus): string =>
     punchStatusTextColors[status];
+
+export const getDotsColor = (category: string | null): string => {
+    switch (category) {
+        case 'PA':
+            return '#ff4081';
+        default:
+            return '#ffc107';
+    }
+};

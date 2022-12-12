@@ -77,3 +77,19 @@ export const NewStepButton = styled(Button)`
     margin-top: 16px;
     width: 100px;
 `;
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 0.5em;
+    padding-right: 0em;
+    align-items: center;
+    gap: 0.5em;
+`;
+
+export const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+`;

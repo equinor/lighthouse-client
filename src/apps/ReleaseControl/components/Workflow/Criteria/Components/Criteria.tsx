@@ -6,7 +6,6 @@ import { AddContributor } from './AddContributor';
 import { CriteriaStatus } from './CriteriaDetail';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 
-import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { ContributorRender } from '../../Contributor/Contributor';
 import { RowContent, WorkflowRow, WorkflowWrapper } from '../../workflowLayout.styles';
 import { CriteriaActionBar } from './CriteriaActionBar';
@@ -14,8 +13,9 @@ import { CriteriaActionOverlay } from './CriteriaActionOverlay';
 import { DetailText, VerticalLine, WorklowIconAndLine } from './criteria.styles';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { Contributor, Criteria } from '../../../../types/releaseControl';
-import { SignWithCommentModal } from './SignWithComment/SignWithCommentModal';
 import { Modal } from '@equinor/modal';
+import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
+import { useWorkflowSigning } from '../../../../hooks';
 
 interface CriteriaRenderProps {
     name: string;
@@ -40,7 +40,7 @@ export const CriteriaRender = ({
     stepId,
     hideOptions,
 }: CriteriaRenderProps): JSX.Element => {
-    const { workflowStepsLength, isPast } = useReleaseControlContext(
+    const { requestId, workflowStepsLength, isPast } = useReleaseControlContext(
         ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
             requestId: id,
             workflowStepsLength: workflowSteps.length,
@@ -80,6 +80,8 @@ export const CriteriaRender = ({
                                                 buttonText={state.buttonText}
                                                 criteriaId={state.criteriaId}
                                                 stepId={state.stepId}
+                                                requestId={requestId}
+                                                useWorkflowSigning={useWorkflowSigning}
                                             />
                                         }
                                     />
