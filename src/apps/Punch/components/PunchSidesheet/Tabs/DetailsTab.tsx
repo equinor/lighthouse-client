@@ -116,6 +116,12 @@ export const DetailsTab = ({ punch }: DetailsTabProps): JSX.Element => {
                             <StringCell value={formatDateString(punch.createdDate)} />
                         </td>
                     </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>
+                            <StringCell value={punch.description} />
+                        </td>
+                    </tr>
                 </tbody>
             </Table>
 
