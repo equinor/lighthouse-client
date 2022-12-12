@@ -3,7 +3,8 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
-
+## 1.24.2
+- [ProcosysUrls] Remove pipe character from Query URL.
 ## 1.24.1
 - [Punch] Add description to sidesheet and make it searchable
 - [Query] Add more fields to sidesheet and update sidesheet header
