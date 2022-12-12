@@ -24,7 +24,7 @@ export const proCoSysUrls: ProCoSysUrls = {
     getDocumentUrl: (documentId) => `${getProCoSysUrl()}/Documents/Document#id=${documentId}`,
     getWorkOrderUrl: (workOrderId) => `${getProCoSysUrl()}/WorkOrders/WorkOrder#id=${workOrderId}`,
     getMcUrl: (mcId) => `${getProCoSysUrl()}/Completion#McPkg|${mcId}`,
-    getQueryUrl: (queryId) => `${getProCoSysUrl()}/Documents/Document#id=|${queryId}`,
+    getQueryUrl: (queryId) => `${getProCoSysUrl()}/Documents/Document#id=${queryId}`,
     getFormTypeUrl: (checklistId) =>
         `${getProCoSysUrl()}/Completion/TagCheck/Form/Main/Index?id=${checklistId}`,
 };
