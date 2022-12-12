@@ -25,6 +25,7 @@ const customPunchColumns = [
     'Estimate',
     'WorkOrderNo',
     'WorkOrderId',
+    'WorkOrderUrlId',
     'OriginalWorkOrderNo',
     'SoftwareChangeRecordNo',
     'DocumentNo',
@@ -41,6 +42,7 @@ const customPunchColumns = [
     'FormularDiscipline',
     'TagId',
     'TagNo',
+    'TagUrlId',
     'Discipline',
     'DisciplineDescription',
     'Responsible',
@@ -49,6 +51,7 @@ const customPunchColumns = [
     'CommissioningPackageNo',
     'TagArea',
     'CommissioningPackageId',
+    'CommissioningPackageUrlId',
     'Identifier',
     'CommissioningPackageArea',
     'System',
@@ -57,9 +60,14 @@ const customPunchColumns = [
     'priority3',
     'MechanicalCompletionPackageNo',
     'MechanicalCompletionPackageId',
+    'MechanicalCompletionPackageUrlId',
     'MechanicalCompletionStatus',
     'HandoverPlan',
     'M03_PlannedForecastDate',
+    'RFC_PlannedForecastDate',
+    'RFC_PlannedDate',
+    'RFO_PlannedForecastDate',
+    'RFO_PlannedDate',
 ];
 const idResolverFunction = async (id: string): Promise<Punch> => {
     const { FAM } = httpClient();

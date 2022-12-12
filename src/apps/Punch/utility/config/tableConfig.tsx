@@ -175,7 +175,7 @@ export const tableConfig: TableOptions<Punch> = {
             accessor: (pkg) => ({
                 content: pkg,
                 currentKey: 'formularType',
-                url: proCoSysUrls.getFormTypeUrl(pkg.checklistId || ''),
+                url: proCoSysUrls.getFormTypeUrl(pkg.checklistUrlId || ''),
             }),
             Aggregated: () => null,
             aggregate: 'count',
@@ -195,7 +195,7 @@ export const tableConfig: TableOptions<Punch> = {
             accessor: (pkg) => ({
                 content: pkg,
                 currentKey: 'tagNo',
-                url: proCoSysUrls.getTagUrl(pkg.tagId || ''),
+                url: proCoSysUrls.getTagUrl(pkg.tagUrlId || ''),
             }),
             Aggregated: () => null,
             aggregate: 'count',
@@ -215,7 +215,7 @@ export const tableConfig: TableOptions<Punch> = {
             accessor: (pkg) => ({
                 content: pkg,
                 currentKey: 'commissioningPackageNo',
-                url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId || ''),
+                url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId || ''),
             }),
             Cell: (cellProps) => {
                 return (
@@ -235,7 +235,7 @@ export const tableConfig: TableOptions<Punch> = {
             accessor: (pkg) => ({
                 content: pkg,
                 currentKey: 'workOrderNo',
-                url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderId || ''),
+                url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderUrlId || ''),
             }),
             Cell: (cellProps) => {
                 return (
