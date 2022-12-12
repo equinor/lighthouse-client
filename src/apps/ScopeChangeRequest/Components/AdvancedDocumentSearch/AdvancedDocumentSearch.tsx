@@ -22,6 +22,8 @@ import { QueryFunctionContext, useQuery } from 'react-query';
 import { proCoSysQueries } from '../../keys/ProCoSysQueries';
 import { useFacility } from '../../../../Core/Client/Hooks';
 import { System } from '../../types/ProCoSys/system';
+import { fetchBatchDocuments } from '../../api/PCS/Batch/batchDocuments';
+import { Document } from '../../types/STID/document';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -139,7 +141,8 @@ export const AdvancedDocumentSearch = ({
         referenceType === 'tag' ||
         referenceType === 'punch' ||
         referenceType === 'commpkg' ||
-        referenceType === 'system';
+        referenceType === 'system' ||
+        referenceType === 'document';
 
     function getPlaceholderText() {
         switch (true) {
@@ -264,6 +267,30 @@ async function getResultsFromBatch(
 
         case 'commpkg': {
             return await fetchBatchCommPkg(numbers, signal);
+        }
+
+        case 'document': {
+            const documents = await fetchBatchDocuments(numbers, signal);
+            //We have to filter out only the OF-P documents if there are two documents with same docNo
+            const uniqueDocs = documents.reduce((unique: TypedSelectOption[], o) => {
+                {
+                    if (
+                        documents.some(
+                            (x) =>
+                                (x.object as Document).docNo === (o.object as Document).docNo &&
+                                (o.object as Document).revStatus === 'OF-P'
+                        ) ||
+                        documents.filter(
+                            (x) => (x.object as Document).docNo === (o.object as Document).docNo
+                        ).length <= 1
+                    ) {
+                        unique.push(o);
+                    }
+                }
+                return unique;
+            }, []);
+
+            return uniqueDocs;
         }
 
         case 'system': {

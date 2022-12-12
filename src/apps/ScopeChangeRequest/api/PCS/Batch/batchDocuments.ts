@@ -2,20 +2,22 @@ import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { transformIsoDate } from '../../../Components/Workflow/Utils/dateFormatting';
 import { throwOnError } from '../../../functions/throwError';
 import { Document } from '../../../types/STID/document';
-import { TypedSelectOption } from '../searchType';
+import { TypedSelectOption } from '../../Search/searchType';
 
-export const searchDocuments = async (
-    searchString: string,
-    facilityId: string,
+export const fetchBatchDocuments = async (
+    documentNos: string[],
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const { STID } = httpClient();
 
-    const uri = `/${facilityId}/documents`;
-    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=30&noContentAs200=true`;
-    const url = `${uri}?${queryParameters}`;
+    const url = `/JCA/documents?includeOfP=true`;
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(documentNos),
+        signal: signal,
+    };
 
-    const res = await STID.fetch(url, { signal });
+    const res = await STID.fetch(url, requestOptions);
 
     if (res.status === 401 || res.status === 403) {
         throw 'User has no access';
