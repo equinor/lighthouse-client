@@ -29,9 +29,8 @@ export const searchDocuments = async (
             type: 'document',
             searchValue: x.docNo,
             object: x,
-            metadata: `Revision ${x.revNo} | Rev date ${
-                x.revDate && transformIsoDate(x.revDate)
-            } | Reason for issue ${x.reasonForIssue !== null ? x.reasonForIssue : 'NA'}`,
+            metadata: `Revision ${x.revNo} | Rev date ${x.revDate && transformIsoDate(x.revDate)
+                } | Reason for issue ${x.reasonForIssue}`,
         })
     );
 };
