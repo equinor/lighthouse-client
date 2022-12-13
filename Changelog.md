@@ -9,6 +9,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Query] Add Description, RFC and RFO status to Commpkg tab table
 - [Query] Add better styling for long texts
 - [Punch] Add better styling for long texts
+- [ScopeChangeRequest] Document batch search
 
 ## 1.24.2
 - [ProcosysUrls] Remove pipe character from Query URL.
