@@ -12,6 +12,15 @@ const TabContent = styled.div`
     }
 `;
 
+const TextBlock = styled.div`
+    max-width: 960px;
+
+    pre {
+        white-space: pre-wrap;
+        line-height: 1.5em;
+    }
+`;
+
 type DetailsTabProps = {
     query: Query;
 };
@@ -71,27 +80,39 @@ export const DetailsTab = ({ query }: DetailsTabProps): JSX.Element => {
                         </td>
                     </tr>
                     <tr>
-                        <td>Description</td>
-                        <td>
-                            <StringCell value={query.title} />
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Consequence</td>
                         <td>
-                            <StringCell value={query.consequenceIfNotImplemented} />
+                            {query.consequenceIfNotImplemented ? (
+                                <TextBlock>
+                                    <pre>{query.consequenceIfNotImplemented}</pre>
+                                </TextBlock>
+                            ) : (
+                                'N/A'
+                            )}
                         </td>
                     </tr>
                     <tr>
                         <td>Proposed solution</td>
                         <td>
-                            <StringCell value={query.proposedSolution} />
+                            {query.proposedSolution ? (
+                                <TextBlock>
+                                    <pre>{query.proposedSolution}</pre>
+                                </TextBlock>
+                            ) : (
+                                'N/A'
+                            )}
                         </td>
                     </tr>
                     <tr>
                         <td>Engineering reply</td>
                         <td>
-                            <StringCell value={query.engineeringReply} />
+                            {query.engineeringReply ? (
+                                <TextBlock>
+                                    <pre>{query.engineeringReply}</pre>
+                                </TextBlock>
+                            ) : (
+                                'N/A'
+                            )}
                         </td>
                     </tr>
                 </tbody>

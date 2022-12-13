@@ -13,6 +13,9 @@ export const queryCommpkgColumnNames = [
     'NextToSign',
     'QueryStatus',
     'QueryType',
+    'RFC_Status',
+    'RFO_Status',
+    'Description',
 ];
 export const getqueryCommpkg = async (
     famFilter: FamRequest,
