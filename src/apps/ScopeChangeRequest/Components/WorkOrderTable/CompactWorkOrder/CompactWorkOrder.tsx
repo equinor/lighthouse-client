@@ -16,7 +16,7 @@ export const CompactWorkorder = ({
 }: CompactWorkorderProps): JSX.Element => {
     const {
         workOrderNumber,
-        workOrderId,
+        workOrderUrlId,
         description,
         disciplineCode,
         jobStatus,
@@ -31,7 +31,9 @@ export const CompactWorkorder = ({
         <div style={{ height: '72px' }}>
             <Header>
                 <Link
-                    onClick={() => window.open(proCoSysUrls.getWorkOrderUrl(workOrderId), '_blank')}
+                    onClick={() =>
+                        window.open(proCoSysUrls.getWorkOrderUrl(workOrderUrlId ?? ''), '_blank')
+                    }
                 >
                     {workOrderNumber}
                 </Link>
