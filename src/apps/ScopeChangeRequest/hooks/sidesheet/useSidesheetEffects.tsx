@@ -45,11 +45,11 @@ export function useSidesheetEffects(
                 });
             }
         }
-        if (canPatch) {
+        if (!isVoided) {
             menuItems.push({
                 label: 'Create revision',
                 icon: <Icon name="copy" />,
-                isDisabled: !canPatch,
+                isDisabled: isVoided,
                 onClick: setRevisionMode,
             });
         }
