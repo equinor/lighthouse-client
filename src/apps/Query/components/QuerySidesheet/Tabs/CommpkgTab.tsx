@@ -15,7 +15,7 @@ const columns: Column<QueryCommpkg>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'contentTagNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId ?? ''),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId ?? ''),
         }),
         width: 150,
 

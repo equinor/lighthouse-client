@@ -15,6 +15,7 @@ export type QueryCommpkg = {
     project: string | null;
     commissioningPackageNo: string | null;
     commissioningPackageId: string | null;
+    commissioningPackageUrlId: string | null;
     queryId: string | null;
     isVoided: string | null;
     title: string | null;
