@@ -26,7 +26,7 @@ async function responseParser(response: Response) {
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<Query>({
-            objectIdentifier: 'queryId',
+            objectIdentifier: 'queryUrlId',
             customSidesheetOptions: sidesheetConfig('WorkspaceSideSheet'),
         })
         .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })

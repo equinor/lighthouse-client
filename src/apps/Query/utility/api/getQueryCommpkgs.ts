@@ -7,6 +7,7 @@ export const queryCommpkgColumnNames = [
     'Project',
     'CommissioningPackageNo',
     'CommissioningPackageId',
+    'CommissioningPackageUrlId',
     'QueryId',
     'IsVoided',
     'Title',
