@@ -34,7 +34,7 @@ const columns: Column<QuerySignature>[] = [
             }
             return <div>{user.name}</div>;
         },
-        width: 150,
+        width: 280,
     },
     {
         id: 'signedDate',

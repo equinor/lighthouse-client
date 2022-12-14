@@ -20,6 +20,7 @@ const Container = styled.div<ContainerProps>`
             ? tokens.colors.ui.background__info.hex
             : tokens.colors.ui.background__danger.hex};
     padding: 1em;
+    gap: 0.3em;
 `;
 const Link = styled.div`
     color: ${tokens.colors.interactive.primary__resting.hex};
@@ -46,7 +47,7 @@ const RevisionBanner = () => {
 
             {lastRevision && lastRevision?.id && (
                 <Link onClick={() => openNewScopeChange(lastRevision.id)}>
-                    Click here to see the latest.
+                    Click here to see the latest revision.
                 </Link>
             )}
         </Container>

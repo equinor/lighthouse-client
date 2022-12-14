@@ -8,7 +8,7 @@ import { customLoopMccrColumns } from '../api';
 
 const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();
-    const expressions = generateExpressions('checklistId', 'Equals', [id]);
+    const expressions = generateExpressions('checklistUrlId', 'Equals', [id]);
     const requestArgs = generateFamRequest(customLoopMccrColumns, 'Or', expressions);
     const res = await FAM.post('v0.1/dynamic/completion/custom_loopmccr/JCA', {
         body: JSON.stringify(requestArgs),
@@ -30,7 +30,7 @@ export const sidesheetConfig = setupWorkspaceSidesheet<Loop, 'loop'>({
     color: '#7B3A96',
     component: LoopSidesheet,
     props: {
-        objectIdentifier: 'checklistId',
+        objectIdentifier: 'checklistUrlId',
         parentApp: 'loop',
         function: idResolver,
     },

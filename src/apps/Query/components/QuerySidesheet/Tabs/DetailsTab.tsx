@@ -12,6 +12,15 @@ const TabContent = styled.div`
     }
 `;
 
+const TextBlock = styled.div`
+    max-width: 960px;
+
+    pre {
+        white-space: pre-wrap;
+        line-height: 1.5em;
+    }
+`;
+
 type DetailsTabProps = {
     query: Query;
 };
@@ -68,6 +77,42 @@ export const DetailsTab = ({ query }: DetailsTabProps): JSX.Element => {
                         <td>Required reply</td>
                         <td>
                             <StringCell value={formatDateString(query.requiredAtDate)} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Consequence</td>
+                        <td>
+                            {query.consequenceIfNotImplemented ? (
+                                <TextBlock>
+                                    <pre>{query.consequenceIfNotImplemented}</pre>
+                                </TextBlock>
+                            ) : (
+                                'N/A'
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Proposed solution</td>
+                        <td>
+                            {query.proposedSolution ? (
+                                <TextBlock>
+                                    <pre>{query.proposedSolution}</pre>
+                                </TextBlock>
+                            ) : (
+                                'N/A'
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Engineering reply</td>
+                        <td>
+                            {query.engineeringReply ? (
+                                <TextBlock>
+                                    <pre>{query.engineeringReply}</pre>
+                                </TextBlock>
+                            ) : (
+                                'N/A'
+                            )}
                         </td>
                     </tr>
                 </tbody>

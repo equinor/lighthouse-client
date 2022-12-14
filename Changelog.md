@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.24.3
+- [Query] Add title as subheader and remove description field in sidesheet
+- [Query] Add Description, RFC and RFO status to Commpkg tab table
+- [Query] Add better styling for long texts
+- [Punch] Add better styling for long texts
+
+## 1.24.2
+- [ProcosysUrls] Remove pipe character from Query URL.
+## 1.24.1
+- [Punch] Add description to sidesheet and make it searchable
+- [Query] Add more fields to sidesheet and update sidesheet header
+## 1.24.0
+
+- [ScopeChangeRequest] Fix issue with when to show revision vs. void banner
+- [ScopeChangeRequest] Generic workflow signing with split sign button and comment modal
+- [Query] New Query workspace & remove old "Queries" link to Procosys
+- [Punch] Flag and category status to Garden items
+
 ## 1.23.0
 
 - [PipingAndHeattrace] New garden group option for Current Step (Circuit)

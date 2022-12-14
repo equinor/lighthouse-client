@@ -11,6 +11,14 @@ const TabContent = styled.div`
         padding: 8px;
     }
 `;
+const TextBlock = styled.div`
+    max-width: 960px;
+
+    pre {
+        white-space: pre-wrap;
+        line-height: 1.5em;
+    }
+`;
 
 type DetailsTabProps = {
     punch: Punch;
@@ -114,6 +122,14 @@ export const DetailsTab = ({ punch }: DetailsTabProps): JSX.Element => {
                         <td>Created date</td>
                         <td>
                             <StringCell value={formatDateString(punch.createdDate)} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>
+                            <TextBlock>
+                                {punch.description ? <pre>{punch.description}</pre> : 'N/A'}
+                            </TextBlock>
                         </td>
                     </tr>
                 </tbody>

@@ -26,6 +26,22 @@ const columns: Column<QueryCommpkg>[] = [
             />
         ),
     },
+    {
+        id: 'description',
+        Header: 'Description',
+        accessor: (pkg) => pkg.description,
+        width: 300,
+    },
+    {
+        id: 'rfC_Status',
+        Header: 'RFC Status',
+        accessor: (pkg) => pkg.rfC_Status,
+    },
+    {
+        id: 'rfO_Status',
+        Header: 'RFO Status',
+        accessor: (pkg) => pkg.rfO_Status,
+    },
 ];
 type QueryCommpkgProps = {
     query: Query;

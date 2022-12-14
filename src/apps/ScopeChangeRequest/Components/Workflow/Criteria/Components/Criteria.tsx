@@ -7,12 +7,14 @@ import { CriteriaStatus } from './CriteriaDetail';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { Contributor, Criteria } from '../../../../types/scopeChangeRequest';
-import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { ContributorRender } from '../../Contributor/Contributor';
 import { RowContent, WorkflowRow, WorkflowWrapper } from '../../workflowLayout.styles';
 import { CriteriaActionBar } from './CriteriaActionBar';
 import { CriteriaActionOverlay } from './CriteriaActionOverlay';
 import { DetailText, VerticalLine, WorklowIconAndLine } from './criteria.styles';
+import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
+import { Modal } from '@equinor/modal';
+import { useWorkflowSigning } from '../../../../hooks/mutations/useWorkflowSigning';
 
 interface CriteriaRenderProps {
     name: string;
@@ -35,7 +37,7 @@ export const CriteriaRender = ({
     order,
     stepId,
 }: CriteriaRenderProps): JSX.Element => {
-    const { workflowStepsLength, isPast } = useScopeChangeContext(
+    const { requestId, workflowStepsLength, isPast } = useScopeChangeContext(
         ({ request: { id, workflowSteps, currentWorkflowStep } }) => ({
             requestId: id,
             workflowStepsLength: workflowSteps?.length ?? 0,
@@ -61,10 +63,27 @@ export const CriteriaRender = ({
             </WorklowIconAndLine>
             <WorkflowRow>
                 <RowContent>
-                    {state && state.criteriaId === criteria.id ? (
+                    {state && state.criteriaId === criteria.id && state.action === 'Reassign' ? (
                         <CriteriaActionOverlay />
                     ) : (
                         <>
+                            {state &&
+                                state.criteriaId === criteria.id &&
+                                state.action !== 'Reassign' && (
+                                    <Modal
+                                        title={'Write a comment'}
+                                        content={
+                                            <SignWithCommentModal
+                                                action={state.action}
+                                                buttonText={state.buttonText}
+                                                criteriaId={state.criteriaId}
+                                                stepId={state.stepId}
+                                                requestId={requestId}
+                                                useWorkflowSigning={useWorkflowSigning}
+                                            />
+                                        }
+                                    />
+                                )}
                             <span>
                                 <div>{name}</div>
                                 {criteria.signedAtUtc ? (

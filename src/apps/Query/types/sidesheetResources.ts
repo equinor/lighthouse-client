@@ -8,6 +8,7 @@ export type QuerySignature = {
     updatedDate: Date | null;
 };
 
+type Status = 'Accepted' | 'Sent' | 'Partly signed' | 'Partly sent' | 'OS';
 export type QueryCommpkg = {
     queryNo: string;
     facility: string | null;
@@ -21,4 +22,7 @@ export type QueryCommpkg = {
     nextToSign: string | null;
     queryStatus: string | null;
     queryType: string | null;
+    rfC_Status: Status | null;
+    rfO_Status: Status | null;
+    description: string | null;
 };

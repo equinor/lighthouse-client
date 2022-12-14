@@ -9,9 +9,9 @@ export const loopContentColumnNames = [
     'Register',
     'MechanicalCompletionStatus',
     'MechanicalCompletionPackageNo',
-    'MechanicalCompletionPackageId',
+    'MechanicalCompletionPackageUrlId',
     'CommissioningPackageNo',
-    'CommissioningPackageId',
+    'CommissioningPackageUrlId',
     'Description',
 ];
 export const getLoopContent = async (

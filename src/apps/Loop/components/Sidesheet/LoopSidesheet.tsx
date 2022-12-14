@@ -64,7 +64,9 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Elemen
                         item.commissioningPackageNo ? (
                             <ItemLink
                                 target="_blank"
-                                href={proCoSysUrls.getCommPkgUrl(item.commissioningPackageId ?? '')}
+                                href={proCoSysUrls.getCommPkgUrl(
+                                    item.commissioningPackageUrlId ?? ''
+                                )}
                             >
                                 {item.commissioningPackageNo}
                             </ItemLink>
@@ -80,7 +82,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Elemen
                             <ItemLink
                                 target="_blank"
                                 href={proCoSysUrls.getMcUrl(
-                                    item.mechanicalCompletionPackageId ?? ''
+                                    item.mechanicalCompletionPackageUrlId ?? ''
                                 )}
                             >
                                 {item.mechanicalCompletionPackageNo}
@@ -106,7 +108,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps): JSX.Elemen
                         <StyledPanel>
                             <PanelContentWrapper>
                                 <LoopDetails loop={item} />
-                                <Checklists checklistId={item.checklistId} />
+                                <Checklists checklistId={item.checklistUrlId} />
                                 <LoopContentDetails item={item} />
                             </PanelContentWrapper>
                         </StyledPanel>
