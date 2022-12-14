@@ -36,8 +36,8 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
         material,
         isFetching: materialIsFetching,
         error: materialError,
-    } = useMaterial(item.workOrderUrlId);
-    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(item.workOrderUrlId);
+    } = useMaterial(item.workOrderId);
+    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(item.workOrderId);
 
     return (
         <SideSheetContainer>
