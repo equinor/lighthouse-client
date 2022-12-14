@@ -25,12 +25,12 @@ const creator = setupWorkspaceSidesheet<WorkOrder, 'work-orderDetails'>({
     color: '#0364B8',
     component: WorkorderSideSheet,
     props: {
-        objectIdentifier: 'workOrderId',
+        objectIdentifier: 'workOrderUrlId',
         parentApp: 'work-order',
         function: async (id: string) => {
             // TODO: Add Proper resolver function
             const items = await responseParser(await responseAsync());
-            return items.find((item) => item.workOrderId === id);
+            return items.find((item) => item.workOrderUrlId === id);
         },
     },
 });
@@ -42,7 +42,7 @@ export const workOrderResolverFunction = creator('ResolverFunction');
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<WorkOrder>({
-            objectIdentifier: 'workOrderId',
+            objectIdentifier: 'workOrderUrlId',
             customSidesheetOptions: creator('WorkspaceSideSheet'),
             defaultTab: 'garden',
         })
@@ -60,7 +60,7 @@ export function setup(appApi: ClientApi): void {
             gardenKey: 'fwp' as keyof WorkOrder,
             itemKey: 'workOrderNumber',
             fieldSettings: fieldSettings,
-            objectIdentifier: 'workOrderId',
+            objectIdentifier: 'workOrderUrlId',
             customViews: {
                 customItemView: WorkOrderItem,
                 customHeaderView: WorkOrderHeader,

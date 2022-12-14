@@ -28,7 +28,7 @@ export const tableConfig: TableOptions<WorkOrder> = {
             accessor: (pkg) => ({
                 content: pkg,
                 currentKey: 'workOrderNumber',
-                url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderId || ''),
+                url: proCoSysUrls.getWorkOrderUrl(pkg.workOrderUrlId || ''),
             }),
             Cell: (cellProps) => {
                 return (
