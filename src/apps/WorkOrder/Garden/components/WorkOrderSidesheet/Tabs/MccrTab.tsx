@@ -13,7 +13,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'tagNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: proCoSysUrls.getTagUrl(pkg.tagId ?? ''),
+            url: proCoSysUrls.getTagUrl(pkg.tagUrlId ?? ''),
             currentKey: 'tagNumber',
         }),
         Header: 'TagNo.',
@@ -29,7 +29,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'mccrType',
         accessor: (pkg) => ({
             content: pkg,
-            url: proCoSysUrls.getFormTypeUrl(pkg.mccrId ?? ''),
+            url: proCoSysUrls.getFormTypeUrl(pkg.mccrUrlId ?? ''),
             currentKey: 'mccrType',
         }),
         Header: 'Type',
@@ -50,7 +50,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'mcpkgNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: proCoSysUrls.getMcUrl(pkg.mcPkgId ?? ''),
+            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageUrlId ?? ''),
             currentKey: 'mcpkgNumber',
         }),
         Header: 'McpkgNo.',
@@ -60,7 +60,7 @@ const columns: Column<WorkOrderMccr>[] = [
         id: 'commpkgNumber',
         accessor: (pkg) => ({
             content: pkg,
-            url: proCoSysUrls.getCommPkgUrl(pkg.commpkgId ?? ''),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId ?? ''),
             currentKey: 'commpkgNumber',
         }),
         Header: 'CommpkgNo.',
