@@ -2,15 +2,18 @@ import { FamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 export const checklistColumnNames = [
     'ChecklistID',
+    'ChecklistUrlId',
     'Facility',
     'Project',
     'FormularType',
     'FormularGroup',
     'MechanicalCompletionPackageNo',
     'MechanicalCompletionPackageId',
+    'MechanicalCompletionPackageUrlId',
     'MechanicalCompletionStatus',
     'CommissioningPackageNo',
     'CommissioningPackageId',
+    'CommissioningPackageUrlId',
     'Responsible',
 ];
 export const getChecklistsForLoop = async (famFilter: FamRequest, signal?: AbortSignal) => {

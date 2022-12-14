@@ -3,6 +3,7 @@ export interface WorkOrder {
     facility: string;
     project: string;
     workOrderNo: string;
+    workOrderUrlId: string | null;
     title: string;
     description: string;
     plannedStartupDate: string;
