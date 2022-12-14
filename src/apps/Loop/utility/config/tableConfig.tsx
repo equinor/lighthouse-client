@@ -41,7 +41,7 @@ const customColumns: CustomColumn<Loop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId || ''),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId || ''),
         }),
         Cell: (cellProps) => {
             return (
@@ -61,7 +61,7 @@ const customColumns: CustomColumn<Loop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'mechanicalCompletionPackageNo',
-            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageId || ''),
+            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageUrlId || ''),
         }),
         Cell: (cellProps) => {
             return (
@@ -230,7 +230,7 @@ const customColumns: CustomColumn<Loop>[] = [
     },
 ];
 export const tableConfig: TableOptions<Loop> = {
-    objectIdentifierKey: 'checklistId',
+    objectIdentifierKey: 'checklistUrlId',
     itemSize: 32,
     customColumns,
     preventAutoGenerateColumns: true,

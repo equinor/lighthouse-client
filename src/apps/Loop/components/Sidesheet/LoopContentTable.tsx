@@ -62,7 +62,7 @@ const columns: Column<LoopContent>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId ?? ''),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId ?? ''),
         }),
         Cell: (cellProps: CellProps<Loop>) => (
             <CustomLinkCellWithTextDecoration
@@ -80,11 +80,11 @@ const columns: Column<LoopContent>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'mechanicalCompletionPackageNo',
-            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageId ?? ''),
+            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageUrlId ?? ''),
         }),
         Cell: (cellProps: CellProps<Loop>) => (
             <CustomLinkCellWithTextDecoration
-                contentToBeDisplayed={cellProps.value.content.mechnicalCompletionNo}
+                contentToBeDisplayed={cellProps.value.content.mechanicalCompletionPackageNo}
                 url={cellProps.value.url}
             />
         ),
