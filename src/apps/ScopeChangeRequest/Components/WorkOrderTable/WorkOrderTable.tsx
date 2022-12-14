@@ -39,11 +39,11 @@ const Link = styled.div`
 const makeColumns = (highestExpended: number, highestEstimate: number) => [
     generateColumn(
         'WO',
-        ({ workOrderNumber, workOrderId }) => (
+        ({ workOrderNumber, workOrderUrlId }) => (
             <Link
                 hideUnderline
                 onClick={() => {
-                    window.open(proCoSysUrls.getWorkOrderUrl(workOrderId), '_blank');
+                    window.open(proCoSysUrls.getWorkOrderUrl(workOrderUrlId ?? ''), '_blank');
                 }}
             >
                 {workOrderNumber}
