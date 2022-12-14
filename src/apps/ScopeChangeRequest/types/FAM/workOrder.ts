@@ -23,6 +23,7 @@ export interface WorkOrder {
     w10ActualDate?: string | null;
     commpkgNumber?: string | null;
     workOrderId: string;
+    workOrderUrlId: string | null;
     materialComments?: string | null;
     constructionComments?: string | null;
     projectProgress: number | null;

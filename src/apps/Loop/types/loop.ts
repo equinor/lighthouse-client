@@ -1,8 +1,9 @@
 export type Loop = {
     callOffNo: string | null;
     checklistId: string;
+    checklistUrlId: string;
     commissioningPackageNo: string | null;
-    commissioningPackageId: string | null;
+    commissioningPackageUrlId: string | null;
     description: string | null;
     facility: string | null;
     formularGroup: string | null;
@@ -13,10 +14,11 @@ export type Loop = {
     location: string | null;
     loopContentStatus: string | null;
     loopId: string | null;
+    loopUrlId: string | null;
     loopNo: string;
     needDate: Date | null;
     mechanicalCompletionPackageNo: string | null;
-    mechanicalCompletionPackageId: string | null;
+    mechanicalCompletionPackageUrlId: string | null;
     packageNo: string | null;
     priority1: string | null;
     priority2: string | null;

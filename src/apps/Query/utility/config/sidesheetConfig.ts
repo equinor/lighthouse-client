@@ -5,6 +5,7 @@ import { QuerySideSheet } from '../../components';
 import { Query } from '../../types';
 const customQueryColumns = [
     'QueryId',
+    'QueryUrlId',
     'Facility',
     'Project',
     'QueryType',
@@ -35,7 +36,7 @@ const customQueryColumns = [
 ];
 const idResolverFunction = async (id: string): Promise<Query> => {
     const { FAM } = httpClient();
-    const expressions = generateExpressions('queryId', 'Equals', [id]);
+    const expressions = generateExpressions('queryUrlId', 'Equals', [id]);
     const requestArgs = generateFamRequest(customQueryColumns, 'Or', expressions);
     const res = await FAM.post('v0.1/dynamic/completion/custom_query/JCA', {
         body: JSON.stringify(requestArgs),
@@ -59,7 +60,7 @@ export const sidesheetConfig = setupWorkspaceSidesheet<Query, 'queryDetails'>({
     component: QuerySideSheet,
     color: '#0084C4',
     props: {
-        objectIdentifier: 'queryId',
+        objectIdentifier: 'queryUrlId',
         parentApp: 'query',
         function: idResolver,
     },

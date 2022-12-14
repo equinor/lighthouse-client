@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { isProduction } from '@equinor/lighthouse-portal-client';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Column, EstimateBar, ExpendedProgressBar, ProgressBar, Table } from '@equinor/Table';
 import styled from 'styled-components';
 import { WorkOrder } from '../../Types/workOrder';
@@ -14,11 +14,6 @@ const LinkContent = styled.a`
 `;
 
 export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element {
-    const getProcosysUrl = (id: string): string => {
-        const url = `https://procosys.equinor.com/JOHAN_CASTBERG/WorkOrders/WorkOrder#id=${id}`;
-        return isProduction() ? url : url.replace('procosys', 'procosystest');
-    };
-
     //Remove duplicates
     workOrders = workOrders.filter(
         (v, i, a) => a.findIndex((wo) => wo.workOrderNo === v.workOrderNo) === i
@@ -29,11 +24,11 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
     const someColumns: Column<any>[] = [
         generateColumn(
             'WO',
-            ({ workOrderNo, sourceIdentity }) => {
+            ({ workOrderNo, workOrderUrlId }) => {
                 return (
                     <LinkContent
                         target="_BLANK"
-                        href={getProcosysUrl(sourceIdentity)}
+                        href={proCoSysUrls.getWorkOrderUrl(workOrderUrlId ?? '')}
                         rel="noreferrer"
                     >
                         <Button key="linkToProcosys" variant="ghost">

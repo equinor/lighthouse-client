@@ -25,7 +25,7 @@ const columns: Column<ChecklistForLoop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageId ?? ''),
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId ?? ''),
         }),
         Cell: (cellProps: CellProps<ChecklistForLoop>) => (
             <CustomLinkCellWithTextDecoration
@@ -43,7 +43,7 @@ const columns: Column<ChecklistForLoop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'mechanicalCompletionPackageNo',
-            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageId ?? ''),
+            url: proCoSysUrls.getMcUrl(pkg.mechanicalCompletionPackageUrlId ?? ''),
         }),
         Cell: (cellProps: CellProps<ChecklistForLoop>) => (
             <CustomLinkCellWithTextDecoration
@@ -78,7 +78,7 @@ const columns: Column<ChecklistForLoop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'formularType',
-            url: proCoSysUrls.getFormTypeUrl(pkg.checklistID),
+            url: proCoSysUrls.getFormTypeUrl(pkg.checklistUrlId),
         }),
         Cell: (cellProps: CellProps<ChecklistForLoop>) => (
             <CustomLinkCellWithTextDecoration
@@ -101,7 +101,7 @@ type ChecklistsProps = {
     checklistId: string;
 };
 export const Checklists = ({ checklistId }: ChecklistsProps) => {
-    const expressions = generateExpressions('checklistID', 'Equals', [checklistId]);
+    const expressions = generateExpressions('checklistUrlId', 'Equals', [checklistId]);
     const requestArgs = generateFamRequest(checklistColumnNames, 'Or', expressions);
     const { data, isLoading, error } = useQuery(['checklists', checklistId], ({ signal }) =>
         getChecklistsForLoop(requestArgs, signal)

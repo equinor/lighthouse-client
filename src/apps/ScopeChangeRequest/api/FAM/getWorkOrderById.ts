@@ -18,6 +18,7 @@ export async function getWorkOrderByIds(ids: string[]): Promise<WorkOrder[]> {
         'JobStatus',
         'ActualCompletionDate',
         'WorkOrderId',
+        'WorkOrderUrlId',
     ];
 
     const expressions = generateExpressions('WorkOrderNumber', 'Equals', ids);

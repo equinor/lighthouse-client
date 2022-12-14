@@ -24,7 +24,7 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-    const workOrderProcosysUrl = proCoSysUrls.getWorkOrderUrl(item.workOrderId ?? '');
+    const workOrderProcosysUrl = proCoSysUrls.getWorkOrderUrl(item.workOrderUrlId ?? '');
 
     useEffect(() => {
         actions.setTitle(
