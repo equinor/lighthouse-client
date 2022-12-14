@@ -5,6 +5,7 @@ export type Punch = {
     project: string | null;
     punchItemNo: string;
     checklistId: string | null;
+    checklistUrlId: string | null;
     description: string | null;
     category: string;
     raisedBy: string | null;
@@ -20,6 +21,7 @@ export type Punch = {
     estimate: number | null;
     workOrderNo: string | null;
     workOrderId: string | null;
+    workOrderUrlId: string | null;
     originalWorkOrderNo: string | null;
     softwareChangeRecordNo: string | null;
     documentNo: string | null;
@@ -35,6 +37,7 @@ export type Punch = {
     formularType: string | null;
     formularDiscipline: string | null;
     tagId: string | null;
+    tagUrlId: string | null;
     tagNo: string | null;
     discipline: string | null;
     disciplineDescription: string | null;
@@ -44,11 +47,13 @@ export type Punch = {
     commissioningPackageNo: string | null;
     tagArea: string | null;
     commissioningPackageId: string | null;
+    commissioningPackageUrlId: string | null;
     identifier: string | null;
     commissioningPackageArea: string | null;
     system: string | null;
     mechanicalCompletionPackageNo: string | null;
     mechanicalCompletionPackageId: string | null;
+    mechanicalCompletionPackageUrlId: string | null;
     mechanicalCompletionStatus: string | null;
     handoverPlan: string;
     m03_PlannedForecastDate: Date | null;
