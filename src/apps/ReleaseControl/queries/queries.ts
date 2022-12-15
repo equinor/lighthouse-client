@@ -1,6 +1,5 @@
+import { CacheTime, LogEntry } from '@equinor/Workflow';
 import { QueryKey, UseQueryOptions } from 'react-query';
-import { CacheTime } from '../../ScopeChangeRequest/enum/cacheTimes';
-import { LogEntry } from '../../ScopeChangeRequest/types/scopeChangeRequest';
 import {
     canAddContributor,
     canContribute,

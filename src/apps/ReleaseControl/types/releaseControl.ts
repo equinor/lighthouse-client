@@ -1,4 +1,5 @@
-import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
+import { CriteriaSignState, FamTag } from '@equinor/Workflow';
+
 export type CreatedBy = {
     id: string;
     oid: string;
@@ -165,78 +166,6 @@ export type ReleaseControlWorkflowTemplate = {
     id: string;
     isPublished: boolean;
     workflowStepTemplates: CreateReleaseControlStepModel[];
-};
-
-export type FamTag = {
-    facility: string;
-    project: string;
-    tagNo: string;
-    tagId: string;
-    register: string | null;
-    function: string | null;
-    functionalSystem: string | null;
-    mechanicalCompletionPackageNo: string;
-    mechanicalCompletionPackageId: string;
-    commissioningPackageNo: string;
-    commissioningPackageId: string;
-    status: string | null;
-    location: string | null;
-    openWorkOrders: string | null;
-    openWorkOrderIds: string | null;
-    installedCableLength: string | null;
-    estimatedCableLength: string | null;
-    heatedTagNos: string | null;
-    tagMountedOn: string | null;
-    tagMountedOnNo: string | null;
-    relatedHTCables: string | null;
-    mountedOnHeatTracingCableTagNos: string | null;
-    heatTracingCableTagNos: string | null;
-    switchBoardTagNos: string | null;
-    circuitAndStarterTagNos: string | null;
-
-    //Sent to release control api
-    area: string | null;
-    tagType: string | null;
-    system: string | null;
-    mountedOn: string | null;
-    circuitTagNos: string | null;
-    tagHeated: string | null;
-};
-
-export type FamTagType = {
-    facility: string;
-    project: string;
-    tagNo: string;
-    tagId: string;
-    register: string | null;
-    function: string | null;
-    functionalSystem: string | null;
-    mechanicalCompletionPackageNo: string;
-    mechanicalCompletionPackageId: string;
-    commissioningPackageNo: string;
-    commissioningPackageId: string;
-    status: string | null;
-    location: string | null;
-    openWorkOrders: string | null;
-    openWorkOrderIds: string | null;
-    installedCableLength: string | null;
-    estimatedCableLength: string | null;
-    heatedTagNos: string | null;
-    tagMountedOn: string | null;
-    tagMountedOnNo: string | null;
-    relatedHTCables: string | null;
-    mountedOnHeatTracingCableTagNos: string | null;
-    heatTracingCableTagNos: string | null;
-    switchBoardTagNos: string | null;
-    circuitAndStarterTagNos: string | null;
-
-    //Sent to release control api
-    area: string | null;
-    tagType: string | null;
-    system: string | null;
-    mountedOn: string | null;
-    circuitTagNos: string | null;
-    tagHeated: string | null;
 };
 
 export type Attachment = {

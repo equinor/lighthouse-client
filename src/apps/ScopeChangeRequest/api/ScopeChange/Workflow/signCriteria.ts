@@ -1,6 +1,6 @@
+import { CriteriaSignState } from '@equinor/Workflow';
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../functions/throwError';
-import { CriteriaSignState } from '../../../types/scopeChangeRequest';
 
 interface SignCriteriaMutation {
     requestId: string;

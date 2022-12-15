@@ -7,9 +7,8 @@ import { EditScopeTab } from './EditTabs/EditScopeTab';
 import { EditWorkflowTab } from './EditTabs/EditWorkflowTab';
 import { HistoryTab } from './Tabs/HistoryTab';
 import { useEdsTabs } from '@equinor/hooks';
-import { TypedSelectOption } from '../../../../ScopeChangeRequest/api/Search/searchType';
-import { FamTag } from '../../../types/releaseControl';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
+import { FamTag, TypedSelectOption } from '@equinor/Workflow';
 
 export const ReleaseControlRequestEditForm = (): JSX.Element => {
     const releaseControl = useReleaseControlContext(({ releaseControl }) => releaseControl);

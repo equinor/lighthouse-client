@@ -39,7 +39,7 @@ interface WorkflowStepProps {
     app: string;
 }
 
-export const WorkflowStep = ({
+export const WorkflowStepRender = ({
     step,
     steps,
     availableSteps,
