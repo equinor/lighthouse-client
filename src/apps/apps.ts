@@ -31,6 +31,7 @@ import { setup as preservationAnalyticsSetup } from './Preservation';
 import { setup as spoolsAnalyticsSetup } from './Spools';
 import { setup as ProgressStatusSetup } from './ProgressStatus';
 import { setup as cchOverviewSetup } from './CCHOverview';
+import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTask';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -365,6 +366,19 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'PowerBIViewer',
             setup: commissioningAnalyticsSetup,
+        },
+        appEnv: 'prod',
+    },
+    {
+        title: 'Commissioning Task',
+        shortName: 'commissioning-task-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: CommissioningPackageTaskSetup,
         },
         appEnv: 'prod',
     },
