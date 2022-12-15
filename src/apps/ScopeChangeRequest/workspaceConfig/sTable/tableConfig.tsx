@@ -10,7 +10,6 @@ import { TableOptions } from '@equinor/WorkSpace';
 import {
     Comments,
     GuessMhrsRender,
-    MakeDateCell,
     PendingContributions,
     StateCell,
     WOEstMhrsRender,
@@ -157,19 +156,19 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             header: 'Last updated',
             accessor: (s) => s.modifiedAtUtc,
             width: 120,
-            render: (s) => <MakeDateCell date={s.modifiedAtUtc} />,
+            render: (s) => <>{new Date(s.modifiedAtUtc).toLocaleDateString()}</>,
         }),
         defineColumn({
             header: 'Created at',
             accessor: (s) => s.createdAtUtc,
             width: 120,
-            render: (s) => <MakeDateCell date={s.createdAtUtc} />,
+            render: (s) => <>{new Date(s.createdAtUtc).toLocaleDateString()}</>,
         }),
         defineColumn({
             header: 'Last signed',
             accessor: getLastSigned,
             width: 180,
-            render: (s, v) => <>{v && <div>{v.toRelative({ locale: 'en-GB' })}</div>}</>,
+            render: (s, v) => <>{v ? new Date(v).toLocaleDateString() : ''}</>,
         }),
     ],
 };
