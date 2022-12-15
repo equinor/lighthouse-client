@@ -1,7 +1,7 @@
 import { SingleSelect } from '@equinor/eds-core-react';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
-import { PCSPersonRoleSearch } from '../../../../ScopeChangeRequest/Components/PersonRoleSearch/PCSPersonRoleSearch';
+import { PCSPersonRoleSearch } from '@equinor/Workflow';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { FunctionalRole } from '../../../types/functionalRole';
 import {

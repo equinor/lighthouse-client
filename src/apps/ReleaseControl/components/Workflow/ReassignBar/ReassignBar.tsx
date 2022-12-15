@@ -1,5 +1,4 @@
-import { resetSigningAtom } from '@equinor/Workflow';
-import { PCSPersonRoleSearch } from '../../../../ScopeChangeRequest/Components/PersonRoleSearch/PCSPersonRoleSearch';
+import { PCSPersonRoleSearch, resetSigningAtom } from '@equinor/Workflow';
 import { reassignCriteria } from '../../../api/releaseControl/Workflow';
 import { useReleaseControlMutation } from '../../../hooks/useReleaseControlMutation';
 import { releaseControlMutationKeys } from '../../../queries/releaseControlMutationKeys';

@@ -7,12 +7,10 @@ import { getTagById } from '../../api/PCS/getTagById';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { getDocumentById } from '../../api/STID/getDocumentById';
 import { transformIsoDate } from '../../Components/Workflow/Utils/dateFormatting';
-import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
-import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
-import { getPunchListItemByNo } from '../../api/FAM/getPunchListItemByNo';
+import { getPunchListItemByNo, proCoSysQueryKeys, stidQueryKeys } from '@equinor/Workflow';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;
@@ -133,11 +131,13 @@ export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsPara
                 ...documentSelectOption,
                 label: `${x.stidDocumentNumber} ${document.docTitle}`,
                 object: document,
-                metadata: `Revision ${document.currentRevision.revNo} | Rev date ${document.currentRevision.revDate &&
+                metadata: `Revision ${document.currentRevision.revNo} | Rev date ${
+                    document.currentRevision.revDate &&
                     transformIsoDate(document.currentRevision.revDate)
-                    } | Reason for issue ${document.currentRevision.reasonForIssue &&
+                } | Reason for issue ${
+                    document.currentRevision.reasonForIssue &&
                     document.currentRevision.reasonForIssue
-                    }`,
+                }`,
             });
         });
 

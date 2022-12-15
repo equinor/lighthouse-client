@@ -12,9 +12,8 @@ import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflo
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeQueries } from '../../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { CriteriaSignState } from '../../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../../Contributor/contributor.styles';
-import { actionWithCommentAtom } from '@equinor/Workflow';
+import { actionWithCommentAtom, CriteriaSignState } from '@equinor/Workflow';
 
 interface CriteriaActionBarProps {
     criteriaId: string;

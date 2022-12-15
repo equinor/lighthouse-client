@@ -1,5 +1,5 @@
 import { Column } from '@equinor/Table';
-import { WorkOrder } from '../../../types/FAM/workOrder';
+import { WorkOrder } from '@equinor/Workflow';
 
 export function generateColumn(
     headerName: string,
