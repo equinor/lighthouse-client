@@ -1,5 +1,5 @@
+import { LogEntry } from '@equinor/Workflow';
 import styled from 'styled-components';
-import { LogEntry } from '../../../types/scopeChangeRequest';
 import { dateToDateTimeFormat } from '../../Workflow/Utils/dateFormatting';
 
 interface HistoryItemProps {

@@ -7,10 +7,10 @@ import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeCont
 import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeQueries } from '../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
-import { Contributor } from '../../../types/scopeChangeRequest';
 import { submitContribution } from '../../../api/ScopeChange/Workflow';
 import { ButtonContainer } from './contributor.styles';
 import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
+import { Contributor } from '@equinor/Workflow';
 
 interface ContributorActionBarProps {
     stepId: string;

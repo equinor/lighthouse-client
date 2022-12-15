@@ -1,12 +1,9 @@
-import { TypedSelectOption } from '../../api/Search/searchType';
-import { searchPunchListItems } from '../../api/FAM/searchPunchListItems';
-import { FamTag } from '../../../ReleaseControl/types/releaseControl';
-import { searchTagNo } from '../../api/FAM/searchTagNo';
-import { searchHtCableTagNo } from '../../api/FAM/searchHtCableTagNo';
-import { searchTag } from '../../api/FAM/searchTag';
-import { searchHtCable } from '../../api/FAM/searchHtCable';
-
-export type FAMTypes = 'punch' | 'famtag' | 'htcable' | 'famtagno' | 'htcabletagno';
+import { FamTag, FAMTypes, TypedSelectOption } from '@equinor/Workflow';
+import { searchHtCable } from '../../Api/FAM/searchHtCable';
+import { searchHtCableTagNo } from '../../Api/FAM/searchHtCableTagNo';
+import { searchPunchListItems } from '../../Api/FAM/searchPunchListItems';
+import { searchTag } from '../../Api/FAM/searchTag';
+import { searchTagNo } from '../../Api/FAM/searchTagNo';
 
 interface FAMSearch {
     searchFAM: (
