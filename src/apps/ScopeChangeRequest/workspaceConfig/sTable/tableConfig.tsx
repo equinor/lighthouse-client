@@ -10,7 +10,6 @@ import { TableOptions } from '@equinor/WorkSpace';
 import {
     Comments,
     GuessMhrsRender,
-    MakeDateCell,
     PendingContributions,
     StateCell,
     WOEstMhrsRender,
