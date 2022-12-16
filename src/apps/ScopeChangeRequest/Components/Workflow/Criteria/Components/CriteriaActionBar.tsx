@@ -1,5 +1,5 @@
 import { swap } from '@dbeining/react-atom';
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from 'react-query';
 
@@ -12,9 +12,9 @@ import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflo
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeQueries } from '../../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { CriteriaSignState } from '../../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../../Contributor/contributor.styles';
-import { actionWithCommentAtom } from '@equinor/Workflow';
+import { actionWithCommentAtom, CriteriaSignState } from '@equinor/Workflow';
+import { useIsScopeChangeMutatingOrFetching } from '../../../../hooks/observers/useIsScopeChangeMutatingOrFetching';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
@@ -167,11 +167,21 @@ export const CriteriaActionBar = ({
         return actions;
     }
 
+    const isLoading = useIsScopeChangeMutatingOrFetching(requestId);
+
     return (
         <ButtonContainer>
-            {getSignButton()}
-            {makeSignOptions().length > 0 && <MiniMenuButton items={makeSignOptions()} />}
-            {makeMoreActions().length > 0 && <IconMenu items={makeMoreActions()} />}
+            {isLoading && canSign ? (
+                <Button variant="ghost_icon" disabled>
+                    <Progress.Dots color="primary" />
+                </Button>
+            ) : (
+                <>
+                    {getSignButton()}
+                    {makeSignOptions().length > 0 && <MiniMenuButton items={makeSignOptions()} />}
+                    {makeMoreActions().length > 0 && <IconMenu items={makeMoreActions()} />}
+                </>
+            )}
         </ButtonContainer>
     );
 };
