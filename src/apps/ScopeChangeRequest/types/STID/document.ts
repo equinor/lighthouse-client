@@ -5,6 +5,7 @@ export interface Document {
     revDate: string;
     currentRevision: CurrentRevision;
     reasonForIssue: string;
+    revStatus: string;
 }
 
 export interface CurrentRevision {

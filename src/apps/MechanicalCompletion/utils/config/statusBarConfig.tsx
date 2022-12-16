@@ -23,7 +23,7 @@ const getKpis = (mcPackages: McPackage[]): Kpi => {
             }
 
             //MC to Com
-            if (curr.rfccForecastDate || curr.rfccPlannedDate) {
+            if (curr.rfccIsShipped) {
                 acc.mcToComCount += 1;
             }
 

@@ -2,6 +2,7 @@ export type QueryStatus = 'Open' | 'Closed';
 
 export type Query = {
     queryId: string;
+    queryUrlId: string;
     facility: string | null;
     project: string | null;
     queryType: string | null;

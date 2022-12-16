@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.25.1
+- [ScopeChangeRequest] Change table column dates to standard format
+- [MechanicalCompletion] Fix MC to Com KPI 
+
+## 1.25.0
+- [Query] New URL fields from FAM
+- [Punch] New URL fields from FAM
+- [Workorder] New URL fields from FAM
+- [PipingAndHeattrace] New URL fields from FAM
+- [Loop] New URL fields from FAM
+- [ScopeChangeRequest] New URL fields from FAM
+- [ScopeChangeRequest] Document batch search
+- [ScopeChangeRequest] Ability to create revision on closed requests
+
+
 ## 1.24.3
 - [Query] Add title as subheader and remove description field in sidesheet
 - [Query] Add Description, RFC and RFO status to Commpkg tab table

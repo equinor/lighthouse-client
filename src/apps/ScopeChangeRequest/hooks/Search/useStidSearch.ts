@@ -2,6 +2,7 @@ import { useFacility } from '@equinor/lighthouse-portal-client';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { searchDocuments } from '../../api/Search/STID/searchDocuments';
 import { searchTags } from '../../api/Search/STID/searchTags';
+import { Document } from '../../types/STID/document';
 import { StidTypes } from '../../types/STID/STIDTypes';
 
 interface StidSearch {
@@ -28,8 +29,29 @@ export function useSTIDSearch(): StidSearch {
             case 'stidtag': {
                 return await searchTags(searchValue, facilityId, signal);
             }
+
             case 'document': {
-                return await searchDocuments(searchValue, facilityId, signal);
+                const documents = await searchDocuments(searchValue, facilityId, signal);
+                //We have to filter out only the OF-P documents if there are two documents with same docNo
+                const uniqueDocs = documents.reduce((unique: TypedSelectOption[], o) => {
+                    {
+                        if (
+                            documents.some(
+                                (x) =>
+                                    (x.object as Document).docNo === (o.object as Document).docNo &&
+                                    (o.object as Document).revStatus === 'OF-P'
+                            ) ||
+                            documents.filter(
+                                (x) => (x.object as Document).docNo === (o.object as Document).docNo
+                            ).length <= 1
+                        ) {
+                            unique.push(o);
+                        }
+                    }
+                    return unique;
+                }, []);
+
+                return uniqueDocs;
             }
 
             default: {
