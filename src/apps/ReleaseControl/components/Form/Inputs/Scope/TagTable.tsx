@@ -30,7 +30,7 @@ const columns: Column<FamTagType>[] = [
             <Link
                 hideUnderline
                 onClick={() => {
-                    window.open(proCoSysUrls.getTagUrl(cell.row.original.tagId || ''), '_blank');
+                    window.open(proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || ''), '_blank');
                 }}
             >
                 {cell.row.values.tagNo}
@@ -51,7 +51,7 @@ const columns: Column<FamTagType>[] = [
                 hideUnderline
                 onClick={() => {
                     window.open(
-                        proCoSysUrls.getTagUrl(cell.row.original.tagMountedOn || ''),
+                        proCoSysUrls.getTagUrl(cell.row.original.tagMountedOnUrlId || ''),
                         '_blank'
                     );
                 }}
@@ -74,7 +74,9 @@ const columns: Column<FamTagType>[] = [
                 hideUnderline
                 onClick={() => {
                     window.open(
-                        proCoSysUrls.getCommPkgUrl(cell.row.original.commissioningPackageId || ''),
+                        proCoSysUrls.getCommPkgUrl(
+                            cell.row.original.commissioningPackageUrlId || ''
+                        ),
                         '_blank'
                     );
                 }}
@@ -93,7 +95,7 @@ const columns: Column<FamTagType>[] = [
                 onClick={() => {
                     window.open(
                         proCoSysUrls.getMcUrl(
-                            cell.row.original.mechanicalCompletionPackageId || ''
+                            cell.row.original.mechanicalCompletionPackageUrlId || ''
                         ),
                         '_blank'
                     );
