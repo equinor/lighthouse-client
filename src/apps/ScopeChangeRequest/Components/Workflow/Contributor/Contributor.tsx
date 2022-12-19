@@ -5,11 +5,11 @@ import { WorkflowIcon } from '../Components/WorkflowIcon';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
-import { Contributor } from '../../../types/scopeChangeRequest';
 import { RowContent, WorkflowRow, WorkflowWrapper } from '../workflowLayout.styles';
 import { FlexColumn, CommentFieldWrapper, ButtonContainer } from './contributor.styles';
 import { ContributorActionBar } from './ContributorActionbar';
 import { getContributorStatus } from './getContributorStatus';
+import { Contributor } from '@equinor/Workflow';
 
 interface ContributorRenderProps {
     contributor: Contributor;
