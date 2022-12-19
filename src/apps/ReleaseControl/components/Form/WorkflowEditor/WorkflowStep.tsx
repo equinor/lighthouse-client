@@ -90,7 +90,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.Email,
+                                            responsibleObject.email,
                                             value.type
                                         ),
                                     });
@@ -142,7 +142,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.Email,
+                                            responsibleObject.email,
                                             value.type
                                         ),
                                     });

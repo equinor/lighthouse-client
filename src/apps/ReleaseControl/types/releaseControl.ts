@@ -180,11 +180,11 @@ export type Attachment = {
 };
 
 export type UserObject = {
-    AzureOid: string;
-    FirstName: string;
-    LastName: string;
-    UserName: string;
-    Email: string;
+    azureOid: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
 };
 
 export type ScopeChangeRequestReference = {

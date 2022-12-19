@@ -113,7 +113,7 @@ export const WorkflowStepRender = ({
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.Email,
+                                            responsibleObject.email,
                                             value.type
                                         ),
                                     });
@@ -176,7 +176,7 @@ export const WorkflowStepRender = ({
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.Email,
+                                            responsibleObject.email,
                                             value.type
                                         ),
                                     });

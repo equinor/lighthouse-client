@@ -86,6 +86,14 @@ export interface FunctionalRole {
 }
 
 export interface Person {
+    azureOid: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
+}
+
+export interface PersonSearch {
     AzureOid: string;
     FirstName: string;
     LastName: string;
