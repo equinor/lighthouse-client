@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.0
+- [ReleaseControl] New URL fields from FAM
+- [ReleaseControl] Loading spinners while signing steps
+- [ScopeChangeControl] Loading spinners while signing steps
+- [CommissioningTask] New Commissioning Task PBI report.
+
 ## 1.25.1
 - [ScopeChangeRequest] Change table column dates to standard format
 - [MechanicalCompletion] Fix MC to Com KPI 
