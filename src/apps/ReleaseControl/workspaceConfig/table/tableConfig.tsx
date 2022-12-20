@@ -1,6 +1,6 @@
 import { generateCommaSeperatedStringArrayColumn } from '@equinor/Table';
+import { WorkflowCompact } from '@equinor/Workflow';
 import { TableOptions } from '@equinor/WorkSpace';
-import { WorkflowCompact } from '../../../ScopeChangeRequest/workspaceConfig/sTable/WorkflowCompact';
 import { Monospace } from '../../Styles/WrapperStyles';
 import { ReleaseControl } from '../../types/releaseControl';
 

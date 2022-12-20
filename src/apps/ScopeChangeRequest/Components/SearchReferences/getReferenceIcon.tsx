@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { ReferenceType } from '@equinor/Workflow';
 
-import { ReferenceType } from '../../hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
 
 const DEFAULT_COLOR = tokens.colors.interactive.primary__resting.hex;

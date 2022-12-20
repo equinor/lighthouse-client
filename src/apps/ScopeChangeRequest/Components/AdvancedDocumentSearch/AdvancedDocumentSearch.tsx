@@ -13,10 +13,9 @@ import {
     SearchField,
     BatchCheckboxWrapper,
 } from './advancedSearch.styles';
-import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { NotFoundList } from './NotFoundList';
 import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
-import { getBatchPunch } from '../../api/FAM/Batch/getBatchPunch';
 import { BatchCheckbox } from './BatchCheckbox';
 import { QueryFunctionContext, useQuery } from 'react-query';
 import { proCoSysQueries } from '../../keys/ProCoSysQueries';
@@ -24,6 +23,7 @@ import { useFacility } from '../../../../Core/Client/Hooks';
 import { System } from '../../types/ProCoSys/system';
 import { fetchBatchDocuments } from '../../api/PCS/Batch/batchDocuments';
 import { Document } from '../../types/STID/document';
+import { getBatchPunch, ReferenceType } from '@equinor/Workflow';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
