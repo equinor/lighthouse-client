@@ -1,3 +1,4 @@
+import { CacheTime } from '@equinor/Workflow';
 import { UseQueryOptions } from 'react-query';
 import { getAreaByCode } from '../api/PCS/getAreaByCode';
 import { getCommPkgById } from '../api/PCS/getCommPkgById';
@@ -5,7 +6,6 @@ import { getDisciplines } from '../api/PCS/getDisciplines';
 import { getFunctionalRoles } from '../api/PCS/getFunctionalRoles';
 import { getSystems } from '../api/PCS/getSystems';
 import { getTagById } from '../api/PCS/getTagById';
-import { CacheTime } from '../enum/cacheTimes';
 import { System } from '../types/ProCoSys/system';
 
 export const ProCoSysBaseKey = ['ProCoSys'];

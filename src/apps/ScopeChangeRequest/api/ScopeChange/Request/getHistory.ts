@@ -1,6 +1,6 @@
+import { LogEntry } from '@equinor/Workflow';
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../functions/throwError';
-import { LogEntry } from '../../../types/scopeChangeRequest';
 
 export async function getHistory(id: string, signal?: AbortSignal): Promise<LogEntry[]> {
     const { scopeChange } = httpClient();

@@ -9,7 +9,11 @@ export interface TypedSelectOption extends SelectOption {
     metadata?: string;
 }
 
-export type ReferenceType = ProcoSysTypes;
+export type ReferenceType = ProcoSysTypes | StidTypes | FAMTypes | 'scopechangerequest';
+
+export type StidTypes = 'document' | 'stidtag';
+
+export type FAMTypes = 'punch' | 'famtag' | 'htcable' | 'famtagno' | 'htcabletagno';
 
 export type ProcoSysTypes =
     | PCSOrigins

@@ -1,5 +1,5 @@
+import { Contributor } from '@equinor/Workflow';
 import { CriteriaStatus } from '../Criteria/Components/CriteriaDetail';
-import { Contributor } from '../../../types/scopeChangeRequest';
 
 export function getContributorStatus(
     contributor: Contributor,
