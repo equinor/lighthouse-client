@@ -2,7 +2,7 @@ import { useFacility } from '@equinor/lighthouse-portal-client';
 import { adminQueries, DraggableStep, FunctionalRole, ProCoSysQueries } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
-import { WorkflowStepRender } from './WorkflowStepRender';
+import { WorkflowStep } from './WorkflowStep';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
 
@@ -48,7 +48,7 @@ export const WorkflowEditor = ({
     return (
         <div>
             {undragableSteps.map((workflowStep) => (
-                <WorkflowStepRender
+                <WorkflowStep
                     key={workflowStep.item.order}
                     step={workflowStep.item}
                     steps={workflowSteps.map(({ item }) => item)}
@@ -68,7 +68,7 @@ export const WorkflowEditor = ({
                 }}
             >
                 {dragableSteps.map((dragItem) => (
-                    <WorkflowStepRender
+                    <WorkflowStep
                         //TODO - find unique ID that is not Math.random() for temporary steps?
                         key={dragItem.item.id}
                         step={dragItem.item}

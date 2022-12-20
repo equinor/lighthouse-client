@@ -1,7 +1,7 @@
-import { SearchableSingleSelect } from '@equinor/Workflow';
 import { GroupBase, OptionsOrGroups, SingleValue } from 'react-select';
-import { TypedSelectOption } from './typedSelectOption';
-import { usePcsSearch } from './usePcsSeach';
+import { SearchableSingleSelect } from '../Inputs/SearchableSingleSelect';
+import { TypedSelectOption } from '../../api/Search/searchType';
+import { usePcsSearch } from '../../hooks/Search/usePcsSearch';
 
 interface PCSLinkProps {
     person: TypedSelectOption | null;

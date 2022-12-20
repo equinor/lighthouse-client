@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Column, Table } from '@equinor/Table';
-import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
+import { FamTagType } from '../../../../types/releaseControl';
 import { RemoveTagCell } from './RemoveTagCell';
 
 interface TagTableProps {

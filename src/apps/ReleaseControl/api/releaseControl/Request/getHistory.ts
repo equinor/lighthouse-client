@@ -1,5 +1,5 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { LogEntry } from '@equinor/Workflow';
+import { LogEntry } from '../../../../ScopeChangeRequest/types/scopeChangeRequest';
 import { throwOnError } from '../../../functions/throwError';
 
 export async function getHistory(id: string, signal?: AbortSignal): Promise<LogEntry[]> {

@@ -1,16 +1,17 @@
 import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { PunchListItem, throwOnError, TypedSelectOption } from '@equinor/Workflow';
+import { throwOnError } from '../../functions/throwError';
+import { PunchListItem } from '../../types/FAM/punchListItem';
 
-export async function getBatchPunch(
-    punchIds: string[],
+export async function getPunchListItemByNo(
+    id: number,
     signal?: AbortSignal
-): Promise<TypedSelectOption[]> {
+): Promise<PunchListItem> {
     const { FAM } = httpClient();
 
     const columnNames: string[] = ['PunchItemNo', 'Description'];
 
-    const expressions = generateExpressions('PunchItemNo', 'Equals', punchIds);
+    const expressions = generateExpressions('PunchItemNo', 'Equals', [id.toString()]);
 
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
 
@@ -27,11 +28,9 @@ export async function getBatchPunch(
         throw 'Invalid response';
     }
 
-    return punchListItems.map((s) => ({
-        label: `${s.punchItemNo} - ${s.description}`,
-        object: s,
-        searchValue: s.punchItemNo.toString(),
-        type: 'punch',
-        value: s.punchItemNo.toString(),
-    }));
+    if (punchListItems.length !== 1) {
+        throw 'More or less than one item returned';
+    }
+
+    return punchListItems[0];
 }

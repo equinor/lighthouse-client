@@ -1,11 +1,11 @@
 import { WorkOrderTable } from '../../../WorkOrderTable/WorkOrderTable';
 import { useParentSize } from '@cutting/use-get-parent-size';
 import { useRef } from 'react';
+import { getWorkOrderByIds } from '../../../../api/FAM/getWorkOrderById';
 import { useQuery } from 'react-query';
 import { CompactWorkOrderList } from '../../../WorkOrderTable/CompactWorkOrder/CompactWorkOrdersList';
 import { Loading, NoWorkOrders, Wrapper } from './workOrderTab.styles';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
-import { getWorkOrderByIds } from '@equinor/Workflow';
 
 export function WorkOrderTab(): JSX.Element {
     const woNumbers =

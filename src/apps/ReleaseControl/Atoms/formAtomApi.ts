@@ -1,10 +1,11 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
-import { FamTag, TypedSelectOption } from '@equinor/Workflow';
 import { useState } from 'react';
+import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
 import { ProcoSysTypes } from '../types/PCS/ProCoSysTypes';
 import { StidTypes } from '../types/PCS/STIDTypes';
 import {
     CreateReleaseControlStepModel,
+    FamTag,
     ScopeChangeRequestReference,
 } from '../types/releaseControl';
 

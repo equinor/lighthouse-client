@@ -1,6 +1,6 @@
 import { useSideSheet } from '@equinor/sidesheet';
-import { useGlobalMutationListener } from '@equinor/Workflow';
 import { useQueryClient } from 'react-query';
+import { useGlobalMutationListener } from '../../ScopeChangeRequest/hooks/observers/useGlobalMutationListener';
 import { releaseControlQueries } from '../queries/queries';
 
 /**

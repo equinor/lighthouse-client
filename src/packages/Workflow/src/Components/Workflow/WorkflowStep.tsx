@@ -39,7 +39,7 @@ interface WorkflowStepProps {
     app: string;
 }
 
-export const WorkflowStepRender = ({
+export const WorkflowStep = ({
     step,
     steps,
     availableSteps,
@@ -113,7 +113,7 @@ export const WorkflowStepRender = ({
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.email,
+                                            responsibleObject.Email,
                                             value.type
                                         ),
                                     });
@@ -176,7 +176,7 @@ export const WorkflowStepRender = ({
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.email,
+                                            responsibleObject.Email,
                                             value.type
                                         ),
                                     });
