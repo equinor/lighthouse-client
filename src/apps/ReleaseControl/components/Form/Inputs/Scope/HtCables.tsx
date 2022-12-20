@@ -1,4 +1,4 @@
-import { TypedSelectOption } from '@equinor/Workflow';
+import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { SearchHtCables } from './SearchHtCables';
 

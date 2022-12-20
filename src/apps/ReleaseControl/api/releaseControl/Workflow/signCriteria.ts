@@ -1,5 +1,5 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { CriteriaSignState } from '@equinor/Workflow';
+import { CriteriaSignState } from '../../../../ScopeChangeRequest/types/scopeChangeRequest';
 import { throwOnError } from '../../../functions/throwError';
 
 interface SignCriteriaMutation {

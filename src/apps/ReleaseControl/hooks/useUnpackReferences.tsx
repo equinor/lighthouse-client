@@ -1,7 +1,9 @@
 import { useFacility } from '@equinor/lighthouse-portal-client';
-import { proCoSysQueryKeys, stidQueryKeys, TypedSelectOption } from '@equinor/Workflow';
 import { useEffect } from 'react';
 import { useQueryCacheLookup } from '../../../hooks/QueryCache/useQueryCacheLookup';
+import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
+import { proCoSysQueryKeys } from '../../ScopeChangeRequest/keys/proCoSysQueryKeys';
+import { stidQueryKeys } from '../../ScopeChangeRequest/keys/STIDQueryKeys';
 import { getDocumentById } from '../api/releaseControl/PCS/getDocumentById';
 import { getPunchListItemByNo } from '../api/releaseControl/PCS/getPunchListItemByNo';
 import { DRCFormAtomApi } from '../Atoms/formAtomApi';

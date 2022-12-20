@@ -1,6 +1,6 @@
-import { CriteriaSignState } from '@equinor/Workflow';
 import { UseMutateFunction, useQueryClient } from 'react-query';
 import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
 import { signCriteria } from '../api/releaseControl/Workflow';
 import { releaseControlMutationKeys } from '../queries/releaseControlMutationKeys';
 import { useReleaseControlContext } from './useReleaseControlContext';

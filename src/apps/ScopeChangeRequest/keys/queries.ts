@@ -1,4 +1,3 @@
-import { CacheTime, LogEntry } from '@equinor/Workflow';
 import { QueryKey, UseQueryOptions } from 'react-query';
 import {
     canAddContributor,
@@ -17,7 +16,8 @@ import { getScopes } from '../api/ScopeChange/getScopes';
 import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
 import { getRevisions } from '../api/ScopeChange/Request/getRevisions';
-import { Scope, ScopeChangeRequest } from '../types/scopeChangeRequest';
+import { CacheTime } from '../enum/cacheTimes';
+import { LogEntry, Scope, ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export interface QueryContext {
     signal?: AbortSignal;

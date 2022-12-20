@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { EstimateBar, ExpendedProgressBar, ProgressBar, Table } from '@equinor/Table';
-import { WorkOrder } from '@equinor/Workflow';
 import styled from 'styled-components';
+import { WorkOrder } from '../../types/FAM/workOrder';
 import { generateColumn } from './Utils/generateColumn';
 
 interface WorkOrderTableProps {

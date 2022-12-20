@@ -1,7 +1,7 @@
 import { SingleSelect } from '@equinor/eds-core-react';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
-import { PCSPersonRoleSearch } from '@equinor/Workflow';
+import { PCSPersonRoleSearch } from '../../../../ScopeChangeRequest/Components/PersonRoleSearch/PCSPersonRoleSearch';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { FunctionalRole } from '../../../types/functionalRole';
 import {
@@ -90,7 +90,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.email,
+                                            responsibleObject.Email,
                                             value.type
                                         ),
                                     });
@@ -142,7 +142,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                                             step,
                                             steps,
                                             !value ? '' : value.value,
-                                            responsibleObject.email,
+                                            responsibleObject.Email,
                                             value.type
                                         ),
                                     });

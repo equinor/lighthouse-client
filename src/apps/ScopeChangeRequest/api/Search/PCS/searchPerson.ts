@@ -1,6 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { PersonSearch } from '@equinor/Workflow';
+import { Person } from '../../../types/ProCoSys/person';
 
 export const searchPerson = async (
     searchString: string,
@@ -18,7 +18,7 @@ export const searchPerson = async (
         .fetch(url, { signal })
         .then((response) => response.json())
         .then((data) => {
-            data.map((x: PersonSearch) => {
+            data.map((x: Person) => {
                 selectOptions.push({
                     label: `${x.FirstName} ${x.LastName} - ${x.Email}`,
                     value: x.AzureOid,
