@@ -1,6 +1,6 @@
 import { proCoSysUrls } from '@equinor/procosys-urls';
-import { FAMQueries } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
+import { FAMQueries } from '../../../ScopeChangeRequest/keys/FamQueries';
 import { ReleaseControlPunch } from '../../types/releaseControl';
 
 import { Link, TextWrapper, Wrapper, MainText } from './WrapperStyles';

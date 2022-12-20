@@ -1,4 +1,5 @@
 import { OriginLink } from '../../Components/DetailView/OriginLink';
+import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { DateTime } from 'luxon';
@@ -15,7 +16,6 @@ import {
     WOExpMhrsRender,
     WORemMhrsRender,
 } from './Cells';
-import { WorkflowCompact } from '@equinor/Workflow';
 
 const DEFAULT_TABLE_AGGREGATED = { Aggregated: () => null, aggregate: 'count' };
 

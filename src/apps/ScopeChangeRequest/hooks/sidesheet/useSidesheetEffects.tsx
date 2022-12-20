@@ -3,11 +3,11 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { MenuItem } from '@equinor/overlay-menu';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { WorkflowStep } from '@equinor/Workflow';
 import { useEffect } from 'react';
 import { unVoidRequest } from '../../api/ScopeChange/Request';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
+import { WorkflowStep } from '../../types/scopeChangeRequest';
 import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 

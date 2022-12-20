@@ -1,6 +1,6 @@
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { EstimateBar, ExpendedProgressBar, ProgressBar } from '@equinor/Table';
-import { WorkOrder } from '@equinor/Workflow';
+import { WorkOrder } from '../../../types/FAM/workOrder';
 import { Columns, Column, Header, Link } from './compactWorkOrder.styles';
 
 interface CompactWorkorderProps {

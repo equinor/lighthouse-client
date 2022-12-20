@@ -1,5 +1,5 @@
-import { WorkOrder } from '@equinor/Workflow';
 import styled from 'styled-components';
+import { WorkOrder } from '../../../types/FAM/workOrder';
 import { CompactWorkorder } from './CompactWorkOrder';
 
 interface CompactWorkOrderListProps {

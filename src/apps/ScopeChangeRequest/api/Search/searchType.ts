@@ -1,4 +1,4 @@
-import { ReferenceType } from '@equinor/Workflow';
+import { ReferenceType } from '../../hooks/Search/useReferencesSearch';
 
 interface SelectOption {
     label: string;

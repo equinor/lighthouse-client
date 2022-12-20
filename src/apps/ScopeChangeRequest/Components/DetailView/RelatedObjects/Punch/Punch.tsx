@@ -2,8 +2,9 @@ import { useQuery } from 'react-query';
 
 import { ScopeChangePunch } from '../../../../types/scopeChangeRequest';
 import { Link, TextWrapper, Wrapper, MainText } from '../WrapperStyles';
+import { FAMQueries } from '../../../../keys/FamQueries';
+import { PunchListItem } from '../../../../types/FAM/punchListItem';
 import { proCoSysUrls } from '@equinor/procosys-urls';
-import { FAMQueries, PunchListItem } from '@equinor/Workflow';
 
 interface PunchProps {
     punch: ScopeChangePunch;

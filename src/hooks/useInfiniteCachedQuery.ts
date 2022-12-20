@@ -1,5 +1,5 @@
-import { CacheTime } from '@equinor/Workflow';
 import { QueryFunction, QueryKey, useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { CacheTime } from '../apps/ScopeChangeRequest/enum/cacheTimes';
 
 /**
  * React query hook that caches the query for 10 hours
