@@ -86,6 +86,14 @@ export interface FunctionalRole {
 }
 
 export interface Person {
+    azureOid: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
+}
+
+export interface PersonSearch {
     AzureOid: string;
     FirstName: string;
     LastName: string;
@@ -98,11 +106,11 @@ export type Contributor = {
     instructionsToContributor: string;
     person: Person;
     contribution: Contribution;
-    createdAtUtc;
-    createdBy;
-    modifiedAtUtc;
-    modifiedBy;
-    plant;
+    createdAtUtc: Date | null;
+    createdBy: Person;
+    modifiedAtUtc: Date;
+    modifiedBy: Person;
+    plant: string;
 };
 
 export type Contribution = {
@@ -145,3 +153,38 @@ export interface WorkflowSigningParams {
     stepId: string;
     criteriaId: string;
 }
+
+export type WorkflowStep = {
+    id: string;
+    name: string;
+    order: number;
+    isCompleted: boolean;
+    isCurrent: boolean;
+    criterias: Criteria[];
+    contributors: Contributor[];
+};
+
+export type LogEntry = {
+    createdAtUtc: string;
+    createdBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    modifiedAtUtc: string;
+    modifiedBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    id: string;
+    title: string;
+    objectGuid: string;
+    eventType: string;
+    objectType: string;
+    details: string;
+};

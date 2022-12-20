@@ -3,8 +3,8 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scopeChangeRequest';
 import { Criteria, ReleaseControlStep } from '../../../../types/releaseControl';
+import { CriteriaSignState } from '@equinor/Workflow';
 
 interface CriteriaDetailProps {
     criteria: Criteria;

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { PCSPersonSearch } from '../../../PersonRoleSearch/PCSPersonSearch';
 import { addContributor } from '../../../../api/ScopeChange/Workflow/addContributor';
 import { Button, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -10,6 +9,7 @@ import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopech
 import { TypedSelectOption } from '../../../../api/Search/searchType';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
+import { PCSPersonSearch } from '@equinor/Workflow';
 
 interface AddContributorProps {
     stepId: string;
