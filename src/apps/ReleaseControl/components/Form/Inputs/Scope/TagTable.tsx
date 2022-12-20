@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Column, Table } from '@equinor/Table';
+import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
-import { FamTagType } from '../../../../types/releaseControl';
 import { RemoveTagCell } from './RemoveTagCell';
 
 interface TagTableProps {
@@ -28,10 +28,9 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.tagNo,
         Cell: (cell) => (
             <Link
+                href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
+                target="_blank"
                 hideUnderline
-                onClick={() => {
-                    window.open(proCoSysUrls.getTagUrl(cell.row.original.tagId || ''), '_blank');
-                }}
             >
                 {cell.row.values.tagNo}
             </Link>
@@ -48,13 +47,9 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.tagMountedOnNo,
         Cell: (cell) => (
             <Link
+                href={proCoSysUrls.getTagUrl(cell.row.original.tagMountedOnUrlId || '')}
+                target="_blank"
                 hideUnderline
-                onClick={() => {
-                    window.open(
-                        proCoSysUrls.getTagUrl(cell.row.original.tagMountedOn || ''),
-                        '_blank'
-                    );
-                }}
             >
                 {cell.row.values.tagMountedOnNo}
             </Link>
@@ -71,13 +66,9 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.commissioningPackageNo,
         Cell: (cell) => (
             <Link
+                href={proCoSysUrls.getCommPkgUrl(cell.row.original.commissioningPackageUrlId || '')}
+                target="_blank"
                 hideUnderline
-                onClick={() => {
-                    window.open(
-                        proCoSysUrls.getCommPkgUrl(cell.row.original.commissioningPackageId || ''),
-                        '_blank'
-                    );
-                }}
             >
                 {cell.row.values.commissioningPackageNo}
             </Link>
@@ -89,15 +80,11 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.mechanicalCompletionPackageNo,
         Cell: (cell) => (
             <Link
+                href={proCoSysUrls.getMcUrl(
+                    cell.row.original.mechanicalCompletionPackageUrlId || ''
+                )}
+                target="_blank"
                 hideUnderline
-                onClick={() => {
-                    window.open(
-                        proCoSysUrls.getMcUrl(
-                            cell.row.original.mechanicalCompletionPackageId || ''
-                        ),
-                        '_blank'
-                    );
-                }}
             >
                 {cell.row.values.mechanicalCompletionPackageNo}
             </Link>
@@ -117,7 +104,7 @@ const columns: Column<FamTagType>[] = [
     },
 ];
 
-const Link = styled.div`
+const Link = styled.a`
     color: ${tokens.colors.interactive.primary__resting.hex};
     text-decoration: ${({ hideUnderline }: { hideUnderline: boolean }) =>
         hideUnderline ? 'none' : 'underline'};

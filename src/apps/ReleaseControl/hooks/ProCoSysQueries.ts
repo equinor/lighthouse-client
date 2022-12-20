@@ -1,6 +1,6 @@
+import { CacheTime } from '@equinor/Workflow';
 import { UseQueryOptions } from 'react-query';
 import { getFunctionalRoles } from '../api/releaseControl/PCS/getFunctionalRoles';
-import { CacheTime } from '../Enums/cacheTimes';
 
 export const ProCoSysBaseKey = ['ProCoSysReleaseControl'];
 

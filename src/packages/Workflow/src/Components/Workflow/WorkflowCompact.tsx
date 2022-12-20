@@ -2,9 +2,9 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { DefaultWorkflowDot } from '../../Components/Workflow/Components/DefaultWorkflowDot';
-import { DisputedTableIcon } from '../../Components/WorkflowIcons/DisputedTableIcon';
-import { WorkflowStep } from '../../types/scopeChangeRequest';
+import { WorkflowStep } from '../../Types/WorkflowTypes';
+import { DisputedTableIcon } from '../WorkflowIcons/DisputedTableIcon';
+import { DefaultWorkflowDot } from './DefaultWorkflowDot';
 
 interface WorkflowProps {
     steps: WorkflowStep[];

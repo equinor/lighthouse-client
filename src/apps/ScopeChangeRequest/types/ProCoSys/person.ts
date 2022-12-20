@@ -1,7 +1,7 @@
 export interface Person {
-    AzureOid: string;
-    FirstName: string;
-    LastName: string;
-    UserName: string;
-    Email: string;
+    azureOid: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
 }

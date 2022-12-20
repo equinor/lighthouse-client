@@ -1,5 +1,5 @@
 import { swap } from '@dbeining/react-atom';
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from 'react-query';
 import { IconMenu, MiniMenuButton, MenuItem } from '@equinor/overlay-menu';
@@ -8,16 +8,16 @@ import { CriteriaActions } from '../../Types/actions';
 
 import { ButtonContainer } from '../../Contributor/contributor.styles';
 import { releaseControlQueries } from '../../../../queries/queries';
-import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scopeChangeRequest';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
 import { unsignCriteria } from '../../../../api/releaseControl/Workflow';
 import {
+    useIsReleaseControlMutatingOrFetching,
     useReleaseControlContext,
     useReleaseControlMutation,
     useWorkflowCriteriaOptions,
     useWorkflowSigning,
 } from '../../../../hooks';
-import { actionWithCommentAtom } from '@equinor/Workflow';
+import { actionWithCommentAtom, CriteriaSignState } from '@equinor/Workflow';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
@@ -161,11 +161,21 @@ export const CriteriaActionBar = ({
         return actions;
     }
 
+    const isLoading = useIsReleaseControlMutatingOrFetching(requestId);
+
     return (
         <ButtonContainer>
-            {getSignButton()}
-            {makeSignOptions().length > 0 && <MiniMenuButton items={makeSignOptions()} />}
-            {makeMoreActions().length > 0 && <IconMenu items={makeMoreActions()} />}
+            {isLoading && canSign ? (
+                <Button variant="ghost_icon" disabled>
+                    <Progress.Dots color="primary" />
+                </Button>
+            ) : (
+                <>
+                    {getSignButton()}
+                    {makeSignOptions().length > 0 && <MiniMenuButton items={makeSignOptions()} />}
+                    {makeMoreActions().length > 0 && <IconMenu items={makeMoreActions()} />}
+                </>
+            )}
         </ButtonContainer>
     );
 };
