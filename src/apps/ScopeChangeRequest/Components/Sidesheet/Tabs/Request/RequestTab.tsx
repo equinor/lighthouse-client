@@ -124,6 +124,7 @@ export function RequestTab(): JSX.Element {
                                 punch={request?.punchListItems}
                                 systems={request.systems}
                                 commPkgs={request.commissioningPackages}
+                                mcPkgs={request.mcPackages}
                                 documents={request.documents}
                                 areas={request.areas}
                                 tags={request.tags}

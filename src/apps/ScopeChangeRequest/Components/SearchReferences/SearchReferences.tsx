@@ -44,6 +44,7 @@ const DEFAULT_REFERENCE_TYPES: ReferenceType[] = [
     'tag',
     'system',
     'punch',
+    'mcpkg',
 ];
 
 export const SearchReferences = ({
