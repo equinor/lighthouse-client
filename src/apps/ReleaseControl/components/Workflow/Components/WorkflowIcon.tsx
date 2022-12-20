@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { DisputedWorkflowIcon } from '@equinor/Workflow';
 import styled from 'styled-components';
-import { DisputedWorkflowIcon } from '../../../../ScopeChangeRequest/Components/WorkflowIcons/DisputedWorkflowIcon';
 import { CriteriaStatus } from '../Criteria/Components/CriteriaDetail';
 
 interface WorkflowIconProps {

@@ -1,6 +1,6 @@
+import { CacheTime } from '@equinor/Workflow';
 import { useCallback, useEffect } from 'react';
 import { useIsFetching, useQueryClient } from 'react-query';
-import { CacheTime } from '../../enum/cacheTimes';
 import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
 
 interface EagerLoadingProps<T> {

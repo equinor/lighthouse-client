@@ -1,8 +1,7 @@
 import { reassignCriteria } from '../../../api/ScopeChange/Workflow';
-import { PCSPersonRoleSearch } from '../../PersonRoleSearch/PCSPersonRoleSearch';
 import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
-import { resetSigningAtom } from '@equinor/Workflow';
+import { PCSPersonRoleSearch, resetSigningAtom } from '@equinor/Workflow';
 
 interface ReassignBarProps {
     requestId: string;
