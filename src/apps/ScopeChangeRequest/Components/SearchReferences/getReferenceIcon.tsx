@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { ReferenceType } from '@equinor/Workflow';
 
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
+import { McPkgIcon } from '../DetailView/RelatedObjects/McPkg/McPkgIcon';
 
 const DEFAULT_COLOR = tokens.colors.interactive.primary__resting.hex;
 
@@ -22,6 +23,9 @@ export function getReferenceIcon(type: ReferenceType): JSX.Element | null {
 
         case 'commpkg':
             return <CommPkgIcon />;
+
+        case 'mcpkg':
+            return <McPkgIcon />;
 
         case 'system':
             return <Icon name="folder" color={DEFAULT_COLOR} />;
