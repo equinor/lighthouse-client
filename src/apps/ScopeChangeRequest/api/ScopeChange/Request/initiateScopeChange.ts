@@ -30,6 +30,7 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         punchListItemIds: request.punchListItems.map(({ procosysId }) => procosysId) || [],
         commissioningPackageNumbers:
             request.commissioningPackages.map(({ procosysNumber }) => procosysNumber) || [],
+        mcPackageNumbers: request.mcPackages.map(({ procosysNumber }) => procosysNumber) || [],
         systemIds: request.systems.map(({ procosysId }) => procosysId) || [],
         tagNumbers: request.tags.map(({ procosysNumber }) => procosysNumber) || [],
         documentNumbers:

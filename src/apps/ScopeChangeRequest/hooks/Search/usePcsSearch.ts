@@ -15,6 +15,7 @@ import { useQuery } from 'react-query';
 import { FunctionalRole } from '../../types/ProCoSys/functionalRole';
 import { System } from '../../types/ProCoSys/system';
 import { Discipline } from '../../types/ProCoSys/discipline';
+import { searchMcPkg } from '../../api/Search/PCS/searchMcPkg';
 
 interface PCSSearch {
     searchPCS: (
@@ -77,6 +78,10 @@ export function usePcsSearch(options?: PCSOptions): PCSSearch {
 
             case 'commpkg': {
                 return await searchCommPkg(searchValue, procosysPlantId, procosys, signal);
+            }
+
+            case 'mcpkg': {
+                return await searchMcPkg(searchValue, procosysPlantId, procosys, signal);
             }
 
             case 'discipline': {
