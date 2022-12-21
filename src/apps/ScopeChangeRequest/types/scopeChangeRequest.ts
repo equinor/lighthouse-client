@@ -29,6 +29,7 @@ export type ScopeChangeCreateEditModel = {
     references?: TypedSelectOption[];
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
+    mcPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
     punchListItemIds: number[];
@@ -107,6 +108,7 @@ export type ScopeChangeRequest = ScopeChangeBaseModel & {
     workflowSteps: WorkflowStep[] | null;
     tags: ScopeChangeTag[];
     commissioningPackages: ScopeChangeCommissioningPackage[];
+    mcPackages: ScopeChangeMcPkg[];
     systems: ScopeChangeSystem[];
     attachments: Attachment[];
     documents: ScopeChangeDocument[];
@@ -166,6 +168,12 @@ export type Attachment = {
 };
 
 export type ScopeChangeCommissioningPackage = {
+    id: string;
+    procosysId: number;
+    procosysNumber: string;
+};
+
+export type ScopeChangeMcPkg = {
     id: string;
     procosysId: number;
     procosysNumber: string;

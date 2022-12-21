@@ -11,6 +11,7 @@ import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { getPunchListItemByNo, proCoSysQueryKeys, stidQueryKeys } from '@equinor/Workflow';
+import { getMcPkgById } from '../../api/PCS/getMcPkgById';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;
@@ -66,6 +67,27 @@ export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsPara
                 ...commPkgSelectOption,
                 label: `${x.procosysNumber} ${commPkg.Description}`,
                 object: commPkg,
+            });
+        });
+
+        request.mcPackages.forEach(async (x) => {
+            const mcPkgSelectOption: TypedSelectOption = {
+                label: `${x.procosysNumber}`,
+                object: x,
+                searchValue: x.procosysNumber,
+                type: 'mcpkg',
+                value: x.procosysNumber,
+            };
+            appendRelatedObjects(mcPkgSelectOption);
+
+            const mcPkg = await addToQueryCache(referencesKeys.mcPkg(x.procosysNumber), () =>
+                getMcPkgById(plantId, x.procosysId)
+            );
+
+            updateReferences({
+                ...mcPkgSelectOption,
+                label: `${x.procosysNumber} ${mcPkg.Description}`,
+                object: mcPkg,
             });
         });
 

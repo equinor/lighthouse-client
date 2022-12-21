@@ -24,6 +24,7 @@ import { System } from '../../types/ProCoSys/system';
 import { fetchBatchDocuments } from '../../api/PCS/Batch/batchDocuments';
 import { Document } from '../../types/STID/document';
 import { getBatchPunch, ReferenceType } from '@equinor/Workflow';
+import { fetchBatchMcPkg } from '../../api/PCS/Batch/batchMcPkg';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -142,8 +143,8 @@ export const AdvancedDocumentSearch = ({
         referenceType === 'punch' ||
         referenceType === 'commpkg' ||
         referenceType === 'system' ||
-        referenceType === 'document';
-
+        referenceType === 'document' ||
+        referenceType === 'mcpkg';
     function getPlaceholderText() {
         switch (true) {
             case referenceType && isBatch: {
@@ -267,6 +268,10 @@ async function getResultsFromBatch(
 
         case 'commpkg': {
             return await fetchBatchCommPkg(numbers, signal);
+        }
+
+        case 'mcpkg': {
+            return await fetchBatchMcPkg(numbers, signal);
         }
 
         case 'document': {
