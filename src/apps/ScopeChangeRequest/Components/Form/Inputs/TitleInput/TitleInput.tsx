@@ -5,6 +5,7 @@ export const TitleInput = (): JSX.Element => {
     const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
 
     const title = useAtomState((s) => s.title);
+    console.log('Title is', title);
 
     const updateTitle = (e) => {
         updateAtom({ title: e.target.value });
