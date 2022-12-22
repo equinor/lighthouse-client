@@ -8,7 +8,7 @@ export * from '../../Admin/src/Queries/queries';
 
 export * from './Api/throwOnError';
 export * from './Api/CacheTime';
-export * from './Api/ProCoSysQueries';
+export * from './Api/PCS/ProCoSysQueries';
 export * from './Api/getFunctionalRoles';
 export * from './Api/getWorkflowSteps';
 export * from './Api/getWorkflowTemplates';
@@ -35,6 +35,17 @@ export * from './Api/FAM/FamQueries';
 export * from './Api/FAM/getPunchListItemByNo';
 export * from './Api/FAM/getWorkOrderById';
 export * from './Api/FAM/Batch/getBatchPunch';
+export * from './Api/findScopeChangeRequest';
+
+export * from './Api/PCS/getAreaByCode';
+export * from './Api/PCS/getCommPkgById';
+export * from './Api/PCS/getSystems';
+export * from './Api/PCS/getTagById';
+export * from './Api/PCS/validatePunch';
+export * from './Api/PCS/getMcPkgById';
+
+export * from './Api/STID/getDocumentById';
+export * from './Api/PCS/getDocumentIdByNo';
 
 /* Components */
 export * from './Components/PersonRoleSearch/applyEds';
@@ -42,7 +53,7 @@ export * from './Components/PersonRoleSearch/sort';
 export * from './Components/PersonRoleSearch/PCSPersonRoleSearch';
 export * from './Components/PersonRoleSearch/PCSPersonSearch';
 export * from './Components/PersonRoleSearch/typedSelectOption';
-export * from './Components/PersonRoleSearch/usePcsSeach';
+export * from './Components/PersonRoleSearch/usePcsPersonRoleSearch';
 
 export * from './Components/Workflow/DraggableIcon';
 export * from './Components/Workflow/InsertAfter';
@@ -61,15 +72,28 @@ export * from './Components/Atoms/signingAtom';
 export * from './Components/Inputs/SearchableSingleSelect';
 export * from './Components/Inputs/SearchableDropdown/SearchableDropdownWrapper';
 
+export * from './Components/SearchReferences/SearchReferences';
+export * from './Components/SearchReferences/getReferenceIcon';
+
 // export * from './Components/Workflow/Criteria';
 
 /* Types */
 export * from './Types/WorkflowTypes';
 export * from './Types/FAMTypes';
+export * from './Types/STID/document';
+export * from './Types/ScopeChangeRequest';
+export * from './Types/ProCoSys/discipline';
+export * from './Types/ProCoSys/Tag';
+export * from './Types/ProCoSys/system';
+export * from './Types/ProCoSys/CommissioningPackage';
+export * from './Types/ProCoSys/area';
+export * from './Types/ProCoSys/McPkg';
 
 /* Hooks */
 export * from './Hooks/observers/useGlobalMutationListener';
 export * from './Hooks/Search/useFAMSearch';
+export * from './Hooks/Search/usePcsSearch';
+export * from './Hooks/Search/useStidSearch';
 
 /* Keys */
 export * from './keys/proCoSysQueryKeys';

@@ -1,9 +1,8 @@
 import { ScopeChangeArea as AreaInterface } from '../../../../types/scopeChangeRequest';
 import { Link, Wrapper } from '../WrapperStyles';
-import { useFacility } from '../../../../../../Core/Client/Hooks';
-import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
-import { Area as PCSArea } from '../../../../types/ProCoSys/area';
+import { Area as PCSArea, proCoSysQueries } from '@equinor/Workflow';
+import { useFacility } from '@equinor/lighthouse-portal-client';
 
 interface AreaProps {
     area: AreaInterface;

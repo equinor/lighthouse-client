@@ -1,12 +1,9 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
-import { FamTag, TypedSelectOption } from '@equinor/Workflow';
+import { FamTag, ScopeChangeRequestReference, TypedSelectOption } from '@equinor/Workflow';
 import { useState } from 'react';
-import { ProcoSysTypes } from '../types/PCS/ProCoSysTypes';
-import { StidTypes } from '../types/PCS/STIDTypes';
-import {
-    CreateReleaseControlStepModel,
-    ScopeChangeRequestReference,
-} from '../types/releaseControl';
+import { ProcoSysTypes } from '@equinor/Workflow';
+import { StidTypes } from '@equinor/Workflow';
+import { CreateReleaseControlStepModel } from '../types/releaseControl';
 
 interface ReleaseControlReferencesAndScope {
     documentNumbers: string[];

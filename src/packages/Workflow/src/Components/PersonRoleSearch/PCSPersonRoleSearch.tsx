@@ -2,10 +2,10 @@ import { useCancellationToken } from '@equinor/hooks';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { FunctionalRole, ProCoSysQueries } from '@equinor/Workflow';
+import { FunctionalRole, proCoSysQueries } from '@equinor/Workflow';
 import { TypedSelectOption } from './typedSelectOption';
 import { useQuery } from 'react-query';
-import { usePcsSearch } from './usePcsSeach';
+import { usePcsPersonRoleSearch } from './usePcsPersonRoleSearch';
 import { sort } from './sort';
 import { applyEDSTheme, applyEdsStyles, applyEdsComponents } from './applyEds';
 
@@ -26,9 +26,9 @@ export const PCSPersonRoleSearch = ({
 }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
     const { procosysPlantId } = useFacility();
-    const { searchPCS } = usePcsSearch({ functionalRoleClassification: classification });
+    const { searchPCS } = usePcsPersonRoleSearch({ functionalRoleClassification: classification });
 
-    const { getFunctionalRolesQuery } = ProCoSysQueries;
+    const { getFunctionalRolesQuery } = proCoSysQueries;
 
     const { data, refetch } = useQuery<unknown, unknown, FunctionalRole[]>(
         getFunctionalRolesQuery(procosysPlantId, classification)

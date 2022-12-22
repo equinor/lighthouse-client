@@ -1,10 +1,10 @@
-import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
-import { McPkg as McPkgType } from '../../../../types/ProCoSys/McPkg';
+import { McPkg as McPkgType } from '@equinor/Workflow';
 import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { ScopeChangeMcPkg } from '../../../../types/scopeChangeRequest';
+import { proCoSysQueries } from '@equinor/Workflow';
 
 interface McPkgProps {
     mcPkg: ScopeChangeMcPkg;

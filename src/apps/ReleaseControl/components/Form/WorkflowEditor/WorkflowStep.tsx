@@ -1,9 +1,8 @@
 import { SingleSelect } from '@equinor/eds-core-react';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
-import { PCSPersonRoleSearch } from '@equinor/Workflow';
+import { FunctionalRole, PCSPersonRoleSearch } from '@equinor/Workflow';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { FunctionalRole } from '../../../types/functionalRole';
 import {
     CreateReleaseControlStepModel,
     ReleaseControlStepNames,

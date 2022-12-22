@@ -1,9 +1,9 @@
 import { CircularProgress, Icon, Input } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { validatePunch } from '@equinor/Workflow';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { validatePunch } from '../../../../api/PCS/validatePunch';
 
 interface SelectPunchProps {
     setOriginId: (originId: string | undefined) => void;

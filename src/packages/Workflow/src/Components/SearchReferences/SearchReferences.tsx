@@ -1,0 +1,166 @@
+import { SingleSelect } from '@equinor/eds-core-react';
+import { useMemo, useState } from 'react';
+import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
+import AsyncSelect from 'react-select/async';
+
+import {
+    Column,
+    Inline,
+    SearchContainer,
+    SelectContainer,
+    Wrapper,
+    Title,
+    TitleBar,
+    SearchLineWrapper,
+} from './searchReferences.styles';
+import { SelectedReference } from './SelectedReference';
+import {
+    applyEdsComponents,
+    applyEdsStyles,
+    applyEDSTheme,
+    ReferenceType,
+    SearchableDropdownWrapper,
+    TypedSelectOption,
+} from '@equinor/Workflow';
+import { useCancellationToken } from '@equinor/hooks';
+import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
+import { useReferencesSearch } from '../../Hooks/Search/useReferencesSearch';
+
+interface SearchReferencesOptions {
+    referenceTypes?: ReferenceType[];
+    referenceTypesAdvanced?: ReferenceType[];
+}
+
+interface SearchReferencesProps {
+    onChange: (newOptions: TypedSelectOption[]) => void;
+    references: TypedSelectOption[];
+    options?: SearchReferencesOptions;
+}
+
+const DEFAULT_REFERENCE_TYPES: ReferenceType[] = [
+    'document',
+    'area',
+    'commpkg',
+    'tag',
+    'system',
+    'punch',
+    'mcpkg',
+];
+
+export const SearchReferences = ({
+    onChange,
+    references,
+    options,
+}: SearchReferencesProps): JSX.Element => {
+    const { abort, getSignal } = useCancellationToken();
+    const { search: searchReferences } = useReferencesSearch();
+
+    const referenceTypes: ReferenceType[] = options?.referenceTypes ?? DEFAULT_REFERENCE_TYPES;
+    const advancedSearchReferenceTypes = options?.referenceTypesAdvanced ?? referenceTypes;
+
+    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>(undefined);
+
+    const addRelatedObject = (value: TypedSelectOption | TypedSelectOption[]) => {
+        const newValues = Array.isArray(value) ? value : [value];
+        onChange([...references, ...newValues]);
+    };
+
+    const removeRelatedObject = (value: string) =>
+        onChange(references.filter((x) => x.value !== value));
+
+    const selectedReferences = useMemo(() => {
+        return references.sort((a, b) => a.type.localeCompare(b.type));
+    }, [references]);
+
+    const loadOptions = async (
+        inputValue: string,
+        callback: (
+            options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
+        ) => void
+    ) => {
+        abort();
+        if (!referenceType) return;
+
+        const results = await searchReferences(inputValue, referenceType, getSignal());
+        callback(results);
+    };
+
+    return (
+        <Wrapper>
+            <TitleBar>
+                <Title>References</Title>
+
+                {advancedSearchReferenceTypes.length > 0 && (
+                    <AdvancedDocumentSearch
+                        documents={references}
+                        appendItem={addRelatedObject}
+                        removeItem={removeRelatedObject}
+                        advancedReferenceTypes={advancedSearchReferenceTypes}
+                    />
+                )}
+            </TitleBar>
+            <Column>
+                <Inline>
+                    <SearchLineWrapper>
+                        <SelectContainer>
+                            <SingleSelect
+                                label="Reference type"
+                                items={referenceTypes}
+                                value={referenceType}
+                                placeholder={'Select reference'}
+                                handleSelectedItemChange={(change) => {
+                                    if (!change.selectedItem) {
+                                        setReferenceType(undefined);
+                                    } else {
+                                        setReferenceType(change.selectedItem as ReferenceType);
+                                    }
+                                }}
+                            />
+                        </SelectContainer>
+                        <div style={{ flexBasis: '2%' }} />
+                        <SearchContainer>
+                            <SearchableDropdownWrapper>
+                                <AsyncSelect
+                                    isDisabled={!referenceType}
+                                    cacheOptions={false}
+                                    loadOptions={loadOptions}
+                                    defaultOptions={false}
+                                    components={applyEdsComponents()}
+                                    isMulti={true}
+                                    placeholder={`Type to search..`}
+                                    isClearable={false}
+                                    value={references}
+                                    styles={applyEdsStyles()}
+                                    controlShouldRenderValue={false}
+                                    onChange={(
+                                        newValue: MultiValue<TypedSelectOption>,
+                                        actionMeta: ActionMeta<TypedSelectOption>
+                                    ) => {
+                                        if (!actionMeta.option) return;
+                                        addRelatedObject(actionMeta.option);
+                                    }}
+                                    theme={(theme: Theme) => applyEDSTheme(theme)}
+                                />
+                            </SearchableDropdownWrapper>
+                            <div style={{ height: '0.11em' }} />
+                        </SearchContainer>
+                    </SearchLineWrapper>
+                </Inline>
+
+                <Column>
+                    {selectedReferences && selectedReferences.length > 0 && (
+                        <>
+                            {selectedReferences.map((selectedReference) => (
+                                <SelectedReference
+                                    removeRelatedObject={removeRelatedObject}
+                                    selected={selectedReference}
+                                    key={selectedReference.value}
+                                />
+                            ))}
+                        </>
+                    )}
+                </Column>
+            </Column>
+        </Wrapper>
+    );
+};
