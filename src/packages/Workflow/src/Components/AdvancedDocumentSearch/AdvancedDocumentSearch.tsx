@@ -19,6 +19,7 @@ import {
     getBatchPunch,
     proCoSysQueries,
     ReferenceType,
+    SingleSelectNoClear,
     TypedSelectOption,
 } from '@equinor/Workflow';
 import { useFacility } from '@equinor/lighthouse-portal-client';
@@ -207,7 +208,7 @@ export const AdvancedDocumentSearch = ({
                         <br />
 
                         <SearchField>
-                            <SingleSelect
+                            <SingleSelectNoClear
                                 label="Reference type"
                                 items={advancedReferenceTypes}
                                 value={referenceType}

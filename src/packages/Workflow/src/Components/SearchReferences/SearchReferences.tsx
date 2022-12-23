@@ -20,6 +20,7 @@ import {
     applyEDSTheme,
     ReferenceType,
     SearchableDropdownWrapper,
+    SingleSelectNoClear,
     TypedSelectOption,
 } from '@equinor/Workflow';
 import { useCancellationToken } from '@equinor/hooks';
@@ -103,7 +104,7 @@ export const SearchReferences = ({
                 <Inline>
                     <SearchLineWrapper>
                         <SelectContainer>
-                            <SingleSelect
+                            <SingleSelectNoClear
                                 label="Reference type"
                                 items={referenceTypes}
                                 value={referenceType}
