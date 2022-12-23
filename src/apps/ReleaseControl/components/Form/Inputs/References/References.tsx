@@ -1,5 +1,4 @@
-import { TypedSelectOption } from '@equinor/Workflow';
-import { SearchReferences } from '../../../../../ScopeChangeRequest/Components/SearchReferences/SearchReferences';
+import { SearchReferences, TypedSelectOption } from '@equinor/Workflow';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 
 const { updateAtom, useAtomState } = DRCFormAtomApi;

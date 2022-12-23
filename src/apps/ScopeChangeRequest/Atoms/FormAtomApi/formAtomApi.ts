@@ -1,8 +1,7 @@
 import { createAtom } from '@equinor/atom';
-import { ReferenceType } from '@equinor/Workflow';
+import { ReferenceType, TypedSelectOption } from '@equinor/Workflow';
 import { useState } from 'react';
 import { DefaultAtomAPI } from '../../../../Core/Atom/types/atom';
-import { TypedSelectOption } from '../../api/Search/searchType';
 import { ScopeChangeCreateEditModel } from '../../types/scopeChangeRequest';
 
 type ScopeChangeFormModel = Partial<ScopeChangeCreateEditModel>;

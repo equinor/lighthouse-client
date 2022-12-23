@@ -3,8 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { transformIsoDate } from '../Workflow/Utils/dateFormatting';
 import { useInfiniteCachedQuery } from '@equinor/hooks';
 import { Wrapper, Inline, LineBreaks, Details, MetaData, Link } from './document.styles';
-import { getDocumentById } from '../../api/releaseControl/PCS/getDocumentById';
-import { stidQueryKeys } from '@equinor/Workflow';
+import { getDocumentById, stidQueryKeys } from '@equinor/Workflow';
 
 interface DocumentProps {
     docNo: string;

@@ -1,7 +1,7 @@
 import { SearchableSingleSelect } from '@equinor/Workflow';
 import { GroupBase, OptionsOrGroups, SingleValue } from 'react-select';
 import { TypedSelectOption } from './typedSelectOption';
-import { usePcsSearch } from './usePcsSeach';
+import { usePcsPersonRoleSearch } from './usePcsPersonRoleSearch';
 
 interface PCSLinkProps {
     person: TypedSelectOption | null;
@@ -10,7 +10,7 @@ interface PCSLinkProps {
 }
 
 export const PCSPersonSearch = ({ setPerson, isDisabled }: PCSLinkProps): JSX.Element => {
-    const { searchPCS } = usePcsSearch();
+    const { searchPCS } = usePcsPersonRoleSearch();
 
     const loadOptions = async (
         inputValue: string,

@@ -1,8 +1,7 @@
 import { ScopeChangeSystem } from '../../../../types/scopeChangeRequest';
 import { useFacility } from '../../../../../../Core/Client';
 import { useEffect, useState } from 'react';
-import { System as PCSSystem } from '../../../../types/ProCoSys/system';
-import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { proCoSysQueries, System as PCSSystem } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
 import { proCoSysUrls } from '@equinor/procosys-urls';
