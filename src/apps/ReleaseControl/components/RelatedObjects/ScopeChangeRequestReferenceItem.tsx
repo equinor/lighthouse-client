@@ -1,5 +1,5 @@
 import { openSidesheetById } from '@equinor/sidesheet';
-import { ScopeChangeRequestReference } from '../../types/releaseControl';
+import { ScopeChangeRequestReference } from '@equinor/Workflow';
 
 import { Link, TextWrapper, Wrapper, MainText } from './WrapperStyles';
 

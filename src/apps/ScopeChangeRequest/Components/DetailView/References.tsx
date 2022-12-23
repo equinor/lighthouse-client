@@ -18,8 +18,8 @@ import { Punch } from './RelatedObjects/Punch/Punch';
 import { useState } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { getReferenceIcon } from '../SearchReferences/getReferenceIcon';
 import { McPkg } from './RelatedObjects/McPkg/McPkg';
+import { getReferenceIcon } from '@equinor/Workflow';
 
 interface RelatedObjectsProps {
     systems: ScopeChangeSystem[];
@@ -63,7 +63,7 @@ export const RelatedObjects = ({
             {commPkgs && commPkgs.length > 0 && (
                 <ReferenceWrapper
                     count={commPkgs.length}
-                    text={'Comm Pckg'}
+                    text={'Comm Pkg'}
                     icon={getReferenceIcon('commpkg') ?? <></>}
                 >
                     {commPkgs.map((x) => (

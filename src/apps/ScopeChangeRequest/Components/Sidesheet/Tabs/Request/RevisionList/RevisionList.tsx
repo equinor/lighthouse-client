@@ -5,8 +5,11 @@ import { openNewScopeChange } from '../../../../../functions/openNewScopeChange'
 import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { scopeChangeQueries } from '../../../../../keys/queries';
 import { ScopeChangeRequest } from '../../../../../types/scopeChangeRequest';
-import { MetaData } from '../../../../SearchReferences/searchReferences.styles';
 
+export const MetaData = styled.div`
+    font-size: 12px;
+    color: ${tokens.colors.text.static_icons__default.hex};
+`;
 export const RevisionsList = (): JSX.Element | null => {
     const id = useScopeChangeContext((s) => s.request.id);
     const { data } = useQuery(scopeChangeQueries.revisionsQuery(id));
