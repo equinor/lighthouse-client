@@ -43,9 +43,10 @@ export * from './Api/PCS/getSystems';
 export * from './Api/PCS/getTagById';
 export * from './Api/PCS/validatePunch';
 export * from './Api/PCS/getMcPkgById';
+export * from './Api/Search/PCS/searchStructure';
+export * from './Api/PCS/getDocumentIdByNo';
 
 export * from './Api/STID/getDocumentById';
-export * from './Api/PCS/getDocumentIdByNo';
 
 /* Components */
 export * from './Components/PersonRoleSearch/applyEds';
@@ -88,6 +89,7 @@ export * from './Types/ProCoSys/system';
 export * from './Types/ProCoSys/CommissioningPackage';
 export * from './Types/ProCoSys/area';
 export * from './Types/ProCoSys/McPkg';
+export * from './Types/ProCoSys/query';
 
 /* Hooks */
 export * from './Hooks/observers/useGlobalMutationListener';
