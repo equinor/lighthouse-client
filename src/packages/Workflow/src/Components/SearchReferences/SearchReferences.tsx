@@ -1,4 +1,3 @@
-import { SingleSelect } from '@equinor/eds-core-react';
 import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
