@@ -6,10 +6,9 @@ import { Button, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
-import { TypedSelectOption } from '../../../../api/Search/searchType';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { PCSPersonSearch } from '@equinor/Workflow';
+import { PCSPersonSearch, TypedSelectOption } from '@equinor/Workflow';
 
 interface AddContributorProps {
     stepId: string;

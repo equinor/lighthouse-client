@@ -1,6 +1,6 @@
 import { useFacility } from '../../../../Core/Client/Hooks';
-import { proCoSysQueries } from '../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
+import { proCoSysQueries } from '@equinor/Workflow';
 
 /**
  * Preloads api calls that should never invalidate

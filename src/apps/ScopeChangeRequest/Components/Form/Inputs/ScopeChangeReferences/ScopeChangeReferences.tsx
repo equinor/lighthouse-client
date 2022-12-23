@@ -1,6 +1,5 @@
-import { TypedSelectOption } from '../../../../api/Search/searchType';
+import { SearchReferences, TypedSelectOption } from '@equinor/Workflow';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
-import { SearchReferences } from '../../../SearchReferences/SearchReferences';
 
 export const CommPkgProperty = 'McPkgsThroughScope__CommPkg__CommPkgNo';
 export const CommPkgDescriptionFromTag = 'McPkgsThroughScope__CommPkg__Description';

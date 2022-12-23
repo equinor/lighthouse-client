@@ -25,6 +25,7 @@ export type ProcoSysTypes =
     | 'discipline'
     | 'functionalRole'
     | 'batchTag'
-    | 'mcpkg';
+    | 'mcpkg'
+    | 'punch';
 
 export type PCSOrigins = 'Query' | 'NCR' | 'SWCR';

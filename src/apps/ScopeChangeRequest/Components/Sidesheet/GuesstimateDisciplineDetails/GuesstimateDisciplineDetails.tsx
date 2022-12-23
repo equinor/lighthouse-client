@@ -1,9 +1,8 @@
+import { Discipline, proCoSysQueries } from '@equinor/Workflow';
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { useFacility } from '../../../../../Core/Client/Hooks';
-import { proCoSysQueries } from '../../../keys/ProCoSysQueries';
-import { Discipline } from '../../../types/ProCoSys/discipline';
 import { ScopeChangeDisciplineGuesstimates } from '../../../types/scopeChangeRequest';
 
 export function GuesstimateDisciplineDetails({
