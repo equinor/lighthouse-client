@@ -12,6 +12,7 @@ const columns: Column<HandoverNCR>[] = [
     {
         id: 'documentNumber',
         Header: 'Document No.',
+        width: 120,
         accessor: (pkg) => ({
             url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
             content: pkg,
@@ -22,6 +23,7 @@ const columns: Column<HandoverNCR>[] = [
     {
         id: 'Title',
         Header: 'Title',
+        width: 300,
         accessor: (pkg) => pkg.title,
     },
 ];
