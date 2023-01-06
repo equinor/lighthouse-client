@@ -7,6 +7,7 @@ import {
     ScopeChangeSystem,
     ScopeChangeCommissioningPackage,
     ScopeChangePunch,
+    ScopeChangeMcPkg,
 } from '../../types/scopeChangeRequest';
 import { Tag as TagComp } from './RelatedObjects/Tags/Tag';
 import { Area as AreaComp } from './RelatedObjects/Area/Area';
@@ -18,6 +19,7 @@ import { useState } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { getReferenceIcon } from '../SearchReferences/getReferenceIcon';
+import { McPkg } from './RelatedObjects/McPkg/McPkg';
 
 interface RelatedObjectsProps {
     systems: ScopeChangeSystem[];
@@ -26,6 +28,7 @@ interface RelatedObjectsProps {
     areas: ScopeChangeArea[];
     documents: ScopeChangeDocument[];
     punch: ScopeChangePunch[];
+    mcPkgs: ScopeChangeMcPkg[];
 }
 
 export const RelatedObjects = ({
@@ -35,6 +38,7 @@ export const RelatedObjects = ({
     documents = [],
     areas = [],
     punch = [],
+    mcPkgs = [],
 }: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
@@ -43,7 +47,8 @@ export const RelatedObjects = ({
                 systems.length === 0 &&
                 documents.length === 0 &&
                 punch.length === 0 &&
-                areas.length === 0 && <NoReferences>No references have been linked.</NoReferences>}
+                areas.length === 0 &&
+                mcPkgs.length === 0 && <NoReferences>No references have been linked.</NoReferences>}
             {tags && tags.length > 0 && (
                 <ReferenceWrapper
                     count={tags.length}
@@ -63,6 +68,17 @@ export const RelatedObjects = ({
                 >
                     {commPkgs.map((x) => (
                         <CommPkg commPkg={x} key={x.id} />
+                    ))}
+                </ReferenceWrapper>
+            )}
+            {mcPkgs && mcPkgs.length > 0 && (
+                <ReferenceWrapper
+                    count={mcPkgs.length}
+                    text={'Mc Pkg'}
+                    icon={getReferenceIcon('mcpkg') ?? <></>}
+                >
+                    {mcPkgs.map((x) => (
+                        <McPkg mcPkg={x} key={x.id} />
                     ))}
                 </ReferenceWrapper>
             )}

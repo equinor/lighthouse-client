@@ -1,11 +1,11 @@
-import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
-import AsyncSelect from 'react-select/async';
-import { TypedSelectOption } from '../../../../../ScopeChangeRequest/api/Search/searchType';
 import {
     applyEdsComponents,
     applyEdsStyles,
     applyEDSTheme,
-} from '../../../../../ScopeChangeRequest/Components/Inputs/SearchableDropdown/applyEds';
+    TypedSelectOption,
+} from '@equinor/Workflow';
+import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
+import AsyncSelect from 'react-select/async';
 
 export interface SelectProps {
     loadOptions: (

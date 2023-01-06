@@ -1,8 +1,8 @@
 import { createAtom } from '@equinor/atom';
+import { ReferenceType } from '@equinor/Workflow';
 import { useState } from 'react';
 import { DefaultAtomAPI } from '../../../../Core/Atom/types/atom';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { ReferenceType } from '../../hooks/Search/useReferencesSearch';
 import { ScopeChangeCreateEditModel } from '../../types/scopeChangeRequest';
 
 type ScopeChangeFormModel = Partial<ScopeChangeCreateEditModel>;
@@ -10,6 +10,7 @@ type ScopeChangeFormModel = Partial<ScopeChangeCreateEditModel>;
 interface ScopeChangeReferences {
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
+    mcPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
@@ -33,6 +34,7 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             changeCategory: { id: '', name: '' },
             changeCategoryId: undefined,
             commissioningPackageNumbers: [],
+            mcPackageNumbers: [],
             description: undefined,
             disciplineGuesstimates: [],
             documentNumbers: [],
@@ -76,6 +78,7 @@ function unPackReferences(api: DefaultAtomAPI<ScopeChangeFormModel>): ScopeChang
     return {
         areaCodes: unpackByType(references, 'area'),
         commissioningPackageNumbers: unpackByType(references, 'commpkg'),
+        mcPackageNumbers: unpackByType(references, 'mcpkg'),
         documentNumbers: unpackByType(references, 'document'),
         systemIds: unpackByType(references, 'system') as unknown as number[],
         tagNumbers: unpackByType(references, 'tag'),

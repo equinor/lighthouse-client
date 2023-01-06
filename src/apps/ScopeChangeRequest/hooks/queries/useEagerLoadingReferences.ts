@@ -1,14 +1,16 @@
+import { proCoSysQueryKeys, stidQueryKeys } from '@equinor/Workflow';
 import { useFacility } from '../../../../Core/Client/Hooks';
 import { getAreaByCode } from '../../api/PCS/getAreaByCode';
 import { getCommPkgById } from '../../api/PCS/getCommPkgById';
+import { getMcPkgById } from '../../api/PCS/getMcPkgById';
 import { getTagById } from '../../api/PCS/getTagById';
 import { getDocumentById } from '../../api/STID/getDocumentById';
-import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
-import { stidQueryKeys } from '../../keys/STIDQueryKeys';
+
 import {
     ScopeChangeArea,
     ScopeChangeCommissioningPackage,
     ScopeChangeDocument,
+    ScopeChangeMcPkg,
     ScopeChangeRequest,
     ScopeChangeTag,
 } from '../../types/scopeChangeRequest';
@@ -28,6 +30,16 @@ export function useEagerLoadingReferences(request: ScopeChangeRequest): void {
         items: request.commissioningPackages,
         key: keyFunction,
         queryFn: queryFn,
+    });
+
+    /** Mc pkgs */
+    const mcPkgKeyFunction = (pkg: ScopeChangeMcPkg) => keys.mcPkg(pkg.procosysNumber);
+    const getMcPkg = async (pkg: ScopeChangeMcPkg) =>
+        await getMcPkgById(procosysPlantId, pkg.procosysId);
+    useEagerLoading({
+        items: request.mcPackages,
+        key: mcPkgKeyFunction,
+        queryFn: getMcPkg,
     });
 
     /** AREA */

@@ -2,9 +2,9 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { getDocumentById } from '../../api/STID/getDocumentById';
 import { transformIsoDate } from '../Workflow/Utils/dateFormatting';
-import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { useInfiniteCachedQuery } from '@equinor/hooks';
 import { Wrapper, Inline, LineBreaks, Details, MetaData, Link } from './stidDocument.styles';
+import { stidQueryKeys } from '@equinor/Workflow';
 
 interface StidDocumentProps {
     docNo: string;
@@ -34,11 +34,13 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
                     </Link>
                     <Inline>
                         <MetaData>
-                            {`Revision ${data?.currentRevision.revNo ?? ''
-                                } | Rev date ${transformIsoDate(data?.currentRevision.revDate)} ${data?.currentRevision.reasonForIssue
+                            {`Revision ${
+                                data?.currentRevision.revNo ?? ''
+                            } | Rev date ${transformIsoDate(data?.currentRevision.revDate)} ${
+                                data?.currentRevision.reasonForIssue
                                     ? `| Reason for issue ${data?.currentRevision.reasonForIssue}`
                                     : ''
-                                } `}
+                            } `}
                         </MetaData>
                     </Inline>
                 </LineBreaks>

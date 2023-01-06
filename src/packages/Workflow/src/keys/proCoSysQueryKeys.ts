@@ -11,6 +11,7 @@ interface ProCoSysQueryKeys {
     area: (areaId: string) => string[];
     tag: (tagId: string) => string[];
     commPkg: (commPkgId: string) => string[];
+    mcPkg: (mcPkgId: string) => string[];
 }
 
 export function proCoSysQueryKeys(): ProCoSysQueryKeys {
@@ -24,6 +25,7 @@ export function proCoSysQueryKeys(): ProCoSysQueryKeys {
         area: (areaId: string) => [...baseKey, 'area', areaId],
         tag: (tagId: string) => [...baseKey, 'tag', tagId],
         commPkg: (commPkgId: string) => [...baseKey, 'commPkg', commPkgId],
+        mcPkg: (mcPkgId: string) => [...baseKey, 'mcPkg', mcPkgId],
     };
 
     return proCoSysQueryKeys;

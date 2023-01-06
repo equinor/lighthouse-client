@@ -1,3 +1,4 @@
+import { useCancellationToken } from '@equinor/hooks';
 import {
     ActionMeta,
     GroupBase,
@@ -7,10 +8,9 @@ import {
     Theme,
 } from 'react-select';
 import AsyncSelect from 'react-select/async';
+import { TypedSelectOption } from '../PersonRoleSearch/typedSelectOption';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './SearchableDropdown/applyEds';
-import { TypedSelectOption } from '../../api/Search/searchType';
 import { SearchableDropdownWrapper } from './SearchableDropdown/SearchableDropdownWrapper';
-import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 
 interface SearchableSingleSelectProps {
     loadOptions: (

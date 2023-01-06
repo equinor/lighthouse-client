@@ -1,15 +1,11 @@
 import { useSTIDSearch } from './useStidSearch';
 import { usePcsSearch } from './usePcsSearch';
-import { StidTypes } from '../../types/STID/STIDTypes';
-import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { useState } from 'react';
-import { FAMTypes, useFAMSearch } from './useFAMSearch';
 import { findScopeChangeRequest } from '../../../ReleaseControl/api/releaseControl/Request/findScopeChangeRequest';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { ScopeChangeRequestReference } from '../../../ReleaseControl/types/releaseControl';
-
-export type ReferenceType = ProcoSysTypes | StidTypes | FAMTypes | 'scopechangerequest';
+import { ReferenceType, useFAMSearch } from '@equinor/Workflow';
 
 interface ReferenceSearch {
     search: (

@@ -7,12 +7,6 @@ import { TypedSelectOption } from '../../api/Search/searchType';
 import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
 import {
-    applyEdsComponents,
-    applyEdsStyles,
-    applyEDSTheme,
-} from '../Inputs/SearchableDropdown/applyEds';
-import { SearchableDropdownWrapper } from '../Inputs/SearchableDropdown/SearchableDropdownWrapper';
-import {
     Column,
     Inline,
     SearchContainer,
@@ -22,8 +16,15 @@ import {
     TitleBar,
     SearchLineWrapper,
 } from './searchReferences.styles';
-import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { SelectedReference } from './SelectedReference';
+import {
+    applyEdsComponents,
+    applyEdsStyles,
+    applyEDSTheme,
+    ReferenceType,
+    SearchableDropdownWrapper,
+} from '@equinor/Workflow';
 
 interface SearchReferencesOptions {
     referenceTypes?: ReferenceType[];
@@ -43,6 +44,7 @@ const DEFAULT_REFERENCE_TYPES: ReferenceType[] = [
     'tag',
     'system',
     'punch',
+    'mcpkg',
 ];
 
 export const SearchReferences = ({
