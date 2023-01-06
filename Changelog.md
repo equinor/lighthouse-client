@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.1
+- [Handover] Sidesheet Tab NCr column width
+- [ScopeChangeControl] Change Origin Query validate correct project
+- [ScopeChangeControl] Reference Type McPkg enabled
+- [ScopeChangeControl] Markdown Editor for description
+- [ReleaseControl] Workflow code generalization
+
 ## 1.26.0
 - [ReleaseControl] New URL fields from FAM
 - [ReleaseControl] Loading spinners while signing steps
