@@ -111,5 +111,17 @@ Building the application
 
 https://vitejs.dev/
 
+# Create new Release
 
+To create a new Test Release, one must "publish" the changes in `dev` to `main` by going through the following steps:
+
+1. Update the [Changelog.md](./Changelog.md) with the respective changes that is included in this release, and update the version property in [package.json](./package.json) with the next applicable version number. Have your PR reviewed and merge into `dev` by using `Squash Merge`.
+
+2. Now you should "publish" all changes in `dev` by opening a new PR with all changes from `dev` to `main`. Get the PR reviewed and use `Merge Commits` when merging the PR.
+
+3. The [Azure Pipeline](https://dev.azure.com/Equinor/Johan%20Castberg%20-%20Portal/_build) will now build `main` and deploy the artifacts to the Test environment automatically. 
+
+4. Verify that the test environment and have relevant stakeholders test the functionality being deployed before deploying to Production. Two reviewers must approve the deployment to Production.
+
+> NB: make sure to align the deployment with backend changes.
 
