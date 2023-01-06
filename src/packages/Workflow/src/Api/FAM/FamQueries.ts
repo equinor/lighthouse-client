@@ -1,6 +1,6 @@
+import { CacheTime } from '@equinor/Workflow';
 import { UseQueryOptions } from 'react-query';
-import { getPunchListItemByNo } from '../api/FAM/getPunchListItemByNo';
-import { CacheTime } from '../enum/cacheTimes';
+import { getPunchListItemByNo } from './getPunchListItemByNo';
 
 export const FAMBaseKey = ['FAM'];
 

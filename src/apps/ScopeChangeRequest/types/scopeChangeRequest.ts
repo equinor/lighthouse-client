@@ -1,3 +1,4 @@
+import { CriteriaSignState, WorkflowStep } from '@equinor/Workflow';
 import { TypedSelectOption } from '../api/Search/searchType';
 
 export type ScopeChangeCreateEditModel = {
@@ -28,6 +29,7 @@ export type ScopeChangeCreateEditModel = {
     references?: TypedSelectOption[];
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
+    mcPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
     punchListItemIds: number[];
@@ -94,31 +96,6 @@ export type ScopeChangeDiscipline = {
     procosysId: number;
 };
 
-export type LogEntry = {
-    createdAtUtc: string;
-    createdBy: {
-        id: string;
-        oid: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    modifiedAtUtc: string;
-    modifiedBy: {
-        id: string;
-        oid: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    id: string;
-    title: string;
-    objectGuid: string;
-    eventType: string;
-    objectType: string;
-    details: string;
-};
-
 export type ScopeChangeRequest = ScopeChangeBaseModel & {
     workflowStatus: string | null;
     createdAtUtc: string;
@@ -131,6 +108,7 @@ export type ScopeChangeRequest = ScopeChangeBaseModel & {
     workflowSteps: WorkflowStep[] | null;
     tags: ScopeChangeTag[];
     commissioningPackages: ScopeChangeCommissioningPackage[];
+    mcPackages: ScopeChangeMcPkg[];
     systems: ScopeChangeSystem[];
     attachments: Attachment[];
     documents: ScopeChangeDocument[];
@@ -195,6 +173,12 @@ export type ScopeChangeCommissioningPackage = {
     procosysNumber: string;
 };
 
+export type ScopeChangeMcPkg = {
+    id: string;
+    procosysId: number;
+    procosysNumber: string;
+};
+
 export type ScopeChangeTag = {
     id: string;
     procosysId: number;
@@ -214,16 +198,6 @@ export type Person = {
     lastName: string;
 };
 
-export type WorkflowStep = {
-    id: string;
-    name: string;
-    order: number;
-    isCompleted: boolean;
-    isCurrent: boolean;
-    criterias: Criteria[];
-    contributors: Contributor[];
-};
-
 export type Criteria = {
     id: string;
     type: string;
@@ -234,26 +208,3 @@ export type Criteria = {
     signedState: CriteriaSignState | null;
     valueDescription: string | null;
 };
-
-export type Contributor = {
-    createdAtUtc: Date | null;
-    createdBy: Person;
-    modifiedAtUtc: Date;
-    modifiedBy: Person;
-    id: string;
-    instructionsToContributor: string;
-    person: Person;
-    contribution: Contribution | null;
-};
-
-export type Contribution = {
-    createdAtUtc: Date;
-    createdBy: Person;
-    modifiedAtUtc: Date;
-    modifiedBy: Person;
-    id: string;
-    comment: string;
-    suggestion: string;
-};
-
-export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';
