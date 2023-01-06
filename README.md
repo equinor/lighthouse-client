@@ -111,7 +111,7 @@ Building the application
 
 https://vitejs.dev/
 
-# Release
+# Create new Release
 
 To create a new Test Release, one must "publish" the changes in `dev` to `main` by going through the following steps:
 
@@ -121,7 +121,7 @@ To create a new Test Release, one must "publish" the changes in `dev` to `main` 
 
 3. The [Azure Pipeline](https://dev.azure.com/Equinor/Johan%20Castberg%20-%20Portal/_build) will now build `main` and deploy the artifacts to the Test environment automatically. 
 
-3. Verify that the test environment and have relevant stakeholders test the functionality being deployed before deploying to Production. Two reviewers must approve the deployment to Production.
+4. Verify that the test environment and have relevant stakeholders test the functionality being deployed before deploying to Production. Two reviewers must approve the deployment to Production.
 
 > NB: make sure to align the deployment with backend changes.
 
