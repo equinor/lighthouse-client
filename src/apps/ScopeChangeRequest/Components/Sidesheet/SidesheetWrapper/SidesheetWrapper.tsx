@@ -82,4 +82,9 @@ const Wrapper = styled.div`
     grid-template-rows: auto 1fr;
     overflow: scroll;
     height: 100%;
+
+    ::-webkit-scrollbar {
+        height: 0.5rem;
+        width: 13px;
+    }
 `;
