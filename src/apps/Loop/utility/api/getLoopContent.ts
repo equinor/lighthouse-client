@@ -8,6 +8,7 @@ export const loopContentColumnNames = [
     'ContentTagNo',
     'Register',
     'MechanicalCompletionStatus',
+    'CLStatus',
     'MechanicalCompletionPackageNo',
     'MechanicalCompletionPackageUrlId',
     'CommissioningPackageNo',
