@@ -49,16 +49,12 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
         disableEditMode();
         setRevisionMode(false);
         setVoidMode(false);
-    }, []);
-    useEffect(() => {
-        console.log('Updating context');
         updateContext(item, actions);
 
         return () => {
-            console.log('Resetting context!');
-            updateContext();
+            updateContext({} as ScopeChangeRequest);
         };
-    }, [item, actions]);
+    }, [item?.id]);
 
     if (Object.keys(getScopeChangeSnapshot().request).length < 2) {
         return <></>;

@@ -15,19 +15,18 @@ const DescriptionHeader = styled.div`
     line-height: 1.333em;
     color: ${tokens.colors.text.static_icons__tertiary.hex};
 `;
+
 export const DescriptionInput = (): JSX.Element => {
-    // Not using the SCR atom because its inital value is undefined(?), and the editor won't update initialConfig more than once...
+    // Not using the scopeChangeFormAtomApi because its inital value is undefined(?), and the editor won't update initialConfig more than once...
     const description = useScopeChangeContext((s) => s.request.description);
+
     return (
-        <div>
+        <div style={{ height: '500px' }}>
             <DescriptionHeader>
                 <div>Description</div>
                 <div>(Required)</div>
             </DescriptionHeader>
-            <MarkdownEditor
-                placeholder="Please enter scope description"
-                initialContent={description}
-            >
+            <MarkdownEditor initialContent={description}>
                 <DescriptionChanges />
             </MarkdownEditor>
         </div>
