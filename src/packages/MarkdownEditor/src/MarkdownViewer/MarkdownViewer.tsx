@@ -1,7 +1,9 @@
 import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import styled from 'styled-components';
 import { LI, OL } from './ComponentOverrides';
-const StyledMarkdown = styled(Markdown)`
+
+// Doing it like this because of jest failing...
+const StyledMarkdown = styled((props) => <Markdown {...props} />)`
     font-size: 16px;
     p {
         font-size: 16px !important;
