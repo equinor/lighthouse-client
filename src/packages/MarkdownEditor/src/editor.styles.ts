@@ -4,7 +4,6 @@ import { AllStyledComponent } from '@remirror/styles/styled-components';
 
 export const StyledContainer = styled(AllStyledComponent)`
     font-size: 16px;
-    box-shadow: inset 0px -1px 0px 0px rgba(111, 111, 111, 1);
     p {
         font-size: 16px !important;
     }
@@ -19,16 +18,22 @@ export const StyledContainer = styled(AllStyledComponent)`
             height: 4px;
         }
     }
-    &:focus-within {
-        box-shadow: none;
-    }
+
     .remirror-theme {
         .remirror-editor-wrapper {
             .ProseMirror,
             .remirror-editor {
                 background-color: ${tokens.colors.ui.background__light.rgba};
-                max-height: 200px;
+                min-height: 150px;
+                height: auto;
+                max-height: 500px;
+                box-shadow: inset 0px -1px 0px 0px rgba(111, 111, 111, 1);
                 overflow: auto;
+                resize: vertical;
+
+                &[style*='height'] {
+                    max-height: unset;
+                }
                 &:focus {
                     box-shadow: #007079 0px 0px 0px 2px;
                 }
