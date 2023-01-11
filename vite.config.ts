@@ -71,6 +71,7 @@ export default defineConfig({
             '@equinor/CircuitDiagram': path.resolve(__dirname, './src/packages/CircuitDiagram'),
             '@equinor/Admin': path.resolve(__dirname, './src/packages/Admin'),
             '@equinor/Workflow': path.resolve(__dirname, './src/packages/Workflow'),
+            '@equinor/markdown-editor': path.resolve(__dirname, './src/packages/MarkdownEditor'),
         },
     },
     build: {
