@@ -19,22 +19,12 @@ import {
     ToggleItalicButton,
     ToggleBulletListButton,
 } from '@remirror/react';
-import { AllStyledComponent } from '@remirror/styles/styled-components';
 
 import type { CreateEditorStateProps } from 'remirror';
 import type { RemirrorProps } from '@remirror/react';
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
+import { theme } from './theme';
+import { StyledContainer } from './editor.styles';
 
-const Container = styled(AllStyledComponent)`
-    font-size: 16px;
-    background-color: ${tokens.colors.ui.background__light.rgba};
-    /* box-shadow: inset 0px -1px 0px 0px rgba(111, 111, 111, 1); */
-
-    > div > div > div:focus {
-        /* box-shadow: pink 0px 0px 0px 0.2em !important; */
-    }
-`;
 export type ReactEditorProps = Pick<CreateEditorStateProps, 'stringHandler'> &
     Pick<RemirrorProps, 'initialContent' | 'editable' | 'autoFocus' | 'hooks'> & {
         placeholder?: string;
@@ -65,39 +55,8 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
     });
 
     return (
-        <Container>
-            <ThemeProvider
-                theme={{
-                    space: {
-                        3: '5px',
-                    },
-                    boxShadow: {
-                        '1': 'inset 0px -1px 0px 0px rgba(111, 111, 111, 1)',
-                        '2': 'inset 0px -1px 0px 0px rgba(111, 111, 111, 1)',
-                        '3': 'inset 0px -1px 0px 0px rgba(111, 111, 111, 1)',
-                    },
-                    radius: {
-                        border: '1px',
-                    },
-
-                    lineHeight: {
-                        default: '1.5em',
-                    },
-                    fontFamily: {
-                        default: 'Equinor',
-                    },
-
-                    color: {
-                        primaryText: '#ffffff',
-                        primary: '#007079',
-                        outline: '#007079',
-                        border: 'none',
-                        hover: {
-                            primary: '#007079',
-                        },
-                    },
-                }}
-            >
+        <StyledContainer>
+            <ThemeProvider theme={theme}>
                 <Remirror manager={manager} initialContent={initialContent} {...rest}>
                     <Toolbar>
                         <ToggleBoldButton color="warning" />
@@ -109,6 +68,6 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
                     {children}
                 </Remirror>
             </ThemeProvider>
-        </Container>
+        </StyledContainer>
     );
 };

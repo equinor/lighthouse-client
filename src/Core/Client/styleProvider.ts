@@ -10,7 +10,7 @@ export const GlobalStyle = createGlobalStyle`
 
     p {
         font-family: Equinor;
-        /* font-size: 13px; */
+         font-size: 13px !important; 
     }
     button {
         font-family: Equinor;

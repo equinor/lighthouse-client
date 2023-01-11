@@ -3,9 +3,8 @@ import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomAp
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { OnChangeJSON, useHelpers } from '@remirror/react';
-import { MarkdownEditor } from '../../../../../../packages/MarkdownEditor';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
-
+import { MarkdownEditor } from '@equinor/markdown-editor';
 const DescriptionHeader = styled.div`
     display: flex;
     flex-direction: row;
@@ -21,7 +20,7 @@ export const DescriptionInput = (): JSX.Element => {
     const description = useScopeChangeContext((s) => s.request.description);
 
     return (
-        <div style={{ height: '500px' }}>
+        <div>
             <DescriptionHeader>
                 <div>Description</div>
                 <div>(Required)</div>

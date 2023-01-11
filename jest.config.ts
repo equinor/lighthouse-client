@@ -40,6 +40,7 @@ export default {
         '^@equinor\\/CircuitDiagram(.*)$': '<rootDir>/src/packages/CircuitDiagram$1',
         '^@equinor\\/Admin(.*)$': '<rootDir>/src/packages/Admin$1',
         '^@equinor\\/Workflow(.*)$': '<rootDir>/src/packages/Workflow$1',
+        '^@equinor\\/markdown-editor(.*)$': '<rootDir>/src/packages/MarkdownEditor$1',
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     modulePathIgnorePatterns: ['<rootDir>/packages'],
