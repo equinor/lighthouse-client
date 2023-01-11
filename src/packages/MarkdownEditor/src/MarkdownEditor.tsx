@@ -59,7 +59,7 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
             <ThemeProvider theme={theme}>
                 <Remirror manager={manager} initialContent={initialContent} {...rest}>
                     <Toolbar>
-                        <ToggleBoldButton color="warning" />
+                        <ToggleBoldButton />
                         <ToggleItalicButton />
                         <ToggleOrderedListButton />
                         <ToggleBulletListButton />
