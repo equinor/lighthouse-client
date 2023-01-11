@@ -18,7 +18,6 @@ import { IsATSScopeCheckbox } from './Inputs/AtsScopeCheckbox';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
-
     useEffect(() => {
         const { clearState, updateAtom } = scopeChangeFormAtomApi;
         clearState();
@@ -34,7 +33,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
         return () => {
             clearState();
         };
-    }, []);
+    }, [request]);
 
     useUnpackRelatedObjects({ request });
 

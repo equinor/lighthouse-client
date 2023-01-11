@@ -25,7 +25,7 @@ import { CheckboxWrapper } from '../../../WarrantyCaseDetailCheckbox/warrantyCas
 import { RevisionsList } from './RevisionList/RevisionList';
 import { AtsDetailCheckbox } from '../../../AtsScopeCheckbox/AtsCheckbox';
 import { VoidedOrRevisionBanner } from './VoidedReasonBanner';
-import Markdown from 'markdown-to-jsx';
+import { MarkdownViewer } from '@equinor/markdown-editor';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -41,7 +41,7 @@ export function RequestTab(): JSX.Element {
                         <SectionWrapper>
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>
-                                <Markdown>{request.description}</Markdown>
+                                <MarkdownViewer>{request.description}</MarkdownViewer>
                             </SubSectionText>
                             <WarrantyCaseDetailCheckbox />
                         </SectionWrapper>
