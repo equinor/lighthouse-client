@@ -60,6 +60,7 @@
             "@equinor/CircuitDiagram": ["./src/packages/CircuitDiagram"],
             "@equinor/Admin": ["./src/packages/Admin"],
             "@equinor/Workflow": ["./src/packages/Workflow"],
+            "@equinor/markdown-editor": ["./src/packages/MarkdownEditor"]
         }
     },
     "compileOnSave": true,

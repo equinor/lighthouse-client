@@ -1,21 +1,10 @@
 import { useCallback } from 'react';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
-import { SimpleMdeReact } from 'react-simplemde-editor';
-import SimpleMDE from 'easymde';
-import 'easymde/dist/easymde.min.css';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-
-const options = {
-    spellChecker: false,
-    toolbar: ['heading-3', 'bold', 'italic', 'unordered-list', 'ordered-list'],
-    maxHeight: '200px',
-    status: false,
-    lineWrapping: true,
-    direction: 'ltr',
-    placeholder: 'Please enter scope description',
-} as SimpleMDE.Options;
-
+import { OnChangeJSON, useHelpers } from '@remirror/react';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
+import { MarkdownEditor } from '@equinor/markdown-editor';
 const DescriptionHeader = styled.div`
     display: flex;
     flex-direction: row;
@@ -25,24 +14,28 @@ const DescriptionHeader = styled.div`
     line-height: 1.333em;
     color: ${tokens.colors.text.static_icons__tertiary.hex};
 `;
+
 export const DescriptionInput = (): JSX.Element => {
-    const { updateAtom, useAtomState } = scopeChangeFormAtomApi;
+    // Not using the scopeChangeFormAtomApi because its inital value is undefined(?), and the editor won't update initialConfig more than once...
+    const description = useScopeChangeContext((s) => s.request.description);
 
-    const description = useAtomState((s) => s.description ?? '');
-
-    const onChange = useCallback(
-        (e: string) => {
-            updateAtom({ description: e });
-        },
-        [updateAtom]
-    );
     return (
         <div>
             <DescriptionHeader>
                 <div>Description</div>
                 <div>(Required)</div>
             </DescriptionHeader>
-            <SimpleMdeReact value={description} onChange={onChange} options={options} />
+            <MarkdownEditor initialContent={description}>
+                <DescriptionChanges />
+            </MarkdownEditor>
         </div>
     );
+};
+export const DescriptionChanges = (): JSX.Element => {
+    const { updateAtom } = scopeChangeFormAtomApi;
+    const { getMarkdown } = useHelpers(true);
+    const onChange = useCallback(() => {
+        updateAtom({ description: getMarkdown() });
+    }, [getMarkdown, updateAtom]);
+    return <OnChangeJSON onChange={onChange} />;
 };

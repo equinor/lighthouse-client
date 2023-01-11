@@ -50,6 +50,10 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
         setRevisionMode(false);
         setVoidMode(false);
         updateContext(item, actions);
+
+        return () => {
+            updateContext({} as ScopeChangeRequest);
+        };
     }, [item?.id]);
 
     if (Object.keys(getScopeChangeSnapshot().request).length < 2) {
