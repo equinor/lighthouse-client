@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+## 1.26.2
+- [MarkdownEditor] New package for viewing/editing rich text
+- [ScopeChangeRequest] Implement rich text editor/viewer for description field
 
 ## 1.26.1
 - [Handover] Sidesheet Tab NCr column width
