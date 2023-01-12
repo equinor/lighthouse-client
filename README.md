@@ -21,6 +21,7 @@ Table of content
     - [Styled Components](#styled-components)
     - [TypeScript](#typescript)
     - [Vitejs](#vitejs)
+- [Create new Release](#create-new-release)
 
 ## About
 
