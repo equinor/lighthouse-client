@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+## 1.26.4
+- [Dependencies] Update luxon to 2.5.2
 ## 1.26.3
 - [MarkdownEditor] Styling improvements: resize and border bottom
 
