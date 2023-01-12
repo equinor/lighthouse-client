@@ -50,7 +50,7 @@
     "install": "^0.13.0",
     "json-fn": "^1.1.1",
     "lodash": "^4.17.21",
-    "luxon": "^2.1.1",
+    "luxon": "2.5.2",
     "markdown-to-jsx": "^7.1.8",
     "marked": "^4.0.12",
     "moment": "^2.29.4",
