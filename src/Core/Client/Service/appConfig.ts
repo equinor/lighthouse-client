@@ -6,7 +6,10 @@ import { fetchClientConfig } from './envConfig';
 export async function fetchConfig(): Promise<AppConfigResult> {
     const config = await fetchClientConfig();
     const isProduction = config.CLIENT_ENV === 'prod';
-    document.title = `${config.CLIENT_ENV.toLocaleUpperCase()} | Fusion | Johan Castberg | Pilot`;
+    if (!isProduction) {
+        document.title = `${config.CLIENT_ENV.toUpperCase()} | Johan Castberg Project Portal | Fusion`;
+    }
+
     setEnv(isProduction, config.CLIENT_ENV);
 
     const response = await fetch(getEnvironmentUri(config.ENV_CONFIG_URI, config.CLIENT_ENV));
