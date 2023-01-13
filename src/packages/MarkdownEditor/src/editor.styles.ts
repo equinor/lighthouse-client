@@ -7,11 +7,14 @@ export const StyledContainer = styled(AllStyledComponent)`
     p {
         font-size: 16px !important;
     }
+
+    // Custom styling for unordered list items
     .remirror-list-item-marker-container {
         width: 10px;
         left: -16px;
     }
     label {
+        // Custom styling for unordered list items
         .remirror-collapsible-list-item-button {
             background-color: #007079 !important;
             width: 4px;
@@ -27,15 +30,26 @@ export const StyledContainer = styled(AllStyledComponent)`
                 min-height: 150px;
                 height: auto;
                 max-height: 500px;
+                // Gray border bottom of the container
                 box-shadow: inset 0px -1px 0px 0px rgba(111, 111, 111, 1);
                 overflow: auto;
                 resize: vertical;
 
+                // Removing max height when user is resizing the container
                 &[style*='height'] {
                     max-height: unset;
                 }
+
+                // Custom green border of container when user is focusing on text field.
                 &:focus {
                     box-shadow: #007079 0px 0px 0px 2px;
+                }
+
+                // Placeholder text styling
+                .remirror-is-empty::before {
+                    font-style: normal;
+                    font-weight: 400;
+                    color: gray;
                 }
             }
         }
