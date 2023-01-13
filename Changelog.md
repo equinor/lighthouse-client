@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 1.26.5
+- [ScopeChangeRequest] Add placeholder text to description input
+- [MarkdownEditor] Style placeholder text accordingly
+- [Loop] Use CL status instead of MC status for Loop content in sidesheet
+- [General] Add Fusion favicon and update browser title
+- [General] Add how-to section on release management
+
 ## 1.26.4
 - [Dependencies] Update luxon to 2.5.2
 ## 1.26.3
