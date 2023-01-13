@@ -25,7 +25,10 @@ export const DescriptionInput = (): JSX.Element => {
                 <div>Description</div>
                 <div>(Required)</div>
             </DescriptionHeader>
-            <MarkdownEditor initialContent={description}>
+            <MarkdownEditor
+                initialContent={description}
+                placeholder="Please enter scope description"
+            >
                 <DescriptionChanges />
             </MarkdownEditor>
         </div>
