@@ -10,4 +10,5 @@ export type LoopContent = {
     commissioningPackageNo: string | null;
     commissioningPackageUrlId: string | null;
     description: string | null;
+    clStatus: string | null;
 };

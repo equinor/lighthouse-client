@@ -42,7 +42,7 @@ const columns: Column<LoopContent>[] = [
     {
         id: 'mcStatus',
         Header: 'MC status',
-        accessor: (pkg) => pkg.mechanicalCompletionStatus,
+        accessor: (pkg) => pkg.clStatus,
         Cell: (cellProps) => {
             if (!cellProps.value) return null;
             return (

@@ -32,6 +32,7 @@ import { setup as spoolsAnalyticsSetup } from './Spools';
 import { setup as ProgressStatusSetup } from './ProgressStatus';
 import { setup as cchOverviewSetup } from './CCHOverview';
 import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTask';
+import { setup as TagsAnalyticsSetup } from './TagsAnalytics';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -504,6 +505,19 @@ export const apps: AppManifest[] = [
         },
         appEnv: 'prod',
         helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/SWCR.aspx',
+    },
+    {
+        title: 'Tags analytics',
+        shortName: 'tags-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: TagsAnalyticsSetup,
+        },
+        appEnv: 'dev',
     },
     {
         title: 'Invitation for punch out ',
