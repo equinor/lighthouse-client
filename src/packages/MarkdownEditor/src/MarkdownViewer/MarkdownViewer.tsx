@@ -5,12 +5,13 @@ import { LI, OL } from './ComponentOverrides';
 // Doing it like this because of jest failing...
 const StyledMarkdown = styled((props) => <Markdown {...props} />)`
     font-size: 16px;
+    word-break: break-word;
     p {
         font-size: 16px !important;
     }
 
     ul {
-        line-height: 10px;
+        line-height: 1em;
         li::marker {
             color: #007079;
         }
