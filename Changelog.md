@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 1.26.5
+## 1.26.6
+- [MarkdownEditor] Style line height for older SCR in markdown viewer.
+
+## 1.26.5
 - [ScopeChangeRequest] Add placeholder text to description input
 - [MarkdownEditor] Style placeholder text accordingly
 - [Loop] Use CL status instead of MC status for Loop content in sidesheet
