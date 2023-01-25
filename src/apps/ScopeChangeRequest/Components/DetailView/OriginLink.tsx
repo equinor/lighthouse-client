@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls } from '@equinor/procosys-urls';
+import { getDocumentIdByNo } from '@equinor/Workflow';
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { getDocumentIdByNo } from '../../api/PCS/getDocumentIdByNo';
 import { OriginType } from '../../types/scopeChangeRequest';
 
 interface OriginLinkProps {

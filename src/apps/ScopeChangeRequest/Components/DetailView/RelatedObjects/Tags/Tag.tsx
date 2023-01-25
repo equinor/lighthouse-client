@@ -1,9 +1,8 @@
 import { ScopeChangeTag } from '../../../../types/scopeChangeRequest';
 import { useFacility } from '../../../../../../Core/Client';
 import { Link, Wrapper, TextWrapper, MainText, MetaData } from '../WrapperStyles';
-import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
-import { Tag as TagInterface } from '../../../../types/ProCoSys/Tag';
+import { proCoSysQueries, Tag as TagInterface } from '@equinor/Workflow';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 
 interface TagProps {

@@ -1,5 +1,5 @@
 import { useFacility } from '@equinor/lighthouse-portal-client';
-import { adminQueries, DraggableStep, FunctionalRole, ProCoSysQueries } from '@equinor/Workflow';
+import { adminQueries, DraggableStep, FunctionalRole, proCoSysQueries } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
 import { WorkflowStepRender } from './WorkflowStepRender';
@@ -34,7 +34,7 @@ export const WorkflowEditor = ({
         updateAtom({ workflowStepTemplates: workflowSteps.map(({ item }) => item) });
     };
 
-    const { getFunctionalRolesQuery } = ProCoSysQueries;
+    const { getFunctionalRolesQuery } = proCoSysQueries;
     const { data: functionalRoles } = useQuery<unknown, unknown, FunctionalRole[]>(
         getFunctionalRolesQuery(procosysPlantId, app.toLocaleUpperCase())
     );

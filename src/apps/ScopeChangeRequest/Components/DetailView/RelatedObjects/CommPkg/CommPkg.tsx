@@ -1,10 +1,9 @@
-import { useFacility } from '../../../../../../Core/Client';
 import { ScopeChangeCommissioningPackage } from '../../../../types/scopeChangeRequest';
-import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
-import { CommissioningPackage } from '../../../../types/ProCoSys/CommissioningPackage';
 import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
 import { proCoSysUrls } from '@equinor/procosys-urls';
+import { CommissioningPackage, proCoSysQueries } from '@equinor/Workflow';
+import { useFacility } from '@equinor/lighthouse-portal-client';
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;
 }
