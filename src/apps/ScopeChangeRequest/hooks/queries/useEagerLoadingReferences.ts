@@ -2,12 +2,12 @@ import {
     getAreaByCode,
     getCommPkgById,
     getDocumentById,
+    getMcPkgById,
     getTagById,
     proCoSysQueryKeys,
     stidQueryKeys,
 } from '@equinor/Workflow';
 import { useFacility } from '../../../../Core/Client/Hooks';
-import { getMcPkgById } from '../../../../packages/Workflow/src/Api/PCS/getMcPkgById';
 
 import {
     ScopeChangeArea,
