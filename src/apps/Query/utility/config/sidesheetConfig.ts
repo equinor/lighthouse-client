@@ -33,6 +33,7 @@ const customQueryColumns = [
     'Steps',
     'StepsSigned',
     'IsOverdue',
+    'Description',
 ];
 const idResolverFunction = async (id: string): Promise<Query> => {
     const { FAM } = httpClient();
