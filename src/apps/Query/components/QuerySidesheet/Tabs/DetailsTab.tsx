@@ -80,6 +80,18 @@ export const DetailsTab = ({ query }: DetailsTabProps): JSX.Element => {
                         </td>
                     </tr>
                     <tr>
+                        <td>Description</td>
+                        <td>
+                            {query.description ? (
+                                <TextBlock>
+                                    <pre>{query.description}</pre>
+                                </TextBlock>
+                            ) : (
+                                'N/A'
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Consequence</td>
                         <td>
                             {query.consequenceIfNotImplemented ? (
