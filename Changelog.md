@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+## 1.26.8
+- [Query] Add description to sidesheet
+- [OperationGarden] Add link to Fusion Operation Garden app
+
 ## 1.26.7
 - [MarkdownEditor] Style font size to always be 16px.
 
