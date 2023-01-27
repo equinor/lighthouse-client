@@ -30,4 +30,5 @@ export type Query = {
     stepsSigned: number | null;
     isOverdue: number | null;
     signatureProgress: string | null;
+    description: string | null;
 };

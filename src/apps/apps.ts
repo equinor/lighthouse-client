@@ -315,7 +315,19 @@ export const apps: AppManifest[] = [
         tags: ['Job'],
         appEnv: 'prod',
     },
-
+    {
+        title: 'Operation garden',
+        shortName: 'operation-garden',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        uri: (isProduction: boolean) =>
+            isProduction
+                ? 'https://fusion.equinor.com/apps/operation-garden/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/operation-garden/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+        tags: ['Link', 'Fusion'],
+        appEnv: 'prod',
+    },
     {
         // Ny Power Bi
         title: 'Work preparation',
