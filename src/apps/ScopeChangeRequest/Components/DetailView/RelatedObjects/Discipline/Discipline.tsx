@@ -1,10 +1,9 @@
 import { ScopeChangeDiscipline } from '../../../../types/scopeChangeRequest';
 import { useEffect, useState } from 'react';
-import { Discipline as PCSDiscipline } from '../../../../types/ProCoSys/discipline';
-import { useFacility } from '../../../../../../Core/Client/Hooks';
-import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { Discipline as PCSDiscipline, proCoSysQueries } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
+import { useFacility } from '@equinor/lighthouse-portal-client';
 
 interface DisciplineProps {
     discipline: ScopeChangeDiscipline;

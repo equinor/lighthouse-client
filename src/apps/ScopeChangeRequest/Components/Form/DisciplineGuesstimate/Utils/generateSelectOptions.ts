@@ -1,4 +1,4 @@
-import { Discipline } from '../../../../types/ProCoSys/discipline';
+import { Discipline } from '@equinor/Workflow';
 import { DisciplineGuesstimate } from '../../../../types/scopeChangeRequest';
 
 export function generateSelectOptions(

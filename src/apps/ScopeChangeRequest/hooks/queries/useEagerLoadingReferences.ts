@@ -1,10 +1,13 @@
-import { proCoSysQueryKeys, stidQueryKeys } from '@equinor/Workflow';
+import {
+    getAreaByCode,
+    getCommPkgById,
+    getDocumentById,
+    getMcPkgById,
+    getTagById,
+    proCoSysQueryKeys,
+    stidQueryKeys,
+} from '@equinor/Workflow';
 import { useFacility } from '../../../../Core/Client/Hooks';
-import { getAreaByCode } from '../../api/PCS/getAreaByCode';
-import { getCommPkgById } from '../../api/PCS/getCommPkgById';
-import { getMcPkgById } from '../../api/PCS/getMcPkgById';
-import { getTagById } from '../../api/PCS/getTagById';
-import { getDocumentById } from '../../api/STID/getDocumentById';
 
 import {
     ScopeChangeArea,
