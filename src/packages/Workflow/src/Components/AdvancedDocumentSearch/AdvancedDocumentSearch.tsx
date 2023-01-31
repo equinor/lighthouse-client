@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
+import { Button, Icon, Progress, Scrim, TextField } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -23,7 +23,7 @@ import {
     TypedSelectOption,
 } from '@equinor/Workflow';
 import { useFacility } from '@equinor/lighthouse-portal-client';
-import { fetchBatchCommPkg, fetchBatchTags } from '../../Api/PCS/Batch';
+import { fetchBatchCommPkg, fetchBatchTag } from '../../Api/PCS/Batch';
 import { fetchBatchMcPkg } from '../../Api/PCS/Batch/batchMcPkg';
 import { fetchBatchDocuments } from '../../Api/PCS/Batch/batchDocuments';
 import { Document } from '@equinor/Workflow';
@@ -268,7 +268,7 @@ async function getResultsFromBatch(
         }
 
         case 'tag': {
-            return await fetchBatchTags(numbers, signal);
+            return await fetchBatchTag(numbers, signal);
         }
 
         case 'commpkg': {
