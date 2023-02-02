@@ -1,4 +1,5 @@
 import { FilterOptions, FilterValueType } from '../../../../packages/Filter/Types';
+import { Contributor, WorkflowStep } from '../../../../packages/Workflow/src';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import {
     calculateGuesstimateHoursGap,
@@ -104,6 +105,11 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: (s) => booleanToHumanReadable(s.potentialAtsScope),
         sort: (a) => a.sort(sortOnYesNo),
     },
+    {
+        name: 'Has contributors',
+        valueFormatter: (s) => booleanToHumanReadable(hasContributor(s.workflowSteps)),
+        sort: (a) => a.sort(sortOnYesNo),
+    },
 ];
 
 function booleanToHumanReadable(val: boolean | undefined) {
@@ -112,4 +118,13 @@ function booleanToHumanReadable(val: boolean | undefined) {
 
 function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
     return b === 'No' ? -1 : 1;
+}
+
+function hasContributor(workflowSteps: WorkflowStep[] | null) {
+    if (workflowSteps?.length != undefined) {
+        for (let i = 0; i < workflowSteps?.length; i++) {
+            if (workflowSteps[i].contributors.length > 0) return true;
+        }
+    }
+    return false;
 }
