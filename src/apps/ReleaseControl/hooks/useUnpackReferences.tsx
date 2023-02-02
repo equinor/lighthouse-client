@@ -1,9 +1,13 @@
 import { useFacility } from '@equinor/lighthouse-portal-client';
-import { proCoSysQueryKeys, stidQueryKeys, TypedSelectOption } from '@equinor/Workflow';
+import {
+    getDocumentById,
+    getPunchListItemByNo,
+    proCoSysQueryKeys,
+    stidQueryKeys,
+    TypedSelectOption,
+} from '@equinor/Workflow';
 import { useEffect } from 'react';
 import { useQueryCacheLookup } from '../../../hooks/QueryCache/useQueryCacheLookup';
-import { getDocumentById } from '../api/releaseControl/PCS/getDocumentById';
-import { getPunchListItemByNo } from '../api/releaseControl/PCS/getPunchListItemByNo';
 import { DRCFormAtomApi } from '../Atoms/formAtomApi';
 import { transformIsoDate } from '../components/Workflow/Utils/dateFormatting';
 import { ReleaseControl } from '../types/releaseControl';

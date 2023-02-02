@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { GroupBase, OptionsOrGroups } from 'react-select';
-import { PCSOrigins } from '../../../../types/ProCoSys/ProCoSysTypes';
 
 import { useState } from 'react';
-import { TypedSelectOption } from '../../../../api/Search/searchType';
-import { usePcsSearch } from '../../../../hooks/Search/usePcsSearch';
-import { SearchableSingleSelect } from '@equinor/Workflow';
+import {
+    PCSOrigins,
+    SearchableSingleSelect,
+    TypedSelectOption,
+    usePcsSearch,
+} from '@equinor/Workflow';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;

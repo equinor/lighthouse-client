@@ -1,11 +1,10 @@
 import { Button, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { useFacility } from '@equinor/lighthouse-portal-client';
+import { Discipline, proCoSysQueries } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
 import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
-import { proCoSysQueries } from '../../../keys/ProCoSysQueries';
-import { Discipline } from '../../../types/ProCoSys/discipline';
 import { DisciplineGuesstimate } from '../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../ScopeChangeForm.styles';
 import { GuesstimateList } from './disciplineGuesstimate.styles';

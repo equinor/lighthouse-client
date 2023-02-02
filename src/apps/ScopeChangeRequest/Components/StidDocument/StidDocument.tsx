@@ -1,10 +1,9 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import { getDocumentById } from '../../api/STID/getDocumentById';
 import { transformIsoDate } from '../Workflow/Utils/dateFormatting';
 import { useInfiniteCachedQuery } from '@equinor/hooks';
 import { Wrapper, Inline, LineBreaks, Details, MetaData, Link } from './stidDocument.styles';
-import { stidQueryKeys } from '@equinor/Workflow';
+import { getDocumentById, stidQueryKeys } from '@equinor/Workflow';
 
 interface StidDocumentProps {
     docNo: string;
