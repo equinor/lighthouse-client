@@ -51,6 +51,11 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         sort: (a) => a.sort(sortOnYesNo),
     },
     {
+        name: 'Has contributors',
+        valueFormatter: (s) => booleanToHumanReadable(hasContributor(s.workflowSteps)),
+        sort: (a) => a.sort(sortOnYesNo),
+    },
+    {
         name: 'Pending contributions',
         valueFormatter: ({ hasPendingContributions }) =>
             booleanToHumanReadable(hasPendingContributions),
@@ -103,11 +108,6 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Potential ATS scope',
         valueFormatter: (s) => booleanToHumanReadable(s.potentialAtsScope),
-        sort: (a) => a.sort(sortOnYesNo),
-    },
-    {
-        name: 'Has contributors',
-        valueFormatter: (s) => booleanToHumanReadable(hasContributor(s.workflowSteps)),
         sort: (a) => a.sort(sortOnYesNo),
     },
 ];
