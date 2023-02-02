@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { Button } from '@equinor/eds-core-react';
+import { Button, SingleSelect } from '@equinor/eds-core-react';
 
 export const DraggableIconWrapper = styled.div`
     cursor: grab;
@@ -92,4 +92,10 @@ export const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2em;
+`;
+
+export const SingleSelectNoClear = styled(SingleSelect)`
+    > div > button[title='clear'] {
+        display: none;
+    }
 `;

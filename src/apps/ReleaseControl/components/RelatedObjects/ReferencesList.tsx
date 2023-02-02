@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 import { ChevronList } from '../ChevronList/ChevronList';
-import {
-    ReleaseControlDocument,
-    ReleaseControlPunch,
-    ScopeChangeRequestReference,
-} from '../../types/releaseControl';
+import { ReleaseControlDocument, ReleaseControlPunch } from '../../types/releaseControl';
 import { Document } from './Document';
 import { Punch } from './Punch';
 import { ScopeChangeRequestReferenceItem } from './ScopeChangeRequestReferenceItem';
+import { ScopeChangeRequestReference } from '@equinor/Workflow';
 
 interface RelatedObjectsProps {
     documents: ReleaseControlDocument[];

@@ -1,5 +1,4 @@
-import { CriteriaSignState, WorkflowStep } from '@equinor/Workflow';
-import { TypedSelectOption } from '../api/Search/searchType';
+import { CriteriaSignState, TypedSelectOption, WorkflowStep } from '@equinor/Workflow';
 
 export type ScopeChangeCreateEditModel = {
     id?: string;

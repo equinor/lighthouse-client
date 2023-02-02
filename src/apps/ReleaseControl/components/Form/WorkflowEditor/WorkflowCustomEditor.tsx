@@ -1,9 +1,9 @@
 import { useFacility } from '@equinor/lighthouse-portal-client';
+import { FunctionalRole } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { ProCoSysQueries } from '../../../hooks/ProCoSysQueries';
-import { FunctionalRole } from '../../../types/functionalRole';
 import { DraggableReleaseControlStep } from '../../../types/releaseControl';
 import { WorkflowStep } from './WorkflowStep';
 

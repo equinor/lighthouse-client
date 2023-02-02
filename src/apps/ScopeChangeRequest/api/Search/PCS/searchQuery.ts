@@ -1,8 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
+import { PCSStructure, Query, TypedSelectOption } from '@equinor/Workflow';
 import { isProduction } from '../../../../../Core/Client/Functions';
-import { TypedSelectOption } from '../searchType';
-import { Query } from '../../../types/ProCoSys/query';
-import { PCSStructure } from './searchStructure';
 
 export const searchQueryOrigin = async (
     searchString: string,
@@ -30,7 +28,8 @@ export const searchQueryOrigin = async (
     try {
         await client
             .fetch(
-                `api/Search?plantId=${encodeURIComponent(plantId)}&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+                `api/Search?plantId=${encodeURIComponent(plantId)}&savedSearchId=${
+                    isProduction() ? searchIdProd : searchIdDev
                 }&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )

@@ -1,17 +1,22 @@
 import { useEffect } from 'react';
 import { useFacility } from '../../../../Core/Client/Hooks';
-import { getAreaByCode } from '../../api/PCS/getAreaByCode';
-import { getCommPkgById } from '../../api/PCS/getCommPkgById';
-import { getSystems } from '../../api/PCS/getSystems';
-import { getTagById } from '../../api/PCS/getTagById';
-import { TypedSelectOption } from '../../api/Search/searchType';
-import { getDocumentById } from '../../api/STID/getDocumentById';
+
 import { transformIsoDate } from '../../Components/Workflow/Utils/dateFormatting';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
-import { getPunchListItemByNo, proCoSysQueryKeys, stidQueryKeys } from '@equinor/Workflow';
-import { getMcPkgById } from '../../api/PCS/getMcPkgById';
+import {
+    getAreaByCode,
+    getCommPkgById,
+    getDocumentById,
+    getMcPkgById,
+    getPunchListItemByNo,
+    getSystems,
+    getTagById,
+    proCoSysQueryKeys,
+    stidQueryKeys,
+    TypedSelectOption,
+} from '@equinor/Workflow';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;

@@ -1,4 +1,4 @@
-import { CriteriaSignState, FamTag } from '@equinor/Workflow';
+import { CriteriaSignState, FamTag, ScopeChangeRequestReference } from '@equinor/Workflow';
 
 export type CreatedBy = {
     id: string;
@@ -185,12 +185,6 @@ export type UserObject = {
     lastName: string;
     userName: string;
     email: string;
-};
-
-export type ScopeChangeRequestReference = {
-    scopeChangeReferenceId: string;
-    scopeChangeReferenceSerialNumber: string;
-    scopeChangeReferenceTitle: string;
 };
 
 export enum ReleaseControlStepNames {
