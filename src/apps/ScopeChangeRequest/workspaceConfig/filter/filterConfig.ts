@@ -1,6 +1,5 @@
-import { FilterOptions, FilterValueType } from '../../../../packages/Filter/Types';
-import { Contributor, WorkflowStep } from '../../../../packages/Workflow/src';
-import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { FilterOptions, FilterValueType } from '@equinor/filter';
+import { ScopeChangeRequest, WorkflowStep } from '@equinor/Workflow';
 import {
     calculateGuesstimateHoursGap,
     guesstimate,
