@@ -34,23 +34,45 @@ export const searchTags = async (
         body: JSON.stringify(search),
         signal: abortSignal,
     };
-
-    await procosysClient
-        .fetch(url, requestOptions)
-        .then((response) => response.json())
-        .then((data: SearchTag[]) => {
-            data.forEach((x: SearchTag) => {
-                selectOptions.push({
-                    label: `${x.TagNo} - ${x.Description}`,
-                    value: x.TagNo,
-                    type: 'tag',
-                    searchValue: x.TagNo,
-                    object: x,
-                    metadata: `Comm pkg: ${
-                        x.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
-                    } | Tag register: ${x.Register__Id} `,
-                });
+    const res = await procosysClient.fetch(url, requestOptions);
+    const resJson = (await res.json()) as SearchTag[];
+    const mappedData = resJson.reduce((acc, curr) => {
+        const maybeIndex = acc.findIndex((data) => data.value === curr.TagNo);
+        if (maybeIndex > -1) {
+            acc[maybeIndex].temp?.push(curr);
+        } else {
+            acc.push({
+                label: `${curr.TagNo} - ${curr.Description}`,
+                value: curr.TagNo,
+                type: 'tag',
+                searchValue: curr.TagNo,
+                object: curr,
+                temp: [curr],
+                metadata: `Comm pkg: ${
+                    curr.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
+                } | Tag register: ${curr.Register__Id} `,
             });
-        });
-    return selectOptions || [];
+        }
+
+        return acc;
+    }, [] as TypedSelectOption[]);
+    console.log('Mapped Data', mappedData);
+    // await procosysClient
+    //     .fetch(url, requestOptions)
+    //     .then((response) => response.json())
+    //     .then((data: SearchTag[]) => {
+    //         data.forEach((x: SearchTag) => {
+    //             selectOptions.push({
+    //                 label: `${x.TagNo} - ${x.Description}`,
+    //                 value: x.TagNo,
+    //                 type: 'tag',
+    //                 searchValue: x.TagNo,
+    //                 object: x,
+    //                 metadata: `Comm pkg: ${
+    //                     x.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
+    //                 } | Tag register: ${x.Register__Id} `,
+    //             });
+    //         });
+    //     });
+    return mappedData || [];
 };

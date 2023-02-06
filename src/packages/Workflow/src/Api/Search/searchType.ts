@@ -9,4 +9,5 @@ export interface TypedSelectOption extends SelectOption {
     searchValue: string;
     object: unknown;
     metadata?: string;
+    temp?: unknown[];
 }
