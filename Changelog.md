@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+## 1.26.10
+- [ScopeChangeRequest] Add "Has Contributors" filter
+
 ## 1.26.9
 - [ScopeChangeRequest] Fix batch search for line tags and adding commissioning packages automatically
 
