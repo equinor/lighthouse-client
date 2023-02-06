@@ -90,6 +90,15 @@ export const CriteriaRender = ({
                                     <DetailText>
                                         <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
                                         {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                                        {contributors.map((contributor) => (
+                                            <WorkflowRow key={contributor.id}>
+                                                <ContributorRender
+                                                    key={contributor.id}
+                                                    contributor={contributor}
+                                                    stepId={stepId}
+                                                />
+                                            </WorkflowRow>
+                                        ))}
                                     </DetailText>
                                 ) : (
                                     <DetailText>{criteria.valueDescription}</DetailText>
