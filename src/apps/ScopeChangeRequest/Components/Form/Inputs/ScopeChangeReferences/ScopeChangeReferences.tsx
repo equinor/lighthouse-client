@@ -1,4 +1,4 @@
-import { SearchReferences, TypedSelectOption } from '@equinor/Workflow';
+import { SearchReferences, SearchTag, TypedSelectOption } from '@equinor/Workflow';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 
 export const CommPkgProperty = 'McPkgsThroughScope__CommPkg__CommPkgNo';
@@ -25,18 +25,21 @@ export const ScopeChangeReferences = (): JSX.Element => {
 };
 
 function extractCommPkgFromTags(references: TypedSelectOption[]): TypedSelectOption[] {
-    return references
-        .filter((s) => s.type === 'tag' && (s.object as any)[CommPkgProperty])
-        .map((s): TypedSelectOption => {
-            const commPkgNo = (s.object as any)[CommPkgProperty];
-            const commPkgDesc = (s.object as any)[CommPkgDescriptionFromTag] ?? '';
-
-            return {
-                label: `${commPkgNo} - ${commPkgDesc}`,
-                value: commPkgNo,
-                object: s,
-                searchValue: commPkgNo,
-                type: 'commpkg',
-            };
-        });
+    const commpkgs = references.reduce((acc, curr) => {
+        if (curr.type === 'tag' && curr.duplicateObjects && curr.duplicateObjects.length > 0) {
+            curr.duplicateObjects.forEach((item) => {
+                const commPkgNo = (item as SearchTag)[CommPkgProperty] ?? '';
+                const commPkgDesc = (item as SearchTag)[CommPkgDescriptionFromTag];
+                acc.push({
+                    label: `${commPkgNo} - ${commPkgDesc}`,
+                    value: commPkgNo,
+                    object: item,
+                    searchValue: commPkgDesc,
+                    type: 'commpkg',
+                });
+            });
+        }
+        return acc;
+    }, [] as TypedSelectOption[]);
+    return commpkgs;
 }
