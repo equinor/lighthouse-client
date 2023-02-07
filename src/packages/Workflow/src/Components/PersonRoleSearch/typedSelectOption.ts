@@ -7,6 +7,7 @@ export interface TypedSelectOption extends SelectOption {
     searchValue: string;
     object: unknown;
     metadata?: string;
+    duplicateObjects?: unknown[];
 }
 
 export type ReferenceType = ProcoSysTypes | StidTypes | FAMTypes | 'scopechangerequest';

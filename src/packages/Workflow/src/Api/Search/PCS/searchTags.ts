@@ -4,23 +4,21 @@ import { SearchTag } from '../../../Types/ProCoSys/Tag';
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './searchStructure';
 
+const SEARCH_ID_DEV = 105220;
+const SEARCH_ID_PROD = 105793;
+const URI = 'api/Search';
+
 export const searchTags = async (
     searchString: string,
     plantId: string,
     procosysClient: HttpClient,
     abortSignal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
-    const selectOptions: TypedSelectOption[] = [];
-
-    const searchIdDev = 105220;
-    const searchIdProd = 105793;
-
-    const uri = 'api/Search';
     const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${
-        isProduction() ? searchIdProd : searchIdDev
+        isProduction() ? SEARCH_ID_PROD : SEARCH_ID_DEV
     }&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
 
-    const url = `${uri}?${queryParameters}`;
+    const url = `${URI}?${queryParameters}`;
 
     const search: PCSStructure[] = [
         {
@@ -36,10 +34,11 @@ export const searchTags = async (
     };
     const res = await procosysClient.fetch(url, requestOptions);
     const resJson = (await res.json()) as SearchTag[];
+
     const mappedData = resJson.reduce((acc, curr) => {
         const maybeIndex = acc.findIndex((data) => data.value === curr.TagNo);
         if (maybeIndex > -1) {
-            acc[maybeIndex].temp?.push(curr);
+            acc[maybeIndex].duplicateObjects?.push(curr);
         } else {
             acc.push({
                 label: `${curr.TagNo} - ${curr.Description}`,
@@ -47,7 +46,7 @@ export const searchTags = async (
                 type: 'tag',
                 searchValue: curr.TagNo,
                 object: curr,
-                temp: [curr],
+                duplicateObjects: [curr],
                 metadata: `Comm pkg: ${
                     curr.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
                 } | Tag register: ${curr.Register__Id} `,
@@ -56,23 +55,5 @@ export const searchTags = async (
 
         return acc;
     }, [] as TypedSelectOption[]);
-    console.log('Mapped Data', mappedData);
-    // await procosysClient
-    //     .fetch(url, requestOptions)
-    //     .then((response) => response.json())
-    //     .then((data: SearchTag[]) => {
-    //         data.forEach((x: SearchTag) => {
-    //             selectOptions.push({
-    //                 label: `${x.TagNo} - ${x.Description}`,
-    //                 value: x.TagNo,
-    //                 type: 'tag',
-    //                 searchValue: x.TagNo,
-    //                 object: x,
-    //                 metadata: `Comm pkg: ${
-    //                     x.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
-    //                 } | Tag register: ${x.Register__Id} `,
-    //             });
-    //         });
-    //     });
     return mappedData || [];
 };
