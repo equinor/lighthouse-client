@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.12
+- [ScopeChangeRequest] Fix version 1.26.11 showing contributors after signing
+- [ScopeChangeRequest] Remove duplicate (line) tags in single search for references
+- [ScopeChangeRequest] Don't remove references when editing attachments in edit mode
+
 ## 1.26.11
 - [ScopeChangeRequest] Show contributors after signing
 

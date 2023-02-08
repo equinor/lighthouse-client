@@ -33,7 +33,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
         return () => {
             clearState();
         };
-    }, [request]);
+    }, []);
 
     useUnpackRelatedObjects({ request });
 
