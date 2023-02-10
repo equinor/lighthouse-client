@@ -7,7 +7,7 @@ export async function getCommPkgsByIds(commPkgNumbers: string[]): Promise<Commis
     const res = await procosys.fetch(
         `/api/CommPkg/ByCommPkgNos?plantId=PCS%24JOHAN_CASTBERG${commPkgNumbers.map(
             (x) => `&commPkgNos=${x}`
-        )}&api-version=4.1`
+        )}&projectName=L.O532C.002&api-version=4.1`
     );
 
     if (!res.ok) {
