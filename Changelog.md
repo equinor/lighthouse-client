@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.14
+- [ScopeCHangeRequest] Fix bug where user is trying to add tags with voided commpkgs
+
 ## 1.26.13
 - [TagsAnalytics] Change app visibility from dev environment to production
 
