@@ -49,15 +49,17 @@ function extractCommPkgFromTags(references: TypedSelectOption[]): TypedSelectOpt
     const commpkgs = references.reduce((acc, curr) => {
         if (curr.type === 'tag' && curr.duplicateObjects && curr.duplicateObjects.length > 0) {
             curr.duplicateObjects.forEach((item) => {
-                const commPkgNo = (item as SearchTag)[CommPkgPropertyFromTag] ?? '';
+                const commPkgNo = (item as SearchTag)[CommPkgPropertyFromTag];
                 const commPkgDesc = (item as SearchTag)[CommPkgDescriptionFromTag];
-                acc.push({
-                    label: `${commPkgNo} - ${commPkgDesc}`,
-                    value: commPkgNo,
-                    object: item,
-                    searchValue: commPkgDesc,
-                    type: 'commpkg',
-                });
+                // Some tags can be linked to a voided commpkg - we don't want to add this commpkg if this is the case.
+                commPkgNo &&
+                    acc.push({
+                        label: `${commPkgNo} - ${commPkgDesc}`,
+                        value: commPkgNo,
+                        object: item,
+                        searchValue: commPkgDesc,
+                        type: 'commpkg',
+                    });
             });
         }
         return acc;

@@ -529,7 +529,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBIViewer',
             setup: TagsAnalyticsSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'prod',
     },
     {
         title: 'Invitation for punch out ',
