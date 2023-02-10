@@ -68,6 +68,7 @@ function extractCommPkgFromTags(references: TypedSelectOption[]): TypedSelectOpt
 async function extractCommPkgFromMcPkg(
     references: TypedSelectOption[]
 ): Promise<TypedSelectOption[]> {
+    //
     const commPkgNos = references
         .filter(
             (reference) =>
