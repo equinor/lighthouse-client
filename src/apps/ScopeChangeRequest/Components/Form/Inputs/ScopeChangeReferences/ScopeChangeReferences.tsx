@@ -1,4 +1,12 @@
-import { SearchReferences, SearchTag, TypedSelectOption } from '@equinor/Workflow';
+import { useFacility } from '@equinor/lighthouse-portal-client';
+import {
+    CommissioningPackage,
+    SearchReferences,
+    SearchTag,
+    TypedSelectOption,
+} from '@equinor/Workflow';
+import { CommPkg, McPkg } from '../../../../../../Core/GlobalSearh/Config/ProCoSys/types';
+import { getCommPkgsByIds } from '../../../../../../packages/Workflow/src/Api/PCS/getCommPkgsByIds';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 
 export const CommPkgPropertyFromTag = 'McPkgsThroughScope__CommPkg__CommPkgNo';
@@ -10,10 +18,18 @@ export const ScopeChangeReferences = (): JSX.Element => {
     const onChange = async (newList: TypedSelectOption[]) => {
         //Extracts commPkg from tag
 
+        // If newList is of type mcPkg
+        // Do API call to procosys Commpkg search with newList.CommpkgNo
+        //console.log result
+
+        // if (newList[0].type === 'mcpkg') {
+        //     const description = extractCommPkgDescriptionFromCommPkgNo(newList[0].object);
+        // }
+
         const updatedList = [
             ...newList,
             ...extractCommPkgFromTags(newList),
-            ...extractCommPkgFromMcPkg(newList),
+            ...(await extractCommPkgFromMcPkg(newList)),
         ];
 
         updateAtom({
@@ -49,22 +65,25 @@ function extractCommPkgFromTags(references: TypedSelectOption[]): TypedSelectOpt
     return commpkgs;
 }
 
-function extractCommPkgFromMcPkg(references: TypedSelectOption[]): TypedSelectOption[] {
-    const filteredReferences = references.filter(
-        (reference) =>
-            reference.type === 'mcpkg' && (reference.object as any)[CommPkgPropertyFromMcPkg]
-    );
-    const newReferences: TypedSelectOption[] = filteredReferences.map((reference) => {
-        const commPkgNo = (reference.object as any)[CommPkgPropertyFromMcPkg];
-
-        return {
-            label: `${commPkgNo}`,
-            value: commPkgNo,
-            object: reference,
-            searchValue: commPkgNo,
-            type: 'commpkg',
-        };
-    });
-
-    return newReferences;
+async function extractCommPkgFromMcPkg(
+    references: TypedSelectOption[]
+): Promise<TypedSelectOption[]> {
+    const commPkgNos = references
+        .filter(
+            (reference) =>
+                reference.type === 'mcpkg' && (reference.object as any)[CommPkgPropertyFromMcPkg]
+        )
+        .map((mcpkg) => (mcpkg.object as any)[CommPkgPropertyFromMcPkg]);
+    const newCommPkgs = references
+        .filter((ref) => ref.type === 'commpkg')
+        .map((value) => (value.object as CommissioningPackage).CommPkgNo);
+    const unresolvedCommPkgs = commPkgNos.filter((commPkgNo) => !newCommPkgs.includes(commPkgNo));
+    const resolvedCommPkgs = await getCommPkgsByIds(unresolvedCommPkgs);
+    return resolvedCommPkgs.map((commpkg) => ({
+        object: commpkg,
+        label: `${commpkg.CommPkgNo} - ${commpkg.Description}`,
+        searchValue: commpkg.CommPkgNo,
+        type: 'commpkg',
+        value: commpkg.CommPkgNo,
+    }));
 }
