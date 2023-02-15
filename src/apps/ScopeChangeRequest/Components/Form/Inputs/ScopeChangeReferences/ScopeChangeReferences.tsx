@@ -1,11 +1,9 @@
-import { useFacility } from '@equinor/lighthouse-portal-client';
 import {
     CommissioningPackage,
     SearchReferences,
     SearchTag,
     TypedSelectOption,
 } from '@equinor/Workflow';
-import { CommPkg, McPkg } from '../../../../../../Core/GlobalSearh/Config/ProCoSys/types';
 import { getCommPkgsByIds } from '../../../../../../packages/Workflow/src/Api/PCS/getCommPkgsByIds';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 
@@ -16,16 +14,6 @@ export const CommPkgPropertyFromMcPkg = 'CommPkgNo';
 export const ScopeChangeReferences = (): JSX.Element => {
     const { updateAtom, useAtomState } = scopeChangeFormAtomApi;
     const onChange = async (newList: TypedSelectOption[]) => {
-        //Extracts commPkg from tag
-
-        // If newList is of type mcPkg
-        // Do API call to procosys Commpkg search with newList.CommpkgNo
-        //console.log result
-
-        // if (newList[0].type === 'mcpkg') {
-        //     const description = extractCommPkgDescriptionFromCommPkgNo(newList[0].object);
-        // }
-
         const updatedList = [
             ...newList,
             ...extractCommPkgFromTags(newList),
@@ -67,10 +55,12 @@ function extractCommPkgFromTags(references: TypedSelectOption[]): TypedSelectOpt
     return commpkgs;
 }
 
+/**
+ * Returns the commision packages associated with the Mc packages
+ */
 async function extractCommPkgFromMcPkg(
     references: TypedSelectOption[]
 ): Promise<TypedSelectOption[]> {
-    //
     const commPkgNos = references
         .filter(
             (reference) =>
