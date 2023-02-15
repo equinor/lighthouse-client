@@ -31,7 +31,7 @@ export const filterConfig: FilterOptions<Loop> = [
         valueFormatter: (pkg) => pkg.formularType,
     },
     {
-        name: 'CommPk',
+        name: 'CommPkg',
         valueFormatter: (pkg) => pkg.commissioningPackageNo,
     },
 ];
