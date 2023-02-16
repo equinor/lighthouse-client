@@ -74,7 +74,7 @@ const columns: Column<ChecklistForLoop>[] = [
     },
     {
         id: 'formularTypes',
-        Header: 'Form types',
+        Header: 'Form type',
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'formularType',
