@@ -550,10 +550,7 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        uri: (isProduction: boolean) =>
-            `https://${
-                isProduction ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
-            }/apps/dcp`,
+        uri: (isProduction: boolean) => isProduction ? 'https://dcp.equinor.com' : 'https://dcp-web-test.azurewebsites.net',
         tags: ['link', 'fusion'],
         appEnv: 'prod',
     },
