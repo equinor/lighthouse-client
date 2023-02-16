@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.15
+- [ScopeChangeRequest] Add Commpkg automatically when adding MCpkg as reference
+- [Loop] Rename Form types table header to Form type
+- [CommissioningProcedure] Fix broken link to Fusion
+
 ## 1.26.14
 - [ScopeCHangeRequest] Fix bug where user is trying to add tags with voided commpkgs
 
