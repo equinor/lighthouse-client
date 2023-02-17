@@ -13,4 +13,7 @@ export type ChecklistForLoop = {
     mechanicalCompletionStatus: string | null;
     project: string | null;
     responsible: string | null;
+    status: string | null;
+    loopId: string;
+    loopNo: string;
 };
