@@ -24,7 +24,7 @@ const generateUrl = () => {
     const uri = 'api/Search';
     const queryParameters = `plantId=${encodeURIComponent('PCS$JOHAN_CASTBERG')}&savedSearchId=${
         isProduction() ? searchIdProd : searchIdDev
-    }&currentPage=0&itemsPerPage=20&paging=true&sortColumns=false&api-version=4.1`;
+    }&paging=false&sortColumns=false&api-version=4.1`;
 
     const url = `${uri}?${queryParameters}`;
 
@@ -36,20 +36,27 @@ const isTagResponse = (tags: Array<unknown>): tags is SearchTag[] =>
 const createTypedSelectOptionsTags = (jsonResponse: Array<unknown>) => {
     if (jsonResponse.length === 0) return [];
     else if (isTagResponse(jsonResponse)) {
-        const data: TypedSelectOption[] = jsonResponse.map(
-            (x: SearchTag): TypedSelectOption => ({
-                label: `${x.TagNo} - ${x.Description}`,
-                value: x.TagNo,
-                type: 'tag',
-                searchValue: x.TagNo,
-                object: x,
-                metadata: `Comm pkg: ${
-                    x.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
-                } | Tag register: ${x.Register__Id} `,
-            })
-        );
+        const mappedData = jsonResponse.reduce((acc, curr) => {
+            const maybeIndex = acc.findIndex((data) => data.value === curr.TagNo);
+            if (maybeIndex > -1) {
+                acc[maybeIndex].duplicateObjects?.push(curr);
+            } else {
+                acc.push({
+                    label: `${curr.TagNo} - ${curr.Description}`,
+                    value: curr.TagNo,
+                    type: 'tag',
+                    searchValue: curr.TagNo,
+                    object: curr,
+                    duplicateObjects: [curr],
+                    metadata: `Comm pkg: ${
+                        curr.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
+                    } | Tag register: ${curr.Register__Id} `,
+                });
+            }
+            return acc;
+        }, [] as TypedSelectOption[]);
 
-        return data;
+        return mappedData;
     } else return [];
 };
 
