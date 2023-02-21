@@ -3,7 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
-
+## 1.26.16
+- [ScopeChangeRequest] (fix) Remove limit on PCS batch tag search
+- [ScopeChangeRequest] (fix) Add commpkg automatically from batch tag search
 ## 1.26.15
 - [ScopeChangeRequest] Add Commpkg automatically when adding MCpkg as reference
 - [Loop] Rename Form types table header to Form type
