@@ -28,6 +28,7 @@ export const searchMcPkg = async (
                     type: 'mcpkg',
                     searchValue: x.McPkgNo,
                     object: x,
+                    metadata: `Comm pkg: ${x.CommPkgNo}`,
                 });
             });
         });
