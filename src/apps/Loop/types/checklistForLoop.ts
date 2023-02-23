@@ -15,5 +15,4 @@ export type ChecklistForLoop = {
     responsible: string | null;
     status: string | null;
     loopId: string;
-    loopNo: string;
 };

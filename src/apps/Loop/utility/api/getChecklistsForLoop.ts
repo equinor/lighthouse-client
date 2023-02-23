@@ -15,7 +15,6 @@ export const checklistColumnNames = [
     'CommissioningPackageId',
     'CommissioningPackageUrlId',
     'Responsible',
-    'LoopNo',
     'LoopId',
     'Status',
 ];
