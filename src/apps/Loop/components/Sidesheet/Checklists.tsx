@@ -56,9 +56,9 @@ const columns: Column<ChecklistForLoop>[] = [
         width: 100,
     },
     {
-        id: 'mcStatus',
-        Header: 'MC status',
-        accessor: (pkg) => pkg.mechanicalCompletionStatus,
+        id: 'clStatus',
+        Header: 'Checklist status',
+        accessor: (pkg) => pkg.status,
         Cell: (cellProps: CellProps<ChecklistForLoop>) => {
             if (!cellProps.value) return null;
             return (
@@ -97,13 +97,13 @@ const columns: Column<ChecklistForLoop>[] = [
         width: 120,
     },
 ];
-type ChecklistsProps = {
-    checklistId: string;
+type LoopProps = {
+    loopId: string;
 };
-export const Checklists = ({ checklistId }: ChecklistsProps) => {
-    const expressions = generateExpressions('checklistUrlId', 'Equals', [checklistId]);
+export const Checklists = ({ loopId }: LoopProps) => {
+    const expressions = generateExpressions('loopId', 'Equals', [loopId]);
     const requestArgs = generateFamRequest(checklistColumnNames, 'Or', expressions);
-    const { data, isLoading, error } = useQuery(['checklists', checklistId], ({ signal }) =>
+    const { data, isLoading, error } = useQuery(['checklists', loopId], ({ signal }) =>
         getChecklistsForLoop(requestArgs, signal)
     );
     return (
