@@ -7,6 +7,7 @@ import {
     MarkdownExtension,
     OrderedListExtension,
     PlaceholderExtension,
+    HardBreakExtension,
 } from 'remirror/extensions';
 import {
     EditorComponent,
@@ -45,6 +46,7 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
             new BulletListExtension({ enableSpine: true }),
             new OrderedListExtension(),
             new MarkdownExtension({ copyAsMarkdown: false }),
+            new HardBreakExtension(),
         ],
         [placeholder]
     );
