@@ -1,5 +1,5 @@
 # uild environment
-FROM node:17.8.0 as build
+FROM node:19.7.0 as build
 
 # Copy App
 WORKDIR /app
