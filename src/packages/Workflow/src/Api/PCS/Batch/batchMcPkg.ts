@@ -23,7 +23,7 @@ export async function fetchBatchMcPkg(
             object: value,
             searchValue: value.McPkgNo,
             value: value.McPkgNo,
-            metadata: value.Description,
+            metadata: `Comm pkg: ${value.CommPkgNo}`,
         })
     );
     return data;

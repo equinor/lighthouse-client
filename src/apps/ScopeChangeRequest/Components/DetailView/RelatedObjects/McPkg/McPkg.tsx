@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { McPkg as McPkgType } from '@equinor/Workflow';
-import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
+import { Link, Wrapper, TextWrapper, MainText, MetaData } from '../WrapperStyles';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { ScopeChangeMcPkg } from '../../../../types/scopeChangeRequest';
@@ -28,6 +28,7 @@ export const McPkg = ({ mcPkg }: McPkgProps): JSX.Element => {
                 <MainText>
                     <Link>{mcPkg.procosysNumber}</Link>-<div>{data?.Description}</div>
                 </MainText>
+                <MetaData>Comm pkg: {data?.CommPkgNo ?? 'none'}</MetaData>
             </TextWrapper>
         </Wrapper>
     );
