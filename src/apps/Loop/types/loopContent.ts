@@ -4,7 +4,7 @@ export type LoopContent = {
     contentTagId: string;
     contentTagNo: string;
     register: string | null;
-    mechanicalCompletionStatus: string | null;
+    //mechanicalCompletionStatus: string | null;
     mechanicalCompletionPackageNo: string | null;
     mechanicalCompletionPackageUrlId: string | null;
     commissioningPackageNo: string | null;
