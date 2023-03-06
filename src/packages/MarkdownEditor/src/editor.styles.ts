@@ -6,6 +6,8 @@ export const StyledContainer = styled(AllStyledComponent)`
     font-size: 16px;
     p {
         font-size: 16px !important;
+        margin-block-end: 1em !important;
+        line-height: 20px;
     }
 
     // Custom styling for unordered list items
