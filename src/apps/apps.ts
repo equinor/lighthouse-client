@@ -33,6 +33,7 @@ import { setup as ProgressStatusSetup } from './ProgressStatus';
 import { setup as cchOverviewSetup } from './CCHOverview';
 import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTask';
 import { setup as TagsAnalyticsSetup } from './TagsAnalytics';
+import { setup as EITSetup } from './EIT';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -532,6 +533,19 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
+        title: 'EIT analytics',
+        shortName: 'eit-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: EITSetup,
+        },
+        appEnv: 'dev',
+    },
+    {
         title: 'Invitation for punch out ',
         shortName: 'ipo',
         color: '#0364B8',
@@ -550,7 +564,8 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        uri: (isProduction: boolean) => isProduction ? 'https://dcp.equinor.com' : 'https://dcp-web-test.azurewebsites.net',
+        uri: (isProduction: boolean) =>
+            isProduction ? 'https://dcp.equinor.com' : 'https://dcp-web-test.azurewebsites.net',
         tags: ['link', 'fusion'],
         appEnv: 'prod',
     },
