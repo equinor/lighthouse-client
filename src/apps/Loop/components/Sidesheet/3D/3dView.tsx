@@ -55,7 +55,7 @@ export const ThreeDView = ({ loop }: ThreeDViewProps) => {
     const tagOverlay = data.reduce((acc, curr) => {
         acc[curr.contentTagNo] = {
             tagNo: curr.contentTagNo,
-            status: curr.mechanicalCompletionStatus || '',
+            status: curr.clStatus || '',
             type: curr.register || '',
         };
         return acc;
