@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.18
+- [MarkdownEditor] Add more space to new lines in editor
+- [EIT] New EIT analytics app in DEV env
+- [Loop] Change MC status to CL status for 3D
+
 ## 1.26.17
 - [MarkdownEditor] Add hard break to editor (Shift + Enter)
 - [ScopeChangeReuqest] Show metadata for assoiciated commpkg after adding mcpkg
