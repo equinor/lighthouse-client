@@ -533,7 +533,7 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
-        title: 'EIT analytics',
+        title: 'EIT79 analytics',
         shortName: 'eit-analytics',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
@@ -543,7 +543,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBIViewer',
             setup: EITSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
     },
     {
         title: 'Invitation for punch out ',
