@@ -6,6 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 1.26.19
 - [ScopeChangeRequest] Add missing Workorders from FAM/PCS to table with placeholder text
+- [EIT] Change display name to EIT79 and make visible in TEST env
 
 ## 1.26.18
 - [MarkdownEditor] Add more space to new lines in editor
