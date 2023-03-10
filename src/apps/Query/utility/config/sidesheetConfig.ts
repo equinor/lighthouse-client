@@ -18,7 +18,7 @@ const customQueryColumns = [
     'Milestone',
     'ScheduleImpact',
     'PossibleWarrantyClaim',
-    'RequiredAtDate',
+    'requiredReplyDate',
     'Discipline',
     'DisciplineDescription',
     'CreatedDate',
