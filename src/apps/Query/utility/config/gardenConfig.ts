@@ -9,10 +9,10 @@ import { CustomGardenItem } from '../../components';
 import { Query } from '../../types';
 
 export const fieldSettings: FieldSettings<Query> = {
-    requiredAtDate: {
+    requiredReplyDate: {
         label: 'Required date',
         getKey: (item) =>
-            item.requiredAtDate ? getYearAndWeekFromString(item.requiredAtDate) : 'N/A',
+            item.requiredReplyDate ? getYearAndWeekFromString(item.requiredReplyDate) : 'N/A',
         getColumnSort: sortByNumber,
     },
     nextToSign: { label: 'Next to sign' },
@@ -22,7 +22,7 @@ export const fieldSettings: FieldSettings<Query> = {
 };
 
 export const getHighlightedColumn = (groupByKey: string): string | undefined => {
-    return groupByKey === 'requiredAtDate' ? getYearAndWeekFromDate(new Date()) : undefined;
+    return groupByKey === 'requiredReplyDate' ? getYearAndWeekFromDate(new Date()) : undefined;
 };
 
 export const customDescription = (item: Query): string => {
@@ -30,7 +30,7 @@ export const customDescription = (item: Query): string => {
 };
 
 export const gardenConfig: GardenOptions<Query> = {
-    gardenKey: 'requiredAtDate' as keyof Query,
+    gardenKey: 'requiredReplyDate' as keyof Query,
     itemKey: 'queryNo',
     objectIdentifier: 'queryNo',
     itemWidth: () => 200,
