@@ -15,7 +15,7 @@ export type Query = {
     milestone: string | null;
     scheduleImpact: string | null;
     possibleWarrantyClaim: string | null;
-    requiredAtDate: string | null;
+    requiredReplyDate: string | null;
     discipline: string | null;
     disciplineDescription: string | null;
     createdDate: string | null;
