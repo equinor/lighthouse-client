@@ -76,7 +76,7 @@ export const DetailsTab = ({ query }: DetailsTabProps): JSX.Element => {
                     <tr>
                         <td>Required reply</td>
                         <td>
-                            <StringCell value={formatDateString(query.requiredAtDate)} />
+                            <StringCell value={formatDateString(query.requiredReplyDate)} />
                         </td>
                     </tr>
                     <tr>
