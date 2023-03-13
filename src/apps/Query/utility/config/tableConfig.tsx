@@ -94,7 +94,7 @@ export const tableConfig: TableOptions<Query> = {
         {
             id: 'requiredAtDate',
             Header: 'Required date',
-            accessor: (pkg) => pkg.requiredAtDate,
+            accessor: (pkg) => pkg.requiredReplyDate,
             Aggregated: () => null,
             aggregate: 'count',
             width: 100,
