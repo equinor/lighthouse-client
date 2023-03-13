@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.20
+- [EIT] Make app visible in PROD
+- [Query] Use requiredReplyDate instead of requiredAtDate
+
 ## 1.26.19
 - [ScopeChangeRequest] Add missing Workorders from FAM/PCS to table with placeholder text
 - [EIT] Change display name to EIT79 and make visible in TEST env
