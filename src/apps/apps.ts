@@ -620,8 +620,8 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
-        title: 'Progress Status',
-        shortName: 'progress-status',
+        title: 'Progress Summary',
+        shortName: 'progress-summary',
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
@@ -630,7 +630,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBIViewer',
             setup: ProgressStatusSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // QualityAndRisk
     {
