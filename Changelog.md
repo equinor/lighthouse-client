@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.21
+- [SCR] Remove link to PCS for in Workorder table for WOs that are not found
+- [Activities] Add new Activities app for TEST environment
+- [ProgressSummary] Change name  from Progress Status and make visible in PROD env
+
 ## 1.26.20
 - [EIT] Make app visible in PROD
 - [Query] Use requiredReplyDate instead of requiredAtDate

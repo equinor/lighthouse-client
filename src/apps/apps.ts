@@ -34,6 +34,7 @@ import { setup as cchOverviewSetup } from './CCHOverview';
 import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTask';
 import { setup as TagsAnalyticsSetup } from './TagsAnalytics';
 import { setup as EITSetup } from './EIT';
+import { setup as activitiesSetup } from './Activities';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -344,6 +345,19 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
+        title: 'Activities',
+        shortName: 'activities',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: activitiesSetup,
+        },
+        appEnv: 'test',
+    },
+    {
         title: 'Installation',
         shortName: 'installation',
         color: '#0364B8',
@@ -620,8 +634,8 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
-        title: 'Progress Status',
-        shortName: 'progress-status',
+        title: 'Progress Summary',
+        shortName: 'progress-summary',
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
@@ -630,7 +644,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBIViewer',
             setup: ProgressStatusSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // QualityAndRisk
     {

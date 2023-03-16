@@ -39,16 +39,19 @@ const Link = styled.div`
 const makeColumns = (highestExpended: number, highestEstimate: number) => [
     generateColumn(
         'WO',
-        ({ workOrderNumber, workOrderUrlId }) => (
-            <Link
-                hideUnderline
-                onClick={() => {
-                    window.open(proCoSysUrls.getWorkOrderUrl(workOrderUrlId ?? ''), '_blank');
-                }}
-            >
-                {workOrderNumber}
-            </Link>
-        ),
+        ({ workOrderNumber, workOrderUrlId }) =>
+            workOrderUrlId ? (
+                <Link
+                    hideUnderline
+                    onClick={() => {
+                        window.open(proCoSysUrls.getWorkOrderUrl(workOrderUrlId ?? ''), '_blank');
+                    }}
+                >
+                    {workOrderNumber}
+                </Link>
+            ) : (
+                workOrderNumber
+            ),
         90
     ),
     generateColumn('Title', ({ description }) => description, 310),

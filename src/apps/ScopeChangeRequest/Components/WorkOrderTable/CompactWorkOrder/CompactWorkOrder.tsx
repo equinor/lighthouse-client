@@ -30,13 +30,20 @@ export const CompactWorkorder = ({
     return (
         <div style={{ height: '72px' }}>
             <Header>
-                <Link
-                    onClick={() =>
-                        window.open(proCoSysUrls.getWorkOrderUrl(workOrderUrlId ?? ''), '_blank')
-                    }
-                >
-                    {workOrderNumber}
-                </Link>
+                {workOrderUrlId ? (
+                    <Link
+                        onClick={() =>
+                            window.open(
+                                proCoSysUrls.getWorkOrderUrl(workOrderUrlId ?? ''),
+                                '_blank'
+                            )
+                        }
+                    >
+                        {workOrderNumber}
+                    </Link>
+                ) : (
+                    workOrderNumber
+                )}
                 , {description}
             </Header>
 
