@@ -148,7 +148,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/pmt-nonconfidential/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/pmt-nonconfidential/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/pmt-nonconfidential/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -170,7 +170,7 @@ export const apps: AppManifest[] = [
             `${
                 isProduction
                     ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
-                    : 'https://pro-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
+                    : 'https://fusion-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
             }`,
         appEnv: 'prod',
         tags: [],
@@ -193,7 +193,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/tpd-safety'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/tpd-safety',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/tpd-safety',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -206,7 +206,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/bmt/65728fee-185d-4a0c-a91d-8e3f3781dad8'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/bmt/b6552a8f-9173-416f-9fc0-996387ff7e3a',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/bmt/b6552a8f-9173-416f-9fc0-996387ff7e3a',
         appEnv: 'prod',
         tags: ['Fusion', 'Link'],
     },
@@ -228,7 +228,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/lci-hanging-garden/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/lci-hanging-garden/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/lci-hanging-garden/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -326,7 +326,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/operation-garden/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/operation-garden/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/operation-garden/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -616,7 +616,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/management-of-change/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/management-of-change',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/management-of-change',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -629,7 +629,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/project-control-and-analysis/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/project-control-and-analysis/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/project-control-and-analysis/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -664,7 +664,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/qrm/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/qrm/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/qrm/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -677,7 +677,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/quality-deviation/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/quality-deviation/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/quality-deviation/94dd5f4d-17f1-4312-bf75-ad75f4d9572c',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -691,7 +691,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/meetings'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/meetings',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/meetings',
         tags: ['fuison', 'link', 'external'],
         appEnv: 'prod',
     },
@@ -704,7 +704,7 @@ export const apps: AppManifest[] = [
         uri: (isProduction: boolean) =>
             isProduction
                 ? 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/reviews',
+                : 'https://fusion-s-portal-ci.azurewebsites.net/apps/reviews',
         tags: ['fuison', 'link', 'external'],
         appEnv: 'prod',
     },
