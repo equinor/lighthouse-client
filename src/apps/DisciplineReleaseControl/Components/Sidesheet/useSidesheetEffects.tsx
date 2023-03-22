@@ -10,7 +10,7 @@ export function useSidesheetEffects(actions: SidesheetApi, item: Pipetest): void
     const makeMenuItems = () => {
         const menuItems: MenuItem[] = [];
 
-        const url = `https://procosys.equinor.com/JOHAN_CASTBERG/Completion#McPkg|${item.mcPkgId}`;
+        const url = `https://procosys.equinor.com/JOHAN_CASTBERG/Completion#McPkg|${item.mcPkgUrlId}`;
 
         const procosysUrl = isProduction() ? url : url.replace('procosys', 'procosystest');
 

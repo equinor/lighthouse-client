@@ -8,6 +8,7 @@ export const testData1: Pipetest = {
     rfccPlanned: '2023-07-21T00:00:00+00:00',
     location: 'AP700',
     mcPkgId: '112744027',
+    mcPkgUrlId: '113181246',
     hasDisconnectedEquipment: false,
     hasIsolatedEquipment: false,
     htCableExposed: null,
