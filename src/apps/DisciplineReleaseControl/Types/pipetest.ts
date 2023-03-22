@@ -24,6 +24,7 @@ export type Pipetest = {
     lines: Line[];
     hasCriticalLine: boolean;
     mcPkgId: string;
+    mcPkgUrlId: string;
     hasDisconnectedEquipment: boolean;
     hasIsolatedEquipment: boolean;
     htCableExposed: string | null;
