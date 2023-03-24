@@ -31,7 +31,7 @@ export const ThreeDView = ({ loop }: ThreeDViewProps) => {
     const { echoPlantId } = useFacility();
     const expressions = generateExpressions('loopNo', 'Equals', [loop.loopNo]);
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
-    const { data, isLoading } = useQuery(['loopcontent', loop.loopNo], ({ signal }) =>
+    const { data, isLoading } = useQuery(['3D', 'loopcontent', loop.loopNo], ({ signal }) =>
         getLoopContent(requestArgs, signal)
     );
     const tags = useMemo(() => data?.map((a) => a.contentTagNo), [data]);
