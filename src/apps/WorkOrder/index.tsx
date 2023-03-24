@@ -7,6 +7,7 @@ import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
 import { filterConfig } from './utility/filterConfig';
+import { analyticsConfig } from './utility/analyticsConfig';
 import { statusBarConfig } from './utility/statusBarConfig';
 import { tableConfig } from './utility/tableConfig';
 
@@ -51,6 +52,7 @@ export function setup(appApi: ClientApi): void {
         })
         .registerFilterOptions(filterConfig)
         .registerStatusItems(statusBarConfig)
+        .registerPowerBIOptions(analyticsConfig)
         .registerSearchOptions([
             { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
             { name: 'Description', valueFormatter: ({ description }) => description ?? '' },
