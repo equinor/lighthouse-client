@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.26.23
+- [Loop] Fix issue with sidesheet switching tabs and losing data in table
+- [Workorder] Add workorder analytics
+- [apps] Fix URL (only dev/test) to Fusion with updated Fusion endpoints
+
 ## 1.26.22
 - [Piping&HeatTrace] Fix link to PCS in sidesheet
 
