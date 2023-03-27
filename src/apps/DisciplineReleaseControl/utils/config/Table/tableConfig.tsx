@@ -35,6 +35,7 @@ export const tableConfig: TableOptions<Pipetest> = {
         'hasCriticalLine',
         'htStep',
         'circuitStep',
+        'mcPkgUrlId',
     ],
     enableSelectRows: true,
     headers: [
