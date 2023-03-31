@@ -19,10 +19,13 @@ export const getLoopContent = async (
     signal?: AbortSignal
 ): Promise<LoopContent[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.post(`v0.1/dynamic/completion/custom_loopcontent/JCA`, {
-        body: JSON.stringify(famFilter),
-        signal,
-    });
+    const res = await FAM.post(
+        `v1/typed/completion/custom_loopcontent/facility/JCA?view-version=v1`,
+        {
+            body: JSON.stringify(famFilter),
+            signal,
+        }
+    );
 
     if (!res.ok) {
         throw 'Not found';

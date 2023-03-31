@@ -10,7 +10,7 @@ import {
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.post('v0.1/dynamic/completion/custom_loopmccr/JCA', {
+    return await FAM.post('v1/typed/Completion/Custom_LoopMCCR/facility/JCA?view-version=v1', {
         body: JSON.stringify({}),
         signal,
     });
