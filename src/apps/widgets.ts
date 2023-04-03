@@ -42,7 +42,10 @@ import {
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
 import { tagWidgetComponent, tagWidgetManifest } from './Tags';
-import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
+import {
+    workOrderCreatorComponent,
+    workOrderCreatorManifest,
+} from './WorkOrder/utility/sidesheetConfig';
 
 const _widgets: WidgetManifest[] = [
     changeSideSheetWidgetManifest,
