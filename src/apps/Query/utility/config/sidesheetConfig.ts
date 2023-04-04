@@ -39,7 +39,7 @@ const idResolverFunction = async (id: string): Promise<Query> => {
     const { FAM } = httpClient();
     const expressions = generateExpressions('queryUrlId', 'Equals', [id]);
     const requestArgs = generateFamRequest(customQueryColumns, 'Or', expressions);
-    const res = await FAM.post('v0.1/dynamic/completion/custom_query/JCA', {
+    const res = await FAM.post('v1/typed/completion/custom_query/facility/JCA?view-version=v0', {
         body: JSON.stringify(requestArgs),
     });
 
