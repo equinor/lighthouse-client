@@ -91,15 +91,20 @@ function parseError(error: unknown): Partial<ErrorMessageFormat> {
 function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
     if (isScopeChangeError(error)) {
         const scopeChangeError = error as ScopeChangeErrorFormat;
+        const description = Object.values(scopeChangeError.validationErrors)
+            .flat()
+            .toString()
+            .replaceAll(',', '\n');
+
         return {
             title: scopeChangeError.title,
-            description: scopeChangeError.detail,
+            description,
         };
     }
 
     return {
-        title: 'title' in error ? error['title'] : FALLBACK_ERROR_MESSAGE,
-        description: 'description' in error ? error['description'] : '',
+        title: 'title' in error ? (error['title'] as string) : FALLBACK_ERROR_MESSAGE,
+        description: 'description' in error ? (error['description'] as string) : '',
     };
 }
 
