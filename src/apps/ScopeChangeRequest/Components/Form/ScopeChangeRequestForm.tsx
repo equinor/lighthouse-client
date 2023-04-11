@@ -22,6 +22,7 @@ import {
     FormWrapper,
     Section,
 } from './ScopeChangeForm.styles';
+import { spawnConfirmationDialog } from '@equinor/lighthouse-confirmation-dialog';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
@@ -36,6 +37,8 @@ export const ScopeChangeRequestForm = (): JSX.Element => {
                 <FlexColumn>
                     <Section>
                         <ScopeChangeReferences />
+                        {/* FORTSETT HER! 
+                        Mulig løsning: send en boolean ned i ScopeChangeReferences som blir oppdatert til true hvis "references" variablen i ScopeChangeReference inneholder en commPkg */}
                     </Section>
                     Attachments
                     <Upload />
@@ -87,6 +90,24 @@ const SubmitButtonBar = () => {
 
     const onMutate = (draft: boolean) => {
         const { prepareRequest } = scopeChangeFormAtomApi;
+        if (
+            !scopeChangeFormAtomApi.readAtomValue().references?.filter((x) => x.type === 'commpkg')
+                .length &&
+            !draft
+        ) {
+            spawnConfirmationDialog(
+                'No CommPkg added, are you sure you want to continue?',
+                'Warning',
+                () => {
+                    scopeChangeCreateContext.readAtomValue().setHasUnsavedChanges(false);
+                    mutate({
+                        draft: draft,
+                        model: prepareRequest(),
+                    });
+                }
+            );
+            return;
+        }
         scopeChangeCreateContext.readAtomValue().setHasUnsavedChanges(false);
         mutate({
             draft: draft,
