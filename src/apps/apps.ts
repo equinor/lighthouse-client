@@ -33,7 +33,7 @@ import { setup as ProgressStatusSetup } from './ProgressStatus';
 import { setup as cchOverviewSetup } from './CCHOverview';
 import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTask';
 import { setup as TagsAnalyticsSetup } from './TagsAnalytics';
-import { setup as EITSetup } from './EIT';
+import { setup as EITSetup } from './AtexInspections';
 import { setup as activitiesSetup } from './Activities';
 export function getApps(): AppManifest[] {
     return apps;
@@ -548,8 +548,8 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
-        title: 'EIT79 analytics',
-        shortName: 'eit-analytics',
+        title: 'Atex inspections',
+        shortName: 'atex-inspections',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
