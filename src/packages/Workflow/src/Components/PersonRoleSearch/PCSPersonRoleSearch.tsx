@@ -77,6 +77,7 @@ export const PCSPersonRoleSearch = ({
         const sorted = options.sort((a, b) => sort(a, b, inputValue));
 
         callback(sorted);
+        return sorted;
     };
     return (
         <>
