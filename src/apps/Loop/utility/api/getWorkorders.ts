@@ -29,10 +29,13 @@ export const getWorkorders = async (
     signal?: AbortSignal
 ): Promise<Workorder[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.post(`v0.1/dynamic/completion/custom_loopworkorders/JCA`, {
-        body: JSON.stringify(famFilter),
-        signal,
-    });
+    const res = await FAM.post(
+        `v1/typed/completion/custom_loopworkorders/facility/JCA?view-version=v1`,
+        {
+            body: JSON.stringify(famFilter),
+            signal,
+        }
+    );
 
     if (!res.ok) {
         throw 'Not found';
