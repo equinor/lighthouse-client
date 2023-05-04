@@ -34,7 +34,7 @@ export const SelectSWCR = ({ setOriginId, originId }: SelectSWCRProps): JSX.Elem
         };
         try {
             const res = await FAM.fetch(
-                `v0.1/dynamic/completion/completionsoftwareChangeRecord/JCA `,
+                `v1/typed/completion/completionsoftwareChangeRecord/facility/JCA?view-version=v1`,
                 {
                     method: 'POST',
                     signal: getSignal(),
