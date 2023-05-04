@@ -15,11 +15,14 @@ export async function getPunchListItemByNo(
 
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
 
-    const res = await FAM.fetch('v0.1/dynamic/completion/completionPunchItem/JCA', {
-        method: 'POST',
-        body: JSON.stringify(requestArgs),
-        signal,
-    });
+    const res = await FAM.fetch(
+        'v1/typed/completion/completionPunchItem/facility/JCA?view-version=v1',
+        {
+            method: 'POST',
+            body: JSON.stringify(requestArgs),
+            signal,
+        }
+    );
 
     await throwOnError(res, 'Failed to fetch punch');
     const punchListItems: PunchListItem[] = await res.json();

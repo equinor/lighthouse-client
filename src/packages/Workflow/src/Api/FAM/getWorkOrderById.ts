@@ -25,10 +25,13 @@ export async function getWorkOrderByIds(ids: string[]): Promise<WorkOrder[]> {
 
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
 
-    const res = await FAM.fetch('v0.1/dynamic/completion/customapi_workorders/JCA', {
-        method: 'POST',
-        body: JSON.stringify(requestArgs),
-    });
+    const res = await FAM.fetch(
+        'v1/typed/completion/customapi_workorders/facility/JCA?view-version=v0',
+        {
+            method: 'POST',
+            body: JSON.stringify(requestArgs),
+        }
+    );
 
     const workOrders: WorkOrder[] = await res.json();
 

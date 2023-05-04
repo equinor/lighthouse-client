@@ -23,10 +23,13 @@ export const getqueryCommpkg = async (
     signal?: AbortSignal
 ): Promise<QueryCommpkg[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.post(`v0.1/dynamic/completion/custom_commissioningpackagequery/JCA`, {
-        body: JSON.stringify(famFilter),
-        signal,
-    });
+    const res = await FAM.post(
+        `v1/typed/completion/custom_commissioningpackagequery/facility/JCA?view-version=v0`,
+        {
+            body: JSON.stringify(famFilter),
+            signal,
+        }
+    );
 
     if (!res.ok) {
         throw 'Not found';

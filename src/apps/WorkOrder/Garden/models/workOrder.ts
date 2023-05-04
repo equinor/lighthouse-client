@@ -3,7 +3,7 @@ export type WorkOrder = {
     actualStartupDate: string | null;
     commpkgNumber: string | null;
     commpkgId: string | null;
-    commpkgUrlId: string | null;
+    commissioningPackageUrlId: string | null;
     constructionComments: string | null;
     description: string | null;
     discipline: string | null;
