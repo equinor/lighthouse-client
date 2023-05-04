@@ -12,7 +12,7 @@ import { sortQueryByStatus } from './utility/helpers';
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.post('v0.1/dynamic/completion/custom_query/JCA', {
+    return await FAM.post('v1/typed/completion/custom_query/facility/JCA?view-version=v0', {
         body: JSON.stringify({}),
         signal,
     });
