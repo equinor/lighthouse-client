@@ -12,7 +12,7 @@ import { sortPackagesByStatus } from './utility/helpers/sortPackages';
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.post('v0.1/dynamic/completion/custom_punch/JCA', {
+    return await FAM.post('v1/typed/completion/custom_punch/facility/JCA?view-version=v0', {
         body: JSON.stringify({}),
         signal,
     });
