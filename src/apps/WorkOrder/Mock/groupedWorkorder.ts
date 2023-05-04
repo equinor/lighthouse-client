@@ -13,7 +13,7 @@ export const groupedWorkOrder: GardenGroups<WorkOrder> = [
                 projectIdentifier: 'L.O532C.002',
                 workOrderNumber: 'LX0SYSTEM43',
                 workOrderUrlId: '',
-                commpkgUrlId: '',
+                commissioningPackageUrlId: '',
                 description:
                     'Apply / rectify sealent to the boxes that are part of the HPLT (High pressure leak test) - Syst 43',
                 discipline: 'Architect and building (incl insulation)',
@@ -67,7 +67,7 @@ export const groupedWorkOrder: GardenGroups<WorkOrder> = [
             {
                 projectIdentifier: 'L.O532C.002',
                 workOrderNumber: 'LM5PDECK-7.01',
-                commpkgUrlId: '',
+                commissioningPackageUrlId: '',
                 workOrderUrlId: '',
                 description:
                     'STR-5234 surface treatment of HVAC House - Outside wall portside  - Poop Deck',
