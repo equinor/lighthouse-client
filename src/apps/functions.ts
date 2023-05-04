@@ -15,7 +15,7 @@ import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestA
 import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrResolverFunction } from './swcr';
 import { tagResolverFunction } from './Tags';
-import { workOrderResolverFunction } from './WorkOrder';
+import { workOrderResolverFunction } from './WorkOrder/utility/sidesheetConfig';
 export const functions: FunctionManifest[] = [
     changeCreatorAccessFunction,
     releaseCreatorAccessFunction,

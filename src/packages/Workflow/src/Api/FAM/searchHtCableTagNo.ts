@@ -7,7 +7,7 @@ export async function searchHtCableTagNo(value: string, signal?: AbortSignal): P
     const tagNoExpression = generateExpressions('TagNo', 'Like', [value]);
 
     const request = generateFamRequest(['TagNo'], 'And', [...htExpression, ...tagNoExpression]);
-    const res = await FAM.fetch('v0.1/dynamic/completion/completiontag/JCA', {
+    const res = await FAM.fetch('v1/typed/completion/completiontag/facility/JCA?view-version=v1', {
         body: JSON.stringify(request),
         method: 'POST',
         signal,

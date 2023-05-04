@@ -23,7 +23,6 @@ export interface WorkOrder {
     estimatedManHours: string;
     expendedManHours: string;
     remainingManHours: string;
-    earnedManHours: string;
     subMilestone: string;
     isVoided: true;
     responsible: string;

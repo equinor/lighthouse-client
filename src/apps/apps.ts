@@ -493,6 +493,7 @@ export const apps: AppManifest[] = [
             setup: loopSetup,
         },
         appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Loop.aspx',
     },
 
     {

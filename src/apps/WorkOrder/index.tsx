@@ -1,6 +1,4 @@
 import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
-import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
-import { WorkorderSideSheet } from './Garden/components';
 import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
@@ -10,35 +8,15 @@ import { filterConfig } from './utility/filterConfig';
 import { analyticsConfig } from './utility/analyticsConfig';
 import { statusBarConfig } from './utility/statusBarConfig';
 import { tableConfig } from './utility/tableConfig';
-
-async function responseParser(response: Response) {
-    const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
-    return parsedResponse;
-}
+import { creator } from './utility/sidesheetConfig';
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.fetch(`v0.1/procosys/workorder/JCA`, { signal: signal });
+    return await FAM.post(`v1/typed/completion/customapi_workorders/facility/JCA?view-version=v0`, {
+        signal: signal,
+        body: JSON.stringify({}),
+    });
 }
-
-const creator = setupWorkspaceSidesheet<WorkOrder, 'work-orderDetails'>({
-    id: 'work-orderDetails',
-    color: '#0364B8',
-    component: WorkorderSideSheet,
-    props: {
-        objectIdentifier: 'workOrderUrlId',
-        parentApp: 'work-order',
-        function: async (id: string) => {
-            // TODO: Add Proper resolver function
-            const items = await responseParser(await responseAsync());
-            return items.find((item) => item.workOrderUrlId === id);
-        },
-    },
-});
-
-export const workOrderCreatorManifest = creator('SidesheetManifest');
-export const workOrderCreatorComponent = creator('SidesheetComponentManifest');
-export const workOrderResolverFunction = creator('ResolverFunction');
 
 export function setup(appApi: ClientApi): void {
     appApi
