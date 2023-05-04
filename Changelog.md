@@ -4,357 +4,392 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.27.0
+
+-   [Apps] Deprecate /dynamic endpoints in fam, changed to /typed.
+
 ## 1.26.23
-- [Loop] Fix issue with sidesheet switching tabs and losing data in table
-- [Workorder] Add workorder analytics
-- [apps] Fix URL (only dev/test) to Fusion with updated Fusion endpoints
+
+-   [Loop] Fix issue with sidesheet switching tabs and losing data in table
+-   [Workorder] Add workorder analytics
+-   [apps] Fix URL (only dev/test) to Fusion with updated Fusion endpoints
 
 ## 1.26.22
-- [Piping&HeatTrace] Fix link to PCS in sidesheet
+
+-   [Piping&HeatTrace] Fix link to PCS in sidesheet
 
 ## 1.26.21
-- [SCR] Remove link to PCS for in Workorder table for WOs that are not found
-- [Activities] Add new Activities app for TEST environment
-- [ProgressSummary] Change name  from Progress Status and make visible in PROD env
+
+-   [SCR] Remove link to PCS for in Workorder table for WOs that are not found
+-   [Activities] Add new Activities app for TEST environment
+-   [ProgressSummary] Change name from Progress Status and make visible in PROD env
 
 ## 1.26.20
-- [EIT] Make app visible in PROD
-- [Query] Use requiredReplyDate instead of requiredAtDate
+
+-   [EIT] Make app visible in PROD
+-   [Query] Use requiredReplyDate instead of requiredAtDate
 
 ## 1.26.19
-- [ScopeChangeRequest] Add missing Workorders from FAM/PCS to table with placeholder text
-- [EIT] Change display name to EIT79 and make visible in TEST env
+
+-   [ScopeChangeRequest] Add missing Workorders from FAM/PCS to table with placeholder text
+-   [EIT] Change display name to EIT79 and make visible in TEST env
 
 ## 1.26.18
-- [MarkdownEditor] Add more space to new lines in editor
-- [EIT] New EIT analytics app in DEV env
-- [Loop] Change MC status to CL status for 3D
+
+-   [MarkdownEditor] Add more space to new lines in editor
+-   [EIT] New EIT analytics app in DEV env
+-   [Loop] Change MC status to CL status for 3D
 
 ## 1.26.17
-- [MarkdownEditor] Add hard break to editor (Shift + Enter)
-- [ScopeChangeReuqest] Show metadata for assoiciated commpkg after adding mcpkg
-- [Loop] Change from MC Status to Checklist status in sidesheet
-- [Loop] Use checklistID instead of loopId to find checklists
+
+-   [MarkdownEditor] Add hard break to editor (Shift + Enter)
+-   [ScopeChangeReuqest] Show metadata for assoiciated commpkg after adding mcpkg
+-   [Loop] Change from MC Status to Checklist status in sidesheet
+-   [Loop] Use checklistID instead of loopId to find checklists
 
 ## 1.26.16
-- [ScopeChangeRequest] (fix) Remove limit on PCS batch tag search
-- [ScopeChangeRequest] (fix) Add commpkg automatically from batch tag search
+
+-   [ScopeChangeRequest] (fix) Remove limit on PCS batch tag search
+-   [ScopeChangeRequest] (fix) Add commpkg automatically from batch tag search
 
 ## 1.26.15
-- [ScopeChangeRequest] Add Commpkg automatically when adding MCpkg as reference
-- [Loop] Rename Form types table header to Form type
-- [CommissioningProcedure] Fix broken link to Fusion
+
+-   [ScopeChangeRequest] Add Commpkg automatically when adding MCpkg as reference
+-   [Loop] Rename Form types table header to Form type
+-   [CommissioningProcedure] Fix broken link to Fusion
 
 ## 1.26.14
-- [ScopeCHangeRequest] Fix bug where user is trying to add tags with voided commpkgs
+
+-   [ScopeCHangeRequest] Fix bug where user is trying to add tags with voided commpkgs
 
 ## 1.26.13
-- [TagsAnalytics] Change app visibility from dev environment to production
+
+-   [TagsAnalytics] Change app visibility from dev environment to production
 
 ## 1.26.12
-- [ScopeChangeRequest] Fix version 1.26.11 showing contributors after signing
-- [ScopeChangeRequest] Remove duplicate (line) tags in single search for references
-- [ScopeChangeRequest] Don't remove references when editing attachments in edit mode
+
+-   [ScopeChangeRequest] Fix version 1.26.11 showing contributors after signing
+-   [ScopeChangeRequest] Remove duplicate (line) tags in single search for references
+-   [ScopeChangeRequest] Don't remove references when editing attachments in edit mode
 
 ## 1.26.11
-- [ScopeChangeRequest] Show contributors after signing
+
+-   [ScopeChangeRequest] Show contributors after signing
 
 ## 1.26.10
-- [ScopeChangeRequest] Add "Has Contributors" filter
+
+-   [ScopeChangeRequest] Add "Has Contributors" filter
 
 ## 1.26.9
-- [ScopeChangeRequest] Fix batch search for line tags and adding commissioning packages automatically
+
+-   [ScopeChangeRequest] Fix batch search for line tags and adding commissioning packages automatically
 
 ## 1.26.8
-- [Query] Add description to sidesheet
-- [OperationGarden] Add link to Fusion Operation Garden app
+
+-   [Query] Add description to sidesheet
+-   [OperationGarden] Add link to Fusion Operation Garden app
 
 ## 1.26.7
-- [MarkdownEditor] Style font size to always be 16px.
+
+-   [MarkdownEditor] Style font size to always be 16px.
 
 ## 1.26.6
-- [MarkdownEditor] Style line height for older SCR in markdown viewer.
+
+-   [MarkdownEditor] Style line height for older SCR in markdown viewer.
 
 ## 1.26.5
-- [ScopeChangeRequest] Add placeholder text to description input
-- [MarkdownEditor] Style placeholder text accordingly
-- [Loop] Use CL status instead of MC status for Loop content in sidesheet
-- [General] Add Fusion favicon and update browser title
-- [General] Add how-to section on release management
+
+-   [ScopeChangeRequest] Add placeholder text to description input
+-   [MarkdownEditor] Style placeholder text accordingly
+-   [Loop] Use CL status instead of MC status for Loop content in sidesheet
+-   [General] Add Fusion favicon and update browser title
+-   [General] Add how-to section on release management
 
 ## 1.26.4
-- [Dependencies] Update luxon to 2.5.2
+
+-   [Dependencies] Update luxon to 2.5.2
+
 ## 1.26.3
-- [MarkdownEditor] Styling improvements: resize and border bottom
+
+-   [MarkdownEditor] Styling improvements: resize and border bottom
 
 ## 1.26.2
-- [MarkdownEditor] New package for viewing/editing rich text
-- [ScopeChangeRequest] Implement rich text editor/viewer for description field
+
+-   [MarkdownEditor] New package for viewing/editing rich text
+-   [ScopeChangeRequest] Implement rich text editor/viewer for description field
 
 ## 1.26.1
-- [Handover] Sidesheet Tab NCr column width
-- [ScopeChangeControl] Change Origin Query validate correct project
-- [ScopeChangeControl] Reference Type McPkg enabled
-- [ScopeChangeControl] Markdown Editor for description
-- [ReleaseControl] Workflow code generalization
+
+-   [Handover] Sidesheet Tab NCr column width
+-   [ScopeChangeControl] Change Origin Query validate correct project
+-   [ScopeChangeControl] Reference Type McPkg enabled
+-   [ScopeChangeControl] Markdown Editor for description
+-   [ReleaseControl] Workflow code generalization
 
 ## 1.26.0
-- [ReleaseControl] New URL fields from FAM
-- [ReleaseControl] Loading spinners while signing steps
-- [ScopeChangeControl] Loading spinners while signing steps
-- [CommissioningTask] New Commissioning Task PBI report.
+
+-   [ReleaseControl] New URL fields from FAM
+-   [ReleaseControl] Loading spinners while signing steps
+-   [ScopeChangeControl] Loading spinners while signing steps
+-   [CommissioningTask] New Commissioning Task PBI report.
 
 ## 1.25.1
-- [ScopeChangeRequest] Change table column dates to standard format
-- [MechanicalCompletion] Fix MC to Com KPI 
+
+-   [ScopeChangeRequest] Change table column dates to standard format
+-   [MechanicalCompletion] Fix MC to Com KPI
 
 ## 1.25.0
-- [Query] New URL fields from FAM
-- [Punch] New URL fields from FAM
-- [Workorder] New URL fields from FAM
-- [PipingAndHeattrace] New URL fields from FAM
-- [Loop] New URL fields from FAM
-- [ScopeChangeRequest] New URL fields from FAM
-- [ScopeChangeRequest] Document batch search
-- [ScopeChangeRequest] Ability to create revision on closed requests
 
+-   [Query] New URL fields from FAM
+-   [Punch] New URL fields from FAM
+-   [Workorder] New URL fields from FAM
+-   [PipingAndHeattrace] New URL fields from FAM
+-   [Loop] New URL fields from FAM
+-   [ScopeChangeRequest] New URL fields from FAM
+-   [ScopeChangeRequest] Document batch search
+-   [ScopeChangeRequest] Ability to create revision on closed requests
 
 ## 1.24.3
-- [Query] Add title as subheader and remove description field in sidesheet
-- [Query] Add Description, RFC and RFO status to Commpkg tab table
-- [Query] Add better styling for long texts
-- [Punch] Add better styling for long texts
+
+-   [Query] Add title as subheader and remove description field in sidesheet
+-   [Query] Add Description, RFC and RFO status to Commpkg tab table
+-   [Query] Add better styling for long texts
+-   [Punch] Add better styling for long texts
 
 ## 1.24.2
-- [ProcosysUrls] Remove pipe character from Query URL.
+
+-   [ProcosysUrls] Remove pipe character from Query URL.
+
 ## 1.24.1
-- [Punch] Add description to sidesheet and make it searchable
-- [Query] Add more fields to sidesheet and update sidesheet header
+
+-   [Punch] Add description to sidesheet and make it searchable
+-   [Query] Add more fields to sidesheet and update sidesheet header
+
 ## 1.24.0
 
-- [ScopeChangeRequest] Fix issue with when to show revision vs. void banner
-- [ScopeChangeRequest] Generic workflow signing with split sign button and comment modal
-- [Query] New Query workspace & remove old "Queries" link to Procosys
-- [Punch] Flag and category status to Garden items
+-   [ScopeChangeRequest] Fix issue with when to show revision vs. void banner
+-   [ScopeChangeRequest] Generic workflow signing with split sign button and comment modal
+-   [Query] New Query workspace & remove old "Queries" link to Procosys
+-   [Punch] Flag and category status to Garden items
 
 ## 1.23.0
 
-- [PipingAndHeattrace] New garden group option for Current Step (Circuit)
-- [ScopeChangeRequest] Added filter for comm.pkg
-- [ScopeChangeRequest] Change search from sequence to serial number
-- [CCHOverview] Added new CCH overview app
+-   [PipingAndHeattrace] New garden group option for Current Step (Circuit)
+-   [ScopeChangeRequest] Added filter for comm.pkg
+-   [ScopeChangeRequest] Change search from sequence to serial number
+-   [CCHOverview] Added new CCH overview app
 
 ## 1.22.0
 
-- [ReleaseControl] Move workflow step up/down in admin (reorder)
-- [ReleaseControl] Fix initiate step disappearing in RC when using template
-- [ReleaseControl] Workflow admin styling adjustments
-- [ReleaseControl] Workflow admin save and close
-- [ReleaseControl] Workflow admin delete warnings
-- [PipingAndHeattrace] Hover over critical line dialog in circuit diagram
+-   [ReleaseControl] Move workflow step up/down in admin (reorder)
+-   [ReleaseControl] Fix initiate step disappearing in RC when using template
+-   [ReleaseControl] Workflow admin styling adjustments
+-   [ReleaseControl] Workflow admin save and close
+-   [ReleaseControl] Workflow admin delete warnings
+-   [PipingAndHeattrace] Hover over critical line dialog in circuit diagram
 
 ## 1.21.0
 
-- [ScopeChangeRequest] Add reason for voiding and reason for revision.
-- [ReleaseControl] Add empty body for void request.
+-   [ScopeChangeRequest] Add reason for voiding and reason for revision.
+-   [ReleaseControl] Add empty body for void request.
 
 ## 1.20.0
 
-- [ReleaseControl] Added admin UI for release control workflows, steps, statuses.
-- [ReleaseControl] Changed tag search endpoint to v1 - better performance
-- [ReleaseControl] Added PCS link to mountedOn in table
-- [Punch] New workspace
-- [Workorder] Fixed bug for material status not showing correct color/text in garden view
+-   [ReleaseControl] Added admin UI for release control workflows, steps, statuses.
+-   [ReleaseControl] Changed tag search endpoint to v1 - better performance
+-   [ReleaseControl] Added PCS link to mountedOn in table
+-   [Punch] New workspace
+-   [Workorder] Fixed bug for material status not showing correct color/text in garden view
 
 ## 1.19.1
 
-- [ReleaseControl/PipingAndHeattrace] Fixed bug with circuit diagram not displaying correctly
+-   [ReleaseControl/PipingAndHeattrace] Fixed bug with circuit diagram not displaying correctly
 
 ## 1.19.0
 
-- [CommissioningProcedure] Fix spelling mistake in app name
-- [ScopeChangeRequest] Fix spelling mistake in change category column header
-- [Loop] Add workorder tab to sidesheet
-- [Workorder] Add 3D tab to sidesheet
-- [Workorder] Fix Material available status and parse project progress differently
-- [Filter] Export memoed component
-- [ProcosysUrls] Refactor files
-- [ReleaseControl] Fix workflow step drag and drop
+-   [CommissioningProcedure] Fix spelling mistake in app name
+-   [ScopeChangeRequest] Fix spelling mistake in change category column header
+-   [Loop] Add workorder tab to sidesheet
+-   [Workorder] Add 3D tab to sidesheet
+-   [Workorder] Fix Material available status and parse project progress differently
+-   [Filter] Export memoed component
+-   [ProcosysUrls] Refactor files
+-   [ReleaseControl] Fix workflow step drag and drop
 
 ## 1.18.2
 
-- [ReleaseControl/PipingAndHeattrace] Circuit diagram: Enable "Edit isolations" button in prod
+-   [ReleaseControl/PipingAndHeattrace] Circuit diagram: Enable "Edit isolations" button in prod
 
 ## 1.18.1
 
-- [ReleaseControl/PipingAndHeattrace] Fixed circuit diagram datatypes for new FAM update
+-   [ReleaseControl/PipingAndHeattrace] Fixed circuit diagram datatypes for new FAM update
 
 ## 1.18.0
 
-- [ReleaseControl/PipingAndHeattrace] Added critical line visualization in circuit diagram
-- [Garden] Bugfix: Update garden when filter result is empty
-- [Garden] Added last step option for garden grouping. For example HT-cable grouping in P&HT uses this
-- [Loop] Update column names from FAM
-- [Filter] Added useClickOutside on workspace filter
+-   [ReleaseControl/PipingAndHeattrace] Added critical line visualization in circuit diagram
+-   [Garden] Bugfix: Update garden when filter result is empty
+-   [Garden] Added last step option for garden grouping. For example HT-cable grouping in P&HT uses this
+-   [Loop] Update column names from FAM
+-   [Filter] Added useClickOutside on workspace filter
 
 ## 1.17.0
 
-- [ReleaseControl/PipingAndHeattrace] Added filters for isolated and disconnected equipment
-- [PipingAndHeattrace] Added filter for exposed HT cable duration
-- [PipingAndHeattrace] Added grouping option for circuits
-- [PipingAndHeattrace] Added grouping option for "Current step (HT)"
-- [PipingAndHeattrace] Added search option for HT cable
-- [ReleaseControl] Bugfix: Overdue release controls only apply to open state
-- [PowerBI] Bugfix: height/width fix for button
-- [Garden] Bugfix: Fixed for array grouping in hanging garden
+-   [ReleaseControl/PipingAndHeattrace] Added filters for isolated and disconnected equipment
+-   [PipingAndHeattrace] Added filter for exposed HT cable duration
+-   [PipingAndHeattrace] Added grouping option for circuits
+-   [PipingAndHeattrace] Added grouping option for "Current step (HT)"
+-   [PipingAndHeattrace] Added search option for HT cable
+-   [ReleaseControl] Bugfix: Overdue release controls only apply to open state
+-   [PowerBI] Bugfix: height/width fix for button
+-   [Garden] Bugfix: Fixed for array grouping in hanging garden
 
 ## 1.16.0
 
-- [ReleaseControl/PipingAndHeattrace] Added functionality to isolate and disconnect equipment in circuit diagram
-- [Apps] Add ability to search for description/title in several workspaces
-- [PowerBI] Fix issue with clicking outside/inside of advanced filter search when trying to select a filter item
-- [PowerBI] Fix issue with filter groups overflowing out of screen when selecting multiple filter groups
-- [ReleaseControl] Remove production flag for PBI report
-- [ReleaseControl] Fixed bug with overdue release controls calculation
-- [Notification] Fix issue with SVG icon resizing
-- [PipingAndHeattrace] Added critical line filter
+-   [ReleaseControl/PipingAndHeattrace] Added functionality to isolate and disconnect equipment in circuit diagram
+-   [Apps] Add ability to search for description/title in several workspaces
+-   [PowerBI] Fix issue with clicking outside/inside of advanced filter search when trying to select a filter item
+-   [PowerBI] Fix issue with filter groups overflowing out of screen when selecting multiple filter groups
+-   [ReleaseControl] Remove production flag for PBI report
+-   [ReleaseControl] Fixed bug with overdue release controls calculation
+-   [Notification] Fix issue with SVG icon resizing
+-   [PipingAndHeattrace] Added critical line filter
 
 ## 1.15.4
 
-- [ProgressStatus] Prod flag
-- [ReleaseControl] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
-- [ReleaseControl] Updated some Tag/HTCable fields after new FAM update.
+-   [ProgressStatus] Prod flag
+-   [ReleaseControl] Remove TagMountedOn from interface and API calls to FAM. Deprecated field.
+-   [ReleaseControl] Updated some Tag/HTCable fields after new FAM update.
 
 ## 1.15.3
 
-- [ProgressStatus] New PBI Viewer application
+-   [ProgressStatus] New PBI Viewer application
 
 ## 1.15.2
 
-- [Apps] Change Quality Deviation app link to correct Fusion App
-- [Table] Remove option to click on grouped rows
+-   [Apps] Change Quality Deviation app link to correct Fusion App
+-   [Table] Remove option to click on grouped rows
 
 ## 1.15.1
 
-- [Garden] Fix bug with subgrouping and total row count not being updated
-- [PBI] Remove embed of Business Case, Non Conformity, Quality Deviation, Safety Performance and instead redirect to Fusion
-- [ReleaseControl] Remove reject option from RC workflow
-- [ReleaseControl] Split description from item in Garden
-- [PipingAndHeattrace] Split description from item in Garden
+-   [Garden] Fix bug with subgrouping and total row count not being updated
+-   [PBI] Remove embed of Business Case, Non Conformity, Quality Deviation, Safety Performance and instead redirect to Fusion
+-   [ReleaseControl] Remove reject option from RC workflow
+-   [ReleaseControl] Split description from item in Garden
+-   [PipingAndHeattrace] Split description from item in Garden
 
 ## 1.15.0
 
-- [ReleaseControl] Added status bar KPIs
-- [ReleaseControl] Release control PBI analytics (feature flagged test)
-- [PipingAndHeattrace] Improved status bar KPIs
-- [PipingAndHeattrace] Sidesheet styling improvements (scrollbars ++)
+-   [ReleaseControl] Added status bar KPIs
+-   [ReleaseControl] Release control PBI analytics (feature flagged test)
+-   [PipingAndHeattrace] Improved status bar KPIs
+-   [PipingAndHeattrace] Sidesheet styling improvements (scrollbars ++)
 
 ## 1.14.0
 
-- [ReleaseControl] Initial prod release (feature flagged prod)
+-   [ReleaseControl] Initial prod release (feature flagged prod)
 
 ## 1.13.0
 
-- [ReleaseControl] Simultaneous tag/htCable search. Search and select multiple at a time.
-- [ReleaseControl] Scrollbar fix in circuit diagram + RC sidesheet
-- [ReleaseControl] System filter bugfix
-- [PipingAndHeattrace] Better error message when no access to 3D model
+-   [ReleaseControl] Simultaneous tag/htCable search. Search and select multiple at a time.
+-   [ReleaseControl] Scrollbar fix in circuit diagram + RC sidesheet
+-   [ReleaseControl] System filter bugfix
+-   [PipingAndHeattrace] Better error message when no access to 3D model
 
 ## 1.12.0
 
-- [PowerBI] Refetch token when expired
-- [ReleaseControl] Added new filters
-- [ReleaseControl] Added new table columns
-- [ReleaseControl] Added new fields for tags/htCables
-- [ReleaseControl] Added circuit diagram
-- [PipingAndHeattrace] Removed duplicate WO
-- [PipingAndHeattrace] Workorder table sorting
-- [PipingAndHeattrace] Checklist table sorting
-  
+-   [PowerBI] Refetch token when expired
+-   [ReleaseControl] Added new filters
+-   [ReleaseControl] Added new table columns
+-   [ReleaseControl] Added new fields for tags/htCables
+-   [ReleaseControl] Added circuit diagram
+-   [PipingAndHeattrace] Removed duplicate WO
+-   [PipingAndHeattrace] Workorder table sorting
+-   [PipingAndHeattrace] Checklist table sorting
 
 ## 1.11.0
 
-- [ScopeChangeRequest] Updated API call and added WO mhrs data in table
-- [FAMRequestGenerator] Extract duplicate functions from apps to a seperate package for FAM request generation
-- [Components] Remove unused code
-- [Apps] Remove unused code
-- [Workorder] Fix issue in test with dates
-- [Dependencies] Upgrade vite, @vitejs/plugin-react, typescript, ts-node @microsoft/signalr & dexie
-- [ServiceMessage] Add option to delete current service message
-- [DRC] Refactor and fix circular imports
-- [ReleaseControl] Added Scope change request references
-- [ReleaseControl] Fixed bug with release control references in edit-mode sidesheet
-  
+-   [ScopeChangeRequest] Updated API call and added WO mhrs data in table
+-   [FAMRequestGenerator] Extract duplicate functions from apps to a seperate package for FAM request generation
+-   [Components] Remove unused code
+-   [Apps] Remove unused code
+-   [Workorder] Fix issue in test with dates
+-   [Dependencies] Upgrade vite, @vitejs/plugin-react, typescript, ts-node @microsoft/signalr & dexie
+-   [ServiceMessage] Add option to delete current service message
+-   [DRC] Refactor and fix circular imports
+-   [ReleaseControl] Added Scope change request references
+-   [ReleaseControl] Fixed bug with release control references in edit-mode sidesheet
+
 ## 1.10.0
 
-- [SpoolsAnalytics] New PowerBIViewer application
-- [General] Update typing for Core/Workspace/Apps
-- [Table] Don't do automatic retries for export to excel
-- [ReleaseControl] Added auto-focus and keyboard shortcuts to sign with comment modal
-- [ReleaseControl] Fixed workflow step responsible field
+-   [SpoolsAnalytics] New PowerBIViewer application
+-   [General] Update typing for Core/Workspace/Apps
+-   [Table] Don't do automatic retries for export to excel
+-   [ReleaseControl] Added auto-focus and keyboard shortcuts to sign with comment modal
+-   [ReleaseControl] Fixed workflow step responsible field
 
 ## 1.9.0
 
-- [PowerBI] Added commissioning analytics Pbi app
-- [PowerBI] Added preservation Pbi app
-- [ReleaseControl] '...' menu only for current step
-- [ReleaseControl] Improved layout of workflow steps
-- [ReleaseControl] Split sign-button into two buttons
-- [ReleaseControl] Tabbed edit-mode
-- [ReleaseControl] Added attachment support for release controls
-- [ReleaseControl] Use person as workflow step responsible
-- [ReleaseControl] Improved tag/htCable search speed
-- [ReleaseControl] Spinner chip when application is fetching/updating
-- [ReleaseControl] Pop-up modal for sign with comment
-- [ScopeChangeRequest] Validation bugfix
-- [ScopeChangeRequest] Export to Excel
-- [Menu] Fix bug where two apps with similar names are both active
-- [Workorder] Add abortsingal to api calls
-- [Handover] Unit tests
+-   [PowerBI] Added commissioning analytics Pbi app
+-   [PowerBI] Added preservation Pbi app
+-   [ReleaseControl] '...' menu only for current step
+-   [ReleaseControl] Improved layout of workflow steps
+-   [ReleaseControl] Split sign-button into two buttons
+-   [ReleaseControl] Tabbed edit-mode
+-   [ReleaseControl] Added attachment support for release controls
+-   [ReleaseControl] Use person as workflow step responsible
+-   [ReleaseControl] Improved tag/htCable search speed
+-   [ReleaseControl] Spinner chip when application is fetching/updating
+-   [ReleaseControl] Pop-up modal for sign with comment
+-   [ScopeChangeRequest] Validation bugfix
+-   [ScopeChangeRequest] Export to Excel
+-   [Menu] Fix bug where two apps with similar names are both active
+-   [Workorder] Add abortsingal to api calls
+-   [Handover] Unit tests
 
 ## 1.8.1
 
-- [LCI] Update to use PowerBIViewer
-- [MDR] Update to use PowerBIViewer
+-   [LCI] Update to use PowerBIViewer
+-   [MDR] Update to use PowerBIViewer
 
 ## 1.8.0
 
-- [PowerBI] Automatically load PowerBI pages. 
-- [PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
-- [Workspace] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and - pageTitle is allowed anymore.
-- [PowerBIViewer] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId - and pageTitle is allowed anymore.
-- [Apps] Remove PowerBI pages config in all apps that uses PowerBI
+-   [PowerBI] Automatically load PowerBI pages.
+-   [PowerBI] Fix z-index on filter chip that displayed on top of sidesheets
+-   [Workspace] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId and - pageTitle is allowed anymore.
+-   [PowerBIViewer] Add support for automatically loading PowerBI pages. Configuration has changed so no pageId - and pageTitle is allowed anymore.
+-   [Apps] Remove PowerBI pages config in all apps that uses PowerBI
+
 ## 1.7.7
 
-- [Workspace] Changed bookmark icon in workspace
-- [ReleaseControl/ScopeChangeRequest] No default selected reference type
-- [ReleaseControl] Added completedStatusName for workflow steps
-- [Portal] Favorited menu icons visible without hovering
-- [Checklist] Update report pages
-- [SWCR] Update report pages
-- [Handover] Update report pages
-- [Punch] Update report pages
+-   [Workspace] Changed bookmark icon in workspace
+-   [ReleaseControl/ScopeChangeRequest] No default selected reference type
+-   [ReleaseControl] Added completedStatusName for workflow steps
+-   [Portal] Favorited menu icons visible without hovering
+-   [Checklist] Update report pages
+-   [SWCR] Update report pages
+-   [Handover] Update report pages
+-   [Punch] Update report pages
 
 ## 1.7.6
 
-- [ReleaseControl] Bugfix: Made it impossible to drag unsigned steps before historic steps
-- [ReleaseControl] Bugfix: Fixed so you can only unsign the previous step in a workflow (not all past signed steps)
-- [PipingAndHeattrace] Bugfix: Fixed warning triangles sometimes showing up when they shouldn't
-- [ScopeChangeRequest] Bugfix: Fixed state in edit/revision mode showing "Draft" when it is not draft
-- [ScopeChangeRequest] Bugfix: NotApplicable -> Not Applicable
+-   [ReleaseControl] Bugfix: Made it impossible to drag unsigned steps before historic steps
+-   [ReleaseControl] Bugfix: Fixed so you can only unsign the previous step in a workflow (not all past signed steps)
+-   [PipingAndHeattrace] Bugfix: Fixed warning triangles sometimes showing up when they shouldn't
+-   [ScopeChangeRequest] Bugfix: Fixed state in edit/revision mode showing "Draft" when it is not draft
+-   [ScopeChangeRequest] Bugfix: NotApplicable -> Not Applicable
 
 ## 1.7.5
 
-- [Workspace] Use ResizeObserver to fix table height when opening/closing filter panel
-- [ScopeChangeRequest] Show workorders with info text if SC workorders length does not equal FAM workorders
-  
+-   [Workspace] Use ResizeObserver to fix table height when opening/closing filter panel
+-   [ScopeChangeRequest] Show workorders with info text if SC workorders length does not equal FAM workorders
+
 ## 1.7.4
 
-- [MechanicalCompletion] Remove new column from API and prevent auto columns
-- [MechanicalCompletion] Remove prod check on PBI tab
-- [PowerBI] Add check for true/false string values and change to bool type
-- [ReleaseControl] No submit button in edit mode without draft state 
-- [PipingAndHeattrace] Completion status bugfix 
+-   [MechanicalCompletion] Remove new column from API and prevent auto columns
+-   [MechanicalCompletion] Remove prod check on PBI tab
+-   [PowerBI] Add check for true/false string values and change to bool type
+-   [ReleaseControl] No submit button in edit mode without draft state
+-   [PipingAndHeattrace] Completion status bugfix
 
 # 1.7.3
 
