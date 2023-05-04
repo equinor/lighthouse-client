@@ -38,7 +38,7 @@ export async function searchTag(value: string): Promise<any[]> {
         'And',
         [...noHtExpression, ...tagNoExpression]
     );
-    const res = await FAM.fetch('v1/dynamic/completion/custom_scope_tag/JCA', {
+    const res = await FAM.fetch('v1/typed/completion/custom_scope_tag/JCA', {
         body: JSON.stringify(request),
         method: 'POST',
     });

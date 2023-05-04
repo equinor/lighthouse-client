@@ -15,7 +15,7 @@ export const getQuerySignatures = async (
     signal?: AbortSignal
 ): Promise<QuerySignature[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.post(`v0.1/dynamic/completion/querysignature/JCA`, {
+    const res = await FAM.post(`v1/typed/completion/querysignature/facility/JCA?view-version=v0`, {
         body: JSON.stringify(famFilter),
         signal,
     });
