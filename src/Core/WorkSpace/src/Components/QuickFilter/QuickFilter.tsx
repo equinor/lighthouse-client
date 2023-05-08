@@ -65,7 +65,7 @@ export const QuickFilter = (): JSX.Element => {
                             <>
                                 {quickFilterGroups.map(
                                     (group, i) =>
-                                        i < 5 && (
+                                        i < 7 && (
                                             <FilterGroup
                                                 onClick={() => handleExpandFilterGroup(group)}
                                                 key={group}
