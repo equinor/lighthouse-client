@@ -37,6 +37,7 @@ export const filterConfig: FilterOptions<HandoverPackage> = [
     {
         name: 'Phase',
         valueFormatter: ({ phase }) => phase,
+        isQuickFilter: true,
     },
 
     {
@@ -48,6 +49,7 @@ export const filterConfig: FilterOptions<HandoverPackage> = [
     {
         name: 'Priority 1',
         valueFormatter: ({ priority1 }) => priority1,
+        isQuickFilter: true,
     },
     {
         name: 'Priority 2',
