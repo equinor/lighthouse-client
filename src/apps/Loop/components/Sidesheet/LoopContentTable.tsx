@@ -22,10 +22,11 @@ const columns: Column<LoopContent>[] = [
         }),
         Cell: (cellProps) => {
             return (
-                <CustomLinkCellWithTextDecoration
-                    contentToBeDisplayed={cellProps.value.content.contentTagNo}
-                    url={cellProps.value.url}
-                />
+                // <CustomLinkCellWithTextDecoration
+                //     contentToBeDisplayed={cellProps.value.content.contentTagNo}
+                //     url={cellProps.value.url}
+                // />
+                cellProps.value.content.contentTagNo
             );
         },
         Aggregated: () => null,
