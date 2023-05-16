@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.29.0
+
+-   [Allowance] Publish Allowance report PBI to prod
+
+## 1.28.0
+
+-   [Allowance] Implement Allowance report PBI
+
 ## 1.27.2
 
 -   [Loop] Remove loop procosys link in sidesheet
