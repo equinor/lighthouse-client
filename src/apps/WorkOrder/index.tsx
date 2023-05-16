@@ -1,4 +1,4 @@
-import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
+import { ClientApi, httpClient, isProduction } from '@equinor/lighthouse-portal-client';
 import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
@@ -19,43 +19,84 @@ async function responseAsync(signal?: AbortSignal | undefined): Promise<Response
 }
 
 export function setup(appApi: ClientApi): void {
-    appApi
-        .createWorkSpace<WorkOrder>({
-            objectIdentifier: 'workOrderUrlId',
-            customSidesheetOptions: creator('WorkspaceSideSheet'),
-            defaultTab: 'garden',
-        })
-        .registerDataSource({
-            responseAsync: responseAsync,
-        })
-        .registerFilterOptions(filterConfig)
-        .registerStatusItems(statusBarConfig)
-        .registerPowerBIOptions(analyticsConfig)
-        .registerSearchOptions([
-            { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
-            { name: 'Description', valueFormatter: ({ description }) => description ?? '' },
-        ])
-        .registerTableOptions(tableConfig)
-        .registerGardenOptions({
-            gardenKey: 'fwp' as keyof WorkOrder,
-            itemKey: 'workOrderNumber',
-            fieldSettings: fieldSettings,
-            objectIdentifier: 'workOrderUrlId',
-            customViews: {
-                customItemView: WorkOrderItem,
-                customHeaderView: WorkOrderHeader,
-            },
-            intercepters: {
-                postGroupSorting: (data, keys) => {
-                    data.forEach(({ items }) => {
-                        items = sortPackages(items, ...keys);
-                    });
-                    return data;
+    if (isProduction()) {
+        appApi
+            .createWorkSpace<WorkOrder>({
+                objectIdentifier: 'workOrderUrlId',
+                customSidesheetOptions: creator('WorkspaceSideSheet'),
+                defaultTab: 'garden',
+            })
+            .registerDataSource({
+                responseAsync: responseAsync,
+            })
+            .registerFilterOptions(filterConfig)
+            .registerStatusItems(statusBarConfig)
+            .registerSearchOptions([
+                { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
+                { name: 'Description', valueFormatter: ({ description }) => description ?? '' },
+            ])
+            .registerTableOptions(tableConfig)
+            .registerGardenOptions({
+                gardenKey: 'fwp' as keyof WorkOrder,
+                itemKey: 'workOrderNumber',
+                fieldSettings: fieldSettings,
+                objectIdentifier: 'workOrderUrlId',
+                customViews: {
+                    customItemView: WorkOrderItem,
+                    customHeaderView: WorkOrderHeader,
                 },
-            },
+                intercepters: {
+                    postGroupSorting: (data, keys) => {
+                        data.forEach(({ items }) => {
+                            items = sortPackages(items, ...keys);
+                        });
+                        return data;
+                    },
+                },
 
-            highlightColumn: getHighlightedColumn,
-            itemWidth: getItemWidth,
-            rowHeight: 30,
-        });
+                highlightColumn: getHighlightedColumn,
+                itemWidth: getItemWidth,
+                rowHeight: 30,
+            });
+    } else {
+        appApi
+            .createWorkSpace<WorkOrder>({
+                objectIdentifier: 'workOrderUrlId',
+                customSidesheetOptions: creator('WorkspaceSideSheet'),
+                defaultTab: 'garden',
+            })
+            .registerDataSource({
+                responseAsync: responseAsync,
+            })
+            .registerFilterOptions(filterConfig)
+            .registerStatusItems(statusBarConfig)
+            .registerPowerBIOptions(analyticsConfig)
+            .registerSearchOptions([
+                { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
+                { name: 'Description', valueFormatter: ({ description }) => description ?? '' },
+            ])
+            .registerTableOptions(tableConfig)
+            .registerGardenOptions({
+                gardenKey: 'fwp' as keyof WorkOrder,
+                itemKey: 'workOrderNumber',
+                fieldSettings: fieldSettings,
+                objectIdentifier: 'workOrderUrlId',
+                customViews: {
+                    customItemView: WorkOrderItem,
+                    customHeaderView: WorkOrderHeader,
+                },
+                intercepters: {
+                    postGroupSorting: (data, keys) => {
+                        data.forEach(({ items }) => {
+                            items = sortPackages(items, ...keys);
+                        });
+                        return data;
+                    },
+                },
+
+                highlightColumn: getHighlightedColumn,
+                itemWidth: getItemWidth,
+                rowHeight: 30,
+            });
+    }
 }
