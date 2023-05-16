@@ -16,7 +16,7 @@ import {
     MenuHeadingWrapper,
     MenuWrapper,
     RightButton,
-    Row
+    Row,
 } from './CompactMenuStyles';
 
 export const CompactMenu = (): JSX.Element => {
@@ -58,10 +58,10 @@ export const CompactMenu = (): JSX.Element => {
                             <BackButton onClick={() => setActiveGroupe('')}>
                                 <Icon name="arrow_back" />
                             </BackButton>
-                            <Heading>{appGroups[activeGroupe].name}</Heading>
+                            <Heading>{appGroups[activeGroupe]?.name}</Heading>
                         </MenuHeadingWrapper>
                         <MenuGroup>
-                            {GroupedMenu[activeGroupe].map((manifest) => (
+                            {GroupedMenu[activeGroupe]?.map((manifest) => (
                                 <MenuItem
                                     key={`acc-${manifest.shortName}`}
                                     groupId={activeGroupe}
