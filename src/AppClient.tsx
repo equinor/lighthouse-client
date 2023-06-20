@@ -22,11 +22,11 @@ const Client: React.FC<ClientProps> = ({ authProvider, dataCreator }: ClientProp
                 // Default cachetime 2 minutes
                 cacheTime: 2000 * 60,
                 refetchOnWindowFocus: false,
-                retry: 3,
+                retry: false,
                 retryDelay: 1000,
             },
             mutations: {
-                retry: 3,
+                retry: false,
                 retryDelay: 1000,
             },
         },
