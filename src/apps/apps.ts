@@ -35,6 +35,7 @@ import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTa
 import { setup as TagsAnalyticsSetup } from './TagsAnalytics';
 import { setup as EITSetup } from './EIT';
 import { setup as activitiesSetup } from './Activities';
+import { setup as allowanceSetup } from './Allowance';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -644,6 +645,19 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'PowerBIViewer',
             setup: ProgressStatusSetup,
+        },
+        appEnv: 'prod',
+    },
+    {
+        title: 'Allowance',
+        shortName: 'allowance',
+        color: '#0364B8',
+        groupe: Apps.ProjectControl,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: allowanceSetup,
         },
         appEnv: 'prod',
     },
