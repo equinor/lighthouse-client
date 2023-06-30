@@ -36,7 +36,7 @@ export async function searchHtCable(value: string): Promise<any[]> {
         [...htExpression, ...tagNoExpression]
     );
     const res = await FAM.fetch(
-        'v1/typed/completion/custom_scope_tag/facility/JCA?view-version=v0',
+        'v1/typed/completion/custom_scope_tag/facility/JCA?view-version=v1',
         {
             body: JSON.stringify(request),
             method: 'POST',
