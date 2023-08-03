@@ -659,7 +659,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBIViewer',
             setup: allowanceSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // QualityAndRisk
     {
