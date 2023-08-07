@@ -137,6 +137,14 @@ export const tableConfig: TableOptions<Punch> = {
             aggregate: 'count',
         },
         {
+            id: 'punchPriority',
+            Header: 'Punch priority',
+            accessor: (pkg) => pkg.priority,
+            width: 150,
+            Aggregated: () => null,
+            aggregate: 'count',
+        },
+        {
             id: 'clearedAtDate',
             Header: 'Cleared',
             accessor: (pkg) => pkg.clearedAtDate,
