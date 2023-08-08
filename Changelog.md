@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.30.0
+
+-   [Punch] add punch priority to table
+
 ## 1.29.0
 
 -   [Allowance] Publish Allowance report PBI to prod
