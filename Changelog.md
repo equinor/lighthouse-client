@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+
 ## 1.31.0
 
 -   [ReleaseControll] default filter for state uncheck voided
+
 
 ## 1.30.0
 
