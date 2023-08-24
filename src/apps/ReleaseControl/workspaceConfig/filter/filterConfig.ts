@@ -9,6 +9,7 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
     {
         name: 'State',
         valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
+        defaultUncheckedValues: ['Voided'],
     },
     { name: 'Phase', valueFormatter: ({ phase }) => phase },
     { name: 'Status', valueFormatter: ({ workflowStatus }) => workflowStatus },
