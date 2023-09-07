@@ -279,7 +279,7 @@ export const tableConfig: TableOptions<WorkOrder> = {
             width: 100,
         },
         {
-            id: 'WorkBreaddownStructure',
+            id: 'WorkBreakdownStructure',
             Header: 'WBS',
             Aggregated: () => null,
             aggregate: 'count',
