@@ -107,6 +107,10 @@ export const filterConfig: FilterOptions<WorkOrder> = [
         valueFormatter: ({ mccrStatus }) => mccrStatus,
     },
     {
+        name: 'WBS',
+        valueFormatter: ({ workBreakdownStructure }) => workBreakdownStructure,
+    },
+    {
         name: 'Progress',
         valueFormatter: ({ projectProgress }): Progress => {
             const progress = parseFloat(projectProgress || '');
