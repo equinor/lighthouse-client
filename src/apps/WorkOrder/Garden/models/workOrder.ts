@@ -36,6 +36,7 @@ export type WorkOrder = {
     w8ActualDate: string | null;
     w9ActualDate: string | null;
     w10ActualDate: string | null;
+    workBreakdownStructure: string | null;
     workOrderId: string | null;
     workOrderUrlId: string | null;
     workOrderNumber: string;
