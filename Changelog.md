@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 1.32.1
 
--   [Workoder] update to api version 1
+-   [Workorder] update to api version 1
 
 ## 1.32.0
 
