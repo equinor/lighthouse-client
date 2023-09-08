@@ -12,7 +12,7 @@ import { creator } from './utility/sidesheetConfig';
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.post(`v1/typed/completion/customapi_workorders/facility/JCA?view-version=v0`, {
+    return await FAM.post(`v1/typed/completion/customapi_workorders/facility/JCA?view-version=v1`, {
         signal: signal,
         body: JSON.stringify({}),
     });
