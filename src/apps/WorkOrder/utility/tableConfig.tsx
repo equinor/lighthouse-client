@@ -43,8 +43,8 @@ export const tableConfig: TableOptions<WorkOrder> = {
             width: 200,
         },
         {
-            id: 'description',
-            Header: 'Description',
+            id: 'title',
+            Header: 'Title',
             accessor: (pkg) => pkg.description,
             Aggregated: () => null,
             aggregate: 'count',
