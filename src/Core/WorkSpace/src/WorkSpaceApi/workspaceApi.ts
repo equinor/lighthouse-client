@@ -188,8 +188,12 @@ export function createWorkSpace<
             return workspaceAPI;
         },
         registerAdminOptions(adminOptions: AdminOptions) {
-            updateState({
-                adminOptions: adminOptions,
+            adminOptions.isAdminValidator().then((isAdmin) => {
+                if(isAdmin){
+                    updateState({
+                        adminOptions: adminOptions,
+                    });
+                }
             });
 
             return workspaceAPI;

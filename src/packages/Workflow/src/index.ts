@@ -3,6 +3,7 @@
 export * from './Api/Access/canDelete';
 export * from './Api/Access/optionsRequestChecker';
 export * from './Api/Access/requestAccess';
+export * from './Api/Access/checkIfReleaseControlAdmin';
 
 export * from '../../Admin/src/Queries/queries';
 

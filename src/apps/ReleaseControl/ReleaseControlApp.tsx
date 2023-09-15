@@ -1,4 +1,4 @@
-import { ClientApi, isProduction } from '@equinor/lighthouse-portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '@equinor/WorkSpace';
 import { adminConfig } from './components/Admin/adminConfig';
 import { ReleaseControlSidesheet } from './components/sidesheet/ReleaseControlSidesheet/ReleaseControlSidesheet';
@@ -23,48 +23,25 @@ export const releaseComponent = creator('SidesheetComponentManifest');
 export const releaseResolverFunction = creator('ResolverFunction');
 
 export function setup(appApi: ClientApi): void {
-    {
-        isProduction() //Admin config prod flagged until correct permissions is in place
-            ? appApi
-                  .createWorkSpace<ReleaseControl>({
-                      objectIdentifier: 'id',
-                      customSidesheetOptions: creator('WorkspaceSideSheet'),
-                      defaultTab: 'table',
-                  })
-                  .registerDataSource(dataSource)
-                  .registerTableOptions(tableConfig)
-                  .registerFilterOptions(filterOptions)
-                  .registerSearchOptions([
-                      {
-                          name: 'Title',
-                          valueFormatter: (pkg) => pkg.title,
-                      },
-                  ])
-                  .registerGardenOptions(gardenOptions)
-                  .registerPowerBIOptions({
-                      reportURI: 'pp-release-control-analytics',
-                  })
-                  .registerStatusItems(statusBarConfig)
-            : appApi
-                  .createWorkSpace<ReleaseControl>({
-                      objectIdentifier: 'id',
-                      customSidesheetOptions: creator('WorkspaceSideSheet'),
-                      defaultTab: 'table',
-                  })
-                  .registerDataSource(dataSource)
-                  .registerTableOptions(tableConfig)
-                  .registerFilterOptions(filterOptions)
-                  .registerSearchOptions([
-                      {
-                          name: 'Title',
-                          valueFormatter: (pkg) => pkg.title,
-                      },
-                  ])
-                  .registerGardenOptions(gardenOptions)
-                  .registerPowerBIOptions({
-                      reportURI: 'pp-release-control-analytics',
-                  })
-                  .registerStatusItems(statusBarConfig)
-                  .registerAdminOptions(adminConfig);
-    }
+    appApi
+        .createWorkSpace<ReleaseControl>({
+            objectIdentifier: 'id',
+            customSidesheetOptions: creator('WorkspaceSideSheet'),
+            defaultTab: 'table',
+        })
+        .registerDataSource(dataSource)
+        .registerTableOptions(tableConfig)
+        .registerFilterOptions(filterOptions)
+        .registerSearchOptions([
+            {
+                name: 'Title',
+                valueFormatter: (pkg) => pkg.title,
+            },
+        ])
+        .registerGardenOptions(gardenOptions)
+        .registerPowerBIOptions({
+            reportURI: 'pp-release-control-analytics',
+        })
+        .registerStatusItems(statusBarConfig)
+        .registerAdminOptions(adminConfig);
 }
