@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.33.0
+
+-   [ReleaseControl] Workflow admin access checked
 ## 1.32.2
 
 -   [Workorder] Change "description" column header to "title"

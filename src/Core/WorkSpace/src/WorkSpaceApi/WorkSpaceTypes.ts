@@ -114,4 +114,5 @@ export type HelpPageOptions = {
 export type AdminOptions = {
     app?: string;
     component: JSX.Element | null;
+    isAdminValidator: () => Promise<boolean>;
 };
