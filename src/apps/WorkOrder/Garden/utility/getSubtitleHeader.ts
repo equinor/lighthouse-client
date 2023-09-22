@@ -30,7 +30,7 @@ export const getSubtitleHeader = (
         numeric: true,
     });
     const items = garden[columnIndex].items;
-    let gardenItemList: WorkOrder[] = [];
+    const gardenItemList: WorkOrder[] = [];
     garden.forEach((column) => {
         const gardenItems = getGardenItems(column);
         gardenItems &&
@@ -39,16 +39,16 @@ export const getSubtitleHeader = (
             });
     });
     let hours: number[] = [];
-    let expandedColumnHours: string = '';
+    let expandedColumnHours = '';
     if (headerValueIsToday === 0) {
-        const currentWeekAndYearAsInt = parseInt(currentWeekAndYear.replace(/\-/gi, ''), 10);
+        const currentWeekAndYearAsInt = parseInt(currentWeekAndYear.replace(/-/gi, ''), 10);
         hours = gardenItemList
             .filter(shouldCountHours)
             .filter(
                 (wo) =>
                     parseInt(
                         getYearAndWeekFromDate(new Date(wo?.plannedStartupDate || '')).replace(
-                            /\-/gi,
+                            /-/gi,
                             ''
                         ),
                         10
