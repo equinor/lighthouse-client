@@ -28,7 +28,7 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
 
     useEffect(() => {
         actions.setTitle(
-            <SidesheetHeaderContent title={item.workOrderNumber} url={workOrderProcosysUrl} />
+            <SidesheetHeaderContent title={item.description ?? 'N/A'} url={workOrderProcosysUrl} />
         );
     }, [item.workOrderNumber, workOrderProcosysUrl]);
 

@@ -20,6 +20,9 @@ export type WorkOrder = {
     milestoneCode: string | null;
     plannedFinishDate: string | null;
     plannedStartupDate: string | null;
+    priority1: string | null;
+    priority2: string | null;
+    priority3: string | null;
     projectDescription: string | null;
     projectIdentifier: string | null;
     projectProgress: string | null;
