@@ -135,4 +135,8 @@ export const filterConfig: FilterOptions<WorkOrder> = [
                 (a, b) => progressPriMap[a as Progress] - progressPriMap[b as Progress]
             ),
     },
+    {
+        name: 'Comm Priority1',
+        valueFormatter: ({ priority1 }) => priority1,
+    },
 ];

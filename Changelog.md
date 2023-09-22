@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.34.1
+
+-   [Workorder] add priority1-3 in testdata and fix some small type bugs
+
+## 1.34.0
+
+-   [Workorder] Add a Comm Priority1 filter and change sidesheet header
+
 ## 1.33.0
 
 -   [ReleaseControl] Workflow admin access checked
+
 ## 1.32.2
 
 -   [Workorder] Change "description" column header to "title"
