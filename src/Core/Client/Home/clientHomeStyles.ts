@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 export const Content = styled.section`
     padding: 2rem;
-    overflow: scroll;
-    height: -webkit-fill-available;
+    overflow: auto;
+    height: 100%;
     background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 
@@ -13,13 +13,16 @@ export const Header = styled.div`
     margin: 0.5rem;
 `;
 
-export const Container = styled.div`
-    padding-top: 2rem;
+export const ViewportWrapper = styled.div`
     display: flex;
-    flex-direction: row;
-    width: fit-content;
-    height: fit-content;
-    width: 100%;
+    justify-content: center;
+    height: 100%;
+`;
+
+export const Container = styled.div`
+    padding-top: 1rem;
+    display: flex;
+    width: 80%;
 `;
 
 export const MainColumn = styled.div`
