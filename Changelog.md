@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.35.0
+
+-   [Portal] Removed Tasks and Yammer widget from landing page
 ## 1.34.1
 
 -   [Workorder] add priority1-3 in testdata and fix some small type bugs
