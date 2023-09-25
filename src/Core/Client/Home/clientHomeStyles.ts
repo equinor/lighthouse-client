@@ -14,6 +14,7 @@ export const Header = styled.div`
 `;
 
 export const Container = styled.div`
+    padding-top: 2rem;
     display: flex;
     flex-direction: row;
     width: fit-content;
