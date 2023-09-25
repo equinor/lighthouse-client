@@ -13,7 +13,7 @@ import './style.css';
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
-    height: 1000px;
+    height: 80vh;
     background-color: '#fff' !important;
 `;
 

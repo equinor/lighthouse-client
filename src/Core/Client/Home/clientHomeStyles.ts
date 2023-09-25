@@ -16,7 +16,6 @@ export const Header = styled.div`
 export const ViewportWrapper = styled.div`
     display: flex;
     justify-content: center;
-    height: 100%;
 `;
 
 export const Container = styled.div`
