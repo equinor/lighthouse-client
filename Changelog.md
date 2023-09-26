@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.35.1
+
+-   [Portal] Fixed so better responsive landing page
+
 ## 1.35.0
 
 -   [Portal] Removed Tasks and Yammer widget from landing page

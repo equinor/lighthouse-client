@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { useSettings } from '../Hooks/useClientContext';
 import { PowerBIHome } from './PbiHome/PbiHome';
-import { Container, Content, Header } from './clientHomeStyles';
+import { Container, Content, Header, ViewportWrapper } from './clientHomeStyles';
 
 export const ClientHome = (): JSX.Element => {
     const { user } = useSettings();
@@ -11,10 +11,11 @@ export const ClientHome = (): JSX.Element => {
                 <Header>
                     <Typography variant="h3">Welcome {user?.displayName}</Typography>
                 </Header>
-                <Container>
-                    <PowerBIHome reportUri={'jca-landing-page '} />
+                <ViewportWrapper>
+                    <Container>
+                        <PowerBIHome reportUri={'jca-landing-page '} />
 
-                    {/* <KpiBar>
+                        {/* <KpiBar>
                         <KpiGroup
                             title="Safety indicators"
                             linkText="Open SSU dashboard"
@@ -85,7 +86,8 @@ export const ClientHome = (): JSX.Element => {
                         />
                     </KpiBar>
                     <Status /> */}
-                </Container>
+                    </Container>
+                </ViewportWrapper>
             </Content>
         </>
     );
