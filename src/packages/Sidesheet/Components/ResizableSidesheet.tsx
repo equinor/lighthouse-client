@@ -115,7 +115,6 @@ const LeftHeader = styled.div`
     gap: 0.5em;
     flex-direction: row;
     align-items: center;
-    width: 80%;
 `;
 
 const RightHeader = styled.div`
