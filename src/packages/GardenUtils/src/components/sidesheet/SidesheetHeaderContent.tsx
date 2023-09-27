@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 const Header = styled.div`
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr;
     align-items: center;
 `;
 
@@ -13,6 +13,12 @@ const LinkContent = styled.a`
     display: flex;
     align-items: center;
     text-decoration: none;
+`;
+
+const Title = styled.div`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 type SidesheetHeaderContentProps = {
@@ -37,7 +43,7 @@ export const SidesheetHeaderContent = ({
 }: SidesheetHeaderContentProps) => {
     return (
         <Header>
-            {title}{' '}
+            <Title>{title}</Title>
             <LinkContent target="_BLANK" href={url} rel="noreferrer">
                 <Button key="linkToProcosys" variant="ghost">
                     {buttonContent}
