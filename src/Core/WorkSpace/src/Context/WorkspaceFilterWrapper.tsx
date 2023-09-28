@@ -35,24 +35,24 @@ export function WorkspaceFilterWrapper({
 }
 
 const parseSearchParams = (validGroups: string[]) => {
-    const s = new URL(window.location.toString()).searchParams;
-    const filters = s
+    const searchParams = new URL(window.location.toString()).searchParams;
+    const filters = searchParams
         .getAll('filter')
-        .map((s) => ({ name: s.split(':')[0], values: s.split(':')[1].split(',') }))
-        .filter((r) => validGroups.includes(r.name));
+        .map((filter) => ({ name: filter.split(':')[0], values: filter.split(':')[1].split(',') }))
+        .filter((filterGroup) => validGroups.includes(filterGroup.name));
     return filters;
 };
 
 function generateFilterState(filterState: FilterGroup[], allFilterGroups: FilterGroup[]) {
-    return filterState.map((s) => {
-        const group = allFilterGroups.find((R) => R.name === s.name);
+    return filterState.map((state) => {
+        const group = allFilterGroups.find((group) => group.name === state.name);
         if (!group) {
             throw new Error('should never happen');
         }
 
         return {
-            name: s.name,
-            values: group.values.filter((x) => !s.values.includes(x)),
+            name: state.name,
+            values: group.values.filter((value) => !state.values.includes(value)),
         };
     });
 }
