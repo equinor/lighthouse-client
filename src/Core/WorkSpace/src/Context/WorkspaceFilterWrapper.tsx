@@ -43,13 +43,7 @@ const parseSearchParams = (validGroups: string[]) => {
     return filters;
 };
 
-function generateFilterState(
-    filterState: {
-        name: string;
-        values: string[];
-    }[],
-    allFilterGroups: FilterGroup[]
-) {
+function generateFilterState(filterState: FilterGroup[], allFilterGroups: FilterGroup[]) {
     return filterState.map((s) => {
         const group = allFilterGroups.find((R) => R.name === s.name);
 
