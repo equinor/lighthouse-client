@@ -139,4 +139,12 @@ export const filterConfig: FilterOptions<WorkOrder> = [
         name: 'Comm Priority1',
         valueFormatter: ({ priority1 }) => priority1,
     },
+    {
+        name: 'Comm Priority2',
+        valueFormatter: ({ priority2 }) => priority2,
+    },
+    {
+        name: 'Comm Priority3',
+        valueFormatter: ({ priority3 }) => priority3,
+    },
 ];
