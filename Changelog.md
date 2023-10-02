@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.36.0
+
+-   [SCR] Add phase as column and filter
+
 ## 1.35.2
 
 -   [Workorder] Fix sidesheetheader to ellipsis and make procosys button always visible
