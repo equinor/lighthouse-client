@@ -77,12 +77,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 <PendingContributions hasPending={hasPendingContributions} />
             ),
         }),
-        /**Hidden for now only one phase */
-        // defineColumn({
-        //     header: 'Phase',
-        //     accessor: (s) => s.phase,
-        //     width: 60,
-        // }),
         defineColumn({
             header: 'Workflow',
             accessor: (s) => s.workflowSteps?.map((s) => s.name).toString(),
@@ -152,6 +146,11 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             width: 120,
         }),
         defineColumn({ header: 'Scope', accessor: (s) => s.scope?.name, width: 150 }),
+        defineColumn({
+            header: 'Phase',
+            accessor: (s) => s.phase,
+            width: 60,
+        }),
         defineColumn({
             header: 'Last updated',
             accessor: (s) => s.modifiedAtUtc,

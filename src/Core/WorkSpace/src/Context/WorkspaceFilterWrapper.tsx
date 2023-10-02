@@ -1,4 +1,4 @@
-import { FilterApiContext, FilterOptions, useFilterApi } from '@equinor/filter';
+import { FilterApiContext, FilterGroup, FilterOptions, useFilterApi } from '@equinor/filter';
 import { useEffect } from 'react';
 import { useDataContext } from './DataProvider';
 
@@ -19,6 +19,12 @@ export function WorkspaceFilterWrapper({
     //HACK: architectural flaw
     useEffect(() => {
         filterApi.operations.init();
+        const filterState = parseSearchParams(filterOptions.map((s) => s.name));
+        if (filterState.length > 0) {
+            const allFilterGroups = filterApi.filterState.getAllFilterGroups();
+            filterApi.operations.setFilterState(generateFilterState(filterState, allFilterGroups));
+            filterApi.operations.filterAndRerender();
+        }
     }, [shouldInitFilter]);
 
     useEffect(() => {
@@ -26,4 +32,27 @@ export function WorkspaceFilterWrapper({
     }, [data]);
 
     return <FilterApiContext.Provider value={filterApi}>{children}</FilterApiContext.Provider>;
+}
+
+const parseSearchParams = (validGroups: string[]) => {
+    const searchParams = new URL(window.location.toString()).searchParams;
+    const filters = searchParams
+        .getAll('filter')
+        .map((filter) => ({ name: filter.split(':')[0], values: filter.split(':')[1].split(',') }))
+        .filter((filterGroup) => validGroups.includes(filterGroup.name));
+    return filters;
+};
+
+function generateFilterState(filterState: FilterGroup[], allFilterGroups: FilterGroup[]) {
+    return filterState.map((state) => {
+        const group = allFilterGroups.find((group) => group.name === state.name);
+        if (!group) {
+            throw new Error('should never happen');
+        }
+
+        return {
+            name: state.name,
+            values: group.values.filter((value) => !state.values.includes(value)),
+        };
+    });
 }

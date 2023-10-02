@@ -33,6 +33,15 @@ export const fieldSettings: FieldSettings<WorkOrder, ExtendedGardenFields> = {
     milestone: {
         label: 'Milestone',
     },
+    priority1: {
+        label: 'Priority 1',
+    },
+    priority2: {
+        label: 'Priority 2',
+    },
+    priority3: {
+        label: 'Priority 3',
+    },
 };
 
 export const getHighlightedColumn = (groupByKey: string) => {
