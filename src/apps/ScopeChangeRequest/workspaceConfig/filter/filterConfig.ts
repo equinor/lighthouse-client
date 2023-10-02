@@ -1,5 +1,5 @@
 import { FilterOptions, FilterValueType } from '../../../../packages/Filter/Types';
-import { Contributor, WorkflowStep } from '../../../../packages/Workflow/src';
+import { WorkflowStep } from '../../../../packages/Workflow/src';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import {
     calculateGuesstimateHoursGap,
@@ -8,11 +8,6 @@ import {
 } from './guesstimate/guesstimate';
 
 export const filterConfig: FilterOptions<ScopeChangeRequest> = [
-    {
-        name: 'Phase',
-        valueFormatter: ({ phase }) => phase,
-        defaultHidden: true,
-    },
     {
         name: 'Category',
         valueFormatter: ({ changeCategory }) => changeCategory.name,
@@ -109,6 +104,10 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         name: 'Potential ATS scope',
         valueFormatter: (s) => booleanToHumanReadable(s.potentialAtsScope),
         sort: (a) => a.sort(sortOnYesNo),
+    },
+    {
+        name: 'Phase',
+        valueFormatter: ({ phase }) => phase,
     },
 ];
 
