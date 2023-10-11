@@ -12,7 +12,7 @@ import {
     checkTokenAndUpdate,
 } from '../../../../modules/powerBI/src/Utils/updateAccessToken';
 import { Report as EmbedReport } from 'powerbi-client';
-import { usePowerBI } from '../../../../modules/powerBI/src';
+import { Filter, usePowerBI } from '../../../../modules/powerBI/src';
 
 const Wrapper = styled.div`
     position: relative;
@@ -44,28 +44,6 @@ interface PowerBiHomeProps {
         showFilter?: boolean;
         enableNavigation?: boolean;
     };
-}
-
-type BasicFilterOperators = 'In' | 'NotIn' | 'All';
-
-export interface PowerBiFilter {
-    $schema: string;
-    target: {
-        table: string;
-        column: string;
-    };
-    filterType: number;
-    operator: BasicFilterOperators;
-    values: string[];
-}
-
-export interface Filter {
-    values: string[];
-    target: {
-        table: string;
-        column: string;
-    };
-    operator: BasicFilterOperators;
 }
 
 export const PowerBIHome = ({
