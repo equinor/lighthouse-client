@@ -13,8 +13,13 @@ const columns: Column<HandoverNCR>[] = [
         id: 'documentNumber',
         Header: 'Document No.',
         width: 120,
+
         accessor: (pkg) => ({
-            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            url: isProduction()
+                ? pkg.url
+                : pkg.url
+                      .replace('procosys', 'procosystest')
+                      .replace('lci.statoil.com', 'TESTTEST'),
             content: pkg,
             currentKey: 'documentNumber',
         }),
