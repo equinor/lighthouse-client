@@ -1,11 +1,5 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import initLighthouse, {
-    GetAccessFunction,
-    GetCreatorComponent,
-    GetCreatorFunction,
-    IDataCreationProvider,
-} from '@equinor/lighthouse-fusion-modules';
-import { fetchFunction } from '../../../apps/functions';
+import { GetCreatorComponent, GetCreatorFunction } from '@equinor/lighthouse-fusion-modules';
 import {
     registerAppConfig,
     registerClientRegistry,
@@ -21,6 +15,8 @@ import { setupApps } from './setupApps';
 import { setupAuthProvider } from './setupAuthProvider';
 import { setupContext } from './setupContext';
 import { setupUserData } from './setupUserData';
+import { createConfig } from '../../../fusion-framework/config';
+import { FrameworkConfigurator } from '@equinor/fusion-framework';
 
 interface ClientOptions {
     getApps(): AppManifest[];
@@ -31,31 +27,15 @@ interface ClientOptions {
 
 export interface Client {
     authProvider: AuthenticationProvider;
-    dataCreator: IDataCreationProvider;
+    // dataCreator: IDataCreationProvider;
+    config: (config: FrameworkConfigurator<[], any>) => Promise<void>;
 }
 
 export async function createClient(clientOptions: ClientOptions): Promise<Client> {
     const config = await fetchConfig();
+    const fusionConfig = createConfig(config);
     const appConfig = registerAppConfig(config);
     const authProvider = await handleLogin(appConfig.settings);
-
-    // New Lighthouse setup with Fusion Modules Style
-
-    const { lighthouseModules } = await initLighthouse(async (continuator) => {
-        const getAccessFunction: GetAccessFunction = async (functionId: string) => {
-            const result = await fetchFunction(functionId);
-            return result.function as () => Promise<boolean>;
-        };
-
-        continuator.dataCreator.configure({
-            getAccessFunction,
-            getCreatorComponent: clientOptions.getCreatorComponent,
-            getCreators: clientOptions.getCreators,
-        });
-        continuator.onAfterInit(async ({ dataCreator }) => {
-            dataCreator.setup(continuator.dataCreator.configuration);
-        });
-    });
 
     if (authProvider.isAuthenticated()) {
         try {
@@ -86,7 +66,7 @@ export async function createClient(clientOptions: ClientOptions): Promise<Client
         setupUserData(authProvider);
     }
 
-    return { authProvider, dataCreator: lighthouseModules.dataCreator };
+    return { authProvider, config: fusionConfig };
 }
 
 async function handleLogin(settings: AppConfigSettings): Promise<AuthenticationProvider> {

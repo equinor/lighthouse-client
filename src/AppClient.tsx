@@ -1,5 +1,4 @@
 import { useAuthenticate } from '@equinor/authentication';
-import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { Client as ClientProps, ClientContextProvider } from '@equinor/lighthouse-portal-client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,10 +10,11 @@ import { ServiceMessagePost } from './components/Messages/Service/Components/Ser
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
-import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
-import { DataCreatorProvider } from './FusionModules/DataCreatorReact/Context/DataCreatorProvider';
+import { Framework } from '@equinor/fusion-framework-react';
+import EquinorLoader from './fusion-framework/EquinorLoader';
+import { ErrorBoundary, ErrorFallback } from '@equinor/ErrorBoundary';
 
-const Client: React.FC<ClientProps> = ({ authProvider, dataCreator }: ClientProps): JSX.Element => {
+const Client: React.FC<ClientProps> = ({ authProvider, config }: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -35,24 +35,23 @@ const Client: React.FC<ClientProps> = ({ authProvider, dataCreator }: ClientProp
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <QueryClientProvider client={queryClient}>
-                <ServiceMessagePost />
-                <ConfirmationDialog />
-                <ClientContextProvider>
-                    {messageData.isActive && <ServiceMessageBanner {...messageData} />}
-                    <MenuProvider>
-                        <BrowserRouter>
-                            <DataCreatorProvider dataCreator={dataCreator}>
+            <Framework fallback={<EquinorLoader text={'Loading portal'} />} configure={config}>
+                <QueryClientProvider client={queryClient}>
+                    <ServiceMessagePost />
+                    <ConfirmationDialog />
+                    <ClientContextProvider>
+                        {messageData.isActive && <ServiceMessageBanner {...messageData} />}
+                        <MenuProvider>
+                            <BrowserRouter>
                                 <ClientTopBar />
-
                                 <MainLayout serviceMessageActive={messageData.isActive}>
                                     <ClientRoutes />
                                 </MainLayout>
-                            </DataCreatorProvider>
-                        </BrowserRouter>
-                    </MenuProvider>
-                </ClientContextProvider>
-            </QueryClientProvider>
+                            </BrowserRouter>
+                        </MenuProvider>
+                    </ClientContextProvider>
+                </QueryClientProvider>
+            </Framework>
         </ErrorBoundary>
     ) : (
         <LoadingPage />

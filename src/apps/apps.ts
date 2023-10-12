@@ -13,7 +13,6 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './Checklist';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
-import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import { setup as MDRSetup } from './MDR';
@@ -278,20 +277,6 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
-        title: 'Handover',
-        shortName: 'handover',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-            setup: handoverSetup,
-        },
-        appEnv: 'prod',
-        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
-    },
-    {
         title: 'Work order',
         shortName: 'work-order',
         color: '#0364B8',
@@ -344,6 +329,19 @@ export const apps: AppManifest[] = [
             setup: workPreparationSetup,
         },
         appEnv: 'prod',
+    },
+    {
+        title: 'Handover',
+        shortName: 'handover',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['Fusion'],
+        app: {
+            appType: 'FusionApp',
+            setup: () => {},
+        },
+        appEnv: 'test',
     },
     {
         title: 'Activities',

@@ -4,7 +4,6 @@ import {
     htResolverFunction,
     rcResolverFunction,
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { handoverResolverFunction } from './Handover';
 import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { punchResolverFunction } from './Punch/utility/config';
@@ -23,7 +22,6 @@ export const functions: FunctionManifest[] = [
     htResolverFunction,
     rcResolverFunction,
     swcrResolverFunction,
-    handoverResolverFunction,
     workOrderResolverFunction,
     mcResolverFunction,
     releaseResolverFunction,

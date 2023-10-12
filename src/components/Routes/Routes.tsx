@@ -9,6 +9,7 @@ import { Apps } from '../../apps/apps';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 
 import { ComponentWrapper } from './ComponentWrapper';
+import { AppLoaderWrapper } from '../../fusion-framework/AppLoaderWrapper';
 
 export function ClientRoutes(): JSX.Element {
     const {
@@ -66,6 +67,16 @@ export function ClientRoutes(): JSX.Element {
                                 element={<PowerBiViewer {...route} />}
                             />
                         </Route>
+                    );
+                }
+
+                if (route.app?.appType === 'FusionApp') {
+                    return (
+                        <Route
+                            key={route.shortName + route.groupe}
+                            path={`${route.groupe}/${route.shortName}/*`}
+                            element={<AppLoaderWrapper appKey={route.shortName} />}
+                        />
                     );
                 }
                 return (

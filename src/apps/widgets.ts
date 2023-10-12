@@ -16,7 +16,6 @@ import {
     ReleaseControlSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetManifest,
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import {
@@ -55,7 +54,6 @@ const _widgets: WidgetManifest[] = [
     changeCreatorManifest,
     releaseManifest,
     swcrCreatorManifest,
-    handoverCreatorManifest,
     workOrderCreatorManifest,
     releaseCreatorManifest,
     workflowWidgetManifest,
@@ -78,7 +76,6 @@ const _widgetComponents: ComponentManifest[] = [
     workflowComponent,
     workflowStepComponent,
     swcrCreatorComponent,
-    handoverCreatorComponent,
     workOrderCreatorComponent,
     workOrderCreatorComponent,
     releaseCreatorComponent,
