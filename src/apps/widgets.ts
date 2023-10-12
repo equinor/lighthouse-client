@@ -60,7 +60,6 @@ const _widgets: WidgetManifest[] = [
     punchSidesheetWidgetManifest,
     querySidesheetWidgetManifest,
     workflowStepWidgetManifest,
-
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
     tagWidgetManifest,
