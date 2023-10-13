@@ -6,6 +6,7 @@ export interface ClickableIconProps {
     onClick?: React.MouseEventHandler<SVGSVGElement>;
     color?: string | undefined;
     size?: 16 | 24 | 32 | 40 | 48;
+    title?: string 
 }
 
 /**
@@ -19,11 +20,13 @@ export const ClickableIcon = ({
     onClick,
     color = `${tokens.colors.interactive.primary__resting.hex}`,
     size = 24,
+    title 
 }: ClickableIconProps): JSX.Element => {
     return (
         <Icon
             size={size}
             name={name}
+            title={title} 
             onClick={onClick}
             style={{ cursor: 'pointer' }}
             color={color}
