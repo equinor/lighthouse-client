@@ -13,8 +13,8 @@ import {
     UnshareModalContent,
 } from './Modal';
 import { Modal } from '@equinor/modal';
-
-type Modals = 'Edit' | 'Delete' | 'Remove' | 'Share' | 'Unshare';
+export const createBookmarkURL = (bookmark : BookmarkResponse) =>  `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace('jc-','')}/${bookmark.appKey.replace('jc-', '')}?bookmarkId=${bookmark.id}`
+type Modals = 'Edit' | 'Delete' | 'Remove' | 'Share' | 'Unshare'; 
 type MenuOptionsProps = {
     bookmark: BookmarkResponse;
 };
@@ -53,7 +53,9 @@ export const MenuOptions = ({ bookmark }: MenuOptionsProps) => {
         label: 'Copy URL',
         icon: <Icon name="share" />,
         onClick: () => {
-            setOpenedModal('Share');
+            //const bookmarkShareUrl = `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace('jc-','')}/${bookmark.appKey.replace('jc-', '')}?bookmarkId=${bookmark.id}`;
+            navigator.clipboard.writeText(createBookmarkURL(bookmark)) 
+            // setOpenedModal('Share');
         },
     };
     bookmark.isShared && ownerOptions.push(sharedOption);
@@ -62,7 +64,7 @@ export const MenuOptions = ({ bookmark }: MenuOptionsProps) => {
             label: 'Remove',
             icon: <Icon name="remove_outlined" />,
             onClick: () => setOpenedModal('Remove'),
-        },
+        }, sharedOption 
     ];
     return (
         <>
