@@ -53,9 +53,7 @@ export const MenuOptions = ({ bookmark }: MenuOptionsProps) => {
         label: 'Copy URL',
         icon: <Icon name="share" />,
         onClick: () => {
-            //const bookmarkShareUrl = `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace('jc-','')}/${bookmark.appKey.replace('jc-', '')}?bookmarkId=${bookmark.id}`;
             navigator.clipboard.writeText(createBookmarkURL(bookmark)) 
-            // setOpenedModal('Share');
         },
     };
     bookmark.isShared && ownerOptions.push(sharedOption);
