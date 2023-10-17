@@ -97,6 +97,22 @@ export const tableConfig: TableOptions<Punch> = {
             },
         },
         {
+            id: 'formType',
+            Header: 'Form Type',
+            accessor: (pkg) => pkg.formularType,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+        },
+        {
+            id: 'discipline',
+            Header: 'Discipline',
+            accessor: (pkg) => pkg.discipline,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+        },
+        {
             id: 'punchSorting',
             Header: 'PL Sorting',
             accessor: (pkg) => pkg.sorting,
