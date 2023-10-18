@@ -3,7 +3,8 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { BookmarkResponse } from '../../types';
 import { BookmarkLink } from './BookmarksSidesheet.styles';
-import { MenuOptions } from './MenuOptions';
+import { MenuOptions, createBookmarkURL } from './MenuOptions';
+import { ClickableIcon } from '../../../../Components/Icon';
 const Icons = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -26,9 +27,13 @@ export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProp
             <Icons>
                 <MenuOptions bookmark={bookmark} />
                 {bookmark.isShared && (
-                    <Icon
+                    
+                    <ClickableIcon
                         name="share"
                         title="Shared"
+                        onClick={() => {
+                            navigator.clipboard.writeText(createBookmarkURL(bookmark)) 
+                        }}
                         color={tokens.colors.interactive.primary__resting.hsla}
                     />
                 )}
