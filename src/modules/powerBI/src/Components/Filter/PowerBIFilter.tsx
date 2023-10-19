@@ -179,7 +179,7 @@ export const PowerBIFilter = ({
 
                 setSlicerFilters(filters.sort((a, b) => a.type.localeCompare(b.type)));
 
-                const filterGroupNames = getActiveFilterGroupArray(activeFilters);
+                const filterGroupNames = filters.map((s) => s.type);
                 setFilterGroupVisible((s) =>
                     [...s, ...filterGroupNames].filter((v, i, a) => a.indexOf(v) === i)
                 );
