@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.37.1
+
+-   [PowerBi] All filters visible by default in expanded filter powerbi
+
 ## 1.37.0
 
 -   [Punch] Add Form Type and Discipline as column and filter
