@@ -5,6 +5,6 @@ export interface PowerBiFilter {
     type: string;
     slicer: VisualDescriptor;
     sortOrder: number;
-    value: Record<string, PowerBiFilterItem>;
+    value?: Record<string, PowerBiFilterItem> | null;
     filterVals: string[];
 }
