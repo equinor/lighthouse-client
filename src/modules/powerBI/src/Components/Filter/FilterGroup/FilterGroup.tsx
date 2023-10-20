@@ -44,7 +44,7 @@ export const PowerBiFilterGroup = ({
                     checkedValues={activeFilters}
                     anchorEl={anchorEl.current}
                     group={group}
-                    values={Object.values(group.value)}
+                    values={group?.value ? Object.values(group?.value) : []}
                     onClickFilter={(filter: PowerBiFilterItem, singleClick?: boolean) =>
                         handleOnChange(filter, singleClick)
                     }
