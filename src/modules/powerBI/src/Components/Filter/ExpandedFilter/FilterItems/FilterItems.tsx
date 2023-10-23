@@ -43,18 +43,20 @@ export const FilterItems = ({
         }
     }, [searchStore.isSearchActive, setSearchStore]);
 
-    const filterValues = Object.values(group.value);
+    const filterValues = group?.value && Object.values(group?.value);
     const searchedFilterItems = useMemo(
-        () => searchFilterItems(filterValues, searchStore.searchValue),
+        () => searchFilterItems(filterValues ?? [], searchStore.searchValue),
         [filterValues, searchStore.searchValue]
     );
     const handleEnterPress = () => {
-        handleOnSelectAll(
-            group,
-            filterValues[0],
-            searchedFilterItems.map((s) => s.value)
-        );
-        setSearchStore({ searchValue: '' });
+        if (filterValues && filterValues.length > 0) {
+            handleOnSelectAll(
+                group,
+                filterValues[0],
+                searchedFilterItems.map((s) => s.value)
+            );
+            setSearchStore({ searchValue: '' });
+        }
     };
 
     const rowLength = useMemo(() => searchedFilterItems.length, [searchedFilterItems]);
@@ -65,6 +67,10 @@ export const FilterItems = ({
     });
 
     useClickOutside(filterRef, closeSearchBox);
+
+    if (!filterValues || !activeFilters[group.type]) {
+        return null;
+    }
 
     return (
         <FilterGroupContainer ref={filterRef}>

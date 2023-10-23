@@ -31,6 +31,14 @@ export const filterConfig: FilterOptions<Punch> = [
         isQuickFilter: true,
     },
     {
+        name: 'Form Type',
+        valueFormatter: (punch) => punch.formularType,
+    },
+    {
+        name: 'Discipline',
+        valueFormatter: (punch) => punch.discipline,
+    },
+    {
         name: 'PL Sorting',
         valueFormatter: (punch) => punch.sorting,
         isQuickFilter: true,
