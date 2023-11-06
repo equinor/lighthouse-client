@@ -8,7 +8,6 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions,
     WorkspaceTab,
 } from './workspaceState';
 
@@ -67,7 +66,6 @@ export type WorkSpaceApi<T extends Record<PropertyKey, unknown>> = {
     registerGardenOptions: (options: GardenOptions<T>) => WorkSpaceApi<T>;
     registerStatusItems: (options: StatusFunc<T>) => WorkSpaceApi<T>;
     registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
-    registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
     registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
     registerHelpPage: (options: HelpPageOptions) => WorkSpaceApi<T>;

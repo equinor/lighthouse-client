@@ -1,4 +1,3 @@
-import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useLocationContext } from '../../Context/LocationProvider';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { ActionBar, HeaderWrapper, Title, TitleBar } from './HeaderStyles';
@@ -27,7 +26,6 @@ export const CompletionViewHeader = ({
         <HeaderWrapper sideSheetWidth={sideSheetWidth}>
             <TitleBar>
                 <Title variant="h3">{title}</Title>
-                <PerformanceObserver />
             </TitleBar>
             <ActionBar>
                 {activeTab === ANALYTICS ? (
