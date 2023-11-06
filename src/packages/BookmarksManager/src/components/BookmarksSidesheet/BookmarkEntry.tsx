@@ -1,4 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { BookmarkResponse } from '../../types';
@@ -15,11 +14,22 @@ type BookmarkEntryProps = {
     appKey: string;
     bookmark: BookmarkResponse;
 };
+
+const getBookmarkRedirect = (appKey: string, bookmarkId: string, subSystem: string) => {
+    switch (appKey) {
+        case 'handover':
+            return `/ConstructionAndCommissioning/handover?bookmarkId=${bookmarkId}`;
+
+        default:
+            return `/${subSystem}/${appKey}?bookmarkId=${bookmarkId}`;
+    }
+};
+
 export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProps) => {
     return (
         <>
             <BookmarkLink
-                to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}
+                to={getBookmarkRedirect(appKey, bookmark.id, subSystem)}
                 title={bookmark?.description}
             >
                 {bookmark.name}
@@ -27,12 +37,11 @@ export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProp
             <Icons>
                 <MenuOptions bookmark={bookmark} />
                 {bookmark.isShared && (
-                    
                     <ClickableIcon
                         name="share"
                         title="Shared"
                         onClick={() => {
-                            navigator.clipboard.writeText(createBookmarkURL(bookmark)) 
+                            navigator.clipboard.writeText(createBookmarkURL(bookmark));
                         }}
                         color={tokens.colors.interactive.primary__resting.hsla}
                     />

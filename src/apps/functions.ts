@@ -1,9 +1,6 @@
 import { workflowResolverFunction, workflowStepResolverFunction } from '@equinor/Admin';
 import { FunctionManifest } from '@equinor/lighthouse-functions';
-import {
-    htResolverFunction,
-    rcResolverFunction,
-} from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
+
 import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { punchResolverFunction } from './Punch/utility/config';
@@ -15,6 +12,8 @@ import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfi
 import { swcrResolverFunction } from './swcr';
 import { tagResolverFunction } from './Tags';
 import { workOrderResolverFunction } from './WorkOrder/utility/sidesheetConfig';
+import { htResolverFunction, rcResolverFunction } from './DisciplineReleaseControl/sidesheet';
+
 export const functions: FunctionManifest[] = [
     changeCreatorAccessFunction,
     releaseCreatorAccessFunction,

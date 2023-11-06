@@ -4,6 +4,7 @@ import { enableServices } from '@equinor/fusion-framework-module-services';
 import { AppConfigResult } from '../Core/Client/Types/AppConfig';
 import { enableNavigation } from '@equinor/fusion-framework-module-navigation';
 import { enableContext } from '@equinor/fusion-framework-module-context';
+import { enableBookmark } from '@equinor/fusion-framework-module-bookmark';
 import { isProduction } from '../Core/Client/Functions';
 
 export const createConfig = (appSettings: AppConfigResult) => {
@@ -13,6 +14,14 @@ export const createConfig = (appSettings: AppConfigResult) => {
                 baseUri: appSettings.urls.fusion,
                 defaultScopes: [appSettings.scope.fusion],
             },
+        });
+
+        enableBookmark(config, (builder) => {
+            builder.setSourceSystem({
+                identifier: 'cst-portal',
+                name: 'Castberg-portal',
+                subSystem: 'ProjectControl',
+            });
         });
 
         config.configureMsal(

@@ -10,12 +10,7 @@ import {
     actionCenterSidesheetWidgetComponent,
     actionCenterSidesheetWidgetManifest,
 } from '../components/ActionCenter/ActionCenterSidesheet';
-import {
-    htSidesheetWidgetComponent,
-    htSidesheetWidgetManifest,
-    ReleaseControlSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetManifest,
-} from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
+
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import {
@@ -45,11 +40,17 @@ import {
     workOrderCreatorComponent,
     workOrderCreatorManifest,
 } from './WorkOrder/utility/sidesheetConfig';
+import {
+    htSidesheetWidgetManifest,
+    ReleaseControlSidesheetWidgetManifest,
+    htSidesheetWidgetComponent,
+    ReleaseControlSidesheetWidgetComponent,
+} from './DisciplineReleaseControl/sidesheet';
 
 const _widgets: WidgetManifest[] = [
     changeSideSheetWidgetManifest,
-    htSidesheetWidgetManifest,
-    ReleaseControlSidesheetWidgetManifest,
+    htSidesheetWidgetManifest as any,
+    ReleaseControlSidesheetWidgetManifest as any,
     actionCenterSidesheetWidgetManifest,
     changeCreatorManifest,
     releaseManifest,
@@ -67,8 +68,8 @@ const _widgets: WidgetManifest[] = [
 
 const _widgetComponents: ComponentManifest[] = [
     changeSideSheetWidgetComponent,
-    htSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetComponent,
+    htSidesheetWidgetComponent as any,
+    ReleaseControlSidesheetWidgetComponent as any,
     actionCenterSidesheetWidgetComponent,
     changeCreatorComponent,
     releaseComponent,
