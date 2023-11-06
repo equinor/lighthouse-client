@@ -1,9 +1,8 @@
-import { Button, CircularProgress, Icon, TextField } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { Button, CircularProgress, Icon, TextField, Typography } from '@equinor/eds-core-react';
 import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { SaveArgs, useBookmarks, useGetAllBookmarks } from '../..';
+import { SaveEventArgs, bookmarkEvents, useGetAllBookmarks } from '../..';
 import { AppGroup } from './AppGroup';
 import { Center, InfoText, SidesheetContent } from './BookmarksSidesheet.styles';
 import { groupBookmarksBySubSystemAppkey } from './groupBookmarksBySubSystemAppKey';
@@ -19,24 +18,23 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
     const { bookmarks, isLoading, error, refetch } = useGetAllBookmarks();
     const [val, setVal] = useState('');
 
-    const canCreateBookmark = isAppLoaded();
+    const appKey = tryGetCurrentAppKey();
 
     useEffect(() => {
         actions.setTitle('Bookmarks');
     }, []);
 
     const { appGroups } = useRegistry();
-    if (isLoading)
+
+    if (isLoading) {
         return (
             <Center>
-                <Icon
-                    name="info_circle"
-                    size={40}
-                    color={tokens.colors.interactive.primary__resting.hsla}
-                />
-                <InfoText>No bookmarks</InfoText>
+                <CircularProgress size={48} />
+                <Typography variant="h2">Loading bookmarks</Typography>
             </Center>
         );
+    }
+
     if (error) return <div>{error.message}</div>;
     if (!bookmarks || bookmarks.length === 0)
         return (
@@ -49,7 +47,7 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
 
     return (
         <SidesheetContent>
-            {canCreateBookmark && (
+            {!!appKey && (
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: '2em' }}>
                     <TextField
                         label="BookmarkName"
@@ -57,7 +55,12 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
                         value={val}
                         id="bookmarkName"
                     />
-                    <CreateBookmarkButton refetch={refetch} appKey="handover" bookmarkName={val} />
+                    <CreateBookmarkButton
+                        refetch={refetch}
+                        appKey={appKey}
+                        bookmarkName={val}
+                        resetName={() => setVal('')}
+                    />
                 </div>
             )}
             {Object.keys(bookmarksBySubsystemAppKey).map((subSystemKey) => {
@@ -77,7 +80,9 @@ function CreateBookmarkButton({
     appKey,
     bookmarkName,
     refetch,
+    resetName,
 }: {
+    resetName: VoidFunction;
     appKey: string;
     bookmarkName: string;
     refetch: VoidFunction;
@@ -86,25 +91,24 @@ function CreateBookmarkButton({
 
     const { isLoading: isFusionBookmarksLoading, mutateAsync } = useMutation({
         mutationFn: async () => {
-            console.log('Creating bookmark');
             await module.createBookmark({
                 name: bookmarkName,
                 isShared: false,
                 description: '',
             });
             refetch();
+            resetName();
         },
     });
-
-    const { handleSaveBookmarks } = useBookmarks();
 
     const { isLoading: isOgLoading, mutateAsync: mutateOldAsync } = useMutation<
         void,
         unknown,
-        SaveArgs<unknown>
+        SaveEventArgs
     >({
         mutationFn: async (props) => {
-            return handleSaveBookmarks(props);
+            resetName();
+            return bookmarkEvents.saveBookmark(props);
         },
     });
 
@@ -121,7 +125,13 @@ function CreateBookmarkButton({
     return (
         <Button
             onClick={() => {
-                console.warn('not implemented');
+                const subSystem = getSubSystemFromUrl();
+                if (!subSystem) return;
+                mutateOldAsync({
+                    appKey: appKey,
+                    subSystem: subSystem,
+                    title: bookmarkName,
+                });
             }}
         >
             {isLoading ? <CircularProgress /> : 'Create bookmark'}
@@ -129,8 +139,12 @@ function CreateBookmarkButton({
     );
 }
 
-function isAppLoaded() {
+function getSubSystemFromUrl() {
+    return new URL(location.href).href.split('/').at(3);
+}
+
+function tryGetCurrentAppKey() {
     const path = new URL(location.href).href.split('/').at(4)?.split('?')[0];
     const appRoutes = apps.map((s) => s.shortName);
-    return appRoutes.includes(path ?? '');
+    return appRoutes.find((x) => x === path ?? '');
 }
