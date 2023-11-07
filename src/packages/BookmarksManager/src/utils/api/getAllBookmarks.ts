@@ -1,5 +1,5 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { BookmarkError, BookmarkErrorResponse } from '../../types';
+import { BookmarkError, BookmarkErrorResponse, BookmarkResponse } from '../../types';
 type ErrorResponse = {
     error: BookmarkErrorResponse;
 };
@@ -16,5 +16,7 @@ export const getAllBookmarks = async (signal?: AbortSignal) => {
         throw new BookmarkError(error?.message);
     }
 
-    return await response.json();
+    const bookmarks: BookmarkResponse[] = await response.json();
+
+    return bookmarks.filter((s) => s.appKey !== 'jc-handover');
 };

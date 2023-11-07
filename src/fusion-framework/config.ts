@@ -20,7 +20,7 @@ export const createConfig = (appSettings: AppConfigResult) => {
             builder.setSourceSystem({
                 identifier: 'cst-portal',
                 name: 'Castberg-portal',
-                subSystem: 'ProjectControl',
+                subSystem: 'Castberg Portal',
             });
         });
 
