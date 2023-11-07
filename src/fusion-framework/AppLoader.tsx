@@ -1,13 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-
 import { Subscription } from 'rxjs';
-
 import { useFramework } from '@equinor/fusion-framework-react';
-
 import { useObservableState } from '@equinor/fusion-observable/react';
-
 import { AppManifestError } from '@equinor/fusion-framework-module-app/errors.js';
-
 import { ErrorViewer } from './ErrorViewer';
 import { AppModule } from '@equinor/fusion-framework-module-app';
 import EquinorLoader from './EquinorLoader';
