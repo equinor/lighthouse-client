@@ -50,7 +50,7 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
             {!!appKey && (
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: '2em' }}>
                     <TextField
-                        label="BookmarkName"
+                        label="Bookmark name"
                         onChange={(e: ChangeEvent) => setVal((e.target as any).value)}
                         value={val}
                         id="bookmarkName"
