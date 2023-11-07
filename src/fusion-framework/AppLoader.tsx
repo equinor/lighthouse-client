@@ -14,13 +14,6 @@ import EquinorLoader from './EquinorLoader';
 import { useQuery } from 'react-query';
 import { httpClient } from '../Core/Client/Functions';
 
-/**
- * React Functional Component for handling current application
- *
- * this component will set the current app by provided appKey.
- * when the appKey changes, this component will try to initialize the referred application
- * and render it.
- */
 export const AppLoader = (props: { readonly appKey: string }) => {
     const { appKey } = props;
     const fusionClient = httpClient().fusion;
@@ -43,20 +36,17 @@ export const AppLoader = (props: { readonly appKey: string }) => {
         [appKey, 'bundle'],
         async ({ signal }) => {
             return (await fusionClient.fetch(`bundles/apps/${appKey}.js`, { signal })).blob();
-        }
+        },
+        { structuralSharing: false }
     );
 
     const isLoading = manifestLoading || configLoading || bundleLoading;
 
-    //https://fusion-s-portal-ci.azurewebsites.net/bundles/apps/
-    /** reference of application section/container */
     const ref = useRef<HTMLElement>(null);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | undefined>();
 
-    // TODO change to `useCurrentApp`
-    /** observe and use the current selected application from framework */
     const { value: currentApp } = useObservableState(
         useMemo(() => fusion.modules.app.current$, [fusion.modules.app])
     );
@@ -76,8 +66,6 @@ export const AppLoader = (props: { readonly appKey: string }) => {
         /** create a teardown of load */
         const subscription = new Subscription();
 
-        /** make sure that initialize is canceled and disposed if current app changes  */
-
         if (config && manifest && bundle) {
             const el = document.createElement('div');
             el.style.display = 'contents';
@@ -90,20 +78,14 @@ export const AppLoader = (props: { readonly appKey: string }) => {
 
             const url = URL.createObjectURL(bundle);
 
-            import(url).then((script) => {
+            import(/* @vite-ignore */ url).then((script) => {
                 const render = script.renderApp ?? script.default;
-
-                /** add application teardown to current render effect teardown */
                 subscription.add(
                     render(el, { fusion, env: { basename: 'localhost:3000', config, manifest } })
                 );
                 setLoading(false);
             });
-
             URL.revokeObjectURL(url);
-            /** extract render callback function from javascript module */
-
-            /** remove app element when application unmounts */
             subscription.add(() => el.remove());
         }
 
