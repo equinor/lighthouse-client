@@ -5,7 +5,8 @@ FROM node:17.8.0 as build
 WORKDIR /app
 COPY . /app
 
-# Build 
+# Build
+RUN npm i -g yarn@1.22.19
 RUN yarn install
 RUN yarn test
 RUN yarn build 
