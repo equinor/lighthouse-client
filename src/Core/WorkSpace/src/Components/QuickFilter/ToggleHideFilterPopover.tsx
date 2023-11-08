@@ -71,6 +71,7 @@ export const ToggleHideFilterPopover = ({
                                 {list.map(({ item }) => (
                                     <ItemWrapper className={DraggableHandleSelector} key={item}>
                                         <Checkbox
+                                            crossOrigin={undefined}
                                             size={2}
                                             checked={visibleFilters.includes(item)}
                                             onChange={() => {

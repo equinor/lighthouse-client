@@ -45,6 +45,7 @@ export const ColumnMenuPicker = ({
                         <WrapperDiv className={DraggableHandleSelector} key={id}>
                             <div>
                                 <Checkbox
+                                    crossOrigin={undefined}
                                     readOnly
                                     checked={getApi()
                                         .getVisibleColumns()

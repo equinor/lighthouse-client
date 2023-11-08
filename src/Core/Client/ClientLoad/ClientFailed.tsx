@@ -9,6 +9,7 @@ interface ClientFailedProps {
 
 export const ClientFailed = ({ error }: ClientFailedProps): JSX.Element => {
     if (typeof error !== 'string') {
+        console.error(error);
         error = 'Unknown error';
     }
     return (

@@ -40,6 +40,7 @@ const FilterItem = ({
             }}
         >
             <Checkbox
+                crossOrigin={undefined}
                 onChange={async () => {
                     await handleOnChange(group, filter);
                 }}
