@@ -6,6 +6,7 @@ import {
 } from '@equinor/Admin';
 import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
+import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import {
     actionCenterSidesheetWidgetComponent,
     actionCenterSidesheetWidgetManifest,
@@ -55,6 +56,7 @@ const _widgets: WidgetManifest[] = [
     changeCreatorManifest,
     releaseManifest,
     swcrCreatorManifest,
+    handoverCreatorManifest,
     workOrderCreatorManifest,
     releaseCreatorManifest,
     workflowWidgetManifest,
@@ -78,6 +80,7 @@ const _widgetComponents: ComponentManifest[] = [
     swcrCreatorComponent,
     workOrderCreatorComponent,
     workOrderCreatorComponent,
+    handoverCreatorComponent,
     releaseCreatorComponent,
     punchSidesheetWidgetComponent,
     querySidesheetWidgetComponent,
