@@ -1,12 +1,11 @@
 # uild environment
-FROM node:17.8.0 as build
+FROM node:18.0.0 as build
 
 # Copy App
 WORKDIR /app
 COPY . /app
 
 # Build
-RUN npm i -g yarn@1.22.19
 RUN yarn install
 RUN yarn test
 RUN yarn build 
