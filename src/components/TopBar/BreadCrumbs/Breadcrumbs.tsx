@@ -50,7 +50,7 @@ export const LocationBreadCrumbs = (): JSX.Element => {
                 </Fragment>
             ))}
             {isNewAppLoaded() && (
-                <div>
+                <div style={{ color: 'red' }}>
                     Looking for the old app?
                     <a href={window.location.href.split('-new')[0].toString()}>Click here</a>
                 </div>
