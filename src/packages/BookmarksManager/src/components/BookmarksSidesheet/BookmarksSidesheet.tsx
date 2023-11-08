@@ -96,7 +96,7 @@ function CreateBookmarkButton({
         mutationFn: async () => {
             await module.createBookmark({
                 name: bookmarkName,
-                isShared: false,
+                isShared: true,
                 description: '',
             });
             refetch();
