@@ -7,7 +7,7 @@ import LoadingPage from './components/Loading/LoadingPage';
 import { MenuProvider } from './components/Menu';
 import { ServiceMessageBanner, useServiceMessage } from './components/Messages';
 import { ServiceMessagePost } from './components/Messages/Service/Components/ServiceMessagePost';
-import { ClientRoutes } from './components/Routes/Routes';
+import { ClientRoutes, ContextGuard } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { Framework } from '@equinor/fusion-framework-react';
@@ -45,7 +45,9 @@ const Client: React.FC<ClientProps> = ({ authProvider, config }: ClientProps): J
                             <BrowserRouter>
                                 <ClientTopBar />
                                 <MainLayout serviceMessageActive={messageData.isActive}>
-                                    <ClientRoutes />
+                                    <ContextGuard>
+                                        <ClientRoutes />
+                                    </ContextGuard>
                                 </MainLayout>
                             </BrowserRouter>
                         </MenuProvider>

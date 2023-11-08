@@ -76,7 +76,10 @@ export const AppLoader = (props: { readonly appKey: string }) => {
             import(/* @vite-ignore */ url).then((script) => {
                 const render = script.renderApp ?? script.default;
                 subscription.add(
-                    render(el, { fusion, env: { basename: 'localhost:3000', config, manifest } })
+                    render(el, {
+                        fusion,
+                        env: { basename: window.location.host, config, manifest },
+                    })
                 );
                 setLoading(false);
             });

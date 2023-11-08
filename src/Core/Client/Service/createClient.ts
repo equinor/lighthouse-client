@@ -27,7 +27,6 @@ interface ClientOptions {
 
 export interface Client {
     authProvider: AuthenticationProvider;
-    // dataCreator: IDataCreationProvider;
     config: (config: FrameworkConfigurator<[], any>) => Promise<void>;
 }
 
