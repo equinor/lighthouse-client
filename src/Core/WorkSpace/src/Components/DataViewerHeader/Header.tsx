@@ -9,6 +9,7 @@ import { spawnConfirmationDialog } from '../../../../ConfirmationDialog/Function
 import { useClientContext } from '../../../../Client/Hooks';
 import { httpClient } from '../../../../Client/Functions';
 import { useQuery } from 'react-query';
+import { CircularProgress } from '@equinor/eds-core-react';
 
 interface CompletionViewHeaderProps {
     shortName: string;
@@ -95,7 +96,7 @@ export function ContactPerson() {
     );
 
     if (isLoading) {
-        <div>Loading contact person...</div>;
+        return <CircularProgress size={16} />;
     }
 
     if (error) {
@@ -105,7 +106,7 @@ export function ContactPerson() {
     return (
         <>
             <a target="_blank" href={`https://teams.microsoft.com/l/chat/0/0?users=${data?.mail}`}>
-                {data?.name}
+                {data?.name} (Site 2, 3. Floor,Open plan)
             </a>
         </>
     );
