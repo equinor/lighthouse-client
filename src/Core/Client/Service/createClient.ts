@@ -5,7 +5,7 @@ import {
     registerClientRegistry,
     registerInternalState,
 } from '../Functions/RegisterActions';
-import { setClientEnv } from '../Functions/Settings';
+import { setClientEnv, setContactPerson } from '../Functions/Settings';
 import { AppConfigSettings } from '../Types/AppConfig';
 import { AppGroups } from '../Types/AppGroupe';
 import { AppManifest } from '../Types/AppManifest';
@@ -35,6 +35,8 @@ export async function createClient(clientOptions: ClientOptions): Promise<Client
     const fusionConfig = createConfig(config);
     const appConfig = registerAppConfig(config);
     const authProvider = await handleLogin(appConfig.settings);
+
+    setContactPerson(appConfig.settings.contactPerson);
 
     if (authProvider.isAuthenticated()) {
         try {

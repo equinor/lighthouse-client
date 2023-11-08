@@ -6,6 +6,9 @@ import { PowerBiHeader } from './PowerBiHeader';
 import { WorkspaceHeader } from './WorkspaceHeader';
 import { useEffect } from 'react';
 import { spawnConfirmationDialog } from '../../../../ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { useClientContext } from '../../../../Client/Hooks';
+import { httpClient } from '../../../../Client/Functions';
+import { useQuery } from 'react-query';
 
 interface CompletionViewHeaderProps {
     shortName: string;
@@ -45,18 +48,16 @@ export const CompletionViewHeader = ({
             <TitleBar>
                 <Title variant="h3">{title}</Title>
                 {!!oldApps.find((s) => s.shortName === shortName) && (
-                    <>
-                        <div style={{ color: 'red', fontSize: '18px', marginLeft: '16px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '18px' }}>
+                        <div style={{ color: 'red' }}>
                             This app is being replaced with a new one and will stop recieving
                             updates
                         </div>
-                        <a
-                            style={{ fontSize: '18px', marginLeft: '16px' }}
-                            href={makeRedirectUrl(shortName)}
-                        >
-                            Click here to try the new one
-                        </a>
-                    </>
+                        <a href={makeRedirectUrl(shortName)}>Click here to try the new one</a>
+                        <div>
+                            Any questions regarding this change, please contact <ContactPerson />
+                        </div>
+                    </span>
                 )}
             </TitleBar>
 
@@ -73,3 +74,59 @@ export const CompletionViewHeader = ({
 
 const makeRedirectUrl = (shortName: string) =>
     window.location.href.split(shortName)[0].concat(`${shortName}-new`).toString();
+
+export function ContactPerson() {
+    const { settings } = useClientContext();
+
+    const { fusionPeople } = httpClient();
+
+    const { isLoading, data, error } = useQuery<Person>(
+        ['contactperson', settings.contactPerson],
+        async () => {
+            const res = await fusionPeople.fetch('persons/ensure?api-version=3.0', {
+                method: 'POST',
+                body: JSON.stringify({ personIdentifiers: [settings.contactPerson] }),
+            });
+
+            const data = await res.json();
+
+            return data[0].person;
+        }
+    );
+
+    if (isLoading) {
+        <div>Loading contact person...</div>;
+    }
+
+    if (error) {
+        return <div>Failed to load contact person</div>;
+    }
+
+    return (
+        <>
+            <a target="_blank" href={`https://teams.microsoft.com/l/chat/0/0?users=${data?.mail}`}>
+                {data?.name}
+            </a>
+        </>
+    );
+}
+
+interface Person {
+    fusionPersonId: string;
+    azureUniqueId: string;
+    mail: string;
+    name: string;
+    jobTitle: string;
+    department: string;
+    fullDepartment: string;
+    mobilePhone: string;
+    officeLocation?: any;
+    sapId: string;
+    employeeId: string;
+    isResourceOwner: boolean;
+    upn: string;
+    accountType: string;
+    accountClassification: string;
+    managerAzureUniqueId: string;
+    preferredContactMail?: any;
+}
