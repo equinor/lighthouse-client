@@ -16,5 +16,5 @@ export const getAllBookmarks = async (signal?: AbortSignal) => {
         throw new BookmarkError(error?.message);
     }
 
-    return await response.json();
+    return response.json();
 };

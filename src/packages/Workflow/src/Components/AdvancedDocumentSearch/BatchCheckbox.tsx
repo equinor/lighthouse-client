@@ -11,7 +11,7 @@ export const BatchCheckbox = ({ flipChecked, isChecked }: BatchCheckboxesProps):
         <Tooltip title="Gives you a bigger search field and lets you paste a list">
             <CheckboxWrapper>
                 <div>
-                    <Checkbox checked={isChecked} onChange={flipChecked} />
+                    <Checkbox crossOrigin={undefined} checked={isChecked} onChange={flipChecked} />
                     Batch search
                 </div>
             </CheckboxWrapper>

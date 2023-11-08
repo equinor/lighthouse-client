@@ -1,4 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { BookmarkResponse } from '../../types';
@@ -14,12 +13,38 @@ type BookmarkEntryProps = {
     subSystem: string;
     appKey: string;
     bookmark: BookmarkResponse;
+    isOldApplication: boolean;
 };
-export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProps) => {
+
+const getBookmarkRedirect = (
+    appKey: string,
+    bookmarkId: string,
+    subSystem: string,
+    isOldApplication: boolean
+) => {
+    if (isOldApplication) {
+        return `/${subSystem}/${appKey}?bookmarkId=${bookmarkId}`;
+    }
+
+    switch (appKey) {
+        case 'handover':
+            return `/ConstructionAndCommissioning/handover-new?bookmarkId=${bookmarkId}`;
+
+        default:
+            return `/${subSystem}/${appKey}?bookmarkId=${bookmarkId}`;
+    }
+};
+
+export const BookmarkEntry = ({
+    appKey,
+    bookmark,
+    subSystem,
+    isOldApplication,
+}: BookmarkEntryProps) => {
     return (
         <>
             <BookmarkLink
-                to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}
+                to={getBookmarkRedirect(appKey, bookmark.id, subSystem, isOldApplication)}
                 title={bookmark?.description}
             >
                 {bookmark.name}
@@ -27,12 +52,11 @@ export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProp
             <Icons>
                 <MenuOptions bookmark={bookmark} />
                 {bookmark.isShared && (
-                    
                     <ClickableIcon
                         name="share"
                         title="Shared"
                         onClick={() => {
-                            navigator.clipboard.writeText(createBookmarkURL(bookmark)) 
+                            navigator.clipboard.writeText(createBookmarkURL(bookmark));
                         }}
                         color={tokens.colors.interactive.primary__resting.hsla}
                     />

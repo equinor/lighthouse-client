@@ -41,7 +41,12 @@ const ItemCheckbox = ({
             }}
             key={filterValue}
         >
-            <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
+            <Checkbox
+                crossOrigin={undefined}
+                onChange={handleFilterItemClick}
+                size={12}
+                checked={!isChecked}
+            />
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
             </FilterLabelWrapper>
@@ -96,7 +101,12 @@ export const FilterItemCheckbox = ({
             title={typeof filterValue === 'string' ? filterValue : '(Blank)'}
             key={filterValue}
         >
-            <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
+            <Checkbox
+                crossOrigin={undefined}
+                onChange={handleFilterItemClick}
+                size={12}
+                checked={!isChecked}
+            />
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
             </FilterLabelWrapper>

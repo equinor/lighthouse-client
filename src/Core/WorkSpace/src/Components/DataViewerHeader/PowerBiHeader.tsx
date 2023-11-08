@@ -1,5 +1,4 @@
 import { Divider } from '@equinor/eds-core-react';
-import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { LeftSection, RightSection } from './HeaderStyles';
 import { HeaderTabButtons } from './HeaderTabButtons/HeaderTabButtons';
@@ -20,7 +19,6 @@ export const PowerBiHeader = ({ tabs, group, shortName }: PowerBiHeaderProps): J
             <RightSection>
                 <HeaderTabButtons tabs={tabs} />
                 <Divider />
-                <BookmarkDropdown appKey={shortName} subSystem={group} />
             </RightSection>
         </>
     );

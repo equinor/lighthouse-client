@@ -85,6 +85,7 @@ export function RequestTab(): JSX.Element {
                         <SectionWrapper>
                             <CheckboxWrapper>
                                 <Checkbox
+                                    crossOrigin={undefined}
                                     readOnly
                                     disabled
                                     checked={request.materialsIdentifiedInStorage}
@@ -94,6 +95,7 @@ export function RequestTab(): JSX.Element {
                             <CheckboxWrapper>
                                 <Checkbox
                                     readOnly
+                                    crossOrigin={undefined}
                                     disabled
                                     checked={request.materialsToBeBoughtByContractor}
                                 />
