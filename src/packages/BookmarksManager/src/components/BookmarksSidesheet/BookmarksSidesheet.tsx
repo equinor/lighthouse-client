@@ -6,7 +6,7 @@ import { SaveEventArgs, bookmarkEvents, useGetAllBookmarks } from '../..';
 import { AppGroup } from './AppGroup';
 import { Center, InfoText, SidesheetContent } from './BookmarksSidesheet.styles';
 import { groupBookmarksBySubSystemAppkey } from './groupBookmarksBySubSystemAppKey';
-import { apps } from '../../../../../apps/apps';
+import { getApps } from '../../../../../apps/apps';
 import { useFusionBookmarks } from '../../../../../hooks/useFusionBookmarks';
 import { useMutation } from 'react-query';
 
@@ -66,8 +66,11 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
             {Object.keys(bookmarksBySubsystemAppKey).map((subSystemKey) => {
                 return (
                     <AppGroup
+                        isOld={appGroups[subSystemKey] !== undefined}
                         key={subSystemKey}
-                        appGroupName={appGroups[subSystemKey]?.name ?? 'Fusion Project Portal'}
+                        appGroupName={
+                            appGroups[subSystemKey]?.name ?? 'Construction and Commissioning new'
+                        }
                         appGroupBookmarks={bookmarksBySubsystemAppKey[subSystemKey]}
                     />
                 );
@@ -145,6 +148,6 @@ function getSubSystemFromUrl() {
 
 function tryGetCurrentAppKey() {
     const path = new URL(location.href).href.split('/').at(4)?.split('?')[0];
-    const appRoutes = apps.map((s) => s.shortName);
+    const appRoutes = getApps().map((s) => s.shortName);
     return appRoutes.find((x) => x === path ?? '');
 }

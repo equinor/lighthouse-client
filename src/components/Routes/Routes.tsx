@@ -75,7 +75,9 @@ export function ClientRoutes(): JSX.Element {
                         <Route
                             key={route.shortName + route.groupe}
                             path={`${route.groupe}/${route.shortName}/*`}
-                            element={<AppLoaderWrapper appKey={route.shortName} />}
+                            element={
+                                <AppLoaderWrapper appKey={route.shortName.replace('-new', '')} />
+                            }
                         />
                     );
                 }
