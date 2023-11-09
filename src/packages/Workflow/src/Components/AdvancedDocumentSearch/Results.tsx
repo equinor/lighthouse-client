@@ -16,7 +16,7 @@ export const Result = ({ result, handleClick, isSelected }: ResultProps): JSX.El
         <>
             <ResultItem key={result.value}>
                 <Checkbox
-                    crossOrigin={{}}
+                    crossOrigin={undefined}
                     checked={isChecked}
                     onChange={() => {
                         handleClick(result, isChecked ? 'Remove' : 'Add');
