@@ -97,6 +97,9 @@ dependencies:
   '@remirror/styles':
     specifier: ^2.0.2
     version: 2.0.2(@emotion/react@11.11.1)(@types/react@17.0.20)(@types/styled-components@5.1.21)(react@17.0.2)(styled-components@5.3.3)
+  '@tweenjs/tween.js':
+    specifier: ^21.0.0
+    version: 21.0.0
   base64-js:
     specifier: ^1.5.1
     version: 1.5.1
@@ -4303,6 +4306,10 @@ packages:
 
   /@tweenjs/tween.js@18.6.4:
     resolution: {integrity: sha512-lB9lMjuqjtuJrx7/kOkqQBtllspPIN+96OvTCeJ2j5FEzinoAXTdAMFnDAQT1KVPRlnYfBrqxtqP66vDM40xxQ==}
+    dev: false
+
+  /@tweenjs/tween.js@21.0.0:
+    resolution: {integrity: sha512-qVfOiFh0U8ZSkLgA6tf7kj2MciqRbSCWaJZRwftVO7UbtVDNsZAXpWXqvCDtIefvjC83UJB+vHTDOGm5ibXjEA==}
     dev: false
 
   /@types/aria-query@5.0.4:
