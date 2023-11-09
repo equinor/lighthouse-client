@@ -56,7 +56,8 @@ export const CompletionViewHeader = ({
                         </div>
                         <a href={makeRedirectUrl(shortName)}>Click here to try the new one</a>
                         <div>
-                            Any questions regarding this change, please contact <ContactPerson />
+                            Any questions regarding this change, please contact the Fusion Digital
+                            Coach: <ContactPerson />
                         </div>
                     </span>
                 )}
