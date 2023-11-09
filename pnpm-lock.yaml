@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@azure/msal-browser':
     specifier: ^2.18.0
@@ -229,8 +233,8 @@ devDependencies:
     specifier: ^12.1.4
     version: 12.1.4(react-dom@17.0.2)(react@17.0.2)
   '@testing-library/user-event':
-    specifier: ^13.5.0
-    version: 13.5.0(@testing-library/dom@9.3.3)
+    specifier: ^14.5.1
+    version: 14.5.1(@testing-library/dom@9.3.3)
   '@types/jest':
     specifier: ^27.4.1
     version: 27.4.1
@@ -4273,13 +4277,12 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
     dev: true
 
-  /@testing-library/user-event@13.5.0(@testing-library/dom@9.3.3):
-    resolution: {integrity: sha512-5Kwtbo3Y/NowpkbRuSepbyMFkZmHgD+vPzYB/RJ4oxt5Gj/avFFBYjhw27cqSVPVw/3a67NK1PbiIr9k4Gwmdg==}
-    engines: {node: '>=10', npm: '>=6'}
+  /@testing-library/user-event@14.5.1(@testing-library/dom@9.3.3):
+    resolution: {integrity: sha512-UCcUKrUYGj7ClomOo2SpNVvx4/fkd/2BbIHDCle8A0ax+P3bU7yJwDBDrS6ZwdTMARWTGODX1hEsCcO+7beJjg==}
+    engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
     dependencies:
-      '@babel/runtime': 7.23.2
       '@testing-library/dom': 9.3.3
     dev: true
 
