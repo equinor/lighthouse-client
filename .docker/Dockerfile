@@ -6,9 +6,10 @@ WORKDIR /app
 COPY . /app
 
 # Build
-RUN yarn install
-RUN yarn test
-RUN yarn build 
+RUN npm i -g pnpm@8.0.0
+RUN pnpm install
+RUN pnpm test
+RUN pnpm build 
 
 # Production environment
 FROM nginx:1.20.2-alpine
