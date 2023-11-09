@@ -51,10 +51,10 @@ export const CompletionViewHeader = ({
                 {!!oldApps.find((s) => s.shortName === shortName) && (
                     <span style={{ marginLeft: '16px', fontSize: '18px' }}>
                         <div style={{ color: 'red' }}>
-                            This app is being replaced with a new one and will stop recieving
+                            This app is being replaced with a new app and will stop recieving
                             updates
                         </div>
-                        <a href={makeRedirectUrl(shortName)}>Click here to try the new one</a>
+                        <a href={makeRedirectUrl(shortName)}>Click here to try the new app</a>
                         <div>
                             Any questions regarding this change, please contact the Fusion Digital
                             Coach: <ContactPerson />
