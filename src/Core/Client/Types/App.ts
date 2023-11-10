@@ -1,4 +1,3 @@
-import { AuthenticationProvider } from '@equinor/authentication';
 import { PowerBIViewerInstance } from '@equinor/lighthouse-powerbi-viewer';
 import { WorkSpaceApi } from '@equinor/WorkSpace';
 import { WorkspaceViewerOptions } from '../Service/ClientBuilder';

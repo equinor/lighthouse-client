@@ -1,4 +1,3 @@
-import { AuthenticationProvider } from '@equinor/authentication';
 import { createPowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { createWorkSpace, WorkspaceOptions } from '@equinor/WorkSpace';
 import { AppConfigResult } from '../../Client/Types/AppConfig';

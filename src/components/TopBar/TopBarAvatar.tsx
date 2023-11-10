@@ -36,6 +36,10 @@ export const TopBarAvatar = (): JSX.Element | null => {
         }
     );
 
+    const { data: me } = useQuery<Me>(['me'], async () => {
+        return (await client.fetchAsync(`persons/me?api-version=4.0`)).json();
+    });
+
     const presenceInfo = getPresenceInfo(presence?.availability);
 
     if (!user) return null;
@@ -66,8 +70,8 @@ export const TopBarAvatar = (): JSX.Element | null => {
                         </div>
 
                         <Meta>
-                            {/* <div>{user.jobTitle}</div>
-                            <div>{user.userPrincipalName}</div> */}
+                            <div>{me?.jobTitle}</div>
+                            <div>{me?.fullDepartment}</div>
                         </Meta>
                     </Wrapper>
                 </Popover.Content>
@@ -171,3 +175,20 @@ const Wrapper = styled.div`
     flex-direction: column;
     gap: 1em;
 `;
+
+export interface Me {
+    azureUniqueId: string;
+    mail: string;
+    name: string;
+    jobTitle: string;
+    department: string;
+    fullDepartment: string;
+    mobilePhone: string;
+    officeLocation: any;
+    upn: string;
+    isResourceOwner: boolean;
+    preferredContactMail: any;
+    accountType: string;
+    accountClassification: string;
+    managerAzureUniqueId: string;
+}
