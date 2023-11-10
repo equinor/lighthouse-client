@@ -18,6 +18,7 @@ export async function getBatchPunch(
         'v1/typed/completion/completionPunchItem/facility/JCA?view-version=v1',
         {
             method: 'POST',
+            headers: { ['content-type']: 'application/json' },
             body: JSON.stringify(requestArgs),
             signal,
         }

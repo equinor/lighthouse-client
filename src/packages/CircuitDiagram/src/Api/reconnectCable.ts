@@ -14,6 +14,7 @@ export async function reconnectCable(
 
     const requestOptions = {
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(payload),
     };
     const res = await client.fetch(
