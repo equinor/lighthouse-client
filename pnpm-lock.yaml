@@ -1,9 +1,6 @@
 lockfileVersion: '6.0'
 
 dependencies:
-  '@azure/msal-browser':
-    specifier: ^2.18.0
-    version: 2.18.0
   '@cognite/reveal':
     specifier: ^3.0.2
     version: 3.0.2(@cognite/sdk-core@4.9.0)(@cognite/sdk@7.3.0)
@@ -345,15 +342,6 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
 
-  /@azure/msal-browser@2.18.0:
-    resolution: {integrity: sha512-YiWsimjsjjVu56+zOUDB1U3BCD9YNPIEZmw5iHzMk14aanqxWIvJlo+Ewo5/3FqxILgBOFWliH2hZCQPRIqKSg==}
-    engines: {node: '>=0.8.0'}
-    dependencies:
-      '@azure/msal-common': 5.2.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@azure/msal-browser@2.38.3:
     resolution: {integrity: sha512-2WuLFnWWPR1IdvhhysT18cBbkXx1z0YIchVss5AwVA95g7CU5CpT3d+5BcgVGNXDXbUU7/5p0xYHV99V5z8C/A==}
     engines: {node: '>=0.8.0'}
@@ -365,15 +353,6 @@ packages:
   /@azure/msal-common@13.3.1:
     resolution: {integrity: sha512-Lrk1ozoAtaP/cp53May3v6HtcFSVxdFrg2Pa/1xu5oIvsIwhxW6zSPibKefCOVgd5osgykMi5jjcZHv8XkzZEQ==}
     engines: {node: '>=0.8.0'}
-    dev: false
-
-  /@azure/msal-common@5.2.0:
-    resolution: {integrity: sha512-oVc4soy5MEZOp9NvCDqBk57mtiUTJXQQ8Z8S/4UiRQP8RG8snuCFQUs9xxdIfvl2FWIvgiBz+SMByyjTaRX42Q==}
-    engines: {node: '>=0.8.0'}
-    dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /@babel/code-frame@7.12.11:
