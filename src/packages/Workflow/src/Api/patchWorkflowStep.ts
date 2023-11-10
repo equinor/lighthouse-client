@@ -6,6 +6,7 @@ export async function patchWorkflowStep(step: WorkflowStepModel): Promise<void> 
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(step),
     };
 

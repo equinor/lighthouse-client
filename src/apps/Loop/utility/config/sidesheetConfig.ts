@@ -10,9 +10,14 @@ const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();
     const expressions = generateExpressions('checklistUrlId', 'Equals', [id]);
     const requestArgs = generateFamRequest(customLoopMccrColumns, 'Or', expressions);
-    const res = await FAM.post('v1/typed/Completion/Custom_LoopMCCR/facility/JCA?view-version=v1', {
-        body: JSON.stringify(requestArgs),
-    });
+    const res = await FAM.fetchAsync(
+        'v1/typed/Completion/Custom_LoopMCCR/facility/JCA?view-version=v1',
+        {
+            body: JSON.stringify(requestArgs),
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+        }
+    );
 
     if (!res.ok) {
         throw 'Not found';

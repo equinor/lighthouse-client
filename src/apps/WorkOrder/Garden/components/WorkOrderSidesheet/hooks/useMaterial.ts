@@ -20,13 +20,15 @@ const materialColumnNames = [
 export const useMaterial = (
     packageId: string | null
 ): { material: WorkOrderMaterial[] | undefined; isFetching: boolean; error: Error | null } => {
-    const { FAM } = useHttpClient();
+    const FAM = useHttpClient('FAM');
     const fetch = useCallback(async (id: string, signal?: AbortSignal) => {
         const famExpression = generateExpressions('WorkOrderId', 'Equals', [id]);
         const famFilter = generateFamRequest(materialColumnNames, 'Or', famExpression);
-        const response = await FAM.post(
+        const response = await FAM.fetchAsync(
             `v1/typed/completion/customapi_workordermaterials/facility/JCA?view-version=v0`,
             {
+                method: 'POST',
+                headers: { ['content-type']: 'application/json' },
                 signal,
                 body: JSON.stringify(famFilter),
             }

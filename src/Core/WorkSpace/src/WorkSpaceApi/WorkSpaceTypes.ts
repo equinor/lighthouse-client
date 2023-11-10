@@ -10,6 +10,7 @@ import {
     TreeOptions,
     WorkspaceTab,
 } from './workspaceState';
+import { IHttpClient } from '@equinor/fusion-framework-module-http';
 
 export type DataSource<T extends Record<PropertyKey, unknown>> = {
     /** Function that returns the api call promise */
@@ -30,6 +31,7 @@ export interface WorkspaceOptions<
     objectIdentifier: keyof T;
     viewerId: string;
     defaultTab?: WorkspaceTab;
+    client: IHttpClient;
     openSidesheet: OpenSidesheetFunc;
     customSidesheetOptions?: WorkspaceSideSheet<T, SideSheetId>;
     customGroupeSidesheet?: WorkspaceSideSheet<any, string>;
@@ -112,5 +114,5 @@ export type HelpPageOptions = {
 export type AdminOptions = {
     app?: string;
     component: JSX.Element | null;
-    isAdminValidator: () => Promise<boolean>;
+    isAdminValidator: (client: IHttpClient) => Promise<boolean>;
 };

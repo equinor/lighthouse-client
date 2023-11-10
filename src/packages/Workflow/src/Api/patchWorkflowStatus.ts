@@ -5,6 +5,7 @@ export async function patchWorkflowStatus(id: string, name: string): Promise<voi
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({ name: name }),
     };
 
