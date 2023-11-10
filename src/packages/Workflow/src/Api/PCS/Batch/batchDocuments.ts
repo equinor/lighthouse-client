@@ -12,6 +12,7 @@ export const fetchBatchDocuments = async (
     const url = `/JCA/documents?includeOfP=true`;
     const requestOptions = {
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(documentNos),
         signal: signal,
     };

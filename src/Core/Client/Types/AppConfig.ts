@@ -1,3 +1,4 @@
+import { IHttpClient } from '@equinor/fusion-framework-module-http';
 import { Scope, Urls } from './ScopeAndUrls';
 
 export type AppConfig = {

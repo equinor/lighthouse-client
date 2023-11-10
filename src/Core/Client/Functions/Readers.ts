@@ -3,6 +3,7 @@ import { AppConfig } from '../Types/AppConfig';
 import { ClientContext } from '../Types/ClientContext';
 import { ClientRegistry } from '../Types/ClientRegistry';
 import { ClientSettings } from '../Types/ClientSettings';
+import { HttpClients } from '../Types/HttpClients';
 import { InternalState } from '../Types/InternalState';
 
 /**
@@ -30,6 +31,10 @@ export function getFusionContextId(): Readonly<string> {
  */
 export function readAppConfig(): Readonly<AppConfig> {
     return readGlobalClientState((state) => state.appConfig);
+}
+
+export function readClients(): HttpClients {
+    return readGlobalClientState((s) => s.clients);
 }
 
 /**

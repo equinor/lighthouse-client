@@ -25,14 +25,16 @@ const mccrColumnNames = [
 export const useMccr = (
     packageId: string | null
 ): { mccr: WorkOrderMccr[] | undefined; isFetching: boolean; error: Error | null } => {
-    const { FAM } = useHttpClient();
+    const FAM = useHttpClient('FAM');
 
     const fetch = useCallback(async (id: string, signal?: AbortSignal) => {
         const famExpression = generateExpressions('WorkOrderId', 'Equals', [id]);
         const famFilter = generateFamRequest(mccrColumnNames, 'Or', famExpression);
-        const response = await FAM.post(
+        const response = await FAM.fetchAsync(
             `v1/typed/completion/customapi_workorderchecklists/facility/JCA?view-version=v0`,
             {
+                method: 'POST',
+                headers: { ['content-type']: 'application/json' },
                 signal,
                 body: JSON.stringify(famFilter),
             }

@@ -5,6 +5,7 @@ export async function patchWorkflow(workflowId: string, name: string): Promise<v
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({ name: name }),
     };
 

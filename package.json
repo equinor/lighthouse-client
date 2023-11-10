@@ -21,7 +21,6 @@
     "docker-build": "docker-compose up"
   },
   "dependencies": {
-    "@azure/msal-browser": "^2.18.0",
     "@cognite/reveal": "^3.0.2",
     "@cognite/sdk": "^7.3.0",
     "@cutting/use-get-parent-size": "^1.19.2",
