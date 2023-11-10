@@ -60,6 +60,10 @@ export const createConfig = (appSettings: AppConfigResult) => {
 
         enableServices(config);
 
+        config.configureHttpClient('pcs-search', {
+            baseUri: 'https://search-test.pcs-dev.net',
+            defaultScopes: ['api://195ed58a-9cb8-4d93-9e37-9ad315032baf/ReadWrite'],
+        });
         Object.entries(appSettings.urls).forEach(([a, b]) => {
             config.configureHttpClient(a, {
                 baseUri: b,
