@@ -124,7 +124,6 @@ const Client = ({ appConfig }: ClientProps): JSX.Element => {
 };
 
 const useSetupClients = () => {
-    const isMounted = useRef(false);
     const appConfig = useHttpClient('appConfig');
     const scopeChange = useHttpClient('scopeChange');
     const FAM = useHttpClient('FAM');
