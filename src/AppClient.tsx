@@ -90,18 +90,19 @@ const Client = ({ appConfig }: ClientProps): JSX.Element => {
     useSetupClients();
     const contextClient = useHttpClient('fusionContext');
 
-    const { isLoading } = useQuery(['setup'], async () => {
-        registerClientRegistry(
-            setupApps(appsProvider(getApps, getAppGroups, false), appConfig, client)
-        );
-        await setupContext(contextClient);
-    });
+    useQuery(
+        ['setup'],
+        async () => {
+            registerClientRegistry(
+                setupApps(appsProvider(getApps, getAppGroups, false), appConfig, client)
+            );
+            await setupContext(contextClient);
+        },
+        { suspense: true, useErrorBoundary: true }
+    );
 
     const messageData = useServiceMessage();
 
-    if (isLoading) {
-        return <div>loading...</div>;
-    }
     return (
         <>
             <ServiceMessagePost />
