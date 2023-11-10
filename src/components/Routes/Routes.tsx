@@ -53,7 +53,6 @@ export function ClientRoutes(): JSX.Element {
     const {
         appConfig,
         registry: { apps, appGroups },
-        // internal: { authProvider },
         settings: { isProduction },
     } = useClientContext();
 
