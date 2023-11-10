@@ -98,9 +98,6 @@ const Client = ({ appConfig }: ClientProps): JSX.Element => {
             setupApps(appsProvider(getApps, getAppGroups, false), appConfig, client)
         );
         await setupContext(contextClient);
-
-        //TODO: how to handle this?
-        // setupUserData(authProvider);
     });
 
     const messageData = useServiceMessage();
