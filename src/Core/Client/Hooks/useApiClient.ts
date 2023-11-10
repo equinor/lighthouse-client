@@ -1,6 +1,4 @@
-import { useFramework } from '@equinor/fusion-framework-react';
 import { useHttpClient as useFrameworkClient } from '@equinor/fusion-framework-react/http';
-import { httpClient } from '../Functions/HttpClient';
 import { HttpClients } from '../Types/HttpClients';
 
 /**
