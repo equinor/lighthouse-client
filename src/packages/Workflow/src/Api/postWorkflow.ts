@@ -6,6 +6,7 @@ export async function postWorkflow(workflow: Workflow): Promise<string> {
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(workflow),
     };
 

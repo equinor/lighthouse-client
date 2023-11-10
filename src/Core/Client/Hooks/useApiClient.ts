@@ -1,3 +1,5 @@
+import { useFramework } from '@equinor/fusion-framework-react';
+import { useHttpClient as useFrameworkClient } from '@equinor/fusion-framework-react/http';
 import { httpClient } from '../Functions/HttpClient';
 import { HttpClients } from '../Types/HttpClients';
 
@@ -9,9 +11,6 @@ import { HttpClients } from '../Types/HttpClients';
  * @param {string} [baseUrl] is not required, but will require scope to be assigned
  * @return {} HttpClients available
  */
-export function useHttpClient(scope?: string, baseUrl?: string): HttpClients {
-    const customScope = scope ? { scope: scope || '', baseUrl } : undefined;
-    const apiClients = httpClient(customScope);
-
-    return apiClients as HttpClients;
+export function useHttpClient(clientName: keyof HttpClients) {
+    return useFrameworkClient(clientName);
 }

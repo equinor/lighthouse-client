@@ -9,6 +9,7 @@ export async function postWorkflowTemplate(
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({ stepTemplates: template.workflowStepTemplates }),
     };
 

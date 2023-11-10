@@ -59,5 +59,12 @@ export const createConfig = (appSettings: AppConfigResult) => {
         enableNavigation(config);
 
         enableServices(config);
+
+        Object.entries(appSettings.urls).forEach(([a, b]) => {
+            config.configureHttpClient(a, {
+                baseUri: b,
+                defaultScopes: [appSettings.scope[a]],
+            });
+        });
     };
 };

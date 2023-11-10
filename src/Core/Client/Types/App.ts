@@ -18,7 +18,7 @@ export type App = {
 
 export type ClientApi = AppManifest & {
     appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
+    // authProvider: AuthenticationProvider;
     createWorkSpace<T extends Record<PropertyKey, unknown>, SideSheetId extends string = string>(
         options: WorkspaceViewerOptions<T, SideSheetId>
     ): WorkSpaceApi<T>;
