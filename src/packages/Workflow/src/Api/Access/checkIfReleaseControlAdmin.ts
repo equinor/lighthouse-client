@@ -1,8 +1,12 @@
-import { httpClient } from '@equinor/lighthouse-portal-client';
 import { checkOptionsRequest } from './optionsRequestChecker';
+import { IHttpClient } from '@equinor/fusion-framework-module-http';
 
-export async function checkIfReleaseControlAdmin(app: string, signal?: AbortSignal): Promise<boolean> {
-    const { scopeChange } = httpClient();
+export async function checkIfReleaseControlAdmin(
+    app: string,
+    client: IHttpClient,
+    signal?: AbortSignal
+): Promise<boolean> {
+    const scopeChange = client;
 
     const requestOptions = {
         method: 'OPTIONS',

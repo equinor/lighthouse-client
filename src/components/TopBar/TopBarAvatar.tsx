@@ -1,14 +1,18 @@
 import { Avatar, Icon, Popover } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useAuthProvider, useClientContext } from '@equinor/lighthouse-portal-client';
+import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
-import { Availability, getUserPresence } from '../../Core/Client/Functions/getUserPresence';
+import { Availability } from '../../Core/Client/Functions/getUserPresence';
+import { useCurrentUser } from '@equinor/fusion-framework-react-app/framework';
 
 const PresenceQueryKey = ['Presence'];
 
 export const TopBarAvatar = (): JSX.Element | null => {
+    const user = useCurrentUser();
+    const userImageUrl = null;
+
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const queryClient = useQueryClient();
@@ -17,19 +21,24 @@ export const TopBarAvatar = (): JSX.Element | null => {
         queryClient.invalidateQueries(PresenceQueryKey);
     };
     const close = () => setIsOpen(false);
-    const {
-        settings: { userImageUrl, user },
-    } = useClientContext();
 
-    const { getCurrentUser } = useAuthProvider();
+    const client = useHttpClient('fusionPeople');
 
     const { data: presence } = useQuery(
         PresenceQueryKey,
-        async () => await getUserPresence(getCurrentUser()?.localAccountId.split('.')[0] ?? ''),
+        async () => {
+            return (
+                await client.fetch(`persons/${user?.localAccountId.split('.')[0] ?? ''}/presence`)
+            ).json();
+        },
         {
             refetchInterval: isOpen ? 1000 * 60 : 5000 * 60,
         }
     );
+
+    const { data: me } = useQuery<Me>(['me'], async () => {
+        return (await client.fetchAsync(`persons/me?api-version=4.0`)).json();
+    });
 
     const presenceInfo = getPresenceInfo(presence?.availability);
 
@@ -53,7 +62,7 @@ export const TopBarAvatar = (): JSX.Element | null => {
                     <Wrapper>
                         <div>
                             <InfoText>Signed in as</InfoText>
-                            <UserName>{user.displayName}</UserName>
+                            <UserName>{user.name}</UserName>
                             <Presence>
                                 <div>{presenceInfo.icon} </div>
                                 <div>{presenceInfo.status}</div>
@@ -61,8 +70,8 @@ export const TopBarAvatar = (): JSX.Element | null => {
                         </div>
 
                         <Meta>
-                            <div>{user.jobTitle}</div>
-                            <div>{user.userPrincipalName}</div>
+                            <div>{me?.jobTitle}</div>
+                            <div>{me?.fullDepartment}</div>
                         </Meta>
                     </Wrapper>
                 </Popover.Content>
@@ -166,3 +175,20 @@ const Wrapper = styled.div`
     flex-direction: column;
     gap: 1em;
 `;
+
+export interface Me {
+    azureUniqueId: string;
+    mail: string;
+    name: string;
+    jobTitle: string;
+    department: string;
+    fullDepartment: string;
+    mobilePhone: string;
+    officeLocation: any;
+    upn: string;
+    isResourceOwner: boolean;
+    preferredContactMail: any;
+    accountType: string;
+    accountClassification: string;
+    managerAzureUniqueId: string;
+}

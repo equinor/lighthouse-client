@@ -9,7 +9,6 @@ export function ComponentWrapper(route: AppManifest): JSX.Element {
     const Component = route.app?.component || DefaultRouteComponent;
     const api = {
         ...route,
-        authProvider: internal.authProvider,
         appConfig,
         isProduction: settings.isProduction,
     };
