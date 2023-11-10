@@ -82,9 +82,6 @@ const ClientEntry = () => {
     );
 };
 
-let modules: {} = {};
-export const getModules = () => modules;
-
 type ClientProps = {
     appConfig: AppConfigResult;
 };
