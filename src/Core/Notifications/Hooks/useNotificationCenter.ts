@@ -41,8 +41,7 @@ export function useNotificationCenter(
     >(getUnreadNotificationsQuery(client));
 
     const { hubConnection } = useSignalRHub(
-        `${fusion.uri}/signalr/hubs/notifications/?negotiateVersion=1`,
-        async () => ''
+        `${fusion.uri}/signalr/hubs/notifications/?negotiateVersion=1`
     );
 
     const onNotificationRecieved = useCallback(
