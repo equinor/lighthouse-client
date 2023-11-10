@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { HubConnectionBuilder, HubConnection } from '@microsoft/signalr';
-import { IHttpClient } from '@equinor/fusion-framework-module-http';
 import { useFramework } from '@equinor/fusion-framework-react';
 
 interface SignalR {
