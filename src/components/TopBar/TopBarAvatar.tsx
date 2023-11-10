@@ -36,11 +36,7 @@ export const TopBarAvatar = (): JSX.Element | null => {
         }
     );
 
-    const presenceInfo = {
-        icon: <StatusCircle color="#4bb748" />,
-        status: 'Available',
-    };
-    // getPresenceInfo(presence?.availability);
+    const presenceInfo = getPresenceInfo(presence?.availability);
 
     if (!user) return null;
 
