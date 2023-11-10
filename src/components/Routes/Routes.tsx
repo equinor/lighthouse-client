@@ -53,7 +53,7 @@ export function ClientRoutes(): JSX.Element {
     const {
         appConfig,
         registry: { apps, appGroups },
-        internal: { authProvider },
+        // internal: { authProvider },
         settings: { isProduction },
     } = useClientContext();
 
@@ -83,7 +83,6 @@ export function ClientRoutes(): JSX.Element {
                 if (route.app?.appType === 'Workspace') {
                     const api = {
                         ...route,
-                        authProvider,
                         appConfig,
                         hasSidesheet: true,
                         isProduction,
