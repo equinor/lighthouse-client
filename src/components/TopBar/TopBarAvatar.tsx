@@ -1,14 +1,10 @@
 import { Avatar, Icon, Popover } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import {
-    useAuthProvider,
-    useClientContext,
-    useHttpClient,
-} from '@equinor/lighthouse-portal-client';
+import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
-import { Availability, getUserPresence } from '../../Core/Client/Functions/getUserPresence';
+import { Availability } from '../../Core/Client/Functions/getUserPresence';
 import { useCurrentUser } from '@equinor/fusion-framework-react-app/framework';
 
 const PresenceQueryKey = ['Presence'];
