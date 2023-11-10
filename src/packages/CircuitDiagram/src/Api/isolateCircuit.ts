@@ -12,6 +12,7 @@ export async function isolateCircuit(circuitTagNo: string, comment: string): Pro
 
     const requestOptions = {
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(payload),
     };
 

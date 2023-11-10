@@ -11,7 +11,7 @@ type ErrorOptions = {
 const baseUri = `reports`;
 
 export function useErrorMessage({ reportId, contextErrorType, message }: ErrorOptions) {
-    const { fusionPbi } = useHttpClient();
+    const fusionPbi = useHttpClient('fusionPbi');
     const user = useCurrentUser();
     const timeStamp = useMemo(() => new Date().toString(), []);
 
@@ -37,7 +37,7 @@ export function useErrorMessage({ reportId, contextErrorType, message }: ErrorOp
         setIsFetching(true);
 
         try {
-            const response = await fusionPbi.get(`${baseUri}/${reportId}`);
+            const response = await fusionPbi.fetch(`${baseUri}/${reportId}`);
             const fetchedDescriptions = await response.json();
             setDescription(fetchedDescriptions?.data);
         } catch {

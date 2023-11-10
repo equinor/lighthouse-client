@@ -31,6 +31,7 @@ export const searchAreas = async (
 
     const requestOptions = {
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(search),
         signal,
     };
