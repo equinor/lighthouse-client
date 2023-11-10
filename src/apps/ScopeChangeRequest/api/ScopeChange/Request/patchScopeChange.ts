@@ -9,6 +9,7 @@ export async function patchScopeChange(
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
+        headers: { ['content-type']: 'application/json' },
         body: setAsOpen
             ? JSON.stringify({ ...request, setAsOpen: setAsOpen })
             : JSON.stringify(request),

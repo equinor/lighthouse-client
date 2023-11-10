@@ -49,10 +49,15 @@ async function sidesheetReponseAsync(workOrderId: string, signal?: AbortSignal):
     const { FAM } = httpClient();
     const famExpression = generateExpressions('WorkOrderUrlId', 'Equals', [workOrderId]);
     const famFilter = generateFamRequest(workorderColumnNames, 'Or', famExpression);
-    return await FAM.post(`v1/typed/completion/customapi_workorders/facility/JCA?view-version=v0`, {
-        signal: signal,
-        body: JSON.stringify(famFilter),
-    });
+    return await FAM.fetchAsync(
+        `v1/typed/completion/customapi_workorders/facility/JCA?view-version=v0`,
+        {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            signal: signal,
+            body: JSON.stringify(famFilter),
+        }
+    );
 }
 export const creator = setupWorkspaceSidesheet<WorkOrder, 'work-orderDetails'>({
     id: 'work-orderDetails',

@@ -39,7 +39,6 @@
             "@equinor/ErrorBoundary": ["./src/Core/ErrorBoundary"],
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Table": ["./src/packages/Table"],
-            "@equinor/authentication": ["./src/packages/authentication"],
             "@equinor/http-client": ["./src/Core/httpClient"],
             "@equinor/hooks": ["./src/hooks"],
             "@equinor/lighthouse-utils": ["./src/packages/Utils"],

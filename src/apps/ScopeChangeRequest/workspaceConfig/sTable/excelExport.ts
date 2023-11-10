@@ -12,10 +12,11 @@ export const excelExport = async (rows: Row<ScopeChangeRequest>[]) => {
     });
 
     try {
-        const res = await scopeChange.post('api/scope-change-requests/export', {
+        const res = await scopeChange.fetch('api/scope-change-requests/export', {
             headers: {
                 'Content-Type': 'application/*+json',
             },
+            method: 'POST',
             body: bodyInit,
         });
         if (!res.ok) throw new Error('Failed to export');

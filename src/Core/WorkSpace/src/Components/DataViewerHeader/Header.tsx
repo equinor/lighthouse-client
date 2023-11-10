@@ -87,6 +87,7 @@ export function ContactPerson() {
         async () => {
             const res = await fusionPeople.fetch('persons/ensure?api-version=3.0', {
                 method: 'POST',
+                headers: { ['content-type']: 'application/json' },
                 body: JSON.stringify({ personIdentifiers: [settings.contactPerson] }),
             });
 
