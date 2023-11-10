@@ -9,6 +9,7 @@ export async function searchTagNo(value: string, signal?: AbortSignal): Promise<
     const res = await FAM.fetch('v1/typed/completion/completiontag/facility/JCA?view-version=v1', {
         body: JSON.stringify(request),
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         signal,
     });
     return await res.json();

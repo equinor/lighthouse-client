@@ -19,9 +19,11 @@ export const getLoopContent = async (
     signal?: AbortSignal
 ): Promise<LoopContent[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.post(
+    const res = await FAM.fetchAsync(
         `v1/typed/completion/custom_loopcontent/facility/JCA?view-version=v1`,
         {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
             body: JSON.stringify(famFilter),
             signal,
         }

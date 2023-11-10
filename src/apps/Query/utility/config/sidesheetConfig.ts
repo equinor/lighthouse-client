@@ -39,9 +39,14 @@ const idResolverFunction = async (id: string): Promise<Query> => {
     const { FAM } = httpClient();
     const expressions = generateExpressions('queryUrlId', 'Equals', [id]);
     const requestArgs = generateFamRequest(customQueryColumns, 'Or', expressions);
-    const res = await FAM.post('v1/typed/completion/custom_query/facility/JCA?view-version=v0', {
-        body: JSON.stringify(requestArgs),
-    });
+    const res = await FAM.fetchAsync(
+        'v1/typed/completion/custom_query/facility/JCA?view-version=v0',
+        {
+            body: JSON.stringify(requestArgs),
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+        }
+    );
 
     if (!res.ok) {
         throw 'Not found';

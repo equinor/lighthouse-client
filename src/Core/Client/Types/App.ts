@@ -1,4 +1,3 @@
-import { AuthenticationProvider } from '@equinor/authentication';
 import { PowerBIViewerInstance } from '@equinor/lighthouse-powerbi-viewer';
 import { WorkSpaceApi } from '@equinor/WorkSpace';
 import { WorkspaceViewerOptions } from '../Service/ClientBuilder';
@@ -18,7 +17,6 @@ export type App = {
 
 export type ClientApi = AppManifest & {
     appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
     createWorkSpace<T extends Record<PropertyKey, unknown>, SideSheetId extends string = string>(
         options: WorkspaceViewerOptions<T, SideSheetId>
     ): WorkSpaceApi<T>;
