@@ -15,8 +15,8 @@ import {
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<Pipetest, 'pt'>({
-            customSidesheetOptions: rcSidesheetCreator('WorkspaceSideSheet') as any,
-            customGroupeSidesheet: htSidesheetCreator('WorkspaceSideSheet') as any,
+            customSidesheetOptions: rcSidesheetCreator('WorkspaceSideSheet'),
+            customGroupeSidesheet: htSidesheetCreator('WorkspaceSideSheet'),
             objectIdentifier: 'name',
             defaultTab: 'garden',
         })

@@ -1,18 +1,18 @@
 import { getClientContext, httpClient } from '@equinor/lighthouse-portal-client';
 import { SearchResponse } from './types';
-import { useFramework } from '@equinor/fusion-framework-react';
-import { useHttpClient } from '@equinor/fusion-framework-react/hooks';
 
 export async function proCoSysSearchRequest(
     searchText: string,
     signal: AbortSignal
 ): Promise<SearchResponse | undefined> {
     const { procosysPlantId } = getClientContext();
+    const { customHttpClient } = httpClient({
+        scope: 'api://195ed58a-9cb8-4d93-9e37-9ad315032baf/ReadWrite',
+    });
 
-    const client = useHttpClient('pcs-search' as any);
     try {
-        const result = await client.fetch(
-            `/Search?query=${searchText}&preview=true&plant=${procosysPlantId}`,
+        const result = await customHttpClient.fetch(
+            `https://search-test.pcs-dev.net/Search?query=${searchText}&preview=true&plant=${procosysPlantId}`,
             { signal }
         );
 

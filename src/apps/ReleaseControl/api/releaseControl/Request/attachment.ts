@@ -14,10 +14,10 @@ export const uploadAttachment = async ({
     const { scopeChange } = httpClient();
     formData.set('File', file, file.name);
 
-    const res = await scopeChange.fetchAsync(`api/releasecontrol/${releaseControlId}/attachments`, {
-        body: formData,
-        method: 'POST',
-    });
+    const res = await scopeChange.uploadFile(
+        `api/releasecontrol/${releaseControlId}/attachments`,
+        formData
+    );
 
     await throwOnError(res, 'Failed to upload attachment');
 };

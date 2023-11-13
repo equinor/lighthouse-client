@@ -18,12 +18,11 @@ import {
     RightButton,
     Row,
 } from './CompactMenuStyles';
-import { apps } from '../../../../apps/apps';
 
 export const CompactMenu = (): JSX.Element => {
     const { registry } = useClientContext();
 
-    const { appGroups } = registry;
+    const { apps, appGroups } = registry;
     const location = useLocation();
     const { setExpandMenuActive, setActiveGroupe, activeGroupe } = useMenuContext();
 

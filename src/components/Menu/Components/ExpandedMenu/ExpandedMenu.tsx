@@ -11,9 +11,8 @@ import {
     HeaderLink,
     MenuColumn,
     MenuRow,
-    MenuScrim,
+    MenuScrim
 } from './ExpandedMenuStyles';
-import { apps } from '../../../../apps/apps';
 
 export const ExpandedMenu = (): JSX.Element => {
     const [searchValue, setSearchValue] = useState('');
@@ -21,7 +20,7 @@ export const ExpandedMenu = (): JSX.Element => {
 
     const { toggleMenu, setCompactMenuActive } = useMenuContext();
 
-    const { appGroups } = registry;
+    const { apps, appGroups } = registry;
     const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
 
     const filteredList = filterByValue(GroupedMenu, searchValue, 'title');

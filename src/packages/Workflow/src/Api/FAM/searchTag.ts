@@ -43,7 +43,6 @@ export async function searchTag(value: string): Promise<any[]> {
         {
             body: JSON.stringify(request),
             method: 'POST',
-            headers: { ['content-type']: 'application/json' },
         }
     );
     return await res.json();

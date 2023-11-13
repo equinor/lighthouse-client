@@ -15,15 +15,10 @@ export const getQuerySignatures = async (
     signal?: AbortSignal
 ): Promise<QuerySignature[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.fetchAsync(
-        `v1/typed/completion/querysignature/facility/JCA?view-version=v0`,
-        {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(famFilter),
-            signal,
-        }
-    );
+    const res = await FAM.post(`v1/typed/completion/querysignature/facility/JCA?view-version=v0`, {
+        body: JSON.stringify(famFilter),
+        signal,
+    });
 
     if (!res.ok) {
         throw 'Not found';

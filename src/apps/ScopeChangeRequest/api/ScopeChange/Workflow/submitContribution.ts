@@ -22,7 +22,6 @@ export async function submitContribution({
 
     const requestOptions = {
         method: 'POST',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({
             comment: comment,
             suggestion: suggestion,

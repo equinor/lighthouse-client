@@ -21,18 +21,18 @@ const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
     This causes an infinite render loop when added as dependency to getData.
      apiClient should be stable, but does not look to be the case.   
     **/
-    const client = useHttpClient('fusionDataproxy');
+    const { fusionDataproxy } = useHttpClient();
 
     const getData = useCallback(
         async (id: string, signal?: AbortSignal) => {
-            const result = await client.fetch(
+            const result = await fusionDataproxy.fetch(
                 `api/contexts/${contextId}/handover/${id}/${packageType}`,
                 { signal }
             );
 
             return JSON.parse(await result.text()) as HandoverResourceTypeMap[T][];
         },
-        [packageType, contextId, client]
+        [packageType, contextId, fusionDataproxy]
     );
 
     const resource = usePackageResource(packageType, packageId, getData);

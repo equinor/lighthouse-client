@@ -15,7 +15,7 @@ export const SelectSWCR = ({ setOriginId, originId }: SelectSWCRProps): JSX.Elem
     const [isChecking, setIsChecking] = useState<boolean>();
     const [hasChecked, setHasChecked] = useState<boolean>();
 
-    const FAM = useHttpClient('FAM');
+    const { FAM } = useHttpClient();
 
     const { abort, getSignal } = useCancellationToken();
 
@@ -37,7 +37,6 @@ export const SelectSWCR = ({ setOriginId, originId }: SelectSWCRProps): JSX.Elem
                 `v1/typed/completion/completionsoftwareChangeRecord/facility/JCA?view-version=v1`,
                 {
                     method: 'POST',
-                    headers: { ['content-type']: 'application/json' },
                     signal: getSignal(),
                     body: JSON.stringify(body),
                 }

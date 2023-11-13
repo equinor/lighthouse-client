@@ -1,15 +1,17 @@
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { Notification } from '../Types/Notification';
 import { NotificationList } from '../Types/NotificationList';
-import { IHttpClient } from '@equinor/fusion-framework-module-http';
 
-export async function getReadNotificationCardsAsync(client: IHttpClient): Promise<Notification[]> {
+export async function getReadNotificationCardsAsync(): Promise<Notification[]> {
+    const { fusionNotifications } = httpClient();
+
     const filter = 'seenByUser eq true';
 
     const order = `$orderby=created%20desc`;
 
     const take = '$top=1000';
 
-    const list: NotificationList = await client
+    const list: NotificationList = await fusionNotifications
         .fetch(`persons/me/notifications?$filter=${encodeURIComponent(filter)}&${order}&${take}`)
         .then((x) => x.json());
 

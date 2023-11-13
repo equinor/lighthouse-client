@@ -9,7 +9,7 @@ import { notificationQueries } from '../queries/notificationQueries';
 export function NotificationBell(): JSX.Element {
     const { getUnreadNotificationsQuery } = notificationQueries;
     const onNotification = () =>
-        queryClient.invalidateQueries(getUnreadNotificationsQuery(undefined as any).queryKey);
+        queryClient.invalidateQueries(getUnreadNotificationsQuery().queryKey);
 
     const queryClient = useQueryClient();
 

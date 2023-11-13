@@ -75,7 +75,6 @@ const Cable = ({
                 {!isFirstCable && isEditMode && cable.disconnected && (
                     <DisconnectWrapper onMouseOver={onOpen} onMouseLeave={onClose}>
                         <Checkbox
-                            crossOrigin={undefined}
                             checked={!cable.disconnected}
                             onChange={async () => {
                                 const updatedCable = await reconnectCable(
@@ -111,7 +110,6 @@ const Cable = ({
                 {!isFirstCable && isEditMode && !cable.disconnected && (
                     <DisconnectWrapper onMouseOver={onOpen} onMouseLeave={onClose}>
                         <Checkbox
-                            crossOrigin={undefined}
                             checked={!cable.disconnected}
                             onChange={() => {
                                 setIsDisconnecting(true);

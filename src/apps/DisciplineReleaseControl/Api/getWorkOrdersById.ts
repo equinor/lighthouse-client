@@ -45,7 +45,6 @@ export async function getWorkOrdersById(id: string): Promise<WorkOrder[]> {
         `v1/typed/completion/customapi_pipetestworkorders/facility/JCA?view-version=v0`,
         {
             method: 'POST',
-            headers: { ['content-type']: 'application/json' },
             body: JSON.stringify(requestArgs),
         }
     );

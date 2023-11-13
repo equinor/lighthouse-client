@@ -78,6 +78,10 @@ export type TreeOptions<T extends Record<PropertyKey, unknown>> = {
 
 export type StatusFunc<T extends Record<PropertyKey, unknown>> = (data: T[]) => StatusItem[];
 
+export interface WorkflowEditorOptions {
+    endpoint: string;
+}
+
 export interface PrefetchQueriesOptions {
     queryKey: string[];
     queryFn: QueryFunction<unknown, string[]>;
@@ -108,9 +112,11 @@ export type WorkSpaceConfig<T extends Record<PropertyKey, unknown>> = {
     filterOptions?: FilterOptions<T>;
     tableOptions?: TableOptions<T>;
     treeOptions?: TreeOptions<T>;
+    timelineOptions?: TimeLineOptions;
     gardenOptions?: GardenOptions<T>;
     statusFunc?: StatusFunc<T>;
     powerBiOptions?: PowerBiOptions;
+    workflowEditorOptions?: WorkflowEditorOptions;
     presetOptions?: PresetOption[];
     searchOptions?: SearchOption<T>[];
     helpPageOptions?: HelpPageOptions;
@@ -122,6 +128,8 @@ export type PowerBiOptions = {
     filter?: Filter[];
     options?: PBIOptions;
 };
+
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

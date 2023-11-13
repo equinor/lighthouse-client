@@ -21,10 +21,6 @@ export function setLoggingState(logging: boolean): void {
     internalUpdateSettings({ logging });
 }
 
-export function setContactPerson(contactPerson: string): void {
-    internalUpdateSettings({ contactPerson });
-}
-
 export function setEnv(isProduction: boolean, clientEnv: string): void {
     internalUpdateSettings({ isProduction, clientEnv });
 }

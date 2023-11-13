@@ -5,7 +5,6 @@ export async function moveStepUp(id: string): Promise<void> {
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'POST',
-        headers: { ['content-type']: 'application/json' },
     };
 
     const res = await scopeChange.fetch(

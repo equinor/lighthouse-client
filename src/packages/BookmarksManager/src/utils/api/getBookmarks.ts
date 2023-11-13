@@ -7,7 +7,7 @@ export const getBookmarks = async (appKey: string, signal?: AbortSignal) => {
     const { fusionBookmarks } = httpClient();
     const filterAppKey = encodeURI(`$filter=appKey eq 'jc-${appKey}'`);
     const filterSourceSystem = '$filter=sourcesystem.SubSystem%20eq%20ConstructionAndCommissioning';
-    const response = await fusionBookmarks.fetchAsync(
+    const response = await fusionBookmarks.get(
         `persons/me/bookmarks?api-version=1.0&${filterAppKey}`,
         { signal }
     );

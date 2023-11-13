@@ -22,7 +22,6 @@ export async function reassignCriteria({
 
     const requestOptions = {
         method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(reassign),
     };
 

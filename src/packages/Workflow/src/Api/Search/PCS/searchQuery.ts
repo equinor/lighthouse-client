@@ -3,12 +3,11 @@ import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Query } from '../../../Types/ProCoSys/query';
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './searchStructure';
-import { IHttpClient } from '@equinor/fusion-framework-module-http';
 
 export const searchQueryOrigin = async (
     searchString: string,
     plantId: string,
-    client: IHttpClient,
+    client: HttpClient,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
@@ -25,7 +24,6 @@ export const searchQueryOrigin = async (
 
     const requestOptions = {
         method: 'POST',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(search),
         signal,
     };

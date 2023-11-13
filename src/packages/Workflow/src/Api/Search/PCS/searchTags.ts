@@ -1,8 +1,8 @@
+import { HttpClient } from '@equinor/http-client';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SearchTag } from '../../../Types/ProCoSys/Tag';
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './searchStructure';
-import { IHttpClient } from '@equinor/fusion-framework-module-http';
 
 const SEARCH_ID_DEV = 105220;
 const SEARCH_ID_PROD = 105793;
@@ -11,7 +11,7 @@ const URI = 'api/Search';
 export const searchTags = async (
     searchString: string,
     plantId: string,
-    procosysClient: IHttpClient,
+    procosysClient: HttpClient,
     abortSignal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${
@@ -29,7 +29,6 @@ export const searchTags = async (
 
     const requestOptions = {
         method: 'POST',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(search),
         signal: abortSignal,
     };

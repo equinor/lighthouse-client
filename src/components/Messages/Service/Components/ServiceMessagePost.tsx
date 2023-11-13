@@ -1,8 +1,8 @@
 import { Button, Scrim } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
-import { useHttpClient } from '@equinor/lighthouse-portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { storage } from '@equinor/lighthouse-utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { linkForm } from '../Forms/link';
 import { messageForm } from '../Forms/message';
 import { Link, ServiceMessage } from '../Types/serviceMessage';
@@ -16,7 +16,7 @@ export function ServiceMessagePost(): JSX.Element | null {
     const [isActive, setIsActive] = useState(false);
     const formDataMessage = useForm<ServiceMessage>(messageForm);
     const formDataLink = useForm<Link>(linkForm);
-    const appConfig = useHttpClient('appConfig');
+    const { appConfig } = useMemo(() => httpClient(), []);
 
     useEffect(() => {
         const shouldBeActive = storage.getItem<string>('postMessage');
@@ -30,10 +30,8 @@ export function ServiceMessagePost(): JSX.Element | null {
             message.link = formDataLink.data;
         }
 
-        await appConfig.fetchAsync('api/serviceMessage', {
+        await appConfig.post('api/serviceMessage', {
             body: JSON.stringify(message),
-            method: 'POST',
-            headers: { ['content-type']: 'application/json' },
         });
 
         storage.setItem('postMessage', 'false');
@@ -67,7 +65,7 @@ export function ServiceMessagePost(): JSX.Element | null {
 
     const deleteServiceMessage = async () => {
         try {
-            await appConfig.fetchAsync('api/serviceMessage', { method: 'DELETE' });
+            await appConfig.delete('api/serviceMessage');
         } catch (e) {
             console.error(e);
         } finally {

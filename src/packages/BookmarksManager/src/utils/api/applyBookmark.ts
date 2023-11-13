@@ -6,9 +6,7 @@ export type BookmarkResponse<TPayload extends unknown = unknown> = {
 };
 export const applyBookmark = async (bookmarkId: string): Promise<BookmarkResponse> => {
     const { fusionBookmarks } = httpClient();
-    const response = await fusionBookmarks.fetchAsync(
-        `bookmarks/${bookmarkId}/apply?api-version=1.0`
-    );
+    const response = await fusionBookmarks.get(`bookmarks/${bookmarkId}/apply?api-version=1.0`);
     const responseJson = (await response.json()) as BookmarkResponse;
     return responseJson;
 };

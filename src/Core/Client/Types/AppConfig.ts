@@ -1,4 +1,3 @@
-import { IHttpClient } from '@equinor/fusion-framework-module-http';
 import { Scope, Urls } from './ScopeAndUrls';
 
 export type AppConfig = {
@@ -15,5 +14,4 @@ export type AppConfigSettings = {
     logging: boolean;
     clientId: string;
     tenantId: string;
-    contactPerson: string;
 };

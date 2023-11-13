@@ -11,7 +11,7 @@ export const useMcResource = <T extends keyof McResourceTypeMap>(
     packageId: string,
     packageType: T
 ) => {
-    const fusionDataproxy = useHttpClient('fusionDataproxy');
+    const { fusionDataproxy } = useHttpClient();
     const contextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';

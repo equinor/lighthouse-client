@@ -9,20 +9,18 @@ import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotific
 import { notificationQueries } from '../../Core/Notifications/queries/notificationQueries';
 import { Notification } from '../../Core/Notifications/Types/Notification';
 import { getCountForAppName } from './Utils/getCountForNotificationCards';
-import { useHttpClient } from '../../Core/Client/Hooks';
 
 interface NotificationsTabProps {
     onClickNotification?: () => void;
 }
 
 export function NotificationsTab({ onClickNotification }: NotificationsTabProps): JSX.Element {
-    const client = useHttpClient('fusionNotifications');
     const { getUnreadNotificationsQuery } = notificationQueries;
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
 
     const queryClient = useQueryClient();
     const onNotification = () =>
-        queryClient.invalidateQueries(getUnreadNotificationsQuery(client).queryKey);
+        queryClient.invalidateQueries(getUnreadNotificationsQuery().queryKey);
     const { unreadNotificationCards, readNotificationCards } =
         useNotificationCenter(onNotification);
 
@@ -54,11 +52,10 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                         {origins.map((applicationName, index) => (
                             <Chip
                                 style={{
-                                    backgroundColor: `${
-                                        isActive(applicationName)
+                                    backgroundColor: `${isActive(applicationName)
                                             ? tokens.colors.interactive.primary__selected_hover.hex
                                             : tokens.colors.ui.background__medium.hex
-                                    }`,
+                                        }`,
                                 }}
                                 onClick={() => handleClick(applicationName)}
                                 key={applicationName + index}

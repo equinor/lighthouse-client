@@ -5,7 +5,6 @@ export async function postWorkflowStatus(name: string, workflowOwner: string): P
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'POST',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({ name: name, owner: workflowOwner }),
     };
 

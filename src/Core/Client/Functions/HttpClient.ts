@@ -1,5 +1,8 @@
+import { baseClient } from '@equinor/http-client';
 import { HttpClients } from '../Types/HttpClients';
-import { readClients } from './Readers';
+import { Scope } from '../Types/ScopeAndUrls';
+import { getAuthProvider } from './getAuthProvider';
+import { readAppConfig } from './Readers';
 
 export interface HttpClientOptions {
     scope: string;
@@ -22,8 +25,33 @@ export interface HttpClientOptions {
  * @param {HttpClientOptions} [options]
  * @return {*}  {HttpClients}
  */
-export function httpClient(): HttpClients {
-    const clients = readClients();
+export function httpClient(options?: HttpClientOptions): HttpClients {
+    const appConfig = readAppConfig();
+    const authProvider = getAuthProvider();
 
-    return clients;
+    const customScope = options?.scope || '';
+
+    const apiClients = {
+        customHttpClient: baseClient(authProvider, [customScope]),
+    };
+
+    Object.keys(appConfig.scope).forEach((key) => {
+        apiClients[key] = baseClient(
+            authProvider,
+            getScope(key, appConfig.scope),
+            appConfig.urls[key]
+        );
+    });
+
+    return apiClients as HttpClients;
+}
+
+function getScope(key: string, scopes: Scope): string[] {
+    const currentScope = scopes[key];
+
+    if (currentScope) {
+        return [currentScope];
+    } else {
+        return Object.keys(scopes).map((scopeKey) => (scopeKey.includes(key) ? scopeKey : ''));
+    }
 }

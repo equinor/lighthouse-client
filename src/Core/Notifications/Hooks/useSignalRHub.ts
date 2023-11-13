@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { HubConnectionBuilder, HubConnection } from '@microsoft/signalr';
-import { useFramework } from '@equinor/fusion-framework-react';
 
 interface SignalR {
     hubConnection: HubConnection | null;
@@ -8,10 +7,7 @@ interface SignalR {
     isEstablishingHubConnection: boolean;
 }
 
-export function useSignalRHub(hubUrl: string): SignalR {
-    const auth = useFramework().modules.auth;
-    const service = useFramework().modules.serviceDiscovery;
-
+export function useSignalRHub(hubUrl: string, getToken: () => Promise<string>): SignalR {
     const [hubConnection, setHubConnection] = useState<HubConnection | null>(null);
     const [hubConnectionError, setHubConnectionError] = useState<Error | null>(null);
     const [isEstablishingHubConnection, setIsEstablishingHubConnection] = useState(false);
@@ -21,15 +17,7 @@ export function useSignalRHub(hubUrl: string): SignalR {
         const hubConnect = new HubConnectionBuilder()
             .withAutomaticReconnect()
             .withUrl(hubUrl, {
-                accessTokenFactory: async () => {
-                    const token = await auth.acquireAccessToken({
-                        scopes: (await service.resolveService('notification')).defaultScopes,
-                    });
-                    if (!token) {
-                        throw Error('failed to acquire access token');
-                    }
-                    return token;
-                },
+                accessTokenFactory: async () => await getToken(),
             })
             .build();
         try {

@@ -10,7 +10,6 @@ export async function voidReleaseControl({ releaseControlId }: VoidParams): Prom
 
     const requestOptions = {
         method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({}),
     };
     const res = await scopeChange.fetch(
@@ -26,7 +25,6 @@ export async function unVoidReleaseControl({ releaseControlId }: VoidParams): Pr
 
     const requestOptions = {
         method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
     };
     const res = await scopeChange.fetch(
         `api/releasecontrol/${releaseControlId}/unvoid`,

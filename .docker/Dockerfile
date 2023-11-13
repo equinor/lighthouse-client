@@ -1,15 +1,14 @@
 # uild environment
-FROM node:18.0.0 as build
+FROM node:17.8.0 as build
 
 # Copy App
 WORKDIR /app
 COPY . /app
 
-# Build
-RUN npm i -g pnpm@8.0.0
-RUN pnpm install
-RUN pnpm test
-RUN pnpm build 
+# Build 
+RUN yarn install
+RUN yarn test
+RUN yarn build 
 
 # Production environment
 FROM nginx:1.20.2-alpine

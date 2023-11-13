@@ -6,12 +6,17 @@ import {
 } from '@equinor/Admin';
 import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
-import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import {
     actionCenterSidesheetWidgetComponent,
     actionCenterSidesheetWidgetManifest,
 } from '../components/ActionCenter/ActionCenterSidesheet';
-
+import {
+    htSidesheetWidgetComponent,
+    htSidesheetWidgetManifest,
+    ReleaseControlSidesheetWidgetComponent,
+    ReleaseControlSidesheetWidgetManifest,
+} from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
+import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import {
@@ -41,17 +46,11 @@ import {
     workOrderCreatorComponent,
     workOrderCreatorManifest,
 } from './WorkOrder/utility/sidesheetConfig';
-import {
-    htSidesheetWidgetManifest,
-    ReleaseControlSidesheetWidgetManifest,
-    htSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetComponent,
-} from './DisciplineReleaseControl/sidesheet';
 
 const _widgets: WidgetManifest[] = [
     changeSideSheetWidgetManifest,
-    htSidesheetWidgetManifest as any,
-    ReleaseControlSidesheetWidgetManifest as any,
+    htSidesheetWidgetManifest,
+    ReleaseControlSidesheetWidgetManifest,
     actionCenterSidesheetWidgetManifest,
     changeCreatorManifest,
     releaseManifest,
@@ -63,6 +62,7 @@ const _widgets: WidgetManifest[] = [
     punchSidesheetWidgetManifest,
     querySidesheetWidgetManifest,
     workflowStepWidgetManifest,
+
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
     tagWidgetManifest,
@@ -70,17 +70,17 @@ const _widgets: WidgetManifest[] = [
 
 const _widgetComponents: ComponentManifest[] = [
     changeSideSheetWidgetComponent,
-    htSidesheetWidgetComponent as any,
-    ReleaseControlSidesheetWidgetComponent as any,
+    htSidesheetWidgetComponent,
+    ReleaseControlSidesheetWidgetComponent,
     actionCenterSidesheetWidgetComponent,
     changeCreatorComponent,
     releaseComponent,
     workflowComponent,
     workflowStepComponent,
     swcrCreatorComponent,
-    workOrderCreatorComponent,
-    workOrderCreatorComponent,
     handoverCreatorComponent,
+    workOrderCreatorComponent,
+    workOrderCreatorComponent,
     releaseCreatorComponent,
     punchSidesheetWidgetComponent,
     querySidesheetWidgetComponent,

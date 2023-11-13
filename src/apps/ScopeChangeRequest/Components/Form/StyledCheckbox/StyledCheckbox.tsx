@@ -10,7 +10,7 @@ interface StyledCheckboxProps {
 export const StyledCheckbox = ({ label, onChange, value }: StyledCheckboxProps): JSX.Element => {
     return (
         <CheckboxWrapper>
-            <Checkbox crossOrigin={undefined} checked={value} onChange={onChange} />
+            <Checkbox checked={value} onChange={onChange} />
             <div>{label}</div>
         </CheckboxWrapper>
     );

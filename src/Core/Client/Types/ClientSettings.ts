@@ -6,5 +6,4 @@ export interface ClientSettings {
     clientEnv: string;
     user?: User;
     userImageUrl?: string;
-    contactPerson: string;
 }

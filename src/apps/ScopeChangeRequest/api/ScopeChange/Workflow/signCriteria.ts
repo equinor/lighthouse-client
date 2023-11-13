@@ -21,7 +21,6 @@ export async function signCriteria({
 
     const requestOptions = {
         method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({
             signedComment: comment,
             signedState: verdict,

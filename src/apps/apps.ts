@@ -13,11 +13,11 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './Checklist';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
+import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import { setup as MDRSetup } from './MDR';
 import { setup as querySetup } from './Query';
-import { setup as handoverSetup } from './Handover';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
@@ -37,7 +37,7 @@ import { setup as EITSetup } from './EIT';
 import { setup as activitiesSetup } from './Activities';
 import { setup as allowanceSetup } from './Allowance';
 export function getApps(): AppManifest[] {
-    return apps.concat(oldApps);
+    return apps;
 }
 
 export function getAppGroups(): AppGroups {
@@ -115,25 +115,6 @@ export const appGroups: Record<Apps, AppGroupe> = {
         columnId: 3,
     },
 };
-
-export const oldApps: AppManifest[] = [
-    {
-        title: 'Handover Old',
-        shortName: 'handover',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-            setup: handoverSetup,
-        },
-        appEnv: 'prod',
-        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
-        deprecated: true,
-    },
-];
-
 export const apps: AppManifest[] = [
     // Project information
     {
@@ -297,6 +278,20 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
+        title: 'Handover',
+        shortName: 'handover',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'Workspace',
+            setup: handoverSetup,
+        },
+        appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
+    },
+    {
         title: 'Work order',
         shortName: 'work-order',
         color: '#0364B8',
@@ -347,19 +342,6 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'PowerBIViewer',
             setup: workPreparationSetup,
-        },
-        appEnv: 'prod',
-    },
-    {
-        title: 'Handover',
-        shortName: 'handover-new',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: ['Fusion'],
-        app: {
-            appType: 'FusionApp',
-            setup: () => {},
         },
         appEnv: 'prod',
     },

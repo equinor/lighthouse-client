@@ -11,10 +11,9 @@ export async function voidRequest({ requestId, reasonForVoiding }: VoidParams): 
 
     const requestOptions: RequestInit = {
         method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({ newRevisionOrVoidReason: reasonForVoiding }),
     };
-    const res = await scopeChange.fetchAsync(
+    const res = await scopeChange.patch(
         `api/scope-change-requests/${requestId}/void`,
         requestOptions
     );
@@ -27,7 +26,6 @@ export async function unVoidRequest({ requestId }: Pick<VoidParams, 'requestId'>
 
     const requestOptions = {
         method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
     };
     const res = await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/unvoid`,

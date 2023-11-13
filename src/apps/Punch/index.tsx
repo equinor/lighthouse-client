@@ -12,10 +12,8 @@ import { sortPackagesByStatus } from './utility/helpers/sortPackages';
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.fetch('v1/typed/completion/custom_punch/facility/JCA?view-version=v0', {
+    return await FAM.post('v1/typed/completion/custom_punch/facility/JCA?view-version=v0', {
         body: JSON.stringify({}),
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
         signal,
     });
 }

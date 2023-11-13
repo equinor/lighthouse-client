@@ -1,13 +1,9 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { readClientRegistry } from '../../../Core/Client/Functions';
-
-function isNewAppLoaded() {
-    return window.location.href.includes('handover-new');
-}
 
 export const LocationBreadCrumbs = (): JSX.Element => {
     const location = useLocation();
@@ -49,12 +45,6 @@ export const LocationBreadCrumbs = (): JSX.Element => {
                     </Breadcrumbs>
                 </Fragment>
             ))}
-            {isNewAppLoaded() && (
-                <div style={{ color: 'red' }}>
-                    Looking for the old app?
-                    <a href={window.location.href.split('-new')[0].toString()}>Click here</a>
-                </div>
-            )}
         </>
     );
 };

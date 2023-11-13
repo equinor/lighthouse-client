@@ -8,6 +8,7 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
+    WorkflowEditorOptions,
     WorkSpaceConfig,
     WorkSpaceState,
 } from './workspaceState';
@@ -176,14 +177,19 @@ export function createWorkSpace<
 
             return workspaceAPI;
         },
+        registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
+            updateState({ workflowEditorOptions });
+
+            return workspaceAPI;
+        },
         registerHelpPage(helpPageOptions: HelpPageOptions) {
             updateState({ helpPageOptions });
 
             return workspaceAPI;
         },
         registerAdminOptions(adminOptions: AdminOptions) {
-            adminOptions.isAdminValidator(options.client).then((isAdmin) => {
-                if (isAdmin) {
+            adminOptions.isAdminValidator().then((isAdmin) => {
+                if(isAdmin){
                     updateState({
                         adminOptions: adminOptions,
                     });

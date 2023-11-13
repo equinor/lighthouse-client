@@ -73,14 +73,9 @@ const idResolverFunction = async (id: string): Promise<Punch> => {
     const { FAM } = httpClient();
     const expressions = generateExpressions('punchItemNo', 'Equals', [id]);
     const requestArgs = generateFamRequest(customPunchColumns, 'Or', expressions);
-    const res = await FAM.fetchAsync(
-        'v1/typed/completion/custom_punch/facility/JCA?view-version=v0',
-        {
-            body: JSON.stringify(requestArgs),
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-        }
-    );
+    const res = await FAM.post('v1/typed/completion/custom_punch/facility/JCA?view-version=v0', {
+        body: JSON.stringify(requestArgs),
+    });
 
     if (!res.ok) {
         throw 'Not found';

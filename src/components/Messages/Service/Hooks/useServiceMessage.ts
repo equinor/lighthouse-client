@@ -1,6 +1,6 @@
-import { useHttpClient } from '@equinor/lighthouse-portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { storage } from '@equinor/lighthouse-utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ServiceMessage } from '../Types/serviceMessage';
 
 const SM_KEY = 'serviceMessageId';
@@ -12,8 +12,7 @@ interface Return {
 }
 
 export function useServiceMessage(): Return {
-    const appConfig = useHttpClient('appConfig');
-
+    const { appConfig } = useMemo(() => httpClient(), []);
     const [isActive, setIsActive] = useState<boolean>(false);
     const [message, setMessage] = useState<ServiceMessage | undefined>();
 
@@ -35,7 +34,7 @@ export function useServiceMessage(): Return {
 
     useEffect(() => {
         (async () => {
-            const response = await appConfig.fetchAsync('api/serviceMessage');
+            const response = await appConfig.get('api/serviceMessage');
             if (!response.ok) return;
             const data = localMessage(await response.json());
             if (data && data.id) {

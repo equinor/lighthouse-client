@@ -29,11 +29,9 @@ export const getWorkorders = async (
     signal?: AbortSignal
 ): Promise<Workorder[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.fetchAsync(
+    const res = await FAM.post(
         `v1/typed/completion/custom_loopworkorders/facility/JCA?view-version=v1`,
         {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
             body: JSON.stringify(famFilter),
             signal,
         }

@@ -25,7 +25,7 @@ export function useFusionClient(
     filterOptions?: Filter[],
     options?: Pick<PBIOptions, 'showFilter' | 'enablePageNavigation' | 'defaultPage' | 'bookmark'>
 ): useFusionClientReturn {
-    const fusionPbi = useHttpClient('fusionPbi');
+    const { fusionPbi } = useHttpClient();
 
     const baseUri = `reports`;
 

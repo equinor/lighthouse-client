@@ -11,7 +11,6 @@ import {
     Bookmarks,
     BookmarkLinkWrapper,
 } from './BookmarksSidesheet.styles';
-
 const AppNameHeader = styled.div`
     font-size: 14px;
     line-height: 16px;
@@ -20,19 +19,12 @@ const AppNameHeader = styled.div`
 type AppBookmarkProps = {
     appKey: string;
     appBookmarks: BookmarkResponse[];
-    isOld: boolean;
 };
-export const AppBookmarks = ({ appBookmarks, appKey, isOld }: AppBookmarkProps) => {
+export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
     const { apps } = useRegistry();
-    const app = apps.find((app) => {
-        if (!isOld) {
-            return app.shortName === appKey + '-new';
-        } else {
-            return app.shortName === appKey.replace('jc-', '');
-        }
-    });
+    const app = apps.find((app) => app.shortName === appKey.replace('jc-', ''));
 
     return (
         <AppBookmarksContainer>
@@ -57,7 +49,6 @@ export const AppBookmarks = ({ appBookmarks, appKey, isOld }: AppBookmarkProps) 
                         return (
                             <BookmarkLinkWrapper key={bookmark.id}>
                                 <BookmarkEntry
-                                    isOldApplication={bookmark.appKey.includes('jc')}
                                     appKey={appKey}
                                     subSystem={subSystem}
                                     bookmark={bookmark}

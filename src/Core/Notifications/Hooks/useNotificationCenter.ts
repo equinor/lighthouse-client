@@ -5,7 +5,6 @@ import { useQuery, useQueryClient } from 'react-query';
 import { notificationQueries } from '../queries/notificationQueries';
 import { Notification } from '../Types/Notification';
 import { useSignalRHub } from './useSignalRHub';
-import { useFramework } from '@equinor/fusion-framework-react';
 
 interface NotificationCenter {
     isFetchingRead: boolean;
@@ -21,9 +20,7 @@ export type ConnectionState = 'Connected' | 'Reconnecting' | 'Disconnected';
 export function useNotificationCenter(
     onNotification?: (notification: Notification) => void
 ): NotificationCenter {
-    const client = useHttpClient('fusionNotifications');
-    const fusion = useHttpClient('fusion');
-
+    const { fusion } = useHttpClient();
     const queryClient = useQueryClient();
     const [state, setState] = useState<ConnectionState>('Disconnected');
 
@@ -33,21 +30,22 @@ export function useNotificationCenter(
         unknown,
         unknown,
         Notification[]
-    >(getReadNotificationsQuery(client));
+    >(getReadNotificationsQuery());
     const { data: unreadNotifications, isFetching: isFetchingUnRead } = useQuery<
         unknown,
         unknown,
         Notification[]
-    >(getUnreadNotificationsQuery(client));
+    >(getUnreadNotificationsQuery());
 
     const { hubConnection } = useSignalRHub(
-        `${fusion.uri}/signalr/hubs/notifications/?negotiateVersion=1`
+        `${fusion.getBaseUrl()}/signalr/hubs/notifications/?negotiateVersion=1`,
+        fusion.getAccessToken
     );
 
     const onNotificationRecieved = useCallback(
         (notification: Notification) => {
             onNotification && onNotification(notification);
-            queryClient.invalidateQueries(getUnreadNotificationsQuery(client).queryKey);
+            queryClient.invalidateQueries(getUnreadNotificationsQuery().queryKey);
         },
         [getUnreadNotificationsQuery, onNotification, queryClient]
     );

@@ -10,15 +10,10 @@ import {
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.fetchAsync(
-        'v1/typed/Completion/Custom_LoopMCCR/facility/JCA?view-version=v1',
-        {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({}),
-            signal,
-        }
-    );
+    return await FAM.post('v1/typed/Completion/Custom_LoopMCCR/facility/JCA?view-version=v1', {
+        body: JSON.stringify({}),
+        signal,
+    });
 }
 
 export function setup(addApi: ClientApi): void {

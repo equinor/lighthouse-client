@@ -5,6 +5,6 @@ type Bookmark<T extends unknown = unknown> = BookmarkResponse & {
 };
 export const getBookmarkById = async (bookmarkId: string): Promise<Bookmark> => {
     const { fusionBookmarks } = httpClient();
-    const res = await fusionBookmarks.fetchAsync(`bookmarks/${bookmarkId}`);
+    const res = await fusionBookmarks.get(`bookmarks/${bookmarkId}`);
     return await res.json();
 };

@@ -17,10 +17,10 @@ interface ReleaseControlHTSidesheetProps {
     actions: SidesheetApi;
 }
 
-export function ReleaseControlHTSidesheet({
+export const ReleaseControlHTSidesheet = ({
     actions,
     item,
-}: ReleaseControlHTSidesheetProps): JSX.Element {
+}: ReleaseControlHTSidesheetProps): JSX.Element => {
     const [errorMessage] = useState<ServerError | undefined>();
 
     const [activeTab, setActiveTab] = useState<number>(0);
@@ -82,4 +82,4 @@ export function ReleaseControlHTSidesheet({
             </Tabs>
         </>
     );
-}
+};

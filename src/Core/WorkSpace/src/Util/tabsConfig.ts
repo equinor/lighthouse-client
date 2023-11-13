@@ -1,5 +1,6 @@
 import React from 'react';
 import { Analytics } from '../Icons/Analytics';
+import { Gantt } from '../Icons/Gantt';
 import { Garden } from '../Icons/Garden';
 import { HelpPageIcon } from '../Icons/Help';
 import { AdminIcon } from '../Icons/Admin';
@@ -10,7 +11,9 @@ import { HelpPageTab } from '../Tabs/HelpPageTab';
 import { ListTab as TableTab } from '../Tabs/ListTab/ListTab';
 import { ListTabPopover } from '../Tabs/ListTab/ListTabPopover';
 import { PowerBiTab } from '../Tabs/PowerBiTab';
+import { TimelineTab } from '../Tabs/TimeLineTAb';
 import { TreeTab } from '../Tabs/TreeTab';
+import { VisualEditorTab } from '../Tabs/VisualEditorTab';
 import { WorkSpaceConfig, WorkspaceTab } from '../WorkSpaceApi/workspaceState';
 import { AdminTab } from '../Tabs/AdminTab';
 
@@ -43,6 +46,18 @@ const tabsConfig: TabsConfigItem[] = [
         viewComponent: GardenTab,
     },
     {
+        title: 'Timeline',
+        tabId: 'gantt',
+        icon: Gantt,
+        viewComponent: TimelineTab,
+    },
+    {
+        title: 'Editor',
+        tabId: 'editor',
+        icon: Gantt,
+        viewComponent: VisualEditorTab,
+    },
+    {
         title: 'PowerBI',
         tabId: 'analytics',
         icon: Analytics,
@@ -72,6 +87,8 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         treeOptions,
         tableOptions,
         gardenOptions,
+        timelineOptions,
+        workflowEditorOptions,
         powerBiOptions,
         helpPageOptions,
         adminOptions,
@@ -80,6 +97,8 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
             if (treeOptions && item.title === 'Tree') return true;
             if (tableOptions && item.title === 'Table') return true;
             if (gardenOptions && item.title === 'Garden') return true;
+            if (timelineOptions && item.title === 'Timeline') return true;
+            if (workflowEditorOptions && item.title === 'Editor') return true;
             if (powerBiOptions && item.title === 'PowerBI') return true;
             if (helpPageOptions && item.title === 'Help') return true;
             if (adminOptions && item.title === 'Admin') return true;

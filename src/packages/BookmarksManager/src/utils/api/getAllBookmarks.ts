@@ -6,7 +6,7 @@ type ErrorResponse = {
 export const getAllBookmarks = async (signal?: AbortSignal) => {
     const { fusionBookmarks } = httpClient();
     const filterSourceSystem = "$filter=sourcesystem.name eq 'Castberg-portal'";
-    const response = await fusionBookmarks.fetchAsync(
+    const response = await fusionBookmarks.get(
         `persons/me/bookmarks?api-version=1.0&${filterSourceSystem}`,
         { signal }
     );
@@ -16,5 +16,5 @@ export const getAllBookmarks = async (signal?: AbortSignal) => {
         throw new BookmarkError(error?.message);
     }
 
-    return response.json();
+    return await response.json();
 };

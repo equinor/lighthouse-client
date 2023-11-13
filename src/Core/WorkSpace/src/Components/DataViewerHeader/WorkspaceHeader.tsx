@@ -8,6 +8,7 @@ import { LeftSection, FillSection, RightSection } from './HeaderStyles';
 import { HeaderTabButtons } from './HeaderTabButtons/HeaderTabButtons';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useFilterApiContext } from '@equinor/filter';
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import { ViewSettings } from './ViewSettings/ViewSettings';
 
 interface WorkspaceHeaderProps {
@@ -38,6 +39,7 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
 
                 <HeaderTabButtons tabs={tabs} />
 
+                <BookmarkDropdown appKey={shortName} subSystem={group} />
                 <ViewSettings tabs={tabs} />
             </RightSection>
         </>

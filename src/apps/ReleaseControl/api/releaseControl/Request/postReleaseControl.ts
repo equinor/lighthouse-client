@@ -16,7 +16,6 @@ export async function postReleaseControl(
 
     const requestOptions = {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
         body: JSON.stringify(payload),
     };
 

@@ -14,9 +14,8 @@ const AppGroupHeader = styled.div`
 type AppGroupProps = {
     appGroupName: string;
     appGroupBookmarks: Record<string, BookmarkResponse[]>;
-    isOld: boolean;
 };
-export const AppGroup = ({ appGroupBookmarks, appGroupName, isOld }: AppGroupProps) => {
+export const AppGroup = ({ appGroupBookmarks, appGroupName }: AppGroupProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
     return (
@@ -35,7 +34,6 @@ export const AppGroup = ({ appGroupBookmarks, appGroupName, isOld }: AppGroupPro
                     {Object.keys(appGroupBookmarks).map((appKey) => {
                         return (
                             <AppBookmarks
-                                isOld={isOld}
                                 key={appKey}
                                 appBookmarks={appGroupBookmarks[appKey]}
                                 appKey={appKey}

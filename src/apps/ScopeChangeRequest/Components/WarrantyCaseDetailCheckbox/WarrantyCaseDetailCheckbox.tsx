@@ -7,13 +7,8 @@ export const WarrantyCaseDetailCheckbox = (): JSX.Element => {
 
     return (
         <CheckboxWrapper>
-            <Checkbox
-                crossOrigin={undefined}
-                readOnly={true}
-                disabled
-                checked={potentialWarrantyCase}
-            />{' '}
-            Potential warranty case
+            <Checkbox readOnly={true} disabled checked={potentialWarrantyCase} /> Potential warranty
+            case
         </CheckboxWrapper>
     );
 };
