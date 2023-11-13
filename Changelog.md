@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.37.4
+
+-   [Portal] Fix: when clicking a task it now opens a new tab with the corresponding scr sidesheet
+
 ## 1.37.3
 
 -   [ScopeChangeRequest] Fix sidesheet header overflow:hidden
