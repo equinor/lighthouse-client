@@ -62,7 +62,7 @@ export function useWorkflowSigning({
                         criteriaId: criteriaId,
                         verdict: action,
                         comment: comment,
-                    }).then(() => queryClient.invalidateQueries());
+                    }).then(() => queryClient.invalidateQueries('releasecontrol'));
                 }
             );
         } else {
