@@ -119,13 +119,12 @@ export const SubmitButtonBar = (): JSX.Element => {
     const queryClient = useQueryClient();
     const redirect = async (releaseControlId: string) => {
         if (!releaseControlId) return;
-
+        queryClient.invalidateQueries({ queryKey: ['release'], exact: false });
         swapComponent(
             ReleaseControlSidesheet,
             await getReleaseControlById(releaseControlId),
             releaseManifest
         );
-        queryClient.invalidateQueries('releasecontrol');
     };
 
     const { mutate, isLoading } = useMutation(createReleaseControlMutation, {
