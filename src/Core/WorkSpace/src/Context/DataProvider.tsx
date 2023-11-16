@@ -14,7 +14,6 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions,
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 
@@ -28,11 +27,9 @@ type DataState = {
     filterOptions?: FilterOptions<Record<PropertyKey, unknown>>;
     tableOptions?: TableOptions<Record<PropertyKey, unknown>>;
     treeOptions?: TreeOptions<Record<PropertyKey, unknown>>;
-    timelineOptions?: any;
     gardenOptions?: GardenOptions<Record<PropertyKey, unknown>>;
     statusFunc?: StatusFunc<Record<PropertyKey, unknown>>;
     powerBiOptions?: PowerBiOptions;
-    workflowEditorOptions?: WorkflowEditorOptions;
 };
 type DataContextState = DataState & {
     data: Record<PropertyKey, unknown>[];
@@ -68,12 +65,10 @@ const resetConfig = {
     filterOptions: undefined,
     tableOptions: undefined,
     treeOptions: undefined,
-    timelineOptions: undefined,
     gardenOptions: undefined,
     analyticsOptions: undefined,
     statusFunc: undefined,
     powerBiOptions: undefined,
-    workflowEditorOptions: undefined,
 };
 
 export const actions = {
@@ -175,7 +170,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         <DataContext.Provider
             value={{
                 ...state,
-                data: queryApi.data || [],
+                data: (queryApi.data as Record<PropertyKey, unknown>[]) || [],
                 dataApi: {
                     ...queryApi,
                     queryKey: key,

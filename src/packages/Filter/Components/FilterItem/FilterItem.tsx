@@ -55,6 +55,7 @@ export const FilterItem = ({
             }}
         >
             <Checkbox
+                crossOrigin={undefined}
                 checked={!isUnChecked}
                 onChange={() =>
                     changeFilterItem(

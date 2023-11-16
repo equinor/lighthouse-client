@@ -8,9 +8,9 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions,
     WorkspaceTab,
 } from './workspaceState';
+import { IHttpClient } from '@equinor/fusion-framework-module-http';
 
 export type DataSource<T extends Record<PropertyKey, unknown>> = {
     /** Function that returns the api call promise */
@@ -31,6 +31,7 @@ export interface WorkspaceOptions<
     objectIdentifier: keyof T;
     viewerId: string;
     defaultTab?: WorkspaceTab;
+    client: IHttpClient;
     openSidesheet: OpenSidesheetFunc;
     customSidesheetOptions?: WorkspaceSideSheet<T, SideSheetId>;
     customGroupeSidesheet?: WorkspaceSideSheet<any, string>;
@@ -67,7 +68,6 @@ export type WorkSpaceApi<T extends Record<PropertyKey, unknown>> = {
     registerGardenOptions: (options: GardenOptions<T>) => WorkSpaceApi<T>;
     registerStatusItems: (options: StatusFunc<T>) => WorkSpaceApi<T>;
     registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
-    registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
     registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
     registerHelpPage: (options: HelpPageOptions) => WorkSpaceApi<T>;
@@ -114,5 +114,5 @@ export type HelpPageOptions = {
 export type AdminOptions = {
     app?: string;
     component: JSX.Element | null;
-    isAdminValidator: () => Promise<boolean>;
+    isAdminValidator: (client: IHttpClient) => Promise<boolean>;
 };

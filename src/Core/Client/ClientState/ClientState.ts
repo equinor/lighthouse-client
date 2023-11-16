@@ -11,6 +11,7 @@ const INITIAL_STATE = {
         logging: false,
         isProduction: false,
         clientEnv: 'dev',
+        contactPerson: '',
     },
     context: {
         project: {

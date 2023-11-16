@@ -11,6 +11,7 @@ export async function deisolateCircuit(circuitTagNo: string): Promise<EleNetwork
 
     const requestOptions = {
         method: 'POST',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify(payload),
     };
 

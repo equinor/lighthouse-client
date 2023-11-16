@@ -23,9 +23,11 @@ export const getqueryCommpkg = async (
     signal?: AbortSignal
 ): Promise<QueryCommpkg[]> => {
     const { FAM } = httpClient();
-    const res = await FAM.post(
+    const res = await FAM.fetchAsync(
         `v1/typed/completion/custom_commissioningpackagequery/facility/JCA?view-version=v0`,
         {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
             body: JSON.stringify(famFilter),
             signal,
         }
