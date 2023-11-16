@@ -39,6 +39,22 @@ export const BookmarkSidesheet = ({ actions }: BookmarksSidesheetProps) => {
     if (!bookmarks || bookmarks.length === 0)
         return (
             <Center>
+                {!!appKey && (
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '2em' }}>
+                        <TextField
+                            label="Bookmark name"
+                            onChange={(e: ChangeEvent) => setVal((e.target as any).value)}
+                            value={val}
+                            id="bookmarkName"
+                        />
+                        <CreateBookmarkButton
+                            refetch={refetch}
+                            appKey={appKey}
+                            bookmarkName={val}
+                            resetName={() => setVal('')}
+                        />
+                    </div>
+                )}
                 <Icon name="info_circle" size={32} />
                 <InfoText>No bookmarks</InfoText>
             </Center>
