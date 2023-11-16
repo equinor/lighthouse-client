@@ -30,6 +30,7 @@ export function useReleaseControlMutation<
     function invalidate() {
         queryClient.invalidateQueries(appName);
         queryClient.invalidateQueries(baseKey);
+        queryClient.invalidateQueries({ queryKey: ['release'] });
     }
 
     return useMutation(mutationKey, mutationFn, {
