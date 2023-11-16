@@ -16,7 +16,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'State',
         valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
-        defaultUncheckedValues: ['Voided', 'Draft'],
+        defaultUncheckedValues: ['Voided', 'Closed'],
         isQuickFilter: true,
     },
     {
