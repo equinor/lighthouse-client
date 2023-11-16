@@ -11,7 +11,7 @@ import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 import { ComponentWrapper } from './ComponentWrapper';
 import { AppLoaderWrapper } from '../../fusion-framework/AppLoaderWrapper';
 import { useFramework } from '@equinor/fusion-framework-react';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { ContextItem } from '@equinor/fusion-framework-module-context';
 import EquinorLoader from '../../fusion-framework/EquinorLoader';
 
@@ -49,10 +49,6 @@ export function ContextGuard({ children }: ContextGuardProps) {
     return <>{children}</>;
 }
 
-const queryClient = new QueryClient({
-    defaultOptions: { queries: { refetchOnWindowFocus: false } },
-});
-
 export function ClientRoutes(): JSX.Element {
     const {
         appConfig,
@@ -67,72 +63,68 @@ export function ClientRoutes(): JSX.Element {
     }, [currentRoute]);
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <Routes>
-                <Route path={'/'} element={<ClientHome />} />
-                {Object.keys(appGroups).map((key) => {
-                    const group = appGroups[key];
-                    const links = apps.filter((app) => {
-                        return app.groupe === (key as Apps);
-                    });
+        <Routes>
+            <Route path={'/'} element={<ClientHome />} />
+            {Object.keys(appGroups).map((key) => {
+                const group = appGroups[key];
+                const links = apps.filter((app) => {
+                    return app.groupe === (key as Apps);
+                });
+                return (
+                    <Route
+                        key={key}
+                        path={`${key}`}
+                        element={<GroupView group={group} links={links} groupeId={key} />}
+                    />
+                );
+            })}
+            {apps.map((route) => {
+                if (route.app?.appType === 'Workspace') {
+                    const api = {
+                        ...route,
+                        appConfig,
+                        hasSidesheet: true,
+                        isProduction,
+                    };
                     return (
                         <Route
-                            key={key}
-                            path={`${key}`}
-                            element={<GroupView group={group} links={links} groupeId={key} />}
+                            key={route.shortName + route.groupe}
+                            path={`${route.groupe}/${route.shortName}/*`}
+                            element={<WorkSpace {...api} />}
                         />
                     );
-                })}
-                {apps.map((route) => {
-                    if (route.app?.appType === 'Workspace') {
-                        const api = {
-                            ...route,
-                            appConfig,
-                            hasSidesheet: true,
-                            isProduction,
-                        };
-                        return (
+                }
+                if (route.app?.appType === 'PowerBIViewer') {
+                    return (
+                        <Route key={route.shortName + route.groupe}>
                             <Route
-                                key={route.shortName + route.groupe}
-                                path={`${route.groupe}/${route.shortName}/*`}
-                                element={<WorkSpace {...api} />}
+                                key={route.shortName}
+                                path={`${route.groupe}/${route.shortName}`}
+                                element={<PowerBiViewer {...route} />}
                             />
-                        );
-                    }
-                    if (route.app?.appType === 'PowerBIViewer') {
-                        return (
-                            <Route key={route.shortName + route.groupe}>
-                                <Route
-                                    key={route.shortName}
-                                    path={`${route.groupe}/${route.shortName}`}
-                                    element={<PowerBiViewer {...route} />}
-                                />
-                            </Route>
-                        );
-                    }
+                        </Route>
+                    );
+                }
 
-                    if (route.app?.appType === 'FusionApp') {
-                        return (
-                            <Route
-                                key={route.shortName + route.groupe}
-                                path={`${route.groupe}/${route.shortName}/*`}
-                                element={
-                                    <AppLoaderWrapper
-                                        appKey={route.shortName.replace('-new', '')}
-                                    />
-                                }
-                            />
-                        );
-                    }
+                if (route.app?.appType === 'FusionApp') {
                     return (
                         <Route
-                            key={route.shortName}
-                            path={`${route.groupe}/${route.shortName}`}
-                            element={<ComponentWrapper {...route} />}
+                            key={route.shortName + route.groupe}
+                            path={`${route.groupe}/${route.shortName}/*`}
+                            element={
+                                <AppLoaderWrapper appKey={route.shortName.replace('-new', '')} />
+                            }
                         />
                     );
-                })}
-            </Routes>
-        </QueryClientProvider>
+                }
+                return (
+                    <Route
+                        key={route.shortName}
+                        path={`${route.groupe}/${route.shortName}`}
+                        element={<ComponentWrapper {...route} />}
+                    />
+                );
+            })}
+        </Routes>
     );
 }
