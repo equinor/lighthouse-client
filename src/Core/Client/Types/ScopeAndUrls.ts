@@ -5,7 +5,6 @@ export interface Scope {
     echoModelDist: string;
     echoHierarchy: string;
     scopeChange: string;
-    constructionProgress: string;
     releaseControls: string;
     FAM: string;
     STID: string;
@@ -24,7 +23,6 @@ export interface Urls {
     fusion: string;
     procosys: string;
     scopeChange: string;
-    constructionProgress: string;
     releaseControls: string;
     FAM: string;
     STID: string;

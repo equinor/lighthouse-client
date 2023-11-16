@@ -6,7 +6,9 @@ type Args = Fields & {
 };
 export const patchBookmark = async ({ bookmarkId, ...args }: Args) => {
     const { fusionBookmarks } = httpClient();
-    await fusionBookmarks.patch(`bookmarks/${bookmarkId}?api-version=1.0`, {
+    await fusionBookmarks.fetchAsync(`bookmarks/${bookmarkId}?api-version=1.0`, {
         body: JSON.stringify(args),
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
     });
 };

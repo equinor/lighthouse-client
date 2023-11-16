@@ -9,6 +9,7 @@ export async function patchWorkflowTemplate(
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
+        headers: { ['content-type']: 'application/json' },
         body: JSON.stringify({ stepTemplates: template.workflowStepTemplates }),
     };
 

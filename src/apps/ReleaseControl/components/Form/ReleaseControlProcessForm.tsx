@@ -125,7 +125,7 @@ export const SubmitButtonBar = (): JSX.Element => {
             await getReleaseControlById(releaseControlId),
             releaseManifest
         );
-        queryClient.invalidateQueries();
+        queryClient.invalidateQueries('releasecontrol');
     };
 
     const { mutate, isLoading } = useMutation(createReleaseControlMutation, {
