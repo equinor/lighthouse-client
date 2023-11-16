@@ -6,7 +6,7 @@ import { SaveEventArgs, bookmarkEvents, useGetAllBookmarks } from '../..';
 import { AppGroup } from './AppGroup';
 import { Center, InfoText, SidesheetContent } from './BookmarksSidesheet.styles';
 import { groupBookmarksBySubSystemAppkey } from './groupBookmarksBySubSystemAppKey';
-import { getApps } from '../../../../../apps/apps';
+import { apps, getApps } from '../../../../../apps/apps';
 import { useFusionBookmarks } from '../../../../../hooks/useFusionBookmarks';
 import { useMutation } from 'react-query';
 
@@ -117,7 +117,12 @@ function CreateBookmarkButton({
 
     const isLoading = isFusionBookmarksLoading || isOgLoading;
 
-    if (['handover-new'].includes(appKey)) {
+    if (
+        apps
+            .filter((s) => s.app?.appType === 'FusionApp')
+            .map((s) => s.shortName)
+            .includes(appKey)
+    ) {
         return (
             <Button style={{ width: '40%' }} onClick={() => mutateAsync()}>
                 {isLoading ? <CircularProgress /> : 'Create bookmark'}
