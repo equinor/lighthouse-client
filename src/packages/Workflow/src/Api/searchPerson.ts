@@ -1,10 +1,10 @@
-import { HttpClient } from '@equinor/http-client';
+import { IHttpClient } from '@equinor/fusion-framework-module-http';
 import { PersonSearch, TypedSelectOption } from '@equinor/Workflow';
 
 export const searchPerson = async (
     searchString: string,
     plantId: string,
-    procosysClient: HttpClient,
+    procosysClient: IHttpClient,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];

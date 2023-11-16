@@ -22,6 +22,7 @@ import {
     FormWrapper,
     Section,
 } from './ScopeChangeForm.styles';
+import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
@@ -74,7 +75,7 @@ const SubmitButtonBar = () => {
             await getScopeChangeById(scopeChangeId),
             changeSideSheetWidgetManifest
         );
-        queryClient.invalidateQueries();
+        queryClient.invalidateQueries(['scopechange']);
     };
 
     const { mutate, isLoading } = useMutation(createScopeChangeMutation, {

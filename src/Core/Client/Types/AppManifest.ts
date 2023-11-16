@@ -15,4 +15,5 @@ export type AppManifest = {
     appEnv?: AppEnvironment;
     app?: App;
     helpPageUrl?: string;
+    deprecated?: true;
 };

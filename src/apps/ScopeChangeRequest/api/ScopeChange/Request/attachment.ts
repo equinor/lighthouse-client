@@ -11,10 +11,10 @@ export const uploadAttachment = async ({ file, requestId }: AttachmentParams): P
     const { scopeChange } = httpClient();
     formData.set('File', file, file.name);
 
-    const res = await scopeChange.uploadFile(
-        `api/scope-change-requests/${requestId}/attachments`,
-        formData
-    );
+    const res = await scopeChange.fetchAsync(`api/scope-change-requests/${requestId}/attachments`, {
+        body: formData,
+        method: 'POST',
+    });
 
     await throwOnError(res, 'Failed to upload attachment');
 };

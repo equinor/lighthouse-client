@@ -17,7 +17,9 @@ export function useReleaseControlMutationWatcher(requestId: string): void {
 
     useGlobalMutationListener({
         onMutationSettled: (mutationEvent) => {
-            baseKey ? queryClient.invalidateQueries(baseKey) : queryClient.invalidateQueries();
+            baseKey
+                ? queryClient.invalidateQueries(baseKey)
+                : queryClient.invalidateQueries(baseKey);
             /** Only invalidate list if the mutation was a success */
             if (mutationEvent.state.status === 'success') {
                 queryClient.invalidateQueries(appName);

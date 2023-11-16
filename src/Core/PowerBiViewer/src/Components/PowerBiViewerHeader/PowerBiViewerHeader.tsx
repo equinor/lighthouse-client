@@ -1,4 +1,3 @@
-import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import { useGetPages } from '@equinor/lighthouse-powerbi';
 import { usePowerBiContext } from '../../Context/PbiContext';
 import {
@@ -20,11 +19,7 @@ interface PowerBiViewerHeaderProps {
     groupName: string;
 }
 
-export const PowerBiViewerHeader = ({
-    title,
-    shortName,
-    groupName,
-}: PowerBiViewerHeaderProps): JSX.Element => {
+export const PowerBiViewerHeader = ({ title }: PowerBiViewerHeaderProps): JSX.Element => {
     const { report, activePage, setActivePage } = usePowerBiContext();
     const { pages } = useGetPages(report);
 
@@ -64,8 +59,6 @@ export const PowerBiViewerHeader = ({
                 <RightSection>
                     <Line />
                     <Divider />
-
-                    <BookmarkDropdown appKey={shortName} subSystem={groupName} />
                 </RightSection>
             </HeaderContent>
         </HeaderWrapper>

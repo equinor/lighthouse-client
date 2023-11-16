@@ -3,12 +3,13 @@ import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { Icon } from '@equinor/lighthouse-components';
-import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
+import { useAppConfig, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
 import { SelectionAction, SelectionMenu } from './components/selectionMenu';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
 import { Message, MessageWrapper, Wrapper } from './ModelViewerStyles';
+import { useFramework } from '@equinor/fusion-framework-react';
 
 export interface ModelViewerProps {
     tags?: string[];
@@ -42,7 +43,7 @@ export const Viewer: React.FC<ViewerProps> = ({
     platformSectionId,
 }: ViewerProps): JSX.Element => {
     const viewerRef = useRef<HTMLCanvasElement>(null);
-    const authProvider = useAuthProvider();
+    const auth = useFramework().modules.auth;
     const { urls, scope } = useAppConfig();
     const { isLoading, message, setMessage, setup, selection, echo3DClient } =
         useModelViewerContext();
@@ -52,9 +53,15 @@ export const Viewer: React.FC<ViewerProps> = ({
      * Setup the Echo3DClient
      */
     useEffect(() => {
-        if (!authProvider) return;
-        const getModelDistributionToken = () => authProvider.getAccessToken([scope.echoModelDist]);
-        const getHierarchyToken = () => authProvider.getAccessToken([scope.echoHierarchy]);
+        const getModelDistributionToken = async () =>
+            (await auth.acquireAccessToken({
+                scopes: [scope.echoModelDist],
+            })) as string;
+
+        const getHierarchyToken = async () =>
+            (await auth.acquireAccessToken({
+                scopes: [scope.echoHierarchy],
+            })) as string;
 
         const modelDistributionConfig = {
             baseUrl: urls.echoModelDist,
@@ -85,7 +92,7 @@ export const Viewer: React.FC<ViewerProps> = ({
             }
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [authProvider]);
+    }, [auth]);
 
     useEffect(() => {
         return () => {
