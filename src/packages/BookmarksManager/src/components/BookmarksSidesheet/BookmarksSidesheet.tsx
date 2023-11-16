@@ -117,7 +117,7 @@ function CreateBookmarkButton({
 
     const isLoading = isFusionBookmarksLoading || isOgLoading;
 
-    if (['handover'].includes(appKey)) {
+    if (['handover-new'].includes(appKey)) {
         return (
             <Button style={{ width: '40%' }} onClick={() => mutateAsync()}>
                 {isLoading ? <CircularProgress /> : 'Create bookmark'}
