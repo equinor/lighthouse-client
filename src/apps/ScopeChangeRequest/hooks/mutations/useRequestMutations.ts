@@ -50,6 +50,7 @@ export function useRequestMutations(): RequestMutations {
             });
 
             queryClient.invalidateQueries(baseKey);
+            queryClient.invalidateQueries(['change']);
             openNewScopeChange(scID);
             return scID;
         }
