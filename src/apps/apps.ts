@@ -362,6 +362,7 @@ export const apps: AppManifest[] = [
             setup: () => {},
         },
         appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
     },
     {
         title: 'Activities',
