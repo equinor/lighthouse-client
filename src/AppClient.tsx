@@ -65,6 +65,7 @@ const ClientEntry = () => {
         {
             staleTime: Infinity,
             cacheTime: Infinity,
+            keepPreviousData: true,
             suspense: true,
             useErrorBoundary: true,
         }
@@ -98,7 +99,13 @@ const Client = ({ appConfig }: ClientProps): JSX.Element => {
             );
             await setupContext(contextClient);
         },
-        { suspense: true, useErrorBoundary: true }
+        {
+            suspense: true,
+            useErrorBoundary: true,
+            cacheTime: Infinity,
+            staleTime: Infinity,
+            keepPreviousData: true,
+        }
     );
 
     const messageData = useServiceMessage();
