@@ -13,10 +13,9 @@ import {
     UnshareModalContent,
 } from './Modal';
 import { Modal } from '@equinor/modal';
-import { appGroups } from '../../../../../apps/apps';
 
 export const createBookmarkURL = (bookmark: BookmarkResponse) => {
-    if (bookmark.appKey.includes('handover')) {
+    if (bookmark.appKey === 'handover') {
         return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}-new?bookmarkId=${bookmark.id}`;
     } else {
         return `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace(
