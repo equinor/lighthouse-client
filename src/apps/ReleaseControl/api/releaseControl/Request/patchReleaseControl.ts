@@ -9,6 +9,7 @@ export async function patchReleaseControl(
     const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
+        headers: { ['content-type']: 'application/json' },
         body: setAsOpen
             ? JSON.stringify({ ...request, setAsOpen: setAsOpen, allowContibutors: true })
             : JSON.stringify({ ...request, allowContibutors: true }),

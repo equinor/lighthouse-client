@@ -7,7 +7,13 @@ export const AtsDetailCheckbox = (): JSX.Element => {
 
     return (
         <CheckboxWrapper>
-            <Checkbox readOnly={true} disabled checked={potentialAtsScope} /> Potential ATS scope
+            <Checkbox
+                crossOrigin={undefined}
+                readOnly={true}
+                disabled
+                checked={potentialAtsScope}
+            />{' '}
+            Potential ATS scope
         </CheckboxWrapper>
     );
 };

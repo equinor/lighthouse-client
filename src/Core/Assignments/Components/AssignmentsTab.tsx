@@ -19,8 +19,8 @@ export function AssignmentsTab(): JSX.Element {
         () =>
             assignments
                 ? assignments
-                    .map(({ sourceSystem }) => sourceSystem.subSystem)
-                    .filter((v, i, a) => v && a.indexOf(v) === i)
+                      .map(({ sourceSystem }) => sourceSystem.subSystem)
+                      .filter((v, i, a) => v && a.indexOf(v) === i)
                 : [],
         [assignments]
     );
@@ -82,10 +82,11 @@ export function AssignmentsTab(): JSX.Element {
                         {origins.map((applicationName) => (
                             <Chip
                                 style={{
-                                    backgroundColor: `${isActive(applicationName)
+                                    backgroundColor: `${
+                                        isActive(applicationName)
                                             ? tokens.colors.interactive.primary__selected_hover.hex
                                             : tokens.colors.ui.background__medium.hex
-                                        }`,
+                                    }`,
                                 }}
                                 onClick={() => handleClick(applicationName)}
                                 key={applicationName}
@@ -103,7 +104,13 @@ export function AssignmentsTab(): JSX.Element {
                         items={[
                             {
                                 label: `${isGroupedBySource ? 'Ungroup' : 'Group by source'} `,
-                                icon: <Checkbox checked={isGroupedBySource} readOnly />,
+                                icon: (
+                                    <Checkbox
+                                        crossOrigin={undefined}
+                                        checked={isGroupedBySource}
+                                        readOnly
+                                    />
+                                ),
                                 onClick: () => setIsGroupedBySource((prev) => !prev),
                             },
                         ]}

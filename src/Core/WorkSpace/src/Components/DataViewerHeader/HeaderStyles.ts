@@ -11,8 +11,8 @@ export const HeaderWrapper = styled.div<{ sideSheetWidth: number }>`
 
 export const TitleBar = styled.div`
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     width: -webkit-fill-available;
 `;
 
