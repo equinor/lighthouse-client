@@ -13,8 +13,20 @@ import {
     UnshareModalContent,
 } from './Modal';
 import { Modal } from '@equinor/modal';
-export const createBookmarkURL = (bookmark : BookmarkResponse) =>  `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace('jc-','')}/${bookmark.appKey.replace('jc-', '')}?bookmarkId=${bookmark.id}`
-type Modals = 'Edit' | 'Delete' | 'Remove' | 'Share' | 'Unshare'; 
+import { appGroups } from '../../../../../apps/apps';
+
+export const createBookmarkURL = (bookmark: BookmarkResponse) => {
+    if (bookmark.appKey.includes('handover')) {
+        return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}-new?bookmarkId=${bookmark.id}`;
+    } else {
+        return `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace(
+            'jc-',
+            ''
+        )}/${bookmark.appKey.replace('jc-', '')}?bookmarkId=${bookmark.id}`;
+    }
+};
+
+type Modals = 'Edit' | 'Delete' | 'Remove' | 'Share' | 'Unshare';
 type MenuOptionsProps = {
     bookmark: BookmarkResponse;
 };
@@ -53,7 +65,7 @@ export const MenuOptions = ({ bookmark }: MenuOptionsProps) => {
         label: 'Copy URL',
         icon: <Icon name="share" />,
         onClick: () => {
-            navigator.clipboard.writeText(createBookmarkURL(bookmark)) 
+            navigator.clipboard.writeText(createBookmarkURL(bookmark));
         },
     };
     bookmark.isShared && ownerOptions.push(sharedOption);
@@ -62,7 +74,8 @@ export const MenuOptions = ({ bookmark }: MenuOptionsProps) => {
             label: 'Remove',
             icon: <Icon name="remove_outlined" />,
             onClick: () => setOpenedModal('Remove'),
-        }, sharedOption 
+        },
+        sharedOption,
     ];
     return (
         <>
