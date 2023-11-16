@@ -12,10 +12,10 @@ import { ServiceMessagePost } from './components/Messages/Service/Components/Ser
 import { ClientRoutes, ContextGuard } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
-import { Framework, useFramework } from '@equinor/fusion-framework-react';
+import { Framework } from '@equinor/fusion-framework-react';
 import EquinorLoader from './fusion-framework/EquinorLoader';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
-import { Suspense, useEffect, useMemo, useRef } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import { createConfig } from './fusion-framework/config';
 import {
     registerAppConfig,

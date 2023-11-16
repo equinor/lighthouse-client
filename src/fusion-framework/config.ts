@@ -10,6 +10,15 @@ import buildQuery from 'odata-query';
 
 export const createConfig = (appSettings: AppConfigResult) => {
     return async (config: FrameworkConfigurator) => {
+        config.configureMsal(
+            {
+                tenantId: appSettings.settings.tenantId,
+                clientId: appSettings.settings.clientId,
+                redirectUri: '/authentication/login-callback',
+            },
+            { requiresAuth: true }
+        );
+
         config.configureServiceDiscovery({
             client: {
                 baseUri: appSettings.urls.fusion,
@@ -24,15 +33,6 @@ export const createConfig = (appSettings: AppConfigResult) => {
                 subSystem: 'Castberg Portal',
             });
         });
-
-        config.configureMsal(
-            {
-                tenantId: appSettings.settings.tenantId,
-                clientId: appSettings.settings.clientId,
-                redirectUri: window.location.origin,
-            },
-            { requiresAuth: true }
-        );
 
         enableAppModule(config);
 
