@@ -12,7 +12,7 @@ RUN pnpm test
 RUN pnpm build 
 
 # Production environment
-FROM nginx:1.20.2-alpine
+FROM nginx:1.25.3-alpine
 
 ## Install
 RUN apk add python3
