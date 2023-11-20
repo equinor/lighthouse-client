@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@cognite/reveal':
     specifier: ^3.0.2
@@ -209,8 +213,8 @@ dependencies:
     specifier: ^0.158.0
     version: 0.158.0
   tinycolor2:
-    specifier: ^1.4.2
-    version: 1.4.2
+    specifier: ^1.6.0
+    version: 1.6.0
   typesafe-actions:
     specifier: ^5.1.0
     version: 5.1.0
@@ -9423,7 +9427,7 @@ packages:
       prop-types: 15.7.2
       react: 17.0.2
       reactcss: 1.2.3(react@17.0.2)
-      tinycolor2: 1.4.2
+      tinycolor2: 1.6.0
     dev: false
 
   /react-dom@17.0.2(react@17.0.2):
@@ -10534,8 +10538,8 @@ packages:
     resolution: {integrity: sha512-65NKvSuAVDP/n4CqH+a9w2kTlLReS9vhsAP06MWx+/89nMinJyB2icyl58RIcqCmIggpojIGeuJGhjU1aGMBSg==}
     dev: false
 
-  /tinycolor2@1.4.2:
-    resolution: {integrity: sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==}
+  /tinycolor2@1.6.0:
+    resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
     dev: false
 
   /tinypool@0.7.0:

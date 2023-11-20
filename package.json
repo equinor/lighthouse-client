@@ -90,7 +90,7 @@
     "sortablejs": "^1.14.0",
     "styled-components": "^5.3.3",
     "three": "^0.158.0",
-    "tinycolor2": "^1.4.2",
+    "tinycolor2": "^1.6.0",
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
