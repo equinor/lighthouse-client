@@ -10,6 +10,7 @@ import { useClientContext } from '../../../../Client/Hooks';
 import { httpClient } from '../../../../Client/Functions';
 import { useQuery } from 'react-query';
 import { CircularProgress } from '@equinor/eds-core-react';
+import { useContactPerson } from '../../../../../hooks/useContactPerson';
 
 interface CompletionViewHeaderProps {
     shortName: string;
@@ -78,24 +79,7 @@ const makeRedirectUrl = (shortName: string) =>
     window.location.href.split(shortName)[0].concat(`${shortName}-new`).toString();
 
 export function ContactPerson() {
-    const { settings } = useClientContext();
-
-    const { fusionPeople } = httpClient();
-
-    const { isLoading, data, error } = useQuery<Person>(
-        ['contactperson', settings.contactPerson],
-        async () => {
-            const res = await fusionPeople.fetch('persons/ensure?api-version=3.0', {
-                method: 'POST',
-                headers: { ['content-type']: 'application/json' },
-                body: JSON.stringify({ personIdentifiers: [settings.contactPerson] }),
-            });
-
-            const data = await res.json();
-
-            return data[0].person;
-        }
-    );
+    const { isLoading, data, error } = useContactPerson();
 
     if (isLoading) {
         return <CircularProgress size={16} />;
@@ -114,7 +98,7 @@ export function ContactPerson() {
     );
 }
 
-interface Person {
+export interface FusionPerson {
     fusionPersonId: string;
     azureUniqueId: string;
     mail: string;
