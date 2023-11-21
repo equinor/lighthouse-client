@@ -1,7 +1,7 @@
 import { BookmarkSidesheet } from '@equinor/BookmarksManager';
-import { TopBar } from '@equinor/eds-core-react';
+import { Popover, TopBar, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useClientContext } from '@equinor/lighthouse-portal-client';
+import { useClientContext, useHttpClient } from '@equinor/lighthouse-portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { GlobalSearch } from '../../Core/GlobalSearh/Components/GlobalSearch';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
@@ -14,6 +14,11 @@ import { HelpMenu } from './HelpMenu';
 import Logo from './Logo/Logo';
 import { TopBarAvatar } from './TopBarAvatar';
 import { Header, Icons, TopBarWrapper } from './TopBarStyle';
+import { useRef, useState } from 'react';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { settings } from '@equinor/eds-icons';
+import { useQuery } from 'react-query';
+import { FusionPerson } from '../../Core/WorkSpace/src/Components/DataViewerHeader/Header';
 
 const ClientTopBar = (): JSX.Element => {
     const {
