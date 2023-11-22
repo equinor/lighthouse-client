@@ -36,7 +36,7 @@ const resolveDaysOnStep = (time: string) => {
     const today = new Date();
     const daysOnStep = Math.round(Math.abs((+date - +today) / oneWeek));
 
-    return `${daysOnStep} days`;
+    return daysOnStep.toString();
 };
 
 export async function idResolverFunction(id: string): Promise<ReleaseControl> {

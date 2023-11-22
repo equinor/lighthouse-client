@@ -87,8 +87,7 @@ function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
 }
 
 function weekConverter(days: string | undefined) {
-    const daysNumber = Number(days?.split(' ')[0]);
-    const weeks = Math.round(daysNumber / 7);
+    const weeks = Math.round(Number(days) / 7);
 
     switch (weeks) {
         case 1: {

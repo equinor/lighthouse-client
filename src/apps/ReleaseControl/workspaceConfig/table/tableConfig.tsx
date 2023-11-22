@@ -143,7 +143,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         {
             id: 'timeOnStep',
             Header: 'Time on step',
-            accessor: (rc) => rc.timeOnLastStep,
+            accessor: (rc) => `${rc.timeOnLastStep} days`,
             Aggregated: () => null,
             aggregate: 'count',
             width: 200,
