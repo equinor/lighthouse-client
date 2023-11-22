@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-## 2.1.3
+## 2.3.3
 
 -   [ReleaseControl] Add Area column to HeatTrace Cable Table
 
-## 2.1.2
+## 2.2.2
 
 -   [ReleaseControl] Add Next to Sign filter
 
