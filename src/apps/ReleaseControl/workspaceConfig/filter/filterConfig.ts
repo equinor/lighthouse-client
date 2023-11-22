@@ -1,6 +1,15 @@
 import { FilterOptions, FilterValueType } from '@equinor/filter';
 import { ReleaseControl } from '../../types/releaseControl';
 
+const getNextToSign = (rc: ReleaseControl) => {
+    const nextToSign = rc.workflowSteps.find((fs) => {
+        if (fs.criterias[0]?.signedAtUtc === null) {
+            return true;
+        }
+    });
+    return nextToSign?.criterias[0].valueDescription ?? null;
+};
+
 export const filterOptions: FilterOptions<ReleaseControl> = [
     {
         name: 'Current step',
@@ -58,6 +67,10 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         valueFormatter: ({ hasDisconnectedEquipment }) =>
             booleanToHumanReadable(hasDisconnectedEquipment),
         sort: (s) => s.sort(sortOnYesNo),
+    },
+    {
+        name: 'Next to Sign',
+        valueFormatter: (s) => getNextToSign(s),
     },
 ];
 
