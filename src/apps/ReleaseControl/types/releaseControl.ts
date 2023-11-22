@@ -121,6 +121,7 @@ export type ReleaseControlPunch = {
     procosysId: number;
 };
 export type ReleaseControl = {
+    timeOnLastStep: string | undefined;
     createdAtUtc: Date;
     createdBy: CreatedBy;
     modifiedAtUtc: Date;

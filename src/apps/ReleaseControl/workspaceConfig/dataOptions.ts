@@ -11,6 +11,32 @@ async function responseAsync(signal?: AbortSignal): Promise<Response> {
 
 export const dataSource: DataSource<ReleaseControl> = {
     responseAsync,
+    responseParser: async (res) => {
+        const ogReleaseControl = (await res.json()) as Omit<ReleaseControl, 'timeOnLastStep'>[];
+
+        return ogReleaseControl.map((rc): ReleaseControl => {
+            //calculate timeonLastStep
+            let timeOnLastStep = rc.workflowSteps.reverse().find((step) => {
+                if (step.criterias[0]?.signedAtUtc) {
+                    return true;
+                }
+            })?.criterias[0].signedAtUtc;
+            if (timeOnLastStep === undefined) {
+                timeOnLastStep = rc.createdAtUtc.toString();
+            }
+            const daysOnStep = resolveDaysOnStep(timeOnLastStep);
+            return { ...rc, timeOnLastStep: daysOnStep };
+        });
+    },
+};
+
+const resolveDaysOnStep = (time: string) => {
+    const oneWeek = 1000 * 60 * 60 * 24;
+    const date = new Date(time);
+    const today = new Date();
+    const daysOnStep = Math.round(Math.abs((+date - +today) / oneWeek));
+
+    return daysOnStep.toString();
 };
 
 export async function idResolverFunction(id: string): Promise<ReleaseControl> {
@@ -19,5 +45,5 @@ export async function idResolverFunction(id: string): Promise<ReleaseControl> {
     if (!res.ok) {
         throw 'Not found';
     }
-    return await res.json();
+    return res.json();
 }
