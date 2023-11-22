@@ -16,7 +16,7 @@ export const dataSource: DataSource<ReleaseControl> = {
 
         return ogReleaseControl.map((rc): ReleaseControl => {
             //calculate timeonLastStep
-            let timeOnLastStep = rc.workflowSteps.toReversed().find((step) => {
+            let timeOnLastStep = rc.workflowSteps.reverse().find((step) => {
                 if (step.criterias[0]?.signedAtUtc) {
                     return true;
                 }
