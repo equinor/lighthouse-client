@@ -72,6 +72,10 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         name: 'Next to Sign',
         valueFormatter: (s) => getNextToSign(s),
     },
+    {
+        name: 'Time on step',
+        valueFormatter: ({ timeOnLastStep }) => weekConverter(timeOnLastStep),
+    },
 ];
 
 function booleanToHumanReadable(val: boolean | undefined) {
@@ -80,4 +84,27 @@ function booleanToHumanReadable(val: boolean | undefined) {
 
 function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
     return b === 'No' ? -1 : 1;
+}
+
+function weekConverter(days: string | undefined) {
+    const daysNumber = Number(days?.split(' ')[0]);
+    const weeks = Math.round(daysNumber / 7);
+
+    switch (weeks) {
+        case 1: {
+            return '1W or less';
+        }
+        case 2: {
+            return '2W or less';
+        }
+        case 3: {
+            return '3W or less';
+        }
+        case 4: {
+            return '4W or less';
+        }
+        default: {
+            return '4W or more';
+        }
+    }
 }
