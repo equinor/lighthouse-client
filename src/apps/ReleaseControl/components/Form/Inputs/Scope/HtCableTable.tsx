@@ -67,7 +67,7 @@ const columns: Column<FamTagType>[] = [
                     ></Icon>
                 </StyledCenterCheckIcon>
             ) : cell.row.original.estimatedCableLength !== null ? (
-                cell.value + '(estimated)'
+                cell.value
             ) : (
                 'None'
             ),
