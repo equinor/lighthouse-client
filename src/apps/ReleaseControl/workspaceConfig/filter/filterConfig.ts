@@ -74,7 +74,7 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
     },
     {
         name: 'Time on step',
-        valueFormatter: ({ timeOnLastStep }) => weekConverter(timeOnLastStep),
+        valueFormatter: ({ timeOnLastStep }) => weekConverter(Number(timeOnLastStep)),
     },
 ];
 
@@ -86,24 +86,42 @@ function sortOnYesNo(a: FilterValueType, b: FilterValueType) {
     return b === 'No' ? -1 : 1;
 }
 
-function weekConverter(days: string | undefined) {
-    const weeks = Math.round(Number(days) / 7);
+function weekConverter(days: number | undefined) {
+    if (days === undefined) {
+        return '(Blank)';
+    }
+    const weeks = Math.ceil(days / 7);
 
-    switch (weeks) {
-        case 1: {
+    switch (true) {
+        case weeks === 1: {
             return '1W or less';
         }
-        case 2: {
+        case weeks === 2: {
             return '2W or less';
         }
-        case 3: {
+        case weeks === 3: {
             return '3W or less';
         }
-        case 4: {
+        case weeks === 4: {
             return '4W or less';
         }
+        case weeks > 4 && weeks <= 7: {
+            return 'More than 1 month';
+        }
+        case weeks > 7 && weeks <= 11: {
+            return 'More than 2 months';
+        }
+        case weeks > 11 && weeks <= 15: {
+            return 'More than 3 months';
+        }
+        case weeks > 15 && weeks <= 19: {
+            return 'More than 4 months';
+        }
+        case weeks > 19 && weeks <= 23: {
+            return 'More than 5 months';
+        }
         default: {
-            return '4W or more';
+            return 'More than 6 months';
         }
     }
 }

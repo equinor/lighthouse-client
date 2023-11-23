@@ -4,15 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-## 2.4.1
+## 2.5.0
+
+-   [ReleaseControl] Add more options to "Time on step" filter
+
+## 2.4.0
 
 -   [ReleaseControl] Add "Time on step" column in table and add "Time on step" filter
 
-## 2.3.1
+## 2.3.0
 
 -   [ReleaseControl] Add Area column to HeatTrace Cable Table
 
-## 2.2.1
+## 2.2.0
 
 -   [ReleaseControl] Add Next to Sign filter
 
