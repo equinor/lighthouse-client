@@ -1,9 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls } from '@equinor/procosys-urls';
-import { Column, Table } from '@equinor/Table';
+import { CellProps, Column, Table } from '@equinor/Table';
 import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveHtCableCell } from './RemoveHtCableCell';
+import { Icon } from '@equinor/lighthouse-components';
 
 interface HtCableTableProps {
     htCables: FamTagType[];
@@ -48,13 +49,28 @@ const columns: Column<FamTagType>[] = [
     },
     {
         id: 'installedCableLength',
-        Header: 'Cable length (m)',
+        Header: 'HT length (m)',
         accessor: (item) =>
             item.installedCableLength !== null
-                ? item.installedCableLength + ' (installed)'
+                ? Number(item.installedCableLength)
                 : item.estimatedCableLength !== null
-                ? item.estimatedCableLength + ' (estimated)'
+                ? Number(item.estimatedCableLength) + '(estimated)'
                 : '',
+        Cell: (cell: CellProps<FamTagType>) =>
+            cell.row.original.installedCableLength !== null ? (
+                <StyledCenterCheckIcon>
+                    {cell.value}
+                    <Icon
+                        color={tokens.colors.interactive.warning__resting.hex}
+                        name="check_circle_outlined"
+                        title="This cable is installed."
+                    ></Icon>
+                </StyledCenterCheckIcon>
+            ) : cell.row.original.estimatedCableLength !== null ? (
+                cell.value
+            ) : (
+                'None'
+            ),
     },
     {
         id: 'tagHeated',
@@ -118,4 +134,9 @@ const Link = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const StyledCenterCheckIcon = styled.div`
+    display: flex;
+    align-items: center;
 `;
