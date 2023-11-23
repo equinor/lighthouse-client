@@ -15,7 +15,6 @@ export const dataSource: DataSource<ReleaseControl> = {
         const ogReleaseControl = (await res.json()) as Omit<ReleaseControl, 'timeOnLastStep'>[];
 
         return ogReleaseControl.map((rc): ReleaseControl => {
-            //calculate timeonLastStep
             let timeOnLastStep = rc.workflowSteps
                 .slice()
                 .reverse()
