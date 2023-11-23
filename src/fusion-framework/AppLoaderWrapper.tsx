@@ -60,6 +60,10 @@ export function useBoomark(appKey: string) {
         if (bookmarkId) {
             mutateAsync(bookmarkId);
         }
+
+        return () => {
+            module.setCurrentBookmark(undefined);
+        };
     }, [bookmarkId]);
 
     return { isLoading, error };
