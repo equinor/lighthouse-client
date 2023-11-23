@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import AppLoader from './AppLoader';
 import { useMutation } from 'react-query';
-import { BookmarkResponse } from '../packages/BookmarksManager/src';
+import {
+    BookmarkResponse,
+    favouriteBookmark,
+    headBookmark,
+    useBookmarkMutations,
+} from '../packages/BookmarksManager/src';
 import { useFusionBookmarks } from '../hooks/useFusionBookmarks';
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import styled from 'styled-components';
+import { useCurrentUser } from '@equinor/lighthouse-portal-client';
 
 const CenterInAvailableSpace = styled.div`
     display: flex;
@@ -45,12 +51,18 @@ export function AppLoaderWrapper({ appKey }: { appKey: string }) {
 
 export function useBoomark(appKey: string) {
     const module = useFusionBookmarks();
+    const user = useCurrentUser();
+    const favourite = useBookmarkMutations(favouriteBookmark);
 
     const bookmarkId = new URL(window.location.href).searchParams.get('bookmarkId');
     const { isLoading, mutateAsync, error } = useMutation<BookmarkResponse, unknown, string>(
         [appKey, 'bookmarks', bookmarkId],
         async (props) => {
             const bookmark = await module.getBookmarkById(props);
+            if (bookmark.createdBy.azureUniqueId !== user?.id) {
+                // Check if bookmark is not already favourited by user
+                !(await headBookmark(bookmark.id)) && favourite(bookmark.id);
+            }
             module.setCurrentBookmark(bookmark);
             return bookmark;
         }
@@ -60,6 +72,10 @@ export function useBoomark(appKey: string) {
         if (bookmarkId) {
             mutateAsync(bookmarkId);
         }
+
+        return () => {
+            module.setCurrentBookmark(undefined);
+        };
     }, [bookmarkId]);
 
     return { isLoading, error };
