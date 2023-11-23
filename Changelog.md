@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.5.1
+
+-   [Bookmarks] Fix bookmark bugs
+
 ## 2.5.0
 
 -   [ReleaseControl] Add more options to "Time on step" filter
