@@ -39,7 +39,7 @@ export const useBookmarks = <TPayload extends unknown = unknown>(): UseBookmarkR
         handleSaveBookmarks: async ({ capturedBookmark, bookmarkTitle, appKey, subSystem }) => {
             const bookmarkRequest: BookmarkRequest = {
                 name: bookmarkTitle,
-                isShared: false,
+                isShared: true,
                 appKey: `jc-${appKey}`,
                 payload: capturedBookmark,
                 sourceSystem: {
