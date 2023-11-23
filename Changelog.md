@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.6.0
+
+-   [ReleaseControl] Add icons to Heat Trace cable length in sidesheet
+-   [ReleaseControl] Fix bug where all workflows were reversed(Added in 2.4.0)
+
 ## 2.5.1
 
 -   [Bookmarks] Fix bookmark bugs
