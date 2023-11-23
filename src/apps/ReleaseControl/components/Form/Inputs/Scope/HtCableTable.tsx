@@ -49,12 +49,12 @@ const columns: Column<FamTagType>[] = [
     },
     {
         id: 'installedCableLength',
-        Header: 'HT length (m) ',
+        Header: 'HT length (m)',
         accessor: (item) =>
             item.installedCableLength !== null
                 ? Number(item.installedCableLength)
                 : item.estimatedCableLength !== null
-                ? Number(item.estimatedCableLength) + ' (estimated)'
+                ? Number(item.estimatedCableLength) + '(estimated)'
                 : '',
         Cell: (cell: CellProps<FamTagType>) =>
             cell.row.original.installedCableLength !== null ? (
