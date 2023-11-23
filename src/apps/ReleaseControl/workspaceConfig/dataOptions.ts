@@ -16,11 +16,14 @@ export const dataSource: DataSource<ReleaseControl> = {
 
         return ogReleaseControl.map((rc): ReleaseControl => {
             //calculate timeonLastStep
-            let timeOnLastStep = rc.workflowSteps.reverse().find((step) => {
-                if (step.criterias[0]?.signedAtUtc) {
-                    return true;
-                }
-            })?.criterias[0].signedAtUtc;
+            let timeOnLastStep = rc.workflowSteps
+                .slice()
+                .reverse()
+                .find((step) => {
+                    if (step.criterias[0]?.signedAtUtc) {
+                        return true;
+                    }
+                })?.criterias[0].signedAtUtc;
             if (timeOnLastStep === undefined) {
                 timeOnLastStep = rc.createdAtUtc.toString();
             }
