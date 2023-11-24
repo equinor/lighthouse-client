@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.7.0
+
+-   [ReleaseControl] Add "?" icon on estimated HT cable length
+-   [ReleaseControl] Changed the colour on the icon displayed when a cable is installed.
+-   [ReleaseControl] Add "X" icon when there is no installed HT cable
+
 ## 2.6.0
 
 -   [ReleaseControl] Add icons to Heat Trace cable length in sidesheet
