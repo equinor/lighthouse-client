@@ -54,22 +54,35 @@ const columns: Column<FamTagType>[] = [
             item.installedCableLength !== null
                 ? Number(item.installedCableLength)
                 : item.estimatedCableLength !== null
-                ? Number(item.estimatedCableLength) + '(estimated)'
+                ? Number(item.estimatedCableLength)
                 : '',
         Cell: (cell: CellProps<FamTagType>) =>
             cell.row.original.installedCableLength !== null ? (
                 <StyledCenterCheckIcon>
                     {cell.value}
                     <Icon
-                        color={tokens.colors.interactive.warning__resting.hex}
+                        color={tokens.colors.interactive.success__text.hex}
                         name="check_circle_outlined"
                         title="This cable is installed."
                     ></Icon>
                 </StyledCenterCheckIcon>
             ) : cell.row.original.estimatedCableLength !== null ? (
-                cell.value
+                <StyledCenterCheckIcon>
+                    {cell.value}
+                    <Icon
+                        color={tokens.colors.interactive.primary__hover.hex}
+                        name="help_outline"
+                        title="Estimated"
+                    ></Icon>
+                </StyledCenterCheckIcon>
             ) : (
-                'None'
+                <StyledCenterCheckIcon>
+                    <Icon
+                        color={tokens.colors.interactive.danger__text.hex}
+                        name="close_circle_outlined"
+                        title="No installed cable."
+                    ></Icon>
+                </StyledCenterCheckIcon>
             ),
     },
     {
