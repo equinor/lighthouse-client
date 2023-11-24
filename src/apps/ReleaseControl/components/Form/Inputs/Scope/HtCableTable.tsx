@@ -77,7 +77,6 @@ const columns: Column<FamTagType>[] = [
                 </StyledCenterCheckIcon>
             ) : (
                 <StyledCenterCheckIcon>
-                    {cell.value}
                     <Icon
                         color={tokens.colors.interactive.danger__text.hex}
                         name="close_circle_outlined"
