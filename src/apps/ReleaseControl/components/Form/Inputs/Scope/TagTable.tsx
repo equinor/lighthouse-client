@@ -96,6 +96,11 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.openWorkOrders,
     },
     {
+        id: 'areas',
+        Header: 'Area',
+        accessor: (item) => item.area,
+    },
+    {
         id: 'remove',
         Header: '',
         width: 30,
