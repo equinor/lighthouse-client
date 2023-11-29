@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.7.1
+
+-   [Handover] Fix creating bookmark reloading application
+
 ## 2.7.0
 
 -   [ReleaseControl] Add "?" icon on estimated HT cable length
