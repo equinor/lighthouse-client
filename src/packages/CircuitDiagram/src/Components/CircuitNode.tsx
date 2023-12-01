@@ -17,6 +17,7 @@ import {
 import { CircuitTypes, EleNetwork, EleNetworkCable, EleNetworkCircuit } from '../types/eleNetwork';
 import { CheckListStepTag, Pipetest } from '../types/pipetestTypes';
 import { CableNode } from '../../styles/cableStyles';
+import { CircuitDiagramTag } from '../CircuitDiagram';
 
 interface CircuitNodeProps {
     eleNetwork: EleNetwork;
@@ -31,6 +32,7 @@ interface CircuitNodeProps {
     isEditMode: boolean;
     disconnected: boolean;
     comment: string;
+    onClickEntity?: (clickEvent: CircuitDiagramTag) => void;
     setComment: (comment: string) => void;
     updateDiagram: (
         updatedCable: EleNetworkCable | undefined,
@@ -54,6 +56,7 @@ export const CircuitNode = ({
     comment,
     setComment,
     updateDiagram,
+    onClickEntity,
 }: CircuitNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
@@ -87,6 +90,7 @@ export const CircuitNode = ({
         remainingCableChildren?.map((cable: EleNetworkCable) => {
             return (
                 <CircuitNode
+                    onClickEntity={onClickEntity}
                     key={cable?.tagNo}
                     cableNode={cable}
                     eleNetwork={eleNetwork}
@@ -154,6 +158,7 @@ export const CircuitNode = ({
             case CircuitTypes.HTCable:
                 return (
                     <HeatTracingCable
+                        onClick={() => onClickEntity && onClickEntity({ tagNo: node.tagNo })}
                         value={node?.tagNo}
                         eleNetwork={eleNetwork}
                         pipetests={pipetests}
@@ -187,6 +192,7 @@ export const CircuitNode = ({
                     <CircuitDiagramNodeRow>
                         <CircuitDiagramVerticalRow>
                             <CircuitNode
+                                onClickEntity={onClickEntity}
                                 key={firstCable?.tagNo}
                                 cableNode={firstCable}
                                 eleNetwork={eleNetwork}
@@ -206,6 +212,7 @@ export const CircuitNode = ({
                         </CircuitDiagramVerticalRow>
 
                         <CircuitNode
+                            onClickEntity={onClickEntity}
                             key={circuitFirstCableTo?.tagNo}
                             node={circuitFirstCableTo}
                             eleNetwork={eleNetwork}
@@ -231,6 +238,7 @@ export const CircuitNode = ({
                         return (
                             <CircuitDiagramNodeRow key={cable.tagNo}>
                                 <CircuitNode
+                                    onClickEntity={onClickEntity}
                                     key={cable?.tagNo}
                                     cableNode={cable}
                                     eleNetwork={eleNetwork}
@@ -247,6 +255,7 @@ export const CircuitNode = ({
                                     updateDiagram={updateDiagram}
                                 />
                                 <CircuitNode
+                                    onClickEntity={onClickEntity}
                                     key={cableTo?.tagNo}
                                     node={cableTo}
                                     eleNetwork={eleNetwork}
@@ -271,6 +280,7 @@ export const CircuitNode = ({
                     standaloneCircuitChildren.map((circuit: EleNetworkCircuit) => {
                         return circuit.eleSymbolCode === CircuitTypes.HTCable ? (
                             <CircuitNode
+                                onClickEntity={onClickEntity}
                                 key={circuit?.tagNo}
                                 node={circuit}
                                 eleNetwork={eleNetwork}
@@ -290,6 +300,7 @@ export const CircuitNode = ({
                                 {/* Ghost cable node to position junction box with no cable correctly */}
                                 <CableNode />
                                 <CircuitNode
+                                    onClickEntity={onClickEntity}
                                     key={circuit?.tagNo}
                                     node={circuit}
                                     eleNetwork={eleNetwork}

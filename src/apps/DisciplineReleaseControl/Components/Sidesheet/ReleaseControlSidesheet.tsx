@@ -100,6 +100,7 @@ export function ReleaseControlSidesheet({
                             )}
                             onGroupeSelect={onGroupeSelect}
                             onSelect={onSelect}
+                            sidesheetType="pt"
                         />
                     </Tab>
                     <Tab>

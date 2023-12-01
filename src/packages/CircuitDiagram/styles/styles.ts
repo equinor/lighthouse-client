@@ -70,7 +70,7 @@ export const CircuitDiagramNodeGroupRow = styled.div`
     flex-direction: row;
 `;
 
-export const CircuitDiagramNodeText = styled.div`
+export const CircuitDiagramNodeText = styled.div<{ clickable?: boolean }>`
     display: flex;
     flex-direction: horizontal;
     font-size: 12px;
@@ -78,6 +78,7 @@ export const CircuitDiagramNodeText = styled.div`
     margin-left: 4px;
     padding-top: 3px;
     font-variant-numeric: tabular-nums;
+    cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
 `;
 
 export const CircuitDiagramNodeValueText = styled.div<{ clickable?: boolean }>`

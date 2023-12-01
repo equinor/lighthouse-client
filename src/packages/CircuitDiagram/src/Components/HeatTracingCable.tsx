@@ -20,12 +20,15 @@ interface HeatTracingCableProps {
     onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
     disconnected: boolean;
+    onClick: VoidFunction;
 }
+
 const HeatTracingCable = ({
     value,
     pipetests,
     currentPipetest,
     eleNetwork,
+    onClick,
     htCable,
     onGroupeSelect,
     onSelect,
@@ -42,6 +45,7 @@ const HeatTracingCable = ({
                 {htCable === value ? (
                     <CircuitDiagramHTText
                         onClick={() => {
+                            onClick();
                             currentPipetest &&
                                 value &&
                                 onGroupeSelect &&
@@ -55,12 +59,13 @@ const HeatTracingCable = ({
                 ) : (
                     <CircuitDiagramHTText
                         onClick={() => {
+                            onClick();
                             currentPipetest &&
                                 value &&
                                 onGroupeSelect &&
                                 onGroupeSelect(getHTSidesheetObjectForHtCable(value, pipetests));
                         }}
-                        clickable={currentPipetest !== null}
+                        clickable={true}
                     >
                         {value}
                     </CircuitDiagramHTText>
