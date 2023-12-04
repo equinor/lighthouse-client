@@ -32,13 +32,14 @@ interface CircuitNodeProps {
     isEditMode: boolean;
     disconnected: boolean;
     comment: string;
-    onClickEntity?: (clickEvent: CircuitDiagramTag) => void;
     setComment: (comment: string) => void;
     updateDiagram: (
         updatedCable: EleNetworkCable | undefined,
         updatedCircuit: EleNetwork | undefined,
         circuitTagNo: string
     ) => void;
+    onClickEntity?: (clickEvent: CircuitDiagramTag) => void;
+    sidesheetType: string;
 }
 
 export const CircuitNode = ({
@@ -57,6 +58,7 @@ export const CircuitNode = ({
     setComment,
     updateDiagram,
     onClickEntity,
+    sidesheetType,
 }: CircuitNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
@@ -103,6 +105,7 @@ export const CircuitNode = ({
                     comment={comment}
                     setComment={setComment}
                     updateDiagram={updateDiagram}
+                    sidesheetType={sidesheetType}
                 />
             );
         });
@@ -167,6 +170,7 @@ export const CircuitNode = ({
                         onGroupeSelect={onGroupeSelect}
                         onSelect={onSelect}
                         disconnected={disconnected}
+                        sidesheetType={sidesheetType}
                     />
                 );
             case CircuitTypes.SpaceHeater:
@@ -207,6 +211,7 @@ export const CircuitNode = ({
                                 comment={comment}
                                 setComment={setComment}
                                 updateDiagram={updateDiagram}
+                                sidesheetType={sidesheetType}
                             />
                             {remainingChildrenRender}
                         </CircuitDiagramVerticalRow>
@@ -226,6 +231,7 @@ export const CircuitNode = ({
                             comment={comment}
                             setComment={setComment}
                             updateDiagram={updateDiagram}
+                            sidesheetType={sidesheetType}
                         />
                     </CircuitDiagramNodeRow>
                 )}
@@ -253,6 +259,7 @@ export const CircuitNode = ({
                                     comment={comment}
                                     setComment={setComment}
                                     updateDiagram={updateDiagram}
+                                    sidesheetType={sidesheetType}
                                 />
                                 <CircuitNode
                                     onClickEntity={onClickEntity}
@@ -269,6 +276,7 @@ export const CircuitNode = ({
                                     comment={comment}
                                     setComment={setComment}
                                     updateDiagram={updateDiagram}
+                                    sidesheetType={sidesheetType}
                                 />
                             </CircuitDiagramNodeRow>
                         );
@@ -294,6 +302,7 @@ export const CircuitNode = ({
                                 comment={comment}
                                 setComment={setComment}
                                 updateDiagram={updateDiagram}
+                                sidesheetType={sidesheetType}
                             />
                         ) : (
                             <CircuitDiagramNodeGroupRow>
@@ -314,6 +323,7 @@ export const CircuitNode = ({
                                     comment={comment}
                                     setComment={setComment}
                                     updateDiagram={updateDiagram}
+                                    sidesheetType={sidesheetType}
                                 />
                             </CircuitDiagramNodeGroupRow>
                         );

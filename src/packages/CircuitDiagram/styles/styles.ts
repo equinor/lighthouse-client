@@ -159,12 +159,13 @@ export const CircuitDiagramNodeRow = styled.div`
     }
 `;
 
-export const TestDotWrapper = styled.div`
+export const TestDotWrapper = styled.div<{ clickable?: boolean }>`
     display: flex;
     flex-direction: horizontal;
     flex: 1;
     justify-content: center;
     padding-bottom: 3px;
+    cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
 `;
 
 export const TestDotCircle = styled.div<{ color: string }>`
@@ -202,7 +203,6 @@ export const CriticalLineVisualStyle = styled.div`
 export const TestDotCircleText = styled.div`
     font-size: 16px;
     font-weight: 400, regular;
-    cursor: default;
 `;
 
 export const JunctionBoxNode = styled.div<{

@@ -21,6 +21,7 @@ interface HeatTracingCableProps {
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
     disconnected: boolean;
     onClick: VoidFunction;
+    sidesheetType: string;
 }
 
 const HeatTracingCable = ({
@@ -33,6 +34,7 @@ const HeatTracingCable = ({
     onGroupeSelect,
     onSelect,
     disconnected,
+    sidesheetType,
 }: HeatTracingCableProps): JSX.Element => {
     const pipetestsOnHTCable = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === value));
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
@@ -74,6 +76,8 @@ const HeatTracingCable = ({
                     <TestDot
                         value="A"
                         status={getCircuitTestStatus(CheckListStepTag.HtTest, checkListsForHTCable)}
+                        onClick={onClick}
+                        sidesheetType={sidesheetType}
                     />
                     <TestDot
                         value="B"
@@ -81,6 +85,8 @@ const HeatTracingCable = ({
                             CheckListStepTag.HtRetest,
                             checkListsForHTCable
                         )}
+                        onClick={onClick}
+                        sidesheetType={sidesheetType}
                     />
                     {pipetestsOnHTCable?.some((x) => x.hasCriticalLine) && <CriticalLineVisual />}
                 </ABTestDots>

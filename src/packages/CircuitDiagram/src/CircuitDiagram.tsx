@@ -245,6 +245,7 @@ export const CircuitDiagram = ({
                                                                 comment={comment}
                                                                 setComment={setComment}
                                                                 updateDiagram={updateDiagram}
+                                                                sidesheetType={sidesheetType}
                                                             />
                                                         </CircuitDiagramRow>
                                                     );

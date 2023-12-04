@@ -11,7 +11,7 @@ export const CircuitDiagramTab = (): JSX.Element => {
                 <CircuitDiagram
                     sidesheetType="rc" //AVSLUTTTET HER. Må sende denne propen helt ned for å gjøre ting clickable
                     onClickEntity={async (event) => {
-                        const url = await getTagUrl(event.tagNo, undefined);
+                        const url = await getTagUrl(event.tagNo, undefined); //Finnes en ferdiglagd metode: procosys.getTagUrl - procosysurl.ts
                         if (!url) return;
                         window.open(url, '_blank');
                         return;
