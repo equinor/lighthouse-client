@@ -69,6 +69,7 @@ export function ReleaseControlHTSidesheet({
                             )}
                             onGroupeSelect={onGroupeSelect}
                             onSelect={onSelect}
+                            sidesheetType="ht"
                         />
                     </Tab>
                     <Tab>
