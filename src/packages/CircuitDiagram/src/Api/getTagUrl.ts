@@ -28,7 +28,7 @@ export async function getTagUrl(
     const tagUrlId: TagUrlId[] = await res.json();
 
     if (!Array.isArray(tagUrlId)) {
-        throw 'Invalid response';
+        throw new Error('Invalid response');
     }
 
     const tagUrl = `https://procosys.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tagUrlId[0].urlId}`;
