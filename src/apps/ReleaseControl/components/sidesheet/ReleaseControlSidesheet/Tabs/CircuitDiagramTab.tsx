@@ -1,21 +1,25 @@
 import { CircuitDiagram } from '@equinor/CircuitDiagram';
-import { useWorkSpace } from '@equinor/WorkSpace';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
+import { getTagUrl } from '../../../../../../packages/CircuitDiagram/src/Api/getTagUrl';
 
 export const CircuitDiagramTab = (): JSX.Element => {
     const releaseControl = useReleaseControlContext(({ releaseControl }) => releaseControl);
-    const { onGroupeSelect, onSelect } = useWorkSpace();
 
     return (
         <>
             {
                 <CircuitDiagram
+                    sidesheetType="rc"
+                    onClickEntity={async (event) => {
+                        const url = await getTagUrl(event.tagNo, undefined);
+                        if (!url) return;
+                        window.open(url, '_blank');
+                        return;
+                    }}
                     pipetest={null}
                     pipetests={[]}
                     width={window.innerWidth / 2}
                     circuitAndStarterTagNos={releaseControl.circuits}
-                    onGroupeSelect={onGroupeSelect}
-                    onSelect={onSelect}
                 />
             }
         </>

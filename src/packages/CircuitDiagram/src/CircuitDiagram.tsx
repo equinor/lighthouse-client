@@ -26,6 +26,10 @@ import { StatusCircle } from './Components/StatusCircle';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@equinor/eds-core-react';
 
+export type CircuitDiagramTag = {
+    tagNo: string;
+};
+
 interface CircuitDiagramProps {
     /* Current pipetest */
     pipetest: Pipetest | null;
@@ -40,6 +44,10 @@ interface CircuitDiagramProps {
     onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
     /* For opening same sidesheet but with a different pipetest */
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
+
+    onClickEntity?: (clickEvent: CircuitDiagramTag) => void;
+
+    sidesheetType: 'rc' | 'ht' | 'pt';
 }
 
 export const CircuitDiagram = ({
@@ -50,6 +58,8 @@ export const CircuitDiagram = ({
     circuitAndStarterTagNos,
     onGroupeSelect,
     onSelect,
+    onClickEntity,
+    sidesheetType,
 }: CircuitDiagramProps): JSX.Element => {
     const [switchboards, setSwitchboards] = useState<EleNetwork[][]>([]);
     //Global component state for edit mode and (reusable) comment
@@ -192,7 +202,15 @@ export const CircuitDiagram = ({
                                     >
                                         <SwitchBoardBorderContainer>
                                             <CircuitDiagramNodeGroupRow>
-                                                <CircuitDiagramNodeText>
+                                                <CircuitDiagramNodeText
+                                                    onClick={() =>
+                                                        onClickEntity &&
+                                                        onClickEntity({
+                                                            tagNo: switchboardTagNo[0],
+                                                        })
+                                                    }
+                                                    clickable={sidesheetType === 'rc'}
+                                                >
                                                     {switchboardTagNo[0]}
                                                 </CircuitDiagramNodeText>
                                                 <StatusCircle
@@ -211,6 +229,7 @@ export const CircuitDiagram = ({
                                                             key={eleNetwork.eleNetId}
                                                         >
                                                             <CircuitNode
+                                                                onClickEntity={onClickEntity}
                                                                 key={startNode?.eleNetId}
                                                                 node={startNode}
                                                                 eleNetwork={eleNetwork}
@@ -226,6 +245,7 @@ export const CircuitDiagram = ({
                                                                 comment={comment}
                                                                 setComment={setComment}
                                                                 updateDiagram={updateDiagram}
+                                                                sidesheetType={sidesheetType}
                                                             />
                                                         </CircuitDiagramRow>
                                                     );
