@@ -6,8 +6,10 @@ import { PipetestCompletionStatusColors } from '../types/pipetestTypes';
 interface TestDotProps {
     value?: string;
     status: string;
+    onClick?: VoidFunction;
+    sidesheetType?: string;
 }
-export const TestDot = ({ value, status }: TestDotProps): JSX.Element => {
+export const TestDot = ({ value, status, onClick, sidesheetType }: TestDotProps): JSX.Element => {
     const color = getCircuitDiagramCompletionStatusColor(status);
     const LightningIcon = (
         <svg
@@ -30,7 +32,12 @@ export const TestDot = ({ value, status }: TestDotProps): JSX.Element => {
         </svg>
     );
     return (
-        <TestDotWrapper>
+        <TestDotWrapper
+            onClick={() => {
+                onClick && onClick();
+            }}
+            clickable={sidesheetType === 'rc'}
+        >
             <TestDotCircle color={color}>
                 {LightningIcon}
                 <TestDotCircleText>{value}</TestDotCircleText>

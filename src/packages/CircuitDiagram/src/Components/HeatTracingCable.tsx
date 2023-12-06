@@ -20,16 +20,21 @@ interface HeatTracingCableProps {
     onGroupeSelect?: (item: Record<PropertyKey, unknown>) => void;
     onSelect?: (item: Record<PropertyKey, unknown>) => void;
     disconnected: boolean;
+    onClick: VoidFunction;
+    sidesheetType: string;
 }
+
 const HeatTracingCable = ({
     value,
     pipetests,
     currentPipetest,
     eleNetwork,
+    onClick,
     htCable,
     onGroupeSelect,
     onSelect,
     disconnected,
+    sidesheetType,
 }: HeatTracingCableProps): JSX.Element => {
     const pipetestsOnHTCable = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === value));
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
@@ -42,6 +47,7 @@ const HeatTracingCable = ({
                 {htCable === value ? (
                     <CircuitDiagramHTText
                         onClick={() => {
+                            onClick();
                             currentPipetest &&
                                 value &&
                                 onGroupeSelect &&
@@ -55,12 +61,13 @@ const HeatTracingCable = ({
                 ) : (
                     <CircuitDiagramHTText
                         onClick={() => {
+                            onClick();
                             currentPipetest &&
                                 value &&
                                 onGroupeSelect &&
                                 onGroupeSelect(getHTSidesheetObjectForHtCable(value, pipetests));
                         }}
-                        clickable={currentPipetest !== null}
+                        clickable={true}
                     >
                         {value}
                     </CircuitDiagramHTText>
@@ -69,6 +76,8 @@ const HeatTracingCable = ({
                     <TestDot
                         value="A"
                         status={getCircuitTestStatus(CheckListStepTag.HtTest, checkListsForHTCable)}
+                        onClick={onClick}
+                        sidesheetType={sidesheetType}
                     />
                     <TestDot
                         value="B"
@@ -76,6 +85,8 @@ const HeatTracingCable = ({
                             CheckListStepTag.HtRetest,
                             checkListsForHTCable
                         )}
+                        onClick={onClick}
+                        sidesheetType={sidesheetType}
                     />
                     {pipetestsOnHTCable?.some((x) => x.hasCriticalLine) && <CriticalLineVisual />}
                 </ABTestDots>

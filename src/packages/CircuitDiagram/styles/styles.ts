@@ -70,7 +70,7 @@ export const CircuitDiagramNodeGroupRow = styled.div`
     flex-direction: row;
 `;
 
-export const CircuitDiagramNodeText = styled.div`
+export const CircuitDiagramNodeText = styled.div<{ clickable?: boolean }>`
     display: flex;
     flex-direction: horizontal;
     font-size: 12px;
@@ -78,6 +78,7 @@ export const CircuitDiagramNodeText = styled.div`
     margin-left: 4px;
     padding-top: 3px;
     font-variant-numeric: tabular-nums;
+    cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
 `;
 
 export const CircuitDiagramNodeValueText = styled.div<{ clickable?: boolean }>`
@@ -158,12 +159,13 @@ export const CircuitDiagramNodeRow = styled.div`
     }
 `;
 
-export const TestDotWrapper = styled.div`
+export const TestDotWrapper = styled.div<{ clickable?: boolean }>`
     display: flex;
     flex-direction: horizontal;
     flex: 1;
     justify-content: center;
     padding-bottom: 3px;
+    cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
 `;
 
 export const TestDotCircle = styled.div<{ color: string }>`
@@ -201,7 +203,6 @@ export const CriticalLineVisualStyle = styled.div`
 export const TestDotCircleText = styled.div`
     font-size: 16px;
     font-weight: 400, regular;
-    cursor: default;
 `;
 
 export const JunctionBoxNode = styled.div<{
