@@ -26,6 +26,7 @@ import {
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
+import { RequestedByInput } from './Inputs/RequestedBy/RequestedBy';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom, clearState } = DRCFormAtomApi;
@@ -65,6 +66,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         General info
                         <TitleInput />
                         <DescriptionInput />
+                        <RequestedByInput />
                         <PlannedDueDateInput />
                         <PhaseSelect />
                         <TagsInput />

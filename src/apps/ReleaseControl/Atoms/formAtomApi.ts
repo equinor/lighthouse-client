@@ -22,6 +22,7 @@ export interface DRCCreateModel {
     step?: 'scope' | 'workflow';
     title?: string;
     description?: string;
+    requestedBy?: string;
     plannedDueDate?: string;
     phase?: string;
     allowContributors?: boolean;
@@ -55,6 +56,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
     clearState: () =>
         api.updateAtom({
             description: '',
+            requestedBy: '',
             allowContributors: true,
             documentNumbers: [],
             punchListItemIds: [],
