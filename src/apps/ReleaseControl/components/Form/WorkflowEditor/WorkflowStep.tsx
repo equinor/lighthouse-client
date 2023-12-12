@@ -1,13 +1,9 @@
 import { SingleSelect } from '@equinor/eds-core-react';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
-import { FunctionalRole, PCSPersonRoleSearch } from '@equinor/Workflow';
+import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equinor/Workflow';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import {
-    CreateReleaseControlStepModel,
-    ReleaseControlStepNames,
-    UserObject,
-} from '../../../types/releaseControl';
+import { CreateReleaseControlStepModel, UserObject } from '../../../types/releaseControl';
 import { CriteriaRender } from '../../Workflow/Criteria';
 import { getCriteriaStatus } from '../../Workflow/Utils/getCriteriaStatus';
 import { DraggableIcon } from './DraggableIcon';
@@ -33,10 +29,17 @@ interface WorkflowStepProps {
     step: CreateReleaseControlStepModel;
     steps: CreateReleaseControlStepModel[];
     functionalRoles?: FunctionalRole[];
+    availableSteps: WorkflowStepTemplate[];
 }
 
-export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps): JSX.Element => {
+export const WorkflowStep = ({
+    step,
+    steps,
+    functionalRoles,
+    availableSteps,
+}: WorkflowStepProps): JSX.Element => {
     const { updateAtom } = DRCFormAtomApi;
+
     return (
         <Line>
             {step.isCompleted ? (
@@ -63,7 +66,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                     <Selections>
                         <StepSelect>
                             <SingleSelect
-                                items={Object.values(ReleaseControlStepNames)}
+                                items={availableSteps.map((s) => s.name)}
                                 label="Step"
                                 size={30}
                                 selectedOption={step.name}
@@ -116,7 +119,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                     <Selections>
                         <StepSelect>
                             <SingleSelect
-                                items={Object.values(ReleaseControlStepNames)}
+                                items={availableSteps.map((s) => s.name)}
                                 label=""
                                 size={30}
                                 selectedOption={step.name}
