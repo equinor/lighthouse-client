@@ -3,11 +3,12 @@ import { adminQueries, DraggableStep, FunctionalRole, proCoSysQueries } from '@e
 import { useQuery } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
 import { WorkflowStepRender } from './WorkflowStepRender';
+import { FormAtomApi } from '../../../../Admin/src/Atoms/workflowAdminAtomApi';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
 
 interface WorkflowEditorProps {
-    atomApi: any;
+    atomApi: FormAtomApi;
     app: string;
     workflowOwner: string;
 }

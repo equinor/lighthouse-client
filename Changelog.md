@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.9.0
+
+-   [ReleaseControl] Change step-selection in create RC sidesheet from hardcoded to the selection from workflow steps
+
 ## 2.8.0
 
 -   [ReleaseControl] Add clickable links to procosys on HT, AB/-Test and Switchboard in circuit diagram
