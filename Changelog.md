@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.9.1
+
+-   [ReleaseControl] Fix bug related to last change. Add a hardcoded variable
+
 ## 2.9.0
 
 -   [ReleaseControl] Change step-selection in create RC sidesheet from hardcoded to the selection from workflow steps

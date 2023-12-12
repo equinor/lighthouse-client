@@ -27,7 +27,7 @@ export const workflowTemplatesKey = (): string[] => [adminBaseKey, 'templates'];
 
 export const workflowStepKey = (): string[] => [adminBaseKey, 'step'];
 
-export const workflowStepsKey = (): string[] => [adminBaseKey, 'steps'];
+export const workflowStepsKey = (owner: string): string[] => [adminBaseKey, 'steps', owner];
 
 export const workflowStatusesKey = (): string[] => [adminBaseKey, 'statuses'];
 
@@ -70,7 +70,7 @@ export const adminQueries: AdminQueries = {
     workflowStepsQuery: (workflowOwner: string) => ({
         queryFn: (): Promise<WorkflowStepTemplate[]> =>
             getWorkflowSteps({ workflowOwner: workflowOwner }),
-        queryKey: workflowStepsKey(),
+        queryKey: workflowStepsKey(workflowOwner),
     }),
     workflowStatusesQuery: (workflowOwner: string) => ({
         queryFn: (): Promise<WorkflowStatus[]> => getWorkflowStatuses(workflowOwner),
