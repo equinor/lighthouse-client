@@ -6,8 +6,9 @@ import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { ProCoSysQueries } from '../../../hooks/ProCoSysQueries';
 import { DraggableReleaseControlStep } from '../../../types/releaseControl';
 import { WorkflowStep } from './WorkflowStep';
-import { useAdminContext } from '../../../../../packages/Admin/src/Hooks/useAdminContext';
 import { CircularProgress } from '@equinor/eds-core-react';
+
+const workflowOwner = 'ReleaseControl';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
 export const WorkflowCustomEditor = (): JSX.Element => {
@@ -33,10 +34,9 @@ export const WorkflowCustomEditor = (): JSX.Element => {
         getFunctionalRolesQuery(procosysPlantId, 'RELEASECONTROL')
     );
 
-    const { workflowOwner } = useAdminContext();
     const { workflowStepsQuery } = adminQueries;
 
-    const { data: availableSteps, isLoading } = useQuery(workflowStepsQuery(workflowOwner));
+    const { data: availableSteps, isLoading, error } = useQuery(workflowStepsQuery(workflowOwner));
 
     const dragableSteps = workflowSteps.filter(
         (x) => !x.item.isCompleted && x.item.name !== 'Initiate'
@@ -46,7 +46,11 @@ export const WorkflowCustomEditor = (): JSX.Element => {
     );
 
     if (isLoading) {
-        return <CircularProgress size={16} />;
+        return <CircularProgress size={32} />;
+    }
+
+    if (error) {
+        return <p>ohh ohh failed to fetch workflowsteps</p>;
     }
 
     return (

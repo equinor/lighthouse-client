@@ -49,7 +49,9 @@ export const WorkflowSteps = (): JSX.Element | null => {
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
     const [isCreating, setIsCreating] = useState<boolean>(false);
-    const { data, error } = useQuery(workflowStepsKey(), () => getWorkflowSteps({ workflowOwner }));
+    const { data, error } = useQuery(workflowStepsKey(workflowOwner), () =>
+        getWorkflowSteps({ workflowOwner })
+    );
     if (error) {
         return (
             <Loading>
