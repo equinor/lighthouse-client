@@ -6,11 +6,17 @@ import styled from 'styled-components';
 import { readClientRegistry } from '../../../Core/Client/Functions';
 
 function isNewAppLoaded() {
-    return window.location.href.includes('handover-new');
+    return (
+        window.location.href.includes('handover-new') ||
+        window.location.href.includes('mechanical-completion')
+    );
 }
 
 export const LocationBreadCrumbs = (): JSX.Element => {
     const location = useLocation();
+    const clientRegistry = readClientRegistry();
+    const paths = location.pathname.split('/').filter((s) => s !== '');
+    const appName = clientRegistry.apps.find((s) => s.shortName === paths.at(1))?.shortName;
 
     const createBreadCrumbs = useCallback(() => {
         const paths = location.pathname.split('/').filter((s) => s !== '');
@@ -52,12 +58,20 @@ export const LocationBreadCrumbs = (): JSX.Element => {
             {isNewAppLoaded() && (
                 <div style={{ color: 'red' }}>
                     Looking for the old app?
-                    <a href={window.location.href.split('-new')[0].toString()}>Click here</a>
+                    <a href={getRedirectUrl(appName)}>Click here</a>
                 </div>
             )}
         </>
     );
 };
+
+function getRedirectUrl(key: string | undefined) {
+    console.log(key);
+    if (key === 'mechanical-completion') {
+        return window.location.href.replace('mechanical-completion', 'mc');
+    }
+    return window.location.href.split('-new')[0].toString();
+}
 
 const BreadcrumbStyle = styled.div`
     font-family: Equinor;
