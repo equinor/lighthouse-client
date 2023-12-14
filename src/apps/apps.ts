@@ -132,6 +132,20 @@ export const oldApps: AppManifest[] = [
         helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
         deprecated: true,
     },
+    {
+        title: 'Mechanical Completion Old',
+        shortName: 'mc',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        app: {
+            appType: 'Workspace',
+            setup: McSetup,
+        },
+        tags: ['Job'],
+        appEnv: 'prod',
+        deprecated: true,
+    },
 ];
 
 export const apps: AppManifest[] = [
@@ -310,19 +324,7 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
         helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Work-order.aspx',
     },
-    {
-        title: 'Mechanical Completion',
-        shortName: 'mc',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        app: {
-            appType: 'Workspace',
-            setup: McSetup,
-        },
-        tags: ['Job'],
-        appEnv: 'prod',
-    },
+
     {
         title: 'Operation garden',
         shortName: 'operation-garden',
@@ -363,6 +365,19 @@ export const apps: AppManifest[] = [
         },
         appEnv: 'prod',
         helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
+    },
+    {
+        title: 'Mechanical Completion',
+        shortName: 'mechanical-completion',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['Fusion'],
+        app: {
+            appType: 'FusionApp',
+            setup: () => {},
+        },
+        appEnv: 'prod',
     },
     {
         title: 'Activities',
