@@ -66,7 +66,6 @@ export const LocationBreadCrumbs = (): JSX.Element => {
 };
 
 function getRedirectUrl(key: string | undefined) {
-    console.log(key);
     if (key === 'mechanical-completion') {
         return window.location.href.replace('mechanical-completion', 'mc');
     }
