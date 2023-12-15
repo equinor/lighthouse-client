@@ -1,6 +1,7 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { readClientRegistry } from '../../../Core/Client/Functions';
@@ -58,7 +59,7 @@ export const LocationBreadCrumbs = (): JSX.Element => {
             {isNewAppLoaded() && (
                 <div style={{ color: 'red' }}>
                     Looking for the old app?
-                    <a href={getRedirectUrl(appName)}>Click here</a>
+                    <Link to={getRedirectUrl(appName)}>Click here</Link>
                 </div>
             )}
         </>
@@ -67,9 +68,9 @@ export const LocationBreadCrumbs = (): JSX.Element => {
 
 function getRedirectUrl(key: string | undefined) {
     if (key === 'mechanical-completion') {
-        return window.location.href.replace('mechanical-completion', 'mc');
+        return 'ConstructionAndCommissioning/mc';
     }
-    return window.location.href.split('-new')[0].toString();
+    return 'ConstructionAndCommissioning/handover-new';
 }
 
 const BreadcrumbStyle = styled.div`
