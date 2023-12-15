@@ -15,8 +15,11 @@ import {
 import { Modal } from '@equinor/modal';
 
 export const createBookmarkURL = (bookmark: BookmarkResponse) => {
-    if (bookmark.appKey === 'handover') {
+    /** JC handover shortname has a naming collision with the scaled versions appkey */
+    if (bookmark.appKey == 'handover') {
         return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}-new?bookmarkId=${bookmark.id}`;
+    } else if (bookmark.appKey == 'mechanical-completion') {
+        return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}?bookmarkId=${bookmark.id}`;
     } else {
         return `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace(
             'jc-',
