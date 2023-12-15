@@ -1,29 +1,26 @@
-import { PCSPersonRoleSearch } from '@equinor/Workflow';
+import { PCSPersonRoleSearch, TypedSelectOption } from '@equinor/Workflow';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { StyledRequestedByHeader } from './requestedBy.styles';
 
 const { updateAtom, useAtomState } = DRCFormAtomApi;
 
-const updateRequestedBy = (requestedBy: string) => {
-    updateAtom({ requestedBy: requestedBy });
+const updateRequestedBy = (requestedBy: TypedSelectOption | undefined) => {
+    updateAtom({ requestedBy: requestedBy?.value, requestedByOption: requestedBy });
 };
 
 export const RequestedByInput = (): JSX.Element => {
-    const requestedBy = useAtomState((s) => s.requestedBy ?? '');
+    const requestedBy = useAtomState((s) => s.requestedByOption);
 
     return (
-        //AVSLUTTET HER
-        //Skal man legge til et POST api kall og legge den inn i onSelect??
-
         <div>
             <StyledRequestedByHeader>
-                <p>Requested by</p>
-                <p>(Required)</p>
+                <div>Requested by</div>
+                <div>(Required)</div>
             </StyledRequestedByHeader>
             <PCSPersonRoleSearch
-                onSelect={() => updateRequestedBy(requestedBy)}
+                onSelect={(item) => updateRequestedBy(item ?? undefined)}
                 classification="RELEASECONTROL"
-                value={requestedBy}
+                value={requestedBy?.label}
             />
         </div>
     );

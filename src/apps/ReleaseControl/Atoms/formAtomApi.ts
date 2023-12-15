@@ -22,6 +22,7 @@ export interface DRCCreateModel {
     step?: 'scope' | 'workflow';
     title?: string;
     description?: string;
+    requestedByOption?: TypedSelectOption;
     requestedBy?: string;
     plannedDueDate?: string;
     phase?: string;
@@ -56,7 +57,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
     clearState: () =>
         api.updateAtom({
             description: '',
-            requestedBy: '',
+            requestedBy: undefined,
             allowContributors: true,
             documentNumbers: [],
             punchListItemIds: [],
@@ -151,13 +152,14 @@ function prepareReleaseControl(): DRCFormModel {
         ...unPackReferencesAndScope(),
         ...packWorkflowSteps(DRCFormAtomApi),
     };
+    delete newRC.requestedByOption;
     return newRC as DRCFormModel;
 }
 
 function checkFormState(
     releaseControl: Pick<
         DRCFormModel,
-        'title' | 'description' | 'plannedDueDate' | 'phase' | 'workflowSteps'
+        'title' | 'description' | 'requestedBy' | 'plannedDueDate' | 'phase' | 'workflowSteps'
     >
 ): boolean {
     if (MANDATORY_PROPERTIES.every((k) => Object.keys(releaseControl).includes(k))) {
@@ -168,6 +170,8 @@ function checkFormState(
             case checkString(releaseControl.phase):
                 return false;
             case checkString(releaseControl.description):
+                return false;
+            case checkString(releaseControl.requestedBy):
                 return false;
             case checkString(releaseControl.plannedDueDate):
                 return false;
