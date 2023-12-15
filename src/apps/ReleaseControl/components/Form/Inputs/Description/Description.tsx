@@ -11,13 +11,24 @@ export const DescriptionInput = (): JSX.Element => {
     return (
         <TextField
             id={(Math.random() * 16).toString()}
-            label="Scope description"
+            label="Scope description. Why is this job needed, what is the size of the scope?"
             multiline
-            rows={3}
+            rows={11}
             placeholder="Why is this job needed, what is the size of the scope?"
             value={description}
             onChange={updateDescription}
             meta={'(Required)'}
+            defaultValue={descriptionDefaultInput}
         />
     );
 };
+
+const descriptionDefaultInput = `Requested by: 
+Area: 
+Main system: 
+Scaffolding [Yes/No]: 
+Valve insulationbox, remove lid only [Yes/No]: 
+SAP AO number (if applicable): 
+
+Description: 
+`;
