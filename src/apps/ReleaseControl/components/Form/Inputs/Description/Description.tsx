@@ -27,7 +27,7 @@ const descriptionDefaultInput = `Requested by:
 Area: 
 System: 
 Scaffolding [Yes/No], describe: 
-Valve insulationbox, remove lid only [Yes/No], describe: 
+Valve insulation box, remove lid only [Yes/No], describe: 
 SAP AO number (if applicable): 
 Ideal start date: 
 
