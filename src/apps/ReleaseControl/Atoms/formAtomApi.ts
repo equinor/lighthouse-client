@@ -54,7 +54,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
     prepareReleaseControl: () => prepareReleaseControl(),
     clearState: () =>
         api.updateAtom({
-            description: '',
+            description: undefined,
             allowContributors: true,
             documentNumbers: [],
             punchListItemIds: [],
