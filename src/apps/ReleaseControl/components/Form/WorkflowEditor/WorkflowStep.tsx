@@ -82,7 +82,7 @@ export const WorkflowStep = ({
                                 }
                             />
                         </StepSelect>
-                        {/* <ResponsibleSelect>
+                        <ResponsibleSelect>
                             <PCSPersonRoleSearch
                                 onSelect={(value) => {
                                     if (!value) return;
@@ -106,7 +106,7 @@ export const WorkflowStep = ({
                                 }
                                 defaultResult={functionalRoles}
                             />
-                        </ResponsibleSelect> */}
+                        </ResponsibleSelect>
                     </Selections>
                     <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
                 </>
