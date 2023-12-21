@@ -42,6 +42,12 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.register,
     },
     {
+        id: 'owner',
+        Header: 'Owner',
+        accessor: (item) => item.mechanicalCompletionPackageNo,
+    },
+    {
+        // API call to get ID from GUID
         id: 'tagMountedOnNo',
         Header: 'Mounted on',
         accessor: (item) => item.tagMountedOnNo,
@@ -54,6 +60,7 @@ const columns: Column<FamTagType>[] = [
                 {cell.row.values.tagMountedOnNo}
             </Link>
         ),
+        // Hvorfor kommer tagMountedOnUrld selv om vi skriver tagMountedOn??
     },
     {
         id: 'relatedHTCables',

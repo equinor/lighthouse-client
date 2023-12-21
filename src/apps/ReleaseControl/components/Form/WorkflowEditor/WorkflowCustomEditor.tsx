@@ -39,10 +39,10 @@ export const WorkflowCustomEditor = (): JSX.Element => {
     const { data: availableSteps, isLoading, error } = useQuery(workflowStepsQuery(workflowOwner));
 
     const dragableSteps = workflowSteps.filter(
-        (x) => !x.item.isCompleted && x.item.name !== 'Initiate'
+        (x) => !x.item.isCompleted && x.item.name !== 'Initiate' && !x.item.isCurrent
     );
     const undragableSteps = workflowSteps.filter(
-        (x) => x.item.isCompleted || x.item.name === 'Initiate'
+        (x) => x.item.isCompleted || x.item.name === 'Initiate' || x.item.isCurrent
     );
 
     if (isLoading) {
