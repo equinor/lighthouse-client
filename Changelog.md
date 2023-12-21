@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.11.0
+
+-   [ReleaseControl] Disabled the ability to re-assign a workflow during Edit Mode.
+
 ## 2.10.0
 
 -   [ReleaseControl] Add a default description in DescriptionInput in ReleaseControlProcessForm
