@@ -42,11 +42,6 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.register,
     },
     {
-        id: 'owner',
-        Header: 'Owner',
-        accessor: (item) => item.mechanicalCompletionPackageNo,
-    },
-    {
         id: 'tagMountedOnNo',
         Header: 'Mounted on',
         accessor: (item) => item.tagMountedOnNo,
