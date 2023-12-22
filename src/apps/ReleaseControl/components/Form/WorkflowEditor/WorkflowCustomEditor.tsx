@@ -11,7 +11,12 @@ import { CircularProgress } from '@equinor/eds-core-react';
 const workflowOwner = 'ReleaseControl';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
-export const WorkflowCustomEditor = (): JSX.Element => {
+type WorkflowCustomEditorProps = {
+    isEditMode?: boolean;
+};
+export const WorkflowCustomEditor = ({
+    isEditMode = false,
+}: WorkflowCustomEditorProps): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
 
     const { workflowSteps = [] } = useAtomState(({ workflowSteps }) => ({
@@ -62,6 +67,7 @@ export const WorkflowCustomEditor = (): JSX.Element => {
                     step={workflowStep.item}
                     steps={workflowSteps.map(({ item }) => item)}
                     functionalRoles={functionalRoles}
+                    isEditMode={isEditMode}
                 />
             ))}
             <ReactSortable<DraggableReleaseControlStep>
