@@ -92,7 +92,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                                 }}
                             />
                         </SelectionRow>
-                        <WorkflowCustomEditor />
+                        <WorkflowCustomEditor isEditMode={false} />
                         {steps.length !== 0 && (
                             <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
                         )}

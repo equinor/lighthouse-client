@@ -19,7 +19,7 @@ export const EditWorkflowTab = (): JSX.Element => {
             <FormWrapper>
                 <FlexColumn>
                     Workflow
-                    <WorkflowCustomEditor />
+                    <WorkflowCustomEditor isEditMode />
                     {steps.length !== 0 && (
                         <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
                     )}
