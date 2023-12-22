@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.13.0
+
+-   [ReleaseControl] Disabled the assigne textbox again. Hopefully without any side effects this time.
+
 ## 2.12.0
 
 -   [ReleaseControl] Fixed sidesheet not opening when clicking on a Release Control notification/task.
