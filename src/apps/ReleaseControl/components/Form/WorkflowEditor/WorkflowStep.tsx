@@ -30,6 +30,7 @@ interface WorkflowStepProps {
     steps: CreateReleaseControlStepModel[];
     functionalRoles?: FunctionalRole[];
     availableSteps: WorkflowStepTemplate[];
+    isEditMode?: boolean;
 }
 
 export const WorkflowStep = ({
@@ -37,6 +38,7 @@ export const WorkflowStep = ({
     steps,
     functionalRoles,
     availableSteps,
+    isEditMode,
 }: WorkflowStepProps): JSX.Element => {
     const { updateAtom } = DRCFormAtomApi;
 
@@ -59,7 +61,7 @@ export const WorkflowStep = ({
                         />
                     </CompletedCriteria>
                 ) : null
-            ) : step.name === 'Initiate' ? (
+            ) : step.name === 'Initiate' || step.isCurrent ? (
                 <>
                     <HiddenDragIcon />
                     <NumberCircle>{step.order}</NumberCircle>
@@ -105,6 +107,7 @@ export const WorkflowStep = ({
                                         : step?.criteriaTemplates?.[0]?.valueDescription
                                 }
                                 defaultResult={functionalRoles}
+                                isDisabled={isEditMode ? true : false}
                             />
                         </ResponsibleSelect>
                     </Selections>

@@ -11,7 +11,12 @@ import { CircularProgress } from '@equinor/eds-core-react';
 const workflowOwner = 'ReleaseControl';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
-export const WorkflowCustomEditor = (): JSX.Element => {
+type WorkflowCustomEditorProps = {
+    isEditMode?: boolean;
+};
+export const WorkflowCustomEditor = ({
+    isEditMode = false,
+}: WorkflowCustomEditorProps): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
 
     const { workflowSteps = [] } = useAtomState(({ workflowSteps }) => ({
@@ -39,10 +44,10 @@ export const WorkflowCustomEditor = (): JSX.Element => {
     const { data: availableSteps, isLoading, error } = useQuery(workflowStepsQuery(workflowOwner));
 
     const dragableSteps = workflowSteps.filter(
-        (x) => !x.item.isCompleted && x.item.name !== 'Initiate'
+        (x) => !x.item.isCompleted && x.item.name !== 'Initiate' && !x.item.isCurrent
     );
     const undragableSteps = workflowSteps.filter(
-        (x) => x.item.isCompleted || x.item.name === 'Initiate'
+        (x) => x.item.isCompleted || x.item.name === 'Initiate' || x.item.isCurrent
     );
 
     if (isLoading) {
@@ -62,6 +67,7 @@ export const WorkflowCustomEditor = (): JSX.Element => {
                     step={workflowStep.item}
                     steps={workflowSteps.map(({ item }) => item)}
                     functionalRoles={functionalRoles}
+                    isEditMode={isEditMode}
                 />
             ))}
             <ReactSortable<DraggableReleaseControlStep>
