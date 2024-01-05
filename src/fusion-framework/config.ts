@@ -67,10 +67,17 @@ export const createConfig = (appSettings: AppConfigResult) => {
             });
         }
         Object.entries(appSettings.urls).forEach(([a, b]) => {
-            config.configureHttpClient(a, {
-                baseUri: b,
-                defaultScopes: [appSettings.scope[a]],
-            });
+            if (a == 'scopeChange' && false) {
+                config.configureHttpClient(a, {
+                    baseUri: 'https://localhost:50435',
+                    defaultScopes: [appSettings.scope[a]],
+                });
+            } else {
+                config.configureHttpClient(a, {
+                    baseUri: b,
+                    defaultScopes: [appSettings.scope[a]],
+                });
+            }
         });
     };
 };
