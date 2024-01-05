@@ -24,7 +24,7 @@ export const Workflow = (): JSX.Element => {
                                 order={order}
                                 stepIndex={stepIndex}
                                 stepStatus={getCriteriaStatus(criteria, isCurrent ?? false)}
-                                hideOptions={!isCurrent}
+                                hideOptions={false}
                             />
                         ))}
                     </Fragment>

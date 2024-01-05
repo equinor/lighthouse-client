@@ -150,7 +150,8 @@ export const CriteriaActionBar = ({
                 isDisabled: !canUnsign,
             });
         }
-        if (isAllowedToAddContributor && isCurrentStep) {
+
+        if (isAllowedToAddContributor) {
             actions.push({
                 label: CriteriaActions.AddContributor,
                 icon: <Icon name="group_add" color={iconGrey} />,
