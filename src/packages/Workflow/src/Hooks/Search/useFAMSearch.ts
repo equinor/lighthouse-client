@@ -1,4 +1,4 @@
-import { FamTag, FAMTypes, TypedSelectOption } from '@equinor/Workflow';
+import { FamTag, FAMTypes, RCTag, TypedSelectOption } from '@equinor/Workflow';
 import { searchHtCable } from '../../Api/FAM/searchHtCable';
 import { searchHtCableTagNo } from '../../Api/FAM/searchHtCableTagNo';
 import { searchPunchListItems } from '../../Api/FAM/searchPunchListItems';
@@ -71,7 +71,7 @@ export function useFAMSearch(): FAMSearch {
             case 'famtagno': {
                 const items = await searchTagNo(searchValue, signal);
                 return items.map(
-                    (x: FamTag): TypedSelectOption => ({
+                    (x: RCTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'famtag',

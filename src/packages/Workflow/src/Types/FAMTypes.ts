@@ -1,3 +1,18 @@
+export type RCTag = {
+    commissioningPackageNo: string;
+    commissioningPackageUrlId: string;
+    facility: string;
+    function: string;
+    location: string;
+    mechanicalCompletionPackageNo: string;
+    mechanicalCompletionPackageUrlId: string;
+    openWorkorders: string;
+    register: string;
+    tagId: string;
+    tagNo: string;
+    urlId: string;
+};
+
 export type FamTag = {
     facility: string;
     project: string;
