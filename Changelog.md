@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.15.0
+
+-   [ReleaseControl] Add new information to the description box (while creating a RC).
+
 ## 2.14.0
 
 -   [ReleaseControl] Sidesheet opened from notification centre/tasks centre now opens the app itself.
