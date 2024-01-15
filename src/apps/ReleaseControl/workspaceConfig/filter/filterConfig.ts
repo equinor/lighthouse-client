@@ -69,6 +69,12 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         sort: (s) => s.sort(sortOnYesNo),
     },
     {
+        name: 'Contains Step',
+        valueFormatter: ({ workflowSteps }) => {
+            return workflowSteps.map(x => x.name).filter((v, i, a) => a.indexOf(v) === i);
+        },
+    },
+    {
         name: 'Next to Sign',
         valueFormatter: (s) => getNextToSign(s),
     },
