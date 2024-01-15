@@ -38,12 +38,9 @@ export function useFAMSearch(): FAMSearch {
             case 'famtag': {
                 const items = await searchTag(searchValue);
                 items.map((tag: FamTag) => {
-                    tag.relatedHTCables =
-                        (tag.heatTracingCableTagNos !== null ? tag.heatTracingCableTagNos : '') +
-                        (tag.heatTracingCableTagNos !== null ? ', ' : '') +
-                        (tag.mountedOnHeatTracingCableTagNos !== null
-                            ? tag.mountedOnHeatTracingCableTagNos
-                            : '');
+                    tag.relatedHTCables = [tag.heatTracingCableTagNos, tag.mountedOnHeatTracingCableTagNos]
+                        .filter(x => x != null)
+                        .join(",");
                     return tag;
                 });
                 return items.map(
