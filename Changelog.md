@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.17.0
+
+-   [ReleaseControl] Added new filter column for "Contains Step" to RC filters.
+
+## 2.16.0
+
+-   [ReleaseControl] Fixed issue with unnececary commas when displaying tags in RC.
+
 ## 2.15.0
 
 -   [ReleaseControl] Add new information to the description box (while creating a RC).
