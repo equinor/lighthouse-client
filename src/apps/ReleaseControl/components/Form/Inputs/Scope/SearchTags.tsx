@@ -39,9 +39,12 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
 
     async function addTag(value: TypedSelectOption) {
         setLoading(true);
-        const newValues = searchFAM(value.value, 'famtag');
-        if (await newValues) {
-            onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), ...(await newValues)]);
+        const newValues = await searchFAM(value.value, 'famtag');
+
+        const dedupe = newValues.filter((v, i, a) => a.findIndex((s) => s.value === v.value) === i);
+
+        if (dedupe) {
+            onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), ...dedupe]);
         }
         setLoading(false);
     }
