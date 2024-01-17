@@ -14,6 +14,7 @@ import { useFramework } from '@equinor/fusion-framework-react';
 import { useQuery } from 'react-query';
 import { ContextItem } from '@equinor/fusion-framework-module-context';
 import EquinorLoader from '../../fusion-framework/EquinorLoader';
+import { FusionAppLoaderRoute } from './FusionAppLoader';
 
 type ContextGuardProps = {
     children: ReactNode;
@@ -65,6 +66,7 @@ export function ClientRoutes(): JSX.Element {
     return (
         <Routes>
             <Route path={'/'} element={<ClientHome />} />
+            <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
             {Object.keys(appGroups).map((key) => {
                 const group = appGroups[key];
                 const links = apps.filter((app) => {
