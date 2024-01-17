@@ -1,6 +1,6 @@
 {
   "name": "castberg-project-portal",
-  "version": "2.13.0",
+  "version": "2.18.0",
   "description": "Castberg Project Portal",
   "type": "module",
   "main": "Index.ts",

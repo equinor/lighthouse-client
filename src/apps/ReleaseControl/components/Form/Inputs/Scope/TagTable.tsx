@@ -98,7 +98,7 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'areas',
         Header: 'Area',
-        accessor: (item) => item.area,
+        accessor: (item) => item.area ?? item.location,
     },
     {
         id: 'remove',

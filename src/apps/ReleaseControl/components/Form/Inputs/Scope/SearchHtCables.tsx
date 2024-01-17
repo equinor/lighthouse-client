@@ -40,9 +40,12 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
 
     async function addHtCable(value: TypedSelectOption) {
         setLoading(true);
-        const newValues = searchFAM(value.value, 'htcable');
-        if (await newValues) {
-            onChange([...(DRCFormAtomApi.readAtomValue().htCables ?? []), ...(await newValues)]);
+        const newValues = await searchFAM(value.value, 'htcable');
+
+        const dedupe = newValues.filter((v, i, a) => a.findIndex((s) => s.value === v.value) === i);
+
+        if (dedupe) {
+            onChange([...(DRCFormAtomApi.readAtomValue().htCables ?? []), ...dedupe]);
         }
         setLoading(false);
     }
