@@ -66,7 +66,7 @@ export function ClientRoutes(): JSX.Element {
     return (
         <Routes>
             <Route path={'/'} element={<ClientHome />} />
-            <Route path={'/apps/*'} element={<FusionAppLoaderRoute />} />
+            <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
             {Object.keys(appGroups).map((key) => {
                 const group = appGroups[key];
                 const links = apps.filter((app) => {
