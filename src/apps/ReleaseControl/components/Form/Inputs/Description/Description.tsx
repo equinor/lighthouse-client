@@ -30,6 +30,7 @@ Scaffolding [Yes/No], describe:
 Valve insulation box, remove lid only [Yes/No], describe: 
 SAP AO number (if applicable): 
 PTW number(if applicable):
+Safety Critical Lines involved:
 Ideal start date: 
 
 Description of what is to be done: 
