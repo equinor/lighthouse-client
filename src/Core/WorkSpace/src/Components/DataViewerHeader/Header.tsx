@@ -6,9 +6,6 @@ import { PowerBiHeader } from './PowerBiHeader';
 import { WorkspaceHeader } from './WorkspaceHeader';
 import { useEffect } from 'react';
 import { spawnConfirmationDialog } from '../../../../ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { useClientContext } from '../../../../Client/Hooks';
-import { httpClient } from '../../../../Client/Functions';
-import { useQuery } from 'react-query';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { useContactPerson } from '../../../../../hooks/useContactPerson';
 
@@ -75,8 +72,15 @@ export const CompletionViewHeader = ({
     );
 };
 
-const makeRedirectUrl = (shortName: string) =>
-    window.location.href.split(shortName)[0].concat(`${shortName}-new`).toString();
+const makeRedirectUrl = (shortName: string) => {
+    if (shortName === 'handover') {
+        return window.location.href.split(shortName)[0].concat(`${shortName}-new`).toString();
+    }
+    if (shortName === 'mc') {
+        return window.location.href.split(shortName)[0].concat(`mechanical-completion`).toString();
+    }
+    return '';
+};
 
 export function ContactPerson() {
     const { isLoading, data, error } = useContactPerson();
