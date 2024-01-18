@@ -30,6 +30,9 @@ const getBookmarkRedirect = (
         case 'handover':
             return `/ConstructionAndCommissioning/handover-new?bookmarkId=${bookmarkId}`;
 
+        case 'mechanical-completion':
+            return `/ConstructionAndCommissioning/mechanical-completion?bookmarkId=${bookmarkId}`;
+
         default:
             return `/${subSystem}/${appKey}?bookmarkId=${bookmarkId}`;
     }
