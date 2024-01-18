@@ -146,6 +146,21 @@ export const oldApps: AppManifest[] = [
         appEnv: 'prod',
         deprecated: true,
     },
+    {
+        title: 'Loop old',
+        shortName: 'loop',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'Workspace',
+            setup: loopSetup,
+        },
+        appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Loop.aspx',
+        deprecated: true,
+    },
 ];
 
 export const apps: AppManifest[] = [
@@ -380,6 +395,20 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
     },
     {
+        title: 'Loop',
+        shortName: 'loop-new',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['Fusion'],
+        app: {
+            appType: 'FusionApp',
+            setup: () => {},
+        },
+        appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Loop.aspx',
+    },
+    {
         title: 'Activities',
         shortName: 'activities',
         color: '#0364B8',
@@ -514,21 +543,6 @@ export const apps: AppManifest[] = [
             setup: checklistSetup,
         },
         appEnv: 'prod',
-    },
-
-    {
-        title: 'Loop',
-        shortName: 'loop',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-            setup: loopSetup,
-        },
-        appEnv: 'prod',
-        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Loop.aspx',
     },
 
     {
