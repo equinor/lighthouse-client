@@ -1,9 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
-import { proCoSysUrls } from '@equinor/procosys-urls';
+import { proCoSysUrls, stidUrls } from '@equinor/procosys-urls';
 import { Column, Table } from '@equinor/Table';
 import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
+import { Icon } from '@equinor/eds-core-react';
 
 interface TagTableProps {
     tags: FamTagType[];
@@ -28,10 +29,9 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.tagNo,
         Cell: (cell) => (
             <Link
-                href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
-                target="_blank"
-                hideUnderline
-            >
+            href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
+            target="_blank"
+            hideUnderline>
                 {cell.row.values.tagNo}
             </Link>
         ),
@@ -101,6 +101,38 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.area ?? item.location,
     },
     {
+        id: 'pidDrawings',
+        Header: 'P&ID drawings',
+        accessor: (item) => {
+            console.log(item);
+            return item.pidDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            ));
+        },
+    },
+    {
+        id: 'isoDrawings',
+        Header: 'ISO drawings',
+        accessor: (item) => {
+            return item.isoDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            ));
+        },
+    },
+    {
+        id: 'stidLink',
+        Header: 'Links',
+        accessor: (item) => (
+            <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
+                <StidLogoLink src='images/stid_logo.svg'/>
+            </Link>
+        ),
+    },
+    {
         id: 'remove',
         Header: '',
         width: 30,
@@ -108,6 +140,8 @@ const columns: Column<FamTagType>[] = [
         Cell: RemoveTagCell,
     },
 ];
+
+
 
 const Link = styled.a`
     color: ${tokens.colors.interactive.primary__resting.hex};
@@ -117,4 +151,8 @@ const Link = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const StidLogoLink = styled.img`
+    width: 24px;
 `;

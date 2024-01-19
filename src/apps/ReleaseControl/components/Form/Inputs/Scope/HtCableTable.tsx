@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { proCoSysUrls } from '@equinor/procosys-urls';
+import { proCoSysUrls, stidUrls } from '@equinor/procosys-urls';
 import { CellProps, Column, Table } from '@equinor/Table';
 import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
@@ -131,6 +131,38 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.area ?? item.location,
     },
     {
+        id: 'pidDrawings',
+        Header: 'P&ID drawings',
+        accessor: (item) => {
+            console.log(item);
+            return item.pidDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            ));
+        },
+    },
+    {
+        id: 'isoDrawings',
+        Header: 'ISO drawings',
+        accessor: (item) => {
+            return item.isoDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            ));
+        },
+    },
+    {
+        id: 'stidLink',
+        Header: 'Links',
+        accessor: (item) => (
+            <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
+                <StidLogoLink src='images/stid_logo.svg'/>
+            </Link>
+        ),
+    },
+    {
         id: 'remove',
         Header: '',
         width: 30,
@@ -152,4 +184,8 @@ const Link = styled.a`
 const StyledCenterCheckIcon = styled.div`
     display: flex;
     align-items: center;
+`;
+
+const StidLogoLink = styled.img`
+    width: 24px;
 `;
