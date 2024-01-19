@@ -1,9 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
-import { proCoSysUrls } from '@equinor/procosys-urls';
+import { proCoSysUrls, stidUrls } from '@equinor/procosys-urls';
 import { Column, Table } from '@equinor/Table';
 import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
+import { Icon } from '@equinor/eds-core-react';
+import { LinkGroup } from './LinkGroup';
 
 interface TagTableProps {
     tags: FamTagType[];
@@ -28,11 +30,21 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.tagNo,
         Cell: (cell) => (
             <Link
-                href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
-                target="_blank"
-                hideUnderline
-            >
+            href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
+            target="_blank"
+            hideUnderline>
                 {cell.row.values.tagNo}
+            </Link>
+        ),
+    },
+    {
+        id: 'stidLink',
+        Header: 'Links',
+        width: "auto",
+        minWidth: 80,
+        accessor: (item) => (
+            <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
+                <StidLogoLink src='images/stid_logo.svg'/>
             </Link>
         ),
     },
@@ -101,6 +113,37 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.area ?? item.location,
     },
     {
+        id: 'pidDrawings',
+        Header: 'P&ID',
+        width: "auto",
+        minWidth: 100,
+        accessor: (item) => {
+            const links = item.pidDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            )) ?? [];
+
+            return <LinkGroup links={links} maxLinks={3} overflowLink={stidUrls.getTagUrl(item.tagNo)} />
+        },
+    },
+    {
+        id: 'isoDrawings',
+        width: "auto",
+        minWidth: 100,
+        Header: 'ISO',
+        accessor: (item) => {
+            const links = item.isoDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            )) ?? [];
+
+            return <LinkGroup links={links} maxLinks={3} overflowLink={stidUrls.getTagUrl(item.tagNo)} />
+        },
+    },
+
+    {
         id: 'remove',
         Header: '',
         width: 30,
@@ -108,6 +151,8 @@ const columns: Column<FamTagType>[] = [
         Cell: RemoveTagCell,
     },
 ];
+
+
 
 const Link = styled.a`
     color: ${tokens.colors.interactive.primary__resting.hex};
@@ -117,4 +162,8 @@ const Link = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const StidLogoLink = styled.img`
+    width: 24px;
 `;

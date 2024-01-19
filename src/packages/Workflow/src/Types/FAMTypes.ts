@@ -29,6 +29,9 @@ export type FamTag = {
     switchBoardTagNos: string | null;
     circuitAndStarterTagNos: string | null;
 
+    isoDrawings: Drawing[];
+    pidDrawings: Drawing[];
+
     //Sent to release control api
     area: string | null;
     tagType: string | null;
@@ -69,6 +72,9 @@ export type FamTagType = {
     switchBoardTagNos: string | null;
     circuitAndStarterTagNos: string | null;
 
+    isoDrawings?: Drawing[];
+    pidDrawings?: Drawing[];
+
     //Sent to release control api
     area: string | null;
     tagType: string | null;
@@ -77,6 +83,15 @@ export type FamTagType = {
     circuitTagNos: string | null;
     tagHeated: string | null;
 };
+
+
+export interface Drawing {
+    docNo: string;
+    docTitle: string;
+    docType: string;
+    stidDocumentUrl: string;
+}
+
 
 export interface PunchListItem {
     punchItemNo: number;

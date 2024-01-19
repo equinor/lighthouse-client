@@ -1,10 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
-import { proCoSysUrls } from '@equinor/procosys-urls';
+import { proCoSysUrls, stidUrls } from '@equinor/procosys-urls';
 import { CellProps, Column, Table } from '@equinor/Table';
 import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveHtCableCell } from './RemoveHtCableCell';
 import { Icon } from '@equinor/lighthouse-components';
+import { LinkGroup } from './LinkGroup';
 
 interface HtCableTableProps {
     htCables: FamTagType[];
@@ -34,6 +35,17 @@ const columns: Column<FamTagType>[] = [
                 hideUnderline
             >
                 {cell.row.values.tagNo}
+            </Link>
+        ),
+    },
+    {
+        id: 'stidLink',
+        Header: 'Links',
+        width: "auto",
+        minWidth: 80,
+        accessor: (item) => (
+            <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
+                <StidLogoLink src='images/stid_logo.svg'/>
             </Link>
         ),
     },
@@ -131,6 +143,36 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.area ?? item.location,
     },
     {
+        id: 'pidDrawings',
+        Header: 'P&ID',
+        width: "auto",
+        minWidth: 100,
+        accessor: (item) => {
+            const links = item.pidDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            )) ?? [];
+
+            return <LinkGroup links={links} maxLinks={3} overflowLink={stidUrls.getTagUrl(item.tagNo)} />
+        },
+    },
+    {
+        id: 'isoDrawings',
+        Header: 'ISO',
+        width: "auto",
+        minWidth: 100,
+        accessor: (item) => {
+            const links = item.isoDrawings?.map(x => (
+                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
+                    <Icon name="link" />
+                </Link>
+            )) ?? [];
+
+            return <LinkGroup links={links} maxLinks={3} overflowLink={stidUrls.getTagUrl(item.tagNo)} />
+        },
+    },
+    {
         id: 'remove',
         Header: '',
         width: 30,
@@ -152,4 +194,8 @@ const Link = styled.a`
 const StyledCenterCheckIcon = styled.div`
     display: flex;
     align-items: center;
+`;
+
+const StidLogoLink = styled.img`
+    width: 24px;
 `;
