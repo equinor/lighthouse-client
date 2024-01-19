@@ -135,7 +135,7 @@ const columns: Column<FamTagType>[] = [
         Header: 'P&ID drawings',
         accessor: (item) => {
             console.log(item);
-            return item.pidDrawings?.map(x => (
+            return item.pidDrawings?.map((x) => (
                 <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
                     <Icon name="link" />
                 </Link>
@@ -146,7 +146,7 @@ const columns: Column<FamTagType>[] = [
         id: 'isoDrawings',
         Header: 'ISO drawings',
         accessor: (item) => {
-            return item.isoDrawings?.map(x => (
+            return item.isoDrawings?.map((x) => (
                 <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
                     <Icon name="link" />
                 </Link>
@@ -158,7 +158,7 @@ const columns: Column<FamTagType>[] = [
         Header: 'Links',
         accessor: (item) => (
             <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
-                <StidLogoLink src='images/stid_logo.svg'/>
+                <StidLogoLink src="images/stid_logo.svg" />
             </Link>
         ),
     },

@@ -1,16 +1,15 @@
 import { tokens } from '@equinor/eds-tokens';
-import { proCoSysUrls, stidUrls } from '@equinor/procosys-urls';
+import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Column, Table } from '@equinor/Table';
 import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
-import { Icon } from '@equinor/eds-core-react';
+import { Echo3DIconLink } from './Echo3DIconLink';
 
 interface TagTableProps {
     tags: FamTagType[];
     editMode: boolean;
 }
-
 export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
     if (tags.length === 0) return <></>;
 
@@ -28,12 +27,16 @@ const columns: Column<FamTagType>[] = [
         Header: 'Tag number',
         accessor: (item) => item.tagNo,
         Cell: (cell) => (
-            <Link
-            href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
-            target="_blank"
-            hideUnderline>
-                {cell.row.values.tagNo}
-            </Link>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Link
+                    href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
+                    target="_blank"
+                    hideUnderline
+                >
+                    {cell.row.values.tagNo}
+                </Link>
+                <Echo3DIconLink id={cell.row.original.tagNo} />
+            </div>
         ),
     },
     {
@@ -60,6 +63,7 @@ const columns: Column<FamTagType>[] = [
         Header: 'Related HT cables',
         accessor: (item) => item.relatedHTCables,
     },
+
     {
         id: 'commissioningPackageNo',
         Header: 'Comm',
@@ -101,38 +105,6 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.area ?? item.location,
     },
     {
-        id: 'pidDrawings',
-        Header: 'P&ID drawings',
-        accessor: (item) => {
-            console.log(item);
-            return item.pidDrawings?.map(x => (
-                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
-                    <Icon name="link" />
-                </Link>
-            ));
-        },
-    },
-    {
-        id: 'isoDrawings',
-        Header: 'ISO drawings',
-        accessor: (item) => {
-            return item.isoDrawings?.map(x => (
-                <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
-                    <Icon name="link" />
-                </Link>
-            ));
-        },
-    },
-    {
-        id: 'stidLink',
-        Header: 'Links',
-        accessor: (item) => (
-            <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
-                <StidLogoLink src='images/stid_logo.svg'/>
-            </Link>
-        ),
-    },
-    {
         id: 'remove',
         Header: '',
         width: 30,
@@ -140,8 +112,6 @@ const columns: Column<FamTagType>[] = [
         Cell: RemoveTagCell,
     },
 ];
-
-
 
 const Link = styled.a`
     color: ${tokens.colors.interactive.primary__resting.hex};
@@ -151,8 +121,4 @@ const Link = styled.a`
     &:hover {
         text-decoration: underline;
     }
-`;
-
-const StidLogoLink = styled.img`
-    width: 24px;
 `;

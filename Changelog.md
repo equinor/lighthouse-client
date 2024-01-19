@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.18.0
+
+-   [ReleaseControl] Added link to Echo 3D from sidesheet.
+
 ## 2.17.1
 
 -   [ReleaseControl] Fixed bug related to areas not showing before after submitting RC.
