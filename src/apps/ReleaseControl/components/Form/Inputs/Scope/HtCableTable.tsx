@@ -5,6 +5,7 @@ import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveHtCableCell } from './RemoveHtCableCell';
 import { Icon } from '@equinor/lighthouse-components';
+import { LinkGroup } from './LinkGroup';
 
 interface HtCableTableProps {
     htCables: FamTagType[];
@@ -34,6 +35,17 @@ const columns: Column<FamTagType>[] = [
                 hideUnderline
             >
                 {cell.row.values.tagNo}
+            </Link>
+        ),
+    },
+    {
+        id: 'stidLink',
+        Header: 'Links',
+        width: "auto",
+        minWidth: 80,
+        accessor: (item) => (
+            <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
+                <StidLogoLink src='images/stid_logo.svg'/>
             </Link>
         ),
     },
@@ -132,35 +144,33 @@ const columns: Column<FamTagType>[] = [
     },
     {
         id: 'pidDrawings',
-        Header: 'P&ID drawings',
+        Header: 'P&ID',
+        width: "auto",
+        minWidth: 100,
         accessor: (item) => {
-            console.log(item);
-            return item.pidDrawings?.map(x => (
+            const links = item.pidDrawings?.map(x => (
                 <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
                     <Icon name="link" />
                 </Link>
-            ));
+            )) ?? [];
+
+            return <LinkGroup links={links} maxLinks={3} overflowLink={stidUrls.getTagUrl(item.tagNo)} />
         },
     },
     {
         id: 'isoDrawings',
-        Header: 'ISO drawings',
+        Header: 'ISO',
+        width: "auto",
+        minWidth: 100,
         accessor: (item) => {
-            return item.isoDrawings?.map(x => (
+            const links = item.isoDrawings?.map(x => (
                 <Link href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
                     <Icon name="link" />
                 </Link>
-            ));
+            )) ?? [];
+
+            return <LinkGroup links={links} maxLinks={3} overflowLink={stidUrls.getTagUrl(item.tagNo)} />
         },
-    },
-    {
-        id: 'stidLink',
-        Header: 'Links',
-        accessor: (item) => (
-            <Link href={stidUrls.getTagUrl(item.tagNo)} target="_blank" hideUnderline>
-                <StidLogoLink src='images/stid_logo.svg'/>
-            </Link>
-        ),
     },
     {
         id: 'remove',
