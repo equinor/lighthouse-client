@@ -6,12 +6,11 @@ import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
 import { Icon } from '@equinor/eds-core-react';
 import { LinkGroup } from './LinkGroup';
-
+import { Echo3DIconLink } from './Echo3DIconLink';
 interface TagTableProps {
     tags: FamTagType[];
     editMode: boolean;
 }
-
 export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
     if (tags.length === 0) return <></>;
 
@@ -28,15 +27,18 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'tagNo',
         Header: 'Tag number',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagNo',
-            url: proCoSysUrls.getTagUrl(item.tagUrlId || '')
-        }),
-        Cell: (cell: CellProps<FamTagType>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.tagNo}
-            </Link>
+        accessor: (item) => item.tagNo,
+        Cell: (cell) => (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Link
+                    href={proCoSysUrls.getTagUrl(cell.row.original.tagUrlId || '')}
+                    target="_blank"
+                    hideUnderline
+                >
+                    {cell.row.values.tagNo}
+                </Link>
+                <Echo3DIconLink id={cell.row.original.tagNo} />
+            </div>
         ),
         Aggregated: () => null,
         aggregate: 'count',
@@ -47,12 +49,12 @@ const columns: Column<FamTagType>[] = [
         width: 60,
         accessor: (item) => ({
             content: item,
-            currentKey: "tagNo",
-            url: stidUrls.getTagUrl(item.tagNo)
+            currentKey: 'tagNo',
+            url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
-                <StidLogoLink src='images/stid_logo.svg'/>
+                <StidLogoLink src="images/stid_logo.svg" />
             </Link>
         ),
         Aggregated: () => null,
@@ -68,8 +70,8 @@ const columns: Column<FamTagType>[] = [
         Header: 'Mounted on',
         accessor: (item) => ({
             content: item,
-            currentKey: "tagMountedOnNo",
-            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || '')
+            currentKey: 'tagMountedOnNo',
+            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
@@ -84,13 +86,14 @@ const columns: Column<FamTagType>[] = [
         Header: 'Related HT cables',
         accessor: (item) => item.relatedHTCables,
     },
+
     {
         id: 'commissioningPackageNo',
         Header: 'Comm',
         accessor: (item) => ({
             content: item,
-            currentKey: "commissioningPackageNo",
-            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || '')
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
@@ -105,8 +108,8 @@ const columns: Column<FamTagType>[] = [
         Header: 'MC',
         accessor: (item) => ({
             content: item,
-            currentKey: "mechanicalCompletionPackageNo",
-            url:proCoSysUrls.getMcUrl(item.mechanicalCompletionPackageUrlId || '')
+            currentKey: 'mechanicalCompletionPackageNo',
+            url: proCoSysUrls.getMcUrl(item.mechanicalCompletionPackageUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
@@ -132,16 +135,22 @@ const columns: Column<FamTagType>[] = [
         minWidth: 100,
         accessor: (item) => ({
             content: item,
-            currentKey: "tagNo",
-            url: stidUrls.getTagUrl(item.tagNo)
+            currentKey: 'tagNo',
+            url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => {
-            const links = cell.value.content.pidDrawings?.map(x => (
-                <Link key={x.docNo} href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
-                    <Icon name="link" />
-                </Link>
-            )) ?? [];
-            return <LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />
+            const links =
+                cell.value.content.pidDrawings?.map((x) => (
+                    <Link
+                        key={x.docNo}
+                        href={stidUrls.getDocUrl(x.docNo)}
+                        target="_blank"
+                        hideUnderline
+                    >
+                        <Icon name="link" />
+                    </Link>
+                )) ?? [];
+            return <LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />;
         },
         Aggregated: () => null,
         aggregate: 'count',
@@ -152,22 +161,29 @@ const columns: Column<FamTagType>[] = [
         Header: 'ISO',
         accessor: (item) => ({
             content: item,
-            currentKey: "tagNo",
-            url: stidUrls.getTagUrl(item.tagNo)
+            currentKey: 'tagNo',
+            url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => {
-            const links = cell.value.content.isoDrawings?.map(x => (
-                <Link key={x.docNo} href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
-                    <Icon name="link" />
-                </Link>
-            )) ?? [];
-            
+            const links =
+                cell.value.content.isoDrawings?.map((x) => (
+                    <Link
+                        key={x.docNo}
+                        href={stidUrls.getDocUrl(x.docNo)}
+                        target="_blank"
+                        hideUnderline
+                    >
+                        <Icon name="link" />
+                    </Link>
+                )) ?? [];
+
             return (
-                <LinkGroup 
-                    key={`isoDrawings_${cell.value.content.tagNo}`} 
-                    links={links} 
-                    maxLinks={3} 
-                    overflowLink={cell.value.url} />
+                <LinkGroup
+                    key={`isoDrawings_${cell.value.content.tagNo}`}
+                    links={links}
+                    maxLinks={3}
+                    overflowLink={cell.value.url}
+                />
             );
         },
         Aggregated: () => null,
@@ -182,8 +198,6 @@ const columns: Column<FamTagType>[] = [
         Cell: RemoveTagCell,
     },
 ];
-
-
 
 const Link = styled.a`
     color: ${tokens.colors.interactive.primary__resting.hex};
