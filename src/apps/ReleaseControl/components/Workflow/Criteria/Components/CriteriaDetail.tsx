@@ -35,7 +35,11 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
                 <span>{step.name}</span>
                 {criteria.signedAtUtc ? (
                     <DetailText>
-                        <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                        <div>
+                            {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
+                            {criteria.type == 'RequireProcosysFunctionalRoleSignature' &&
+                                `(${criteria.valueDescription})`}
+                        </div>
                         {criteria.signedComment && <q>{criteria.signedComment}</q>}
                     </DetailText>
                 ) : (
