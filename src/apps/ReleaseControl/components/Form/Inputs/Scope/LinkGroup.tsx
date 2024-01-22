@@ -1,5 +1,4 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useMemo } from 'react';
 import styled from 'styled-components';
 
 interface LinkGroupProps {
@@ -12,17 +11,13 @@ export const LinkGroup = ({ links, maxLinks, overflowLink }: LinkGroupProps): JS
     
     const renderedLinks = links.slice(0, maxLinks);
 
-    const overflowElement = useMemo(() => {
-        return (
-            <Link href={overflowLink} target="_blank" hideUnderline>
-                <span>{links.length} links</span>
-            </Link>
-        );
-    }, [links, maxLinks]);
-
     return (
         <>
-            { links.length < maxLinks ? renderedLinks : overflowElement }
+            { links.length >= maxLinks ? (
+                <Link href={overflowLink} target="_blank" hideUnderline>
+                    <span>{links.length} links</span>
+                </Link> ): renderedLinks 
+            }
         </>
     );
 };
