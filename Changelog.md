@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.18.2
+
+-   [ReleaseControl] Show functional role in parentheses when criteria is signed.
+
 ## 2.18.1
 
 -   [ReleaseControl] Fix querying removed workflowsteps
