@@ -32,7 +32,7 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
-            url: proCoSysUrls.getTagUrl(item.tagUrlId || '')
+            url: proCoSysUrls.getTagUrl(item.tagUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
@@ -48,12 +48,12 @@ const columns: Column<FamTagType>[] = [
         width: 60,
         accessor: (item) => ({
             content: item,
-            currentKey: "tagNo",
-            url: stidUrls.getTagUrl(item.tagNo)
+            currentKey: 'tagNo',
+            url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
-                <StidLogoLink src='images/stid_logo.svg'/>
+                <StidLogoLink src="images/stid_logo.svg" />
             </Link>
         ),
         Aggregated: () => null,
@@ -74,29 +74,31 @@ const columns: Column<FamTagType>[] = [
         Header: 'HT length (m)',
         accessor: (item) => ({
             content: item,
-            currentKey: "installedCableLength",
+            currentKey: 'installedCableLength',
         }),
         Cell: (cell: CellProps<FamTagType>) => {
-            if(cell.value.content.installedCableLength !== null) {
+            if (cell.value.content.installedCableLength !== null) {
                 return (
                     <StyledCenterCheckIcon>
                         {Number(cell.value.content.installedCableLength)}
                         <Icon
                             color={tokens.colors.interactive.success__text.hex}
                             name="check_circle_outlined"
-                            title="This cable is installed." />
+                            title="This cable is installed."
+                        />
                     </StyledCenterCheckIcon>
                 );
             }
 
-            if(cell.value.content.estimatedCableLength !== null) {
+            if (cell.value.content.estimatedCableLength !== null) {
                 return (
                     <StyledCenterCheckIcon>
                         {Number(cell.value.content.estimatedCableLength)}
                         <Icon
                             color={tokens.colors.interactive.primary__hover.hex}
                             name="help_outline"
-                            title="Estimated" />
+                            title="Estimated"
+                        />
                     </StyledCenterCheckIcon>
                 );
             }
@@ -106,7 +108,8 @@ const columns: Column<FamTagType>[] = [
                     <Icon
                         color={tokens.colors.interactive.danger__text.hex}
                         name="close_circle_outlined"
-                        title="No installed cable." />
+                        title="No installed cable."
+                    />
                 </StyledCenterCheckIcon>
             );
         },
@@ -123,8 +126,8 @@ const columns: Column<FamTagType>[] = [
         Header: 'Comm',
         accessor: (item) => ({
             content: item,
-            currentKey: "commissioningPackageNo",
-            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || '')
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
@@ -139,7 +142,7 @@ const columns: Column<FamTagType>[] = [
         Header: 'MC',
         accessor: (item) => ({
             content: item,
-            currentKey: "mechanicalCompletionPackageNo",
+            currentKey: 'mechanicalCompletionPackageNo',
             url: proCoSysUrls.getMcUrl(item.mechanicalCompletionPackageUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
@@ -166,16 +169,22 @@ const columns: Column<FamTagType>[] = [
         minWidth: 100,
         accessor: (item) => ({
             content: item,
-            currentKey: "tagNo",
-            url: stidUrls.getTagUrl(item.tagNo)
+            currentKey: 'tagNo',
+            url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => {
-            const links = cell.value.content.pidDrawings?.map(x => (
-                <Link key={x.docNo} href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
-                    <Icon name="link" />
-                </Link>
-            )) ?? [];
-            return (<LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />);
+            const links =
+                cell.value.content.pidDrawings?.map((x) => (
+                    <Link
+                        key={x.docNo}
+                        href={stidUrls.getDocUrl(x.docNo)}
+                        target="_blank"
+                        hideUnderline
+                    >
+                        <Icon name="link" />
+                    </Link>
+                )) ?? [];
+            return <LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />;
         },
         Aggregated: () => null,
         aggregate: 'count',
@@ -186,17 +195,23 @@ const columns: Column<FamTagType>[] = [
         minWidth: 100,
         accessor: (item) => ({
             content: item,
-            currentKey: "tagNo",
-            url: stidUrls.getTagUrl(item.tagNo)
+            currentKey: 'tagNo',
+            url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => {
-            const links = cell.value.content.isoDrawings?.map(x => (
-                <Link key={x.docNo} href={stidUrls.getDocUrl(x.docNo)} target="_blank" hideUnderline>
-                    <Icon name="link" />
-                </Link>
-            )) ?? [];
-            
-            return (<LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />);
+            const links =
+                cell.value.content.isoDrawings?.map((x) => (
+                    <Link
+                        key={x.docNo}
+                        href={stidUrls.getDocUrl(x.docNo)}
+                        target="_blank"
+                        hideUnderline
+                    >
+                        <Icon name="link" />
+                    </Link>
+                )) ?? [];
+
+            return <LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />;
         },
         Aggregated: () => null,
         aggregate: 'count',
