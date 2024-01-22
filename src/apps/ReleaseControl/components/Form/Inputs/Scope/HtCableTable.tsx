@@ -72,42 +72,46 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'installedCableLength',
         Header: 'HT length (m)',
-        accessor: (item) =>
-            item.installedCableLength !== null
-                ? Number(item.installedCableLength)
-                : item.estimatedCableLength !== null
-                ? Number(item.estimatedCableLength)
-                : '',
-        Cell: (cell: CellProps<FamTagType>) =>
-            cell.row.original.installedCableLength !== null ? (
-                <StyledCenterCheckIcon>
-                    {cell.value}
-                    <Icon
-                        color={tokens.colors.interactive.success__text.hex}
-                        name="check_circle_outlined"
-                        title="This cable is installed."
-                    ></Icon>
-                </StyledCenterCheckIcon>
-            ) : cell.row.original.estimatedCableLength !== null ? (
-                <StyledCenterCheckIcon>
-                    {cell.value}
-                    <Icon
-                        color={tokens.colors.interactive.primary__hover.hex}
-                        name="help_outline"
-                        title="Estimated"
-                    ></Icon>
-                </StyledCenterCheckIcon>
-            ) : (
+        accessor: (item) => ({
+            content: item,
+            currentKey: "installedCableLength",
+        }),
+        Cell: (cell: CellProps<FamTagType>) => {
+            if(cell.value.content.installedCableLength !== null) {
+                return (
+                    <StyledCenterCheckIcon>
+                        {Number(cell.value.content.installedCableLength)}
+                        <Icon
+                            color={tokens.colors.interactive.success__text.hex}
+                            name="check_circle_outlined"
+                            title="This cable is installed." />
+                    </StyledCenterCheckIcon>
+                );
+            }
+
+            if(cell.value.content.estimatedCableLength !== null) {
+                return (
+                    <StyledCenterCheckIcon>
+                        {Number(cell.value.content.estimatedCableLength)}
+                        <Icon
+                            color={tokens.colors.interactive.primary__hover.hex}
+                            name="help_outline"
+                            title="Estimated" />
+                    </StyledCenterCheckIcon>
+                );
+            }
+
+            return (
                 <StyledCenterCheckIcon>
                     <Icon
                         color={tokens.colors.interactive.danger__text.hex}
                         name="close_circle_outlined"
-                        title="No installed cable."
-                    ></Icon>
+                        title="No installed cable." />
                 </StyledCenterCheckIcon>
-            ),
-            Aggregated: () => null,
-            aggregate: 'count',
+            );
+        },
+        Aggregated: () => null,
+        aggregate: 'count',
     },
     {
         id: 'tagHeated',
