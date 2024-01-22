@@ -89,7 +89,6 @@ export interface Drawing {
     docNo: string;
     docTitle: string;
     docType: string;
-    stidDocumentUrl: string;
 }
 
 
