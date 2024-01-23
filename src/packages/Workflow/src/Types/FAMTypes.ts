@@ -84,13 +84,11 @@ export type FamTagType = {
     tagHeated: string | null;
 };
 
-
 export interface Drawing {
     docNo: string;
     docTitle: string;
     docType: string;
 }
-
 
 export interface PunchListItem {
     punchItemNo: number;

@@ -43,7 +43,7 @@ const columns: Column<FamTagType>[] = [
         aggregate: 'count',
     },
     {
-        id: 'Links',
+        id: 'links',
         Header: 'Links',
         width: 60,
         accessor: (item) => ({
