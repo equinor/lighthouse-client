@@ -287,8 +287,8 @@ export function setData(releaseControl: ReleaseControl | undefined): ReleaseCont
         x.location = x.area;
         x.register = x.tagType;
         x.circuitAndStarterTagNos = x.circuitTagNos;
-        x.tagMountedOn = x.mountedOn;
-        x.tagMountedOnNo = x.tagMountedOn;
+        // x.tagMountedOn = x.mountedOn;
+        //  x.tagMountedOnNo = x.tagMountedOn;
     });
 
     releaseControl?.scopeHTTags?.forEach((x) => {
