@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
 import { Icon } from '@equinor/eds-core-react';
 import { LinkGroup } from './LinkGroup';
-import { Echo3DIconLink } from './Echo3DIconLink';
+import { echoUrls } from '../../../../../../packages/ProcosysUrls/src/echoUrls';
 interface TagTableProps {
     tags: FamTagType[];
     editMode: boolean;
@@ -45,7 +45,7 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'links',
         Header: 'Links',
-        width: 60,
+        width: 70,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
@@ -56,7 +56,14 @@ const columns: Column<FamTagType>[] = [
                 <Link href={cell.value.url} target="_blank" hideUnderline title="Open in STID">
                     <StidLogoLink src="images/stid_logo.svg" />
                 </Link>
-                <Echo3DIconLink id={cell.row.original.tagNo} />
+                <Link
+                    href={echoUrls.getEchoUrl(cell.row.original.tagNo)}
+                    target="_blank"
+                    hideUnderline
+                    title="Open in Echo 3D"
+                >
+                    <EchoLogoLink src="images/echo_logo.svg" />
+                </Link>
             </StyledLinkGrouping>
         ),
         Aggregated: () => null,
@@ -214,8 +221,13 @@ const Link = styled.a`
 const StidLogoLink = styled.img`
     width: 24px;
 `;
+const EchoLogoLink = styled.img`
+    width: 20px;
+`;
+
 const StyledLinkGrouping = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.2em;
+    justify-content: space-evenly;
 `;
