@@ -103,7 +103,6 @@ function unPackReferencesAndScope(
         x.system = x.functionalSystem;
         x.circuitTagNos = x.circuitAndStarterTagNos;
         x.mountedOn = x.tagMountedOn;
-        x.tagMountedOn = x.tagMountedOnNo;
     });
     htCables.forEach((x) => {
         x.area = x.location;
@@ -111,7 +110,6 @@ function unPackReferencesAndScope(
         x.system = x.functionalSystem;
         x.circuitTagNos = x.circuitAndStarterTagNos;
         x.mountedOn = x.tagMountedOn;
-        x.tagMountedOn = x.tagMountedOnNo;
         x.tagHeated = x.heatedTagNos;
     });
     return {
