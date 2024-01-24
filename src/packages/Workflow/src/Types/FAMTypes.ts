@@ -21,14 +21,12 @@ export type FamTag = {
     estimatedCableLength: string | null;
     heatedTagNos: string | null;
     tagMountedOn: string | null;
-    tagMountedOnNo: string | null;
     tagMountedOnUrlId: string | null;
     relatedHTCables: string | null;
     mountedOnHeatTracingCableTagNos: string | null;
     heatTracingCableTagNos: string | null;
     switchBoardTagNos: string | null;
     circuitAndStarterTagNos: string | null;
-
     isoDrawings: Drawing[];
     pidDrawings: Drawing[];
 
@@ -64,7 +62,6 @@ export type FamTagType = {
     estimatedCableLength: string | null;
     heatedTagNos: string | null;
     tagMountedOn: string | null;
-    tagMountedOnNo: string | null;
     tagMountedOnUrlId: string | null;
     relatedHTCables: string | null;
     mountedOnHeatTracingCableTagNos: string | null;
@@ -84,13 +81,11 @@ export type FamTagType = {
     tagHeated: string | null;
 };
 
-
 export interface Drawing {
     docNo: string;
     docTitle: string;
     docType: string;
 }
-
 
 export interface PunchListItem {
     punchItemNo: number;

@@ -6,8 +6,7 @@ interface StidUrls {
     getDocUrl: (docNo: string) => string;
 }
 
-const getBaseUrl = () =>
-    `https://${isProduction() ? 'stid' : 'stidtest'}.equinor.com`;
+const getBaseUrl = () => `https://${isProduction() ? 'stid' : 'stidtest'}.equinor.com`;
 
 export const stidUrls: StidUrls = {
     getTagUrl: (tagId: string) => `${getBaseUrl()}/JCA/tag?tagNo=${tagId}`,
