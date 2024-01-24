@@ -1,12 +1,12 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { Column, Table } from '@equinor/Table';
-import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
+import { RcScopeTag } from '../../../../types/releaseControl';
 
 interface TagTableProps {
-    tags: FamTagType[];
+    tags: RcScopeTag[];
     editMode: boolean;
 }
 
@@ -21,7 +21,7 @@ export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
         />
     );
 };
-const columns: Column<FamTagType>[] = [
+const columns: Column<RcScopeTag>[] = [
     {
         id: 'tagNo',
         Header: 'Tag number',
@@ -39,12 +39,12 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'register',
         Header: 'Tag type',
-        accessor: (item) => item.register,
+        accessor: (item) => item.tagType,
     },
     {
         id: 'tagMountedOnNo',
         Header: 'Mounted on',
-        accessor: (item) => item.tagMountedOnNo,
+        accessor: (item) => item.tagMountedOn,
         Cell: (cell) => (
             <Link
                 href={proCoSysUrls.getTagUrl(cell.row.original.tagMountedOnUrlId || '')}
@@ -98,7 +98,7 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'areas',
         Header: 'Area',
-        accessor: (item) => item.area ?? item.location,
+        accessor: (item) => item.area ?? item.area,
     },
     {
         id: 'remove',

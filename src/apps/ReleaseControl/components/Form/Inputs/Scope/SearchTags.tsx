@@ -1,5 +1,5 @@
 import { Progress } from '@equinor/eds-core-react';
-import { FamTagType, FAMTypes, TypedSelectOption, useFAMSearch } from '@equinor/Workflow';
+import { FAMTypes, TypedSelectOption, useFAMSearch } from '@equinor/Workflow';
 import { useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
 import { useCancellationToken } from '../../../../../../hooks/cancellationToken/useCancellationToken';
@@ -7,6 +7,7 @@ import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { Select } from './ScopeSelect';
 import { LoadingWrapper, SearchWrapper, Section } from './search.styles';
 import { TagTable } from './TagTable';
+import { RcScopeTag } from '../../../../types/releaseControl';
 
 interface SearchTagsProps {
     onChange: (newTags: TypedSelectOption[]) => void;
@@ -75,7 +76,7 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                         tags={
                             tags
                                 .filter(({ type }) => type === 'famtag')
-                                .map((s) => s.object) as FamTagType[]
+                                .map((s) => s.object) as RcScopeTag[]
                         }
                         editMode={true}
                     />

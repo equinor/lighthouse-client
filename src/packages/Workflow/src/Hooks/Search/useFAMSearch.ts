@@ -35,12 +35,16 @@ export function useFAMSearch(): FAMSearch {
                     })
                 );
             }
+            // search to get the tag
             case 'famtag': {
                 const items = await searchTag(searchValue);
                 items.map((tag: FamTag) => {
-                    tag.relatedHTCables = [tag.heatTracingCableTagNos, tag.mountedOnHeatTracingCableTagNos]
-                        .filter(x => x != null)
-                        .join(",");
+                    tag.relatedHTCables = [
+                        tag.heatTracingCableTagNos,
+                        tag.mountedOnHeatTracingCableTagNos,
+                    ]
+                        .filter((x) => x != null)
+                        .join(',');
                     return tag;
                 });
                 return items.map(
@@ -65,6 +69,7 @@ export function useFAMSearch(): FAMSearch {
                     })
                 );
             }
+            // search to get the options
             case 'famtagno': {
                 const items = await searchTagNo(searchValue, signal);
                 return items.map(
