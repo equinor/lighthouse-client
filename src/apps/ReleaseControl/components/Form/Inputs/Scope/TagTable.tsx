@@ -52,12 +52,12 @@ const columns: Column<FamTagType>[] = [
             url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
-            <StyledLinkDiv>
+            <StyledLinkGrouping>
                 <Link href={cell.value.url} target="_blank" hideUnderline title="Open in STID">
                     <StidLogoLink src="images/stid_logo.svg" />
                 </Link>
                 <Echo3DIconLink id={cell.row.original.tagNo} />
-            </StyledLinkDiv>
+            </StyledLinkGrouping>
         ),
         Aggregated: () => null,
         aggregate: 'count',
@@ -214,7 +214,7 @@ const Link = styled.a`
 const StidLogoLink = styled.img`
     width: 24px;
 `;
-const StyledLinkDiv = styled.div`
+const StyledLinkGrouping = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;

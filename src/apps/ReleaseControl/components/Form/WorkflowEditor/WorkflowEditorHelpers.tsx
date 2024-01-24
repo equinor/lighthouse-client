@@ -295,7 +295,6 @@ export function setData(releaseControl: ReleaseControl | undefined): ReleaseCont
         x.register = x.tagType;
         x.circuitAndStarterTagNos = x.circuitTagNos;
         x.tagMountedOn = x.mountedOn;
-        x.tagMountedOnNo = x.tagMountedOn;
         x.heatedTagNos = x.tagHeated;
     });
 
