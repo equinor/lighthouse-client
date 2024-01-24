@@ -37,14 +37,13 @@ const columns: Column<FamTagType>[] = [
                 >
                     {cell.row.values.tagNo}
                 </Link>
-                <Echo3DIconLink id={cell.row.original.tagNo} />
             </div>
         ),
         Aggregated: () => null,
         aggregate: 'count',
     },
     {
-        id: 'stidLink',
+        id: 'links',
         Header: 'Links',
         width: 60,
         accessor: (item) => ({
@@ -53,9 +52,12 @@ const columns: Column<FamTagType>[] = [
             url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                <StidLogoLink src="images/stid_logo.svg" />
-            </Link>
+            <StyledLinkGrouping>
+                <Link href={cell.value.url} target="_blank" hideUnderline title="Open in STID">
+                    <StidLogoLink src="images/stid_logo.svg" />
+                </Link>
+                <Echo3DIconLink id={cell.row.original.tagNo} />
+            </StyledLinkGrouping>
         ),
         Aggregated: () => null,
         aggregate: 'count',
@@ -66,16 +68,16 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.register,
     },
     {
-        id: 'tagMountedOnNo',
+        id: 'tagMountedOn',
         Header: 'Mounted on',
         accessor: (item) => ({
             content: item,
-            currentKey: 'tagMountedOnNo',
+            currentKey: 'tagMountedOn',
             url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.tagMountedOnNo}
+                {cell.value.content.tagMountedOn}
             </Link>
         ),
         Aggregated: () => null,
@@ -211,4 +213,9 @@ const Link = styled.a`
 
 const StidLogoLink = styled.img`
     width: 24px;
+`;
+const StyledLinkGrouping = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `;
