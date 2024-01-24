@@ -23,9 +23,7 @@ export const ReleaseControlDetailView = (): JSX.Element => {
                     <Tab>
                         <ScopeTab />
                     </Tab>
-                    <Tab>
-                        <WorkflowTab />
-                    </Tab>
+                    <Tab>{activeTab == 1 && <WorkflowTab />}</Tab>
                     <Tab>
                         <CircuitDiagramTab />
                     </Tab>
