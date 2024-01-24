@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
 import { Icon } from '@equinor/eds-core-react';
 import { LinkGroup } from './LinkGroup';
-import { Echo3DIconLink } from './Echo3DIconLink';
+import { echoUrls } from '../../../../../../packages/ProcosysUrls/src/echoUrls';
 interface TagTableProps {
     tags: FamTagType[];
     editMode: boolean;
@@ -37,25 +37,34 @@ const columns: Column<FamTagType>[] = [
                 >
                     {cell.row.values.tagNo}
                 </Link>
-                <Echo3DIconLink id={cell.row.original.tagNo} />
             </div>
         ),
         Aggregated: () => null,
         aggregate: 'count',
     },
     {
-        id: 'stidLink',
+        id: 'links',
         Header: 'Links',
-        width: 60,
+        width: 70,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
             url: stidUrls.getTagUrl(item.tagNo),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                <StidLogoLink src="images/stid_logo.svg" />
-            </Link>
+            <StyledLinkGrouping>
+                <Link href={cell.value.url} target="_blank" hideUnderline title="Open in STID">
+                    <StidLogoLink src="images/stid_logo.svg" />
+                </Link>
+                <Link
+                    href={echoUrls.getEchoUrl(cell.row.original.tagNo)}
+                    target="_blank"
+                    hideUnderline
+                    title="Open in Echo 3D"
+                >
+                    <EchoLogoLink src="images/echo_logo.svg" />
+                </Link>
+            </StyledLinkGrouping>
         ),
         Aggregated: () => null,
         aggregate: 'count',
@@ -66,16 +75,16 @@ const columns: Column<FamTagType>[] = [
         accessor: (item) => item.register,
     },
     {
-        id: 'tagMountedOnNo',
+        id: 'tagMountedOn',
         Header: 'Mounted on',
         accessor: (item) => ({
             content: item,
-            currentKey: 'tagMountedOnNo',
+            currentKey: 'tagMountedOn',
             url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
         }),
         Cell: (cell: CellProps<FamTagType>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.tagMountedOnNo}
+                {cell.value.content.tagMountedOn}
             </Link>
         ),
         Aggregated: () => null,
@@ -211,4 +220,14 @@ const Link = styled.a`
 
 const StidLogoLink = styled.img`
     width: 24px;
+`;
+const EchoLogoLink = styled.img`
+    width: 20px;
+`;
+
+const StyledLinkGrouping = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+    justify-content: space-evenly;
 `;
