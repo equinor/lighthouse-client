@@ -54,7 +54,7 @@ const columns: Column<FamTagType>[] = [
         Cell: (cell: CellProps<FamTagType>) => (
             <StyledLinkGrouping>
                 <Link href={cell.value.stidUrl} target="_blank" hideUnderline title="Open in STID">
-                    <StidLogoLink src="images/stid_logo.svg" />
+                    <StyledStidLogoLink src="images/stid_logo.svg" />
                 </Link>
                 <Link
                     href={cell.value.echoUrl}
@@ -62,7 +62,7 @@ const columns: Column<FamTagType>[] = [
                     hideUnderline
                     title="Open in Echo 3D"
                 >
-                    <EchoLogoLink src="images/echo_logo.svg" />
+                    <StyledEchoLogoLink src="images/echo_logo.svg" />
                 </Link>
             </StyledLinkGrouping>
         ),
@@ -218,10 +218,10 @@ const Link = styled.a`
     }
 `;
 
-const StidLogoLink = styled.img`
+const StyledStidLogoLink = styled.img`
     width: 24px;
 `;
-const EchoLogoLink = styled.img`
+const StyledEchoLogoLink = styled.img`
     width: 20px;
 `;
 
