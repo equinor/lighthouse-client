@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.19.0
+
+-   [ReleaseControl] Move Echo 3D button to links header.
+-   [ReleaseControl] Fix bug where Mounted on displayed null.
+
 ## 2.18.2
 
 -   [ReleaseControl] Show functional role in parentheses when criteria is signed.
