@@ -217,59 +217,6 @@ const columns: Column<RcScopeHtTag>[] = [
         aggregate: 'count',
     },
     {
-        id: 'pidDrawings',
-        Header: 'P&ID',
-        minWidth: 100,
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagNo',
-            url: stidUrls.getTagUrl(item.tagNo),
-        }),
-        Cell: (cell: CellProps<FamTagType>) => {
-            const links =
-                cell.value.content.pidDrawings?.map((x) => (
-                    <Link
-                        key={x.docNo}
-                        href={stidUrls.getDocUrl(x.docNo)}
-                        target="_blank"
-                        hideUnderline
-                    >
-                        <Icon name="link" />
-                    </Link>
-                )) ?? [];
-            return <LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />;
-        },
-        Aggregated: () => null,
-        aggregate: 'count',
-    },
-    {
-        id: 'isoDrawings',
-        Header: 'ISO',
-        minWidth: 100,
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagNo',
-            url: stidUrls.getTagUrl(item.tagNo),
-        }),
-        Cell: (cell: CellProps<FamTagType>) => {
-            const links =
-                cell.value.content.isoDrawings?.map((x) => (
-                    <Link
-                        key={x.docNo}
-                        href={stidUrls.getDocUrl(x.docNo)}
-                        target="_blank"
-                        hideUnderline
-                    >
-                        <Icon name="link" />
-                    </Link>
-                )) ?? [];
-
-            return <LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />;
-        },
-        Aggregated: () => null,
-        aggregate: 'count',
-    },
-    {
         id: 'remove',
         Header: '',
         width: 30,
