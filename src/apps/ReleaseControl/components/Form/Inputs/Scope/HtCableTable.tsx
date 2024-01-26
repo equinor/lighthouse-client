@@ -161,7 +161,7 @@ const columns: Column<RcScopeHtTag>[] = [
     {
         id: 'area',
         Header: 'Area',
-        accessor: (item) => item.area ?? item.area,
+        accessor: (item) => item.area,
     },
     {
         id: 'pidDrawings',

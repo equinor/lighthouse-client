@@ -4,6 +4,7 @@ import { searchHtCableTagNo } from '../../Api/FAM/searchHtCableTagNo';
 import { searchPunchListItems } from '../../Api/FAM/searchPunchListItems';
 import { searchTag } from '../../Api/FAM/searchTag';
 import { searchTagNo } from '../../Api/FAM/searchTagNo';
+import { RcScopeHtTag, RcScopeTag } from '../../../../../apps/ReleaseControl/types/releaseControl';
 
 interface FAMSearch {
     searchFAM: (
@@ -48,7 +49,7 @@ export function useFAMSearch(): FAMSearch {
                     return tag;
                 });
                 return items.map(
-                    (x: FamTag): TypedSelectOption => ({
+                    (x: RcScopeTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'famtag',
@@ -60,7 +61,7 @@ export function useFAMSearch(): FAMSearch {
             case 'htcable': {
                 const items = await searchHtCable(searchValue);
                 return items.map(
-                    (x: FamTag): TypedSelectOption => ({
+                    (x: RcScopeHtTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'htcable',
@@ -73,7 +74,7 @@ export function useFAMSearch(): FAMSearch {
             case 'famtagno': {
                 const items = await searchTagNo(searchValue, signal);
                 return items.map(
-                    (x: FamTag): TypedSelectOption => ({
+                    (x: RcScopeTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'famtag',
@@ -86,7 +87,7 @@ export function useFAMSearch(): FAMSearch {
             case 'htcabletagno': {
                 const items = await searchHtCableTagNo(searchValue, signal);
                 return items.map(
-                    (x: FamTag): TypedSelectOption => ({
+                    (x: RcScopeHtTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'htcable',
