@@ -90,7 +90,12 @@ export const CriteriaRender = ({
                                 <div>{name}</div>
                                 {criteria.signedAtUtc ? (
                                     <DetailText>
-                                        <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                                        <div>
+                                            {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
+                                            {criteria.type ==
+                                                'RequireProcosysFunctionalRoleSignature' &&
+                                                `(${criteria.valueDescription})`}
+                                        </div>
                                         {criteria.signedComment && <q>{criteria.signedComment}</q>}
                                     </DetailText>
                                 ) : (
@@ -114,7 +119,7 @@ export const CriteriaRender = ({
                     <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
                 </WorkflowRow>
             )}
-            {isLastCriteria && !isPast && (
+            {isLastCriteria && (
                 <>
                     {contributors.map((contributor) => (
                         <WorkflowRow key={contributor.id}>
