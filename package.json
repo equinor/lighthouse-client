@@ -91,7 +91,8 @@
     "styled-components": "^5.3.3",
     "three": "^0.158.0",
     "tinycolor2": "^1.4.2",
-    "typesafe-actions": "^5.1.0"
+    "typesafe-actions": "^5.1.0", 
+    "@microsoft/applicationinsights-web": "^3.0.3"
   },
   "devDependencies": {
     "@equinor/eslint-config-fusion": "^0.1.2",
