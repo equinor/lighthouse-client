@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 2.19.2
+
+-   [ReleaseControl] Re-enable the ability to re-/assign people to the "initiate" workflow step.
+
 ## 2.19.1
 
 -   [Portal] Add Job analytics
