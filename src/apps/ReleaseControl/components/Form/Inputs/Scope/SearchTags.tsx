@@ -50,6 +50,7 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         setLoading(false);
     }
 
+    console.log(tags);
     return (
         <div>
             <Section>
