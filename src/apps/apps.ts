@@ -300,7 +300,7 @@ export const apps: AppManifest[] = [
             appType: 'FusionApp',
             setup: () => {},
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Project Browser',
