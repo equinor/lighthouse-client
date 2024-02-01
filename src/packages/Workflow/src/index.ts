@@ -94,7 +94,7 @@ export * from './Types/ProCoSys/query';
 
 /* Hooks */
 export * from './Hooks/observers/useGlobalMutationListener';
-export * from './Hooks/Search/useFAMSearch';
+export * from './Hooks/Search/useCompletionSearch';
 export * from './Hooks/Search/usePcsSearch';
 export * from './Hooks/Search/useStidSearch';
 
