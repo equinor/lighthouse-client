@@ -8,6 +8,10 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 -   [ReleaseControl] You can now edit the content of the current workflow step.
 
+## 2.19.4
+
+-   [Job analytics] Fix broken bookmark redirect
+
 ## 2.19.3
 
 -   [ReleaseControl] Fix API request to wrong endpoint when working with workflows in admin panel
