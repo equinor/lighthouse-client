@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@cognite/reveal':
     specifier: ^3.0.2
@@ -161,8 +165,8 @@ dependencies:
     specifier: ^0.18.0
     version: 0.18.0(react@17.0.2)
   react-query:
-    specifier: ^3.34.4
-    version: 3.34.4(react-dom@17.0.2)(react@17.0.2)
+    specifier: ^3.39.3
+    version: 3.39.3(react-dom@17.0.2)(react@17.0.2)
   react-router:
     specifier: ^6.3.0
     version: 6.3.0(react@17.0.2)
@@ -9614,10 +9618,10 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /react-query@3.34.4(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-1Pa7pNJF9I+UdQ1RvqmBO9tWvBNfzNeJM3vYApcE2SL4Hbwy6q4U7ce4u+SWQnLMFit3z8WWp9OXpcDqEQ/E1A==}
+  /react-query@3.39.3(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-nLfLz7GiohKTJDuT4us4X3h/8unOh+00MLb2yJoGTPjxKs2bc1iDhkNx2bd5MKklXnOD3NrVZ+J2UXujA5In4g==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: '*'
       react-native: '*'
     peerDependenciesMeta:
