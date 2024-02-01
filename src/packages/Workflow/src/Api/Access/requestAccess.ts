@@ -13,7 +13,6 @@ export async function getRequestAccess(
         signal,
     };
 
-    const check = () => scopeChange.fetch(`api/${app}/${requestId}`, requestOptions);
-
+    const check = () => scopeChange.fetch(`api/workflows`, requestOptions);
     return await checkOptionsRequest(check);
 }
