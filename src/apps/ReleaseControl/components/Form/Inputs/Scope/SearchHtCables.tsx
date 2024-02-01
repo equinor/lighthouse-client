@@ -1,13 +1,11 @@
-import { Progress } from '@equinor/eds-core-react';
-import { FAMTypes, TypedSelectOption, useFAMSearch } from '@equinor/Workflow';
-import { useState } from 'react';
+import { FAMTypes, TypedSelectOption, useCompletionSearch } from '@equinor/Workflow';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
 import { useCancellationToken } from '../../../../../../hooks/cancellationToken/useCancellationToken';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
-import { HtCableTable } from './HtCableTable';
 import { Select } from './ScopeSelect';
-import { LoadingWrapper, SearchWrapper, Section } from './search.styles';
+import { SearchWrapper, Section } from './search.styles';
 import { RcScopeHtTag } from '../../../../types/releaseControl';
+import { CreatRcHtCableTable } from './CreateRcHtCableTable';
 
 interface SearchHtCablesProps {
     onChange: (newHtCables: TypedSelectOption[]) => void;
@@ -17,9 +15,7 @@ interface SearchHtCablesProps {
 export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX.Element => {
     const { getSignal, abort } = useCancellationToken();
 
-    const { searchFAM } = useFAMSearch();
-
-    const [loading, setLoading] = useState<boolean>(false);
+    const { searchFAM } = useCompletionSearch();
 
     async function loadOptions(
         type: FAMTypes,
@@ -39,16 +35,8 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
         ) => void
     ) => loadOptions('htcabletagno', inputValue, callback);
 
-    async function addHtCable(value: TypedSelectOption) {
-        setLoading(true);
-        const newValues = await searchFAM(value.value, 'htcable');
-
-        const dedupe = newValues.filter((v, i, a) => a.findIndex((s) => s.value === v.value) === i);
-
-        if (dedupe) {
-            onChange([...(DRCFormAtomApi.readAtomValue().htCables ?? []), ...dedupe]);
-        }
-        setLoading(false);
+    function addHtCable(value: TypedSelectOption) {
+        onChange([...(DRCFormAtomApi.readAtomValue().htCables ?? []), value]);
     }
 
     return (
@@ -68,12 +56,9 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
                         onInputChange={abort}
                         value={htCables}
                     />
-                    <LoadingWrapper>
-                        {loading ? <Progress.Dots color="primary" /> : null}
-                    </LoadingWrapper>
                 </SearchWrapper>
                 <div>
-                    <HtCableTable
+                    <CreatRcHtCableTable
                         htCables={
                             htCables
                                 .filter(({ type }) => type === 'htcable')

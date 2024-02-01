@@ -5,6 +5,7 @@ import { searchPunchListItems } from '../../Api/FAM/searchPunchListItems';
 import { searchTag } from '../../Api/FAM/searchTag';
 import { searchTagNo } from '../../Api/FAM/searchTagNo';
 import { RcScopeHtTag, RcScopeTag } from '../../../../../apps/ReleaseControl/types/releaseControl';
+import { getScopeTag } from '../../Api/Backend/getScopeTag';
 
 interface FAMSearch {
     searchFAM: (
@@ -17,13 +18,25 @@ interface FAMSearch {
 /**
  * Hook for searching in FAM
  */
-export function useFAMSearch(): FAMSearch {
+export function useCompletionSearch(): FAMSearch {
     async function search(
         searchValue: string,
         type: FAMTypes,
         signal?: AbortSignal
     ): Promise<TypedSelectOption[]> {
         switch (type) {
+            case 'scopetag': {
+                const item = await getScopeTag(searchValue, signal);
+                return [
+                    {
+                        label: `${item.tagNo}`,
+                        value: item.tagNo,
+                        type: 'scopetag',
+                        searchValue: item.tagNo,
+                        object: item,
+                    },
+                ];
+            }
             case 'punch': {
                 const items = await searchPunchListItems(searchValue, signal);
                 return items.map(
@@ -77,7 +90,7 @@ export function useFAMSearch(): FAMSearch {
                     (x: RcScopeTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
-                        type: 'famtag',
+                        type: 'scopetag',
                         searchValue: x.tagNo,
                         object: x,
                     })

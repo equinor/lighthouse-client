@@ -6,5 +6,8 @@ export async function searchTagNo(searchTagNo: string, signal?: AbortSignal): Pr
         `api/releasecontrol/searchScopeTag?searchString=${encodeURIComponent(searchTagNo)}`,
         { signal }
     );
+    if (!res.ok) {
+        throw new Error(`Failed to search scopetag ${searchTagNo}`, { cause: res });
+    }
     return await res.json();
 }

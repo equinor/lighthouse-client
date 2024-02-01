@@ -1,13 +1,11 @@
-import { Progress } from '@equinor/eds-core-react';
-import { FAMTypes, TypedSelectOption, useFAMSearch } from '@equinor/Workflow';
-import { useState } from 'react';
+import { FAMTypes, TypedSelectOption, useCompletionSearch } from '@equinor/Workflow';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
 import { useCancellationToken } from '../../../../../../hooks/cancellationToken/useCancellationToken';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { Select } from './ScopeSelect';
-import { LoadingWrapper, SearchWrapper, Section } from './search.styles';
-import { TagTable } from './TagTable';
+import { SearchWrapper, Section } from './search.styles';
 import { RcScopeTag } from '../../../../types/releaseControl';
+import { CreatRcTagTable } from './CreateRcTagTable';
 
 interface SearchTagsProps {
     onChange: (newTags: TypedSelectOption[]) => void;
@@ -15,10 +13,8 @@ interface SearchTagsProps {
 }
 
 export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => {
-    const { searchFAM } = useFAMSearch();
+    const { searchFAM } = useCompletionSearch();
     const { getSignal, abort } = useCancellationToken();
-
-    const [loading, setLoading] = useState<boolean>(false);
 
     async function loadOptions(
         type: FAMTypes,
@@ -38,19 +34,10 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         ) => void
     ) => loadOptions('famtagno', inputValue, callback);
 
-    async function addTag(value: TypedSelectOption) {
-        setLoading(true);
-        const newValues = await searchFAM(value.value, 'famtag');
-
-        const dedupe = newValues.filter((v, i, a) => a.findIndex((s) => s.value === v.value) === i);
-
-        if (dedupe) {
-            onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), ...dedupe]);
-        }
-        setLoading(false);
+    function addTag(value: TypedSelectOption) {
+        onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
     }
 
-    console.log(tags);
     return (
         <div>
             <Section>
@@ -68,15 +55,12 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                         onInputChange={abort}
                         value={tags}
                     />
-                    <LoadingWrapper>
-                        {loading ? <Progress.Dots color="primary" /> : null}
-                    </LoadingWrapper>
                 </SearchWrapper>
                 <div>
-                    <TagTable
+                    <CreatRcTagTable
                         tags={
                             tags
-                                .filter(({ type }) => type === 'famtag')
+                                .filter(({ type }) => type === 'scopetag')
                                 .map((s) => s.object) as RcScopeTag[]
                         }
                         editMode={true}
