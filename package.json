@@ -45,8 +45,6 @@
     "@equinor/fusion-react-progress-indicator": "^0.2.0",
     "@equinor/fusion-web-theme": "^0.1.7",
     "@esfx/async-canceltoken": "^1.0.0-pre.30",
-    "@microsoft/applicationinsights-react-js": "^3.2.2",
-    "@microsoft/applicationinsights-web": "^2.7.3",
     "@microsoft/microsoft-graph-types": "^2.7.0",
     "@microsoft/signalr": "^6.0.8",
     "@remirror/pm": "^2.0.2",
@@ -91,7 +89,8 @@
     "styled-components": "^5.3.3",
     "three": "^0.158.0",
     "tinycolor2": "^1.4.2",
-    "typesafe-actions": "^5.1.0"
+    "typesafe-actions": "^5.1.0", 
+    "@microsoft/applicationinsights-web": "^3.0.3"
   },
   "devDependencies": {
     "@equinor/eslint-config-fusion": "^0.1.2",
