@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@cognite/reveal':
     specifier: ^3.0.2
@@ -99,7 +103,7 @@ dependencies:
     version: 1.5.1
   camera-controls:
     specifier: ^1.34.1
-    version: 1.34.1(three@0.158.0)
+    version: 1.34.1(three@0.161.0)
   dompurify:
     specifier: ^2.3.6
     version: 2.3.6
@@ -203,8 +207,8 @@ dependencies:
     specifier: ^5.3.3
     version: 5.3.3(@babel/core@7.23.3)(react-dom@17.0.2)(react-is@18.2.0)(react@17.0.2)
   three:
-    specifier: ^0.158.0
-    version: 0.158.0
+    specifier: ^0.161.0
+    version: 0.161.0
   tinycolor2:
     specifier: ^1.4.2
     version: 1.4.2
@@ -5732,12 +5736,12 @@ packages:
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
     dev: false
 
-  /camera-controls@1.34.1(three@0.158.0):
+  /camera-controls@1.34.1(three@0.161.0):
     resolution: {integrity: sha512-cw1zfO3pVB87VHz0TVTtfBpv3C7hMi11Ia7utGiskDOJRngOtm8U9JPDqD7QGpJL1f+M8y7aZXRDJtGkRGTHsQ==}
     peerDependencies:
       three: '>=0.126.1'
     dependencies:
-      three: 0.158.0
+      three: 0.161.0
     dev: false
 
   /caniuse-lite@1.0.30001561:
@@ -10631,8 +10635,8 @@ packages:
     resolution: {integrity: sha512-gV7q7QY8rogu7HLFZR9cWnOQAUedUhu2WXAnpr2kdXZP9YDKsG/0ychwQvWkZN5PlNw9mv5MoCTin6zNTXoONg==}
     dev: false
 
-  /three@0.158.0:
-    resolution: {integrity: sha512-TALj4EOpdDPF1henk2Q+s17K61uEAAWQ7TJB68nr7FKxqwyDr3msOt5IWdbGm4TaWKjrtWS8DJJWe9JnvsWOhQ==}
+  /three@0.161.0:
+    resolution: {integrity: sha512-LC28VFtjbOyEu5b93K0bNRLw1rQlMJ85lilKsYj6dgTu+7i17W+JCCEbvrpmNHF1F3NAUqDSWq50UD7w9H2xQw==}
     dev: false
 
   /throat@6.0.2:
