@@ -209,11 +209,8 @@ export type RcScopeTag = {
     tagId: string;
     tagNo: string;
     tagUrlId?: string | null;
-    urlId?: string | null;
     tagType: string;
-    register: string;
     area: string;
-    location: string;
     commissioningPackageNo?: string | null;
     commissioningPackageId?: string | null;
     mechanicalCompletionPackageNo?: string | null;
@@ -222,7 +219,6 @@ export type RcScopeTag = {
     commissioningPackageUrlId?: string | null;
     mechanicalCompletionPackageUrlId?: string | null;
     tagMountedOn?: string | null;
-    tagMountedOnNo?: string | null;
     tagMountedOnUrlId?: string | null;
     tagMoutedOnUrlId?: string | null;
     mccrStatus?: number | null;
