@@ -33,6 +33,8 @@ const getBookmarkRedirect = (
         case 'mechanical-completion':
             return `/ConstructionAndCommissioning/mechanical-completion?bookmarkId=${bookmarkId}`;
 
+        case 'jca-job-analytics':
+            return `/ConstructionAndCommissioning/jca-job-analytics?bookmarkId=${bookmarkId}`;
         default:
             return `/${subSystem}/${appKey}?bookmarkId=${bookmarkId}`;
     }
