@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@cognite/reveal':
     specifier: ^3.0.2
@@ -122,8 +126,8 @@ dependencies:
     specifier: ^7.1.8
     version: 7.1.8(react@17.0.2)
   marked:
-    specifier: ^4.0.12
-    version: 4.0.12
+    specifier: ^11.2.0
+    version: 11.2.0
   moment:
     specifier: ^2.29.4
     version: 2.29.4
@@ -8600,9 +8604,9 @@ packages:
       react: 17.0.2
     dev: false
 
-  /marked@4.0.12:
-    resolution: {integrity: sha512-hgibXWrEDNBWgGiK18j/4lkS6ihTe9sxtV4Q1OQppb/0zzyPSzoFANBa5MfsG/zgsWklmNnhm0XACZOH/0HBiQ==}
-    engines: {node: '>= 12'}
+  /marked@11.2.0:
+    resolution: {integrity: sha512-HR0m3bvu0jAPYiIvLUUQtdg1g6D247//lvcekpHO1WMvbwDlwSkZAX9Lw4F4YHE1T0HaaNve0tuAWuV1UJ6vtw==}
+    engines: {node: '>= 18'}
     hasBin: true
     dev: false
 
