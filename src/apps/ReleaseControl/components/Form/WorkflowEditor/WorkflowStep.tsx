@@ -61,7 +61,7 @@ export const WorkflowStep = ({
                         />
                     </CompletedCriteria>
                 ) : null
-            ) : step.name === 'Initiate' || step.isCurrent ? (
+            ) : step.name === 'Initiate' ? (
                 <>
                     <HiddenDragIcon />
                     <NumberCircle>{step.order}</NumberCircle>

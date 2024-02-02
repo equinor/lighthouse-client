@@ -7,6 +7,7 @@ import { enableContext } from '@equinor/fusion-framework-module-context';
 import { enableBookmark } from '@equinor/fusion-framework-module-bookmark';
 import { isProduction } from '../Core/Client/Functions';
 import buildQuery from 'odata-query';
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
 export const createConfig = (appSettings: AppConfigResult) => {
     return async (config: FrameworkConfigurator) => {
@@ -18,6 +19,19 @@ export const createConfig = (appSettings: AppConfigResult) => {
             },
             { requiresAuth: true }
         );
+
+        if (appSettings.settings.ai) {
+            console.log('Enabling application insights');
+            const appInsights = new ApplicationInsights({
+                config: {
+                    connectionString: appSettings.settings.ai,
+                    enableResponseHeaderTracking: true,
+                    enableAjaxPerfTracking: true,
+                },
+            });
+            appInsights.loadAppInsights();
+            appInsights.trackPageView();
+        }
 
         config.configureServiceDiscovery({
             client: {

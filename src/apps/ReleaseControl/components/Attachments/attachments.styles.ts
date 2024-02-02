@@ -30,6 +30,7 @@ export const AttachmentsContainer = styled.div`
     align-items: center;
     height: 96px;
     width: -webkit-fill-available;
+    max-width: 600px;
     cursor: pointer;
     border: 2px dotted ${tokens.colors.interactive.primary__resting.hex};
 `;
