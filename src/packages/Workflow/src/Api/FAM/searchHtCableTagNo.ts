@@ -7,7 +7,7 @@ export async function searchHtCableTagNo(
 ): Promise<RcScopeHtTag[]> {
     const { scopeChange } = httpClient();
     const res = await scopeChange.fetch(
-        `api/releasecontrol/searchScopeHtTag?searchString=${encodeURIComponent(searchTagNo)}`,
+        `api/scopetag/search-ht-tag?query=${encodeURIComponent(searchTagNo)}`,
         { signal }
     );
     if (!res.ok) {
