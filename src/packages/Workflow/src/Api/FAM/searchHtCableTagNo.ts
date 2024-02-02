@@ -1,9 +1,10 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
+import { RcScopeHtTag } from '../../../../../apps/ReleaseControl/types/releaseControl';
 
 export async function searchHtCableTagNo(
     searchTagNo: string,
     signal?: AbortSignal
-): Promise<any[]> {
+): Promise<RcScopeHtTag[]> {
     const { scopeChange } = httpClient();
     const res = await scopeChange.fetch(
         `api/releasecontrol/searchScopeHtTag?searchString=${encodeURIComponent(searchTagNo)}`,

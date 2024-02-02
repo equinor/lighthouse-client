@@ -4,7 +4,6 @@ import { searchHtCableTagNo } from '../../Api/FAM/searchHtCableTagNo';
 import { searchPunchListItems } from '../../Api/FAM/searchPunchListItems';
 import { searchTag } from '../../Api/FAM/searchTag';
 import { searchTagNo } from '../../Api/FAM/searchTagNo';
-import { RcScopeHtTag, RcScopeTag } from '../../../../../apps/ReleaseControl/types/releaseControl';
 import { getScopeTag } from '../../Api/Backend/getScopeTag';
 
 interface FAMSearch {
@@ -52,7 +51,7 @@ export function useCompletionSearch(): FAMSearch {
             // search to get the tag
             case 'famtag': {
                 const items = await searchTag(searchValue);
-                items.map((tag: FamTag) => {
+                items.map((tag) => {
                     tag.relatedHTCables = [
                         tag.heatTracingCableTagNos,
                         tag.mountedOnHeatTracingCableTagNos,
@@ -74,7 +73,7 @@ export function useCompletionSearch(): FAMSearch {
             case 'htcable': {
                 const items = await searchHtCable(searchValue);
                 return items.map(
-                    (x: RcScopeHtTag): TypedSelectOption => ({
+                    (x): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'htcable',
@@ -87,7 +86,7 @@ export function useCompletionSearch(): FAMSearch {
             case 'famtagno': {
                 const items = await searchTagNo(searchValue, signal);
                 return items.map(
-                    (x: RcScopeTag): TypedSelectOption => ({
+                    (x): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'scopetag',
@@ -100,7 +99,7 @@ export function useCompletionSearch(): FAMSearch {
             case 'htcabletagno': {
                 const items = await searchHtCableTagNo(searchValue, signal);
                 return items.map(
-                    (x: RcScopeHtTag): TypedSelectOption => ({
+                    (x): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'htcable',
