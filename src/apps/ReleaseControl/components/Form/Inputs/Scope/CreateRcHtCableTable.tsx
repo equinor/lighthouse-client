@@ -13,7 +13,7 @@ interface HtCableTableProps {
 }
 
 //This is similar to HtCableTable, but this table doesnt have P&ID link and ISO link for optimizations reasons.
-export const CreatRcHtCableTable = ({ htCables, editMode }: HtCableTableProps): JSX.Element => {
+export const CreateRcHtCableTable = ({ htCables, editMode }: HtCableTableProps): JSX.Element => {
     if (htCables.length === 0) return <></>;
 
     return (

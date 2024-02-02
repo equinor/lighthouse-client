@@ -5,7 +5,7 @@ import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { Select } from './ScopeSelect';
 import { SearchWrapper, Section } from './search.styles';
 import { RcScopeHtTag } from '../../../../types/releaseControl';
-import { CreatRcHtCableTable } from './CreateRcHtCableTable';
+import { CreateRcHtCableTable } from './CreateRcHtCableTable';
 
 interface SearchHtCablesProps {
     onChange: (newHtCables: TypedSelectOption[]) => void;
@@ -58,7 +58,7 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
                     />
                 </SearchWrapper>
                 <div>
-                    <CreatRcHtCableTable
+                    <CreateRcHtCableTable
                         htCables={
                             htCables
                                 .filter(({ type }) => type === 'htcable')

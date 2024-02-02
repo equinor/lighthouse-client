@@ -9,5 +9,9 @@ export async function searchHtCableTagNo(
         `api/releasecontrol/searchScopeHtTag?searchString=${encodeURIComponent(searchTagNo)}`,
         { signal }
     );
+    if (!res.ok) {
+        throw new Error('Failed to get HT tags');
+    }
+
     return await res.json();
 }

@@ -11,7 +11,7 @@ interface TagTableProps {
 }
 
 //This is similar to HtCableTable, but this table doesnt have P&ID link and ISO link for optimizations reasons.
-export const CreatRcTagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
+export const CreateRcTagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
     if (tags.length === 0) return <></>;
 
     return (
