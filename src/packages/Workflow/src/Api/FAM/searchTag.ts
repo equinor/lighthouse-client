@@ -7,31 +7,44 @@ export async function searchTag(value: string): Promise<any[]> {
     const tagNoExpression = generateExpressions('TagNo', 'Equals', [value]);
     const request = generateFamRequest(
         [
-            'TagId',
-            'TagNo',
-            'UrlId',
             'Facility',
-            'Function',
+            'Project',
+            'TagNo',
             'Register',
+            'Function',
+            'FunctionalSystem',
             'CommissioningPackageNo',
+            'CommissioningPackageId',
             'CommissioningPackageUrlId',
             'MechanicalCompletionPackageNo',
+            'MechanicalCompletionPackageId',
             'MechanicalCompletionPackageUrlId',
             'Location',
+            'TagId',
+            'TagUrlId',
+            'OpenWorkOrderIds',
             'OpenWorkOrders',
+            'Status',
+            'InstalledCableLength',
+            'TagMountedOn',
             'TagMountedOnNo',
-            'TagMoutedOnUrlId',
-            'RelatedHTCables',
-            'MccrStatus',
-            'CommissioningStatus',
+            'TagMountedOnUrlId',
+            'HeatedTagNos',
+            'MountedOnHeatTracingCableTagNos',
+            'HeatTracingCableTagNos',
+            'EstimatedCableLength',
+            'CableTagNos',
         ],
         'And',
         [...noHtExpression, ...tagNoExpression]
     );
-    const res = await FAM.fetch('v1/typed/completion/custom_rctag/facility/JCA?view-version=v0', {
-        body: JSON.stringify(request),
-        method: 'POST',
-        headers: { ['content-type']: 'application/json' },
-    });
+    const res = await FAM.fetch(
+        'v1/typed/completion/custom_scope_tag/facility/JCA?view-version=v1',
+        {
+            body: JSON.stringify(request),
+            method: 'POST',
+            headers: { ['content-type']: 'application/json' },
+        }
+    );
     return await res.json();
 }

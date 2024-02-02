@@ -62,7 +62,7 @@ export function useCompletionSearch(): FAMSearch {
                     return tag;
                 });
                 return items.map(
-                    (x: RcScopeTag): TypedSelectOption => ({
+                    (x: FamTag): TypedSelectOption => ({
                         label: `${x.tagNo}`,
                         value: x.tagNo,
                         type: 'famtag',
