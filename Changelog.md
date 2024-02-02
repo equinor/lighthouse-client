@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.20.1
+
+-   [ReleaseControl] Fix copy url for Job Analytics
+
 ## 2.20.0
 
 -   [ReleaseControl] You can now edit the content of the current workflow step.
