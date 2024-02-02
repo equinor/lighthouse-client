@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 2.20.1
 
--   [ReleaseControl] Text under "Scope" in the sidesheet should now fill the enitre whitespace.
+-   [ReleaseControl] Text under "Scope" in the sidesheet should now fill the entire whitespace.
 
 ## 2.20.0
 
