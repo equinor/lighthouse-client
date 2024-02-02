@@ -3,9 +3,12 @@ import { EleNetwork } from '../types/eleNetwork';
 
 export async function getEleNetworks(circuitStarterTagNos: string): Promise<EleNetwork[]> {
     const { scopeChange } = httpClient();
-    const eleNetworks: EleNetwork[] = await scopeChange
-        .fetch(`api/elenetwork/facility/JCA/elenetwork/${circuitStarterTagNos}`)
-        .then((x) => x.json());
+    const res = await scopeChange.fetch(
+        `api/elenetwork/facility/JCA/elenetwork/${circuitStarterTagNos}`
+    );
+    if (!res.ok) {
+        throw new Error('Failed to get elenetworks', { cause: res });
+    }
 
-    return eleNetworks;
+    return res.json();
 }

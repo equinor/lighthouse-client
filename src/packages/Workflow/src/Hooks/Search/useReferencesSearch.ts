@@ -5,7 +5,7 @@ import {
     findScopeChangeRequest,
     ReferenceType,
     TypedSelectOption,
-    useFAMSearch,
+    useCompletionSearch,
 } from '@equinor/Workflow';
 import { ScopeChangeRequest, ScopeChangeRequestReference } from '../../Types/ScopeChangeRequest';
 
@@ -21,7 +21,7 @@ interface ReferenceSearch {
 export function useReferencesSearch(): ReferenceSearch {
     const { searchPCS } = usePcsSearch();
     const { searchSTID } = useSTIDSearch();
-    const { searchFAM } = useFAMSearch();
+    const { searchFAM } = useCompletionSearch();
     const [error, setError] = useState<string | null>(null);
 
     async function search(
