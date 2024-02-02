@@ -117,6 +117,8 @@ export const releaseControlQueries: ReleaseControlQueries = {
     baseQuery: (id: string) => ({
         queryFn: ({ signal }): Promise<ReleaseControl> => getReleaseControlById(id, signal),
         queryKey: releaseControlBaseKey(id),
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
     }),
     workflowTemplateQuery: (id: string | null) => ({
         queryFn: ({ signal }): Promise<ReleaseControlWorkflowTemplate | null> =>
