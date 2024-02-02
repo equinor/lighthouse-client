@@ -1,7 +1,8 @@
 import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
+import { FamTag } from '../../Types/FAMTypes';
 
-export async function searchTag(value: string): Promise<any[]> {
+export async function searchTag(value: string): Promise<FamTag[]> {
     const { FAM } = httpClient();
     const noHtExpression = generateExpressions('Register', 'NotEquals', ['HEAT_TRACING_CABLE']);
     const tagNoExpression = generateExpressions('TagNo', 'Equals', [value]);

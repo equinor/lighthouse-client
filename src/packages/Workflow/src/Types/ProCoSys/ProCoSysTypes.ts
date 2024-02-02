@@ -9,6 +9,7 @@ export type ProcoSysTypes =
     | 'functionalRole'
     | 'batchTag'
     | 'mcpkg'
-    | 'punch';
+    | 'punch'
+    | 'scopetag';
 
 export type PCSOrigins = 'Query' | 'NCR' | 'SWCR';

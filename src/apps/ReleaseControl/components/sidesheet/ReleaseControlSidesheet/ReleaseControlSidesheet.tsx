@@ -32,7 +32,7 @@ export const ReleaseControlSidesheet = ({
     item,
 }: ReleaseControlSidesheetProps): JSX.Element => {
     useReleaseControlMutationWatcher(item.id);
-    useGetReleaseControl(item.id, item);
+    const { data } = useGetReleaseControl(item.id, item);
     useReleaseControlAccess(item.id);
     useSidesheetEffects(actions, toggleEditMode, item.id);
 
@@ -42,7 +42,7 @@ export const ReleaseControlSidesheet = ({
     useEffect(() => {
         disableEditMode();
         clearState();
-        updateContext(item, actions);
+        updateContext(data ?? item, actions);
     }, [item?.id]);
 
     if (Object.keys(getReleaseControlSnapshot().releaseControl).length < 2) {
