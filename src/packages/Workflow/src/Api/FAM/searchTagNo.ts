@@ -1,16 +1,13 @@
-import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 
-export async function searchTagNo(value: string, signal?: AbortSignal): Promise<any[]> {
-    const { FAM } = httpClient();
-    const noHtExpression = generateExpressions('Register', 'NotEquals', ['HEAT_TRACING_CABLE']);
-    const tagNoExpression = generateExpressions('TagNo', 'Like', [value]);
-    const request = generateFamRequest(['TagNo'], 'And', [...noHtExpression, ...tagNoExpression]);
-    const res = await FAM.fetch('v1/typed/completion/completiontag/facility/JCA?view-version=v1', {
-        body: JSON.stringify(request),
-        method: 'POST',
-        headers: { ['content-type']: 'application/json' },
-        signal,
-    });
+export async function searchTagNo(searchTagNo: string, signal?: AbortSignal): Promise<any[]> {
+    const { scopeChange } = httpClient();
+    const res = await scopeChange.fetch(
+        `api/releasecontrol/searchScopeTag?searchString=${encodeURIComponent(searchTagNo)}`,
+        { signal }
+    );
+    if (!res.ok) {
+        throw new Error(`Failed to search scopetag ${searchTagNo}`, { cause: res });
+    }
     return await res.json();
 }

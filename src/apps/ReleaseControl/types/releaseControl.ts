@@ -144,8 +144,8 @@ export type ReleaseControl = {
     documents: ReleaseControlDocument[];
     punchListItems: ReleaseControlPunch[];
     scopeChangeRequestReferences: ScopeChangeRequestReference[];
-    scopeTags?: FamTag[];
-    scopeHTTags?: FamTag[];
+    scopeTags?: RcScopeTag[];
+    scopeHTTags?: RcScopeHtTag[];
     attachments: Attachment[];
     hasDisconnectedEquipment: boolean;
     hasIsolatedEquipment: boolean;
@@ -204,3 +204,44 @@ export enum ReleaseControlStepNames {
     CircuitPowerUp = 'Circuit power-up',
     CTest = 'Recheck (or new) HT/C-test',
 }
+
+export type RcScopeTag = {
+    tagId: string;
+    tagNo: string;
+    tagUrlId?: string | null;
+    tagType: string;
+    area: string;
+    commissioningPackageNo?: string | null;
+    commissioningPackageId?: string | null;
+    mechanicalCompletionPackageNo?: string | null;
+    openWorkOrders?: string | null;
+    relatedHTCables?: string | null;
+    commissioningPackageUrlId?: string | null;
+    mechanicalCompletionPackageUrlId?: string | null;
+    tagMountedOn?: string | null;
+    tagMountedOnUrlId?: string | null;
+    tagMoutedOnUrlId?: string | null;
+    mccrStatus?: number | null;
+    function?: string | null;
+};
+
+export type RcScopeHtTag = {
+    tagId: string;
+    tagNo: string;
+    tagUrlId?: string | null;
+    switchboardTagNos?: string | null;
+    circuitTagNos?: string | null;
+    installedCableLength?: string | null;
+    estimatedCableLength?: string | null;
+    tagHeated?: string | null;
+    commissioningPackageNo?: string | null;
+    commissioningPackageUrlId?: string | null;
+    mechanicalCompletionPackageNo?: string | null;
+    mechanicalCompletionPackageUrlId?: string | null;
+    openWorkOrders?: string | null;
+    openWorkOrderIds?: string | null;
+    area: string;
+    function: string | null;
+    tagType: string;
+    tagMountedOn?: string | null;
+};
