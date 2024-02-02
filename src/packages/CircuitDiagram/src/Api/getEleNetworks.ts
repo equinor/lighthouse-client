@@ -6,13 +6,13 @@ export async function getEleNetworks(
     signal?: AbortSignal
 ): Promise<EleNetwork[]> {
     const { scopeChange } = httpClient();
-    const eleNetworks = await scopeChange.fetch(
+    const res = await scopeChange.fetch(
         `api/elenetwork/facility/JCA/elenetwork/${circuitStarterTagNos}`,
         { signal }
     );
-    if (!eleNetworks.ok) {
-        throw new Error('Failed to get elenetworks');
+    if (!res.ok) {
+        throw new Error('Failed to get elenetworks', { cause: res });
     }
 
-    return eleNetworks.json();
+    return res.json();
 }
