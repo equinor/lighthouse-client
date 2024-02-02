@@ -25,7 +25,6 @@ import { NoCircuitDiagramFound } from './Components/NoCircuitDiagramFound';
 import { StatusCircle } from './Components/StatusCircle';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@equinor/eds-core-react';
-import { useCancellationToken } from '@equinor/hooks';
 
 export type CircuitDiagramTag = {
     tagNo: string;
@@ -66,7 +65,6 @@ export const CircuitDiagram = ({
     //Global component state for edit mode and (reusable) comment
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [comment, setComment] = useState<string>('');
-    const { getSignal } = useCancellationToken();
 
     const circuitStarterTagNoString = circuitAndStarterTagNos?.toString();
     const buttonText = isEditMode
@@ -80,7 +78,7 @@ export const CircuitDiagram = ({
 
     let { data } = useQuery(
         [circuitStarterTagNoString],
-        () => getEleNetworks(circuitStarterTagNoString ?? '', getSignal()),
+        () => getEleNetworks(circuitStarterTagNoString ?? ''),
         {
             staleTime: Infinity,
             //no cache time since we need to fetch new updates every time because of possible isolations/disconnections
