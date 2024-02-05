@@ -57,7 +57,10 @@ export const AppBookmarks = ({ appBookmarks, appKey, isOld }: AppBookmarkProps) 
                         return (
                             <BookmarkLinkWrapper key={bookmark.id}>
                                 <BookmarkEntry
-                                    isOldApplication={bookmark.appKey.includes('jc')}
+                                    isOldApplication={
+                                        bookmark.appKey.includes('jc') &&
+                                        bookmark.appKey !== 'jca-job-analytics'
+                                    }
                                     appKey={appKey}
                                     subSystem={subSystem}
                                     bookmark={bookmark}

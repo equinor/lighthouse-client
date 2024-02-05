@@ -305,6 +305,19 @@ export const apps: AppManifest[] = [
     },
     // Construction And Commissioning
     {
+        title: 'Job Analytics',
+        shortName: 'jca-job-analytics',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'FusionApp',
+            setup: () => {},
+        },
+        appEnv: 'prod',
+    },
+    {
         title: 'Project Browser',
         shortName: 'project-browser',
         color: '#0364B8',

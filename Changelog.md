@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.20.2
+
+-   [ReleaseControl] Fix copy url for Job Analytics
+
+## 2.20.1
+
+-   [ReleaseControl] Text under "Scope" in the sidesheet should now fill the entire whitespace.
+
+## 2.20.0
+
+-   [ReleaseControl] You can now edit the content of the current workflow step.
+
+## 2.19.4
+
+-   [Job analytics] Fix broken bookmark redirect
+
+## 2.19.3
+
+-   [ReleaseControl] Fix API request to wrong endpoint when working with workflows in admin panel
+
+## 2.19.2
+
+-   [ReleaseControl] Re-enable the ability to re-/assign people to the "initiate" workflow step.
+
+## 2.19.1
+
+-   [Portal] Add Job analytics
+
 ## 2.19.0
 
 -   [ReleaseControl] Move Echo 3D button to links header.
