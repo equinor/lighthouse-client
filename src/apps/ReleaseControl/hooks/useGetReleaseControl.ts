@@ -8,6 +8,9 @@ export function useGetReleaseControl(id: string, initialData?: ReleaseControl): 
     useQuery({
         ...baseQuery(id),
         initialData: initialData,
+        refetchInterval: 600000,
+        refetchOnWindowFocus: true,
+        cacheTime: 600000,
         onSuccess: (s) => {
             updateContext(s);
         },
