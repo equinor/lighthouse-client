@@ -1,7 +1,7 @@
 apiVersion: radix.equinor.com/v1
 kind: RadixApplication
 metadata:
-    name: lighthouse-client
+    name: lighthouse-client-test
 spec:
     build:
         secrets:
