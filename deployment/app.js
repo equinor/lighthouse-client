@@ -22,7 +22,6 @@ app.use((req, res, next) => {
 const data = { ...config[env], PUBLIC_URL: process.env.PUBLIC_URL || '' };
 // Define routes
 router.get('*', function (req, res) {
-    console.log(process.env);
     res.sendFile(path + 'index.html');
 });
 
