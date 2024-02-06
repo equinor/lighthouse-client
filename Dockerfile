@@ -19,10 +19,13 @@ COPY deployment/tsconfig.json .
 
 # Install packages, exclude devDependencies
 RUN npm i -g pnpm && pnpm install 
+RUN chmod 777 ./
 
 # env vars
-RUN export VITE_JC_CONFIG=$(echo $VITE_JC_CONFIG|base64 -d)
-RUN export VITE_AUTH_CONFIG=$(echo $VITE_AUTH_CONFIG|base64 -d)
+ENV VITE_JC_CONFIG=$VITE_JC_CONFIG
+ENV VITE_AUTH_CONFIG=$VITE_AUTH_CONFIG
+# RUN export VITE_JC_CONFIG=$(echo $VITE_JC_CONFIG|base64 -d)
+# RUN export VITE_AUTH_CONFIG=$(echo $VITE_AUTH_CONFIG|base64 -d)
 # Vite build
 RUN pnpm build:radix
 
