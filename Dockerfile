@@ -7,6 +7,7 @@ RUN pnpm build:radix
 
 FROM docker.io/nginxinc/nginx-unprivileged:1.25.2-alpine
 WORKDIR /app
+RUN export NODE_OPTIONS="--max-old-space-size=8192"
 COPY --from=builder /app/build /app
 COPY nginx/server.conf /default.conf
 COPY nginx/run_nginx.sh run_nginx.sh
