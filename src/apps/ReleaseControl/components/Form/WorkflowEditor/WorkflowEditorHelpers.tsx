@@ -282,22 +282,6 @@ export function setData(releaseControl: ReleaseControl | undefined): ReleaseCont
     const editedSteps = releaseControl.workflowSteps;
     editedSteps.forEach((x) => (x.criteriaTemplates = packCriterias(x.criterias)));
 
-    releaseControl?.scopeTags?.forEach((x) => {
-        x.functionalSystem = x.system;
-        x.location = x.area;
-        x.register = x.tagType;
-        x.circuitAndStarterTagNos = x.circuitTagNos;
-    });
-
-    releaseControl?.scopeHTTags?.forEach((x) => {
-        x.functionalSystem = x.system;
-        x.location = x.area;
-        x.register = x.tagType;
-        x.circuitAndStarterTagNos = x.circuitTagNos;
-        x.tagMountedOn = x.mountedOn;
-        x.heatedTagNos = x.tagHeated;
-    });
-
     return releaseControl;
 }
 

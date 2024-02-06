@@ -4,9 +4,9 @@ import { updateContext } from '../components/sidesheet/ReleaseControlSidesheet/u
 import { releaseControlQueries } from '../queries/queries';
 import { ReleaseControl } from '../types/releaseControl';
 
-export function useGetReleaseControl(id: string, initialData?: ReleaseControl): void {
+export function useGetReleaseControl(id: string, initialData?: ReleaseControl) {
     const { baseQuery } = releaseControlQueries;
-    useQuery({
+    return useQuery({
         ...baseQuery(id),
         initialData: initialData,
         refetchInterval: CacheTime.TenMinutes,
