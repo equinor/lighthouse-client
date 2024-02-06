@@ -1,5 +1,5 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
-import { FamTag, ScopeChangeRequestReference, TypedSelectOption } from '@equinor/Workflow';
+import { ScopeChangeRequestReference, TypedSelectOption } from '@equinor/Workflow';
 import { useState } from 'react';
 import { ProcoSysTypes } from '@equinor/Workflow';
 import { StidTypes } from '@equinor/Workflow';
@@ -9,8 +9,8 @@ interface ReleaseControlReferencesAndScope {
     documentNumbers: string[];
     punchListItemIds: string[];
     scopeChangeRequestReferences: ScopeChangeRequestReference[];
-    scopeTags?: FamTag[];
-    scopeHTTags?: FamTag[];
+    scopeTags?: string[];
+    scopeHTTags?: string[];
 }
 
 interface ReleaseControlPackedSteps {
@@ -31,8 +31,8 @@ export interface DRCCreateModel {
     references?: TypedSelectOption[];
     tags?: TypedSelectOption[];
     htCables?: TypedSelectOption[];
-    scopeTags?: FamTag[];
-    scopeHTTags?: FamTag[];
+    scopeTags?: string[];
+    scopeHTTags?: string[];
     workflowSteps?: CreateReleaseControlStepModel[];
     editedWorkflowSteps?: CreateReleaseControlStepModel[];
     signedWorkflowSteps?: CreateReleaseControlStepModel[];
@@ -95,26 +95,10 @@ function unPackReferencesAndScope(
     api: DefaultAtomAPI<DRCFormModel>
 ): ReleaseControlReferencesAndScope {
     const references = api.readAtomValue().references ?? [];
-    const tags = api.readAtomValue().tags?.map((x) => x.object as FamTag) ?? [];
-    const htCables = api.readAtomValue().htCables?.map((x) => x.object as FamTag) ?? [];
-    tags.forEach((x) => {
-        x.area = x.location;
-        x.tagType = x.register;
-        x.system = x.functionalSystem;
-        x.circuitTagNos = x.circuitAndStarterTagNos;
-        x.mountedOn = x.tagMountedOn;
-    });
-    htCables.forEach((x) => {
-        x.area = x.location;
-        x.tagType = x.register;
-        x.system = x.functionalSystem;
-        x.circuitTagNos = x.circuitAndStarterTagNos;
-        x.mountedOn = x.tagMountedOn;
-        x.tagHeated = x.heatedTagNos;
-    });
+
     return {
-        scopeTags: tags,
-        scopeHTTags: htCables,
+        scopeTags: api.readAtomValue().tags?.map((x) => x.value) ?? [],
+        scopeHTTags: api.readAtomValue().htCables?.map((x) => x.value) ?? [],
         punchListItemIds: unpackByType(references, 'punch'),
         documentNumbers: unpackByType(references, 'document'),
         scopeChangeRequestReferences: references
