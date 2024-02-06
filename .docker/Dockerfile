@@ -9,7 +9,7 @@ COPY . /app
 RUN npm i -g pnpm@8.0.0
 RUN pnpm install
 RUN pnpm test
-RUN pnpm build 
+RUN pnpm bundle 
 
 # Production environment
 FROM nginx:1.20.2-alpine
