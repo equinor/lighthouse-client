@@ -3,10 +3,6 @@ kind: RadixApplication
 metadata:
     name: lighthouse-client-test
 spec:
-    build:
-        secrets:
-            - JC_CONFIG
-            - AUTH_CONFIG
     environments:
         - name: dev
           build:
@@ -14,7 +10,8 @@ spec:
     components:
         - name: frontend
           variables:
-              AUTH_CONFIG: ''
+              VITE_AUTH_CONFIG: ''
+              VITE_JC_CONFIG: ''
           ports:
               - name: http
                 port: 3000
