@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 # 2.20.4
 
--   [ReleaseControl] Display 'Loading...' while loading user information in workflow tab.
+-   [ReleaseControl] Display a loading icon while loading user information in workflow tab.
 
 # 2.20.3
 
