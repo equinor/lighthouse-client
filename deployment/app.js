@@ -20,7 +20,6 @@ app.use((req, res, next) => {
     next();
 });
 const data = { ...config[env], PUBLIC_URL: process.env.PUBLIC_URL || '' };
-
 // Define routes
 router.get('*', function (req, res) {
     res.sendFile(path + 'index.html');
@@ -30,7 +29,8 @@ app.use(express.static(path));
 app.use('/', router);
 
 app.listen(port, function () {
-    console.log('Thelma is running on port 3000');
+    console.log('JC is running on port 3000');
+    console.log(import.meta.env);
     console.log('Environment variables:');
     console.log(data);
 });
