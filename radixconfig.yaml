@@ -1,0 +1,27 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+    name: lighthouse-client
+spec:
+    build:
+        secrets:
+            - JC_CONFIG
+    environments:
+        - name: dev
+          build:
+              from: feat/radix
+    components:
+        - name: frontend
+          ports:
+              - name: http
+                port: 3000
+          publicPort: http
+          environmentConfig:
+              - environment: dev
+                resources:
+                    requests:
+                        memory: '1024Mi'
+                        cpu: '800m'
+                    limits:
+                        memory: '4096Mi'
+                        cpu: '800m'
