@@ -4,8 +4,8 @@ export interface EnvConfig {
 }
 
 export async function fetchClientConfig(): Promise<EnvConfig> {
-    if (!process.env.AUTH_CONFIG) {
+    if (!import.meta.env.VITE_AUTH_CONFIG) {
         throw new Error('Missing auth config.');
     }
-    return JSON.parse(process.env.AUTH_CONFIG);
+    return JSON.parse(import.meta.env.VITE_AUTH_CONFIG);
 }

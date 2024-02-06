@@ -4,6 +4,7 @@ import { fetchClientConfig } from './envConfig';
 
 export async function fetchConfig(): Promise<AppConfigResult> {
     const config = await fetchClientConfig();
+
     const isProduction = config.CLIENT_ENV === 'prod';
     if (!isProduction) {
         document.title = `${config.CLIENT_ENV.toUpperCase()} | Johan Castberg Project Portal | Fusion`;
@@ -11,8 +12,8 @@ export async function fetchConfig(): Promise<AppConfigResult> {
 
     setEnv(isProduction, config.CLIENT_ENV);
 
-    if (!process.env.JC_CONFIG) {
+    if (!import.meta.env.VITE_JC_CONFIG) {
         throw 'No JC config set';
     }
-    return JSON.parse(process.env.JC_CONFIG);
+    return JSON.parse(import.meta.env.VITE_JC_CONFIG);
 }
