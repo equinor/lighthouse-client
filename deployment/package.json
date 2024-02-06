@@ -5,7 +5,6 @@
     "main": "app.js",
     "type": "commonjs",
     "keywords": [
-        "thelma",
         "nodejs",
         "bootstrap",
         "express"
