@@ -1,6 +1,5 @@
 import { setEnv } from '../Functions/Settings';
 import { AppConfigResult } from '../Types/AppConfig';
-import { crypt } from '../Utils/crypt';
 import { fetchClientConfig } from './envConfig';
 
 export async function fetchConfig(): Promise<AppConfigResult> {
@@ -12,16 +11,8 @@ export async function fetchConfig(): Promise<AppConfigResult> {
 
     setEnv(isProduction, config.CLIENT_ENV);
 
-    const response = await fetch(getEnvironmentUri(config.ENV_CONFIG_URI, config.CLIENT_ENV));
-    if (!response.ok) {
-        throw 'Failed to get environment configuration';
+    if (!process.env.JC_CONFIG) {
+        throw 'No JC config set';
     }
-    return { ...(await response.json()), isProduction, env: config.CLIENT_ENV };
-}
-
-function getEnvironmentUri(baseUri: string, env: string): string {
-    return `https://${baseUri}.azurewebsites.net/api/clientConfig?environmentId=${crypt(
-        'environmentId',
-        env
-    )}`;
+    return JSON.parse(process.env.JC_CONFIG);
 }

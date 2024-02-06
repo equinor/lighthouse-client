@@ -4,9 +4,8 @@ export interface EnvConfig {
 }
 
 export async function fetchClientConfig(): Promise<EnvConfig> {
-    const configResponse = await fetch('/client-config.json');
-    if (!configResponse.ok) {
-        throw 'Failed to fetch config';
+    if (!process.env.AUTH_CONFIG) {
+        throw new Error('Missing auth config.');
     }
-    return await await configResponse.json();
+    return JSON.parse(process.env.AUTH_CONFIG);
 }
