@@ -1,0 +1,16 @@
+{
+    "name": "jc-deployment",
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": "app.js",
+    "type": "commonjs",
+    "keywords": [
+        "thelma",
+        "nodejs",
+        "bootstrap",
+        "express"
+    ],
+    "dependencies": {
+        "express": "^4.18.2"
+    }
+}
