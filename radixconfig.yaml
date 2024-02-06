@@ -10,8 +10,8 @@ spec:
     components:
         - name: frontend
           variables:
-              VITE_AUTH_CONFIG: ''
-              VITE_JC_CONFIG: ''
+              AUTH_CONFIG: ''
+              JC_CONFIG: ''
           ports:
               - name: http
                 port: 3000
