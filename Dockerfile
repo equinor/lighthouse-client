@@ -1,12 +1,9 @@
 FROM docker.io/node:20.9-alpine as builder
-
-
 WORKDIR /app
 COPY package*.json ./ 
 RUN npm i -g pnpm && pnpm install 
 COPY . .
 RUN pnpm build:radix
-
 
 FROM docker.io/nginxinc/nginx-unprivileged:1.25.2-alpine
 WORKDIR /app
