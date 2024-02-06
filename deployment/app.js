@@ -30,7 +30,6 @@ app.use('/', router);
 
 app.listen(port, function () {
     console.log('JC is running on port 3000');
-    console.log(import.meta.env);
     console.log('Environment variables:');
     console.log(data);
 });
