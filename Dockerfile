@@ -1,8 +1,8 @@
 
 FROM node:20-alpine as build
 # Get build secrets from Radix
-ARG JC_CONFIG
-ARG AUTH_CONFIG
+ARG VITE_JC_CONFIG
+ARG VITE_AUTH_CONFIG
 # Setup and get files needed for build
 RUN mkdir -p /home/node/app/node_modules
 RUN chown -R root /home/node/app
@@ -21,8 +21,8 @@ COPY deployment/tsconfig.json .
 RUN npm i -g pnpm && pnpm install 
 
 # env vars
-RUN export VITE_JC_CONFIG=$(echo $JC_CONFIG|base64 -d)
-RUN export VITE_AUTH_CONFIG=$(echo $AUTH_CONFIG|base64 -d)
+RUN export VITE_JC_CONFIG=$(echo $VITE_JC_CONFIG|base64 -d)
+RUN export VITE_AUTH_CONFIG=$(echo $VITE_AUTH_CONFIG|base64 -d)
 # Vite build
 RUN pnpm build:radix
 
