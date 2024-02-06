@@ -90,12 +90,16 @@ export const CriteriaRender = ({
                                 <div>{name}</div>
                                 {criteria.signedAtUtc ? (
                                     <DetailText>
-                                        <div>
-                                            {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
-                                            {criteria.type ==
-                                                'RequireProcosysFunctionalRoleSignature' &&
-                                                `(${criteria.valueDescription})`}
-                                        </div>
+                                        {criteria.signedBy?.firstName ? (
+                                            <div>
+                                                {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
+                                                {criteria.type ==
+                                                    'RequireProcosysFunctionalRoleSignature' &&
+                                                    `(${criteria.valueDescription})`}
+                                            </div>
+                                        ) : (
+                                            'Loading...'
+                                        )}
                                         {criteria.signedComment && <q>{criteria.signedComment}</q>}
                                     </DetailText>
                                 ) : (
