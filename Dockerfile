@@ -1,6 +1,7 @@
 
 FROM node:20-alpine as build
-
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 # Get build secrets from Radix
 ARG JC_CONFIG
 # Setup and get files needed for build
@@ -17,12 +18,13 @@ COPY vite.config.ts .
 COPY index.html .
 COPY deployment/tsconfig.json .
 
-RUN npm i -g pnpm@8.0.0
+# RUN npm i -g pnpm@8.0.0
 
 
 # Install packages, exclude devDependencies
-RUN chown -R 1000:1000 /root/.npm/*
-RUN npm install --legacy-peer-deps
+# RUN chown -R 1000:1000 /root/.npm/*
+# RUN pnpm install
+RUN npm i -g pnpm && pnpm install 
 
 # Build app
 RUN chmod 777 /home/node/app/tsconfig.json
