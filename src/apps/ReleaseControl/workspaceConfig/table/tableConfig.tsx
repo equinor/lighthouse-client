@@ -135,7 +135,10 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             Cell: (cell) => {
                 return (
                     <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSystems, 8)}
+                        {generateCommaSeperatedStringArrayColumn(
+                            cell.row.values.rcSystems ?? '',
+                            8
+                        )}
                     </Monospace>
                 );
             },
@@ -158,7 +161,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             Cell: (cell) => {
                 return (
                     <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas, 5)}
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
                     </Monospace>
                 );
             },
