@@ -1,10 +1,10 @@
 
 FROM node:20-alpine as build
 # Get build secrets from Radix
-# ARG JC_CONFIG
-# ENV VITE_JC_CONFIG=$JC_CONFIG
-# ARG AUTH_CONFIG
-# ENV VITE_AUTH_CONFIG=$AUTH_CONFIG
+ARG JC_CONFIG
+ENV VITE_JC_CONFIG=$JC_CONFIG
+ARG AUTH_CONFIG
+ENV VITE_AUTH_CONFIG=$AUTH_CONFIG
 # Setup and get files needed for build
 RUN mkdir -p /home/node/app/node_modules
 RUN chown -R root /home/node/app
