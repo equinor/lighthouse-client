@@ -8,7 +8,7 @@ export function useGetReleaseControl(id: string, initialData?: ReleaseControl) {
     const { baseQuery } = releaseControlQueries;
     return useQuery({
         ...baseQuery(id),
-        initialData: initialData,
+        placeholderData: initialData,
         refetchInterval: CacheTime.TenMinutes,
         refetchOnWindowFocus: true,
         cacheTime: CacheTime.TenMinutes,
