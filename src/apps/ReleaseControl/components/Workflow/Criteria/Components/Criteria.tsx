@@ -16,6 +16,7 @@ import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
 import { useWorkflowSigning } from '../../../../hooks';
+import { CircularProgress } from '@equinor/eds-core-react';
 
 interface CriteriaRenderProps {
     name: string;
@@ -90,13 +91,21 @@ export const CriteriaRender = ({
                                 <div>{name}</div>
                                 {criteria.signedAtUtc ? (
                                     <DetailText>
-                                        <div>
-                                            {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
-                                            {criteria.type ==
-                                                'RequireProcosysFunctionalRoleSignature' &&
-                                                `(${criteria.valueDescription})`}
-                                        </div>
-                                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                                        {criteria.signedBy?.firstName ? (
+                                            <>
+                                                <div>
+                                                    {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
+                                                    {criteria.type ==
+                                                        'RequireProcosysFunctionalRoleSignature' &&
+                                                        `(${criteria.valueDescription})`}
+                                                </div>
+                                                {criteria.signedComment && (
+                                                    <q>{criteria.signedComment}</q>
+                                                )}
+                                            </>
+                                        ) : (
+                                            <CircularProgress size={16} />
+                                        )}
                                     </DetailText>
                                 ) : (
                                     <DetailText>{criteria.valueDescription}</DetailText>
