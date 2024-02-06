@@ -61,11 +61,11 @@ export const ScopeTab = (): JSX.Element => {
                             <SubSectionText>{dueDate.toLocaleDateString('en-gb')}</SubSectionText>
                         </SectionWrapper>
 
+                        <SectionHeading>Scope</SectionHeading>
                         {isLoading ? (
                             <CircularProgress />
                         ) : (
                             <>
-                                <SectionHeading>Scope</SectionHeading>
                                 <SectionWrapper>
                                     {tags?.length === 0 && htCables?.length === 0 && (
                                         <NoScope>
