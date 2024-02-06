@@ -13,6 +13,8 @@ spec:
               from: feat/radix
     components:
         - name: frontend
+          variables:
+              AUTH_CONFIG: ''
           ports:
               - name: http
                 port: 3000
