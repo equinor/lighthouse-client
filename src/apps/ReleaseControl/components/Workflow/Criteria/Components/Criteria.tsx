@@ -105,7 +105,7 @@ export const CriteriaRender = ({
                                                 )}
                                             </>
                                         ) : (
-                                            <CircularProgress size={14} />
+                                            <CircularProgress size={16} />
                                         )}
                                     </DetailText>
                                 ) : (
