@@ -6,6 +6,7 @@ spec:
     build:
         secrets:
             - JC_CONFIG
+            - AUTH_CONFIG
     environments:
         - name: dev
           build:
