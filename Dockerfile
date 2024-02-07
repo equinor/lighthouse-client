@@ -57,7 +57,7 @@ COPY .docker/nginx/ /etc/nginx/
 COPY  .docker/scripts/ /etc/scripts/
 
 ## Copy Env
-COPY .env /etc/scripts/
+# COPY .env /etc/scripts/
 
 ## Server setup
 EXPOSE 80
