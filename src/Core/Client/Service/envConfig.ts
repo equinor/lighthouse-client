@@ -2,12 +2,20 @@ export interface EnvConfig {
     readonly CLIENT_ENV: string;
     readonly ENV_CONFIG_URI: string;
 }
-
+declare global {
+    interface Window {
+        AUTH_CONFIG: string;
+        JC_CONFIG: string;
+    }
+}
 export async function fetchClientConfig(): Promise<EnvConfig> {
-    if (!import.meta.env.VITE_AUTH_CONFIG) {
-        console.log(process.env);
-        console.log(import.meta.env);
+    if (!window.AUTH_CONFIG) {
         throw new Error('Missing auth config.');
     }
-    return JSON.parse(import.meta.env.VITE_AUTH_CONFIG);
+    try {
+        return JSON.parse(window.AUTH_CONFIG);
+    } catch (e) {
+        console.error(e);
+        throw new Error('Failed to parset auth config');
+    }
 }

@@ -12,8 +12,13 @@ export async function fetchConfig(): Promise<AppConfigResult> {
 
     setEnv(isProduction, config.CLIENT_ENV);
 
-    if (!import.meta.env.VITE_JC_CONFIG) {
+    if (!window.JC_CONFIG) {
         throw 'No JC config set';
     }
-    return JSON.parse(import.meta.env.VITE_JC_CONFIG);
+    try {
+        return JSON.parse(window.JC_CONFIG);
+    } catch (e) {
+        console.error(e);
+        throw new Error('Failed to parse JC config');
+    }
 }
