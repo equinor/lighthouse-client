@@ -74,7 +74,7 @@ const idResolverFunction = async (id: string): Promise<Punch> => {
     const expressions = generateExpressions('punchItemNo', 'Equals', [id]);
     const requestArgs = generateFamRequest(customPunchColumns, 'Or', expressions);
     const res = await FAM.fetchAsync(
-        'v1/typed/completion/custom_punch/facility/JCA?view-version=v0',
+        'v1/typed/completion/custom_punch/facility/JCA?view-version=v1',
         {
             body: JSON.stringify(requestArgs),
             method: 'POST',
