@@ -34,6 +34,6 @@ COPY  .radix/scripts/ /etc/scripts/
 
 ## Server setup
 EXPOSE 80
-USER 101
+USER 0
 ## Run Scripts
 CMD ["sh","/etc/scripts/startup.sh"]
