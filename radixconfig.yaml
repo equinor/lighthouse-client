@@ -14,7 +14,7 @@ spec:
               JC_CONFIG: 'bcd'
           ports:
               - name: http
-                port: 3000
+                port: 8080
           publicPort: http
           environmentConfig:
               - environment: dev
