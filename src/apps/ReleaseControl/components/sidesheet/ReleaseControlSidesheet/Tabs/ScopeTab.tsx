@@ -1,3 +1,5 @@
+import { CircularProgress } from '@equinor/eds-core-react';
+import { useGetReleaseControl } from '../../../../hooks/useGetReleaseControl';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { Attachments } from '../../../Attachments/AttachmentsView';
 import { HotUpload } from '../../../Attachments/HotUpload';
@@ -40,6 +42,7 @@ export const ScopeTab = (): JSX.Element => {
         scopeChangeRequestReferences: releaseControl.scopeChangeRequestReferences,
     }));
 
+    const { isLoading } = useGetReleaseControl(id);
     const { requestAccess } = useReleaseControlContext();
 
     return (
@@ -59,26 +62,33 @@ export const ScopeTab = (): JSX.Element => {
                         </SectionWrapper>
 
                         <SectionHeading>Scope</SectionHeading>
-                        <SectionWrapper>
-                            {tags?.length === 0 && htCables?.length === 0 && (
-                                <NoScope>
-                                    Nothing has been added to the scope of this release control
-                                </NoScope>
-                            )}
-                            <SubSectionText>
-                                <SubSectionTitle>
-                                    {tags?.length !== 0 &&
-                                        'Tags involved in this release control scope'}
-                                </SubSectionTitle>
-                                <TagTable tags={tags ?? []} editMode={false} />
-                            </SubSectionText>
-                            <SubSectionText>
-                                <SubSectionTitle>
-                                    {htCables?.length !== 0 && 'HT cables'}
-                                </SubSectionTitle>
-                                <HtCableTable htCables={htCables ?? []} editMode={false} />
-                            </SubSectionText>
-                        </SectionWrapper>
+                        {isLoading ? (
+                            <CircularProgress />
+                        ) : (
+                            <>
+                                <SectionWrapper>
+                                    {tags?.length === 0 && htCables?.length === 0 && (
+                                        <NoScope>
+                                            Nothing has been added to the scope of this release
+                                            control
+                                        </NoScope>
+                                    )}
+                                    <SubSectionText>
+                                        <SubSectionTitle>
+                                            {tags?.length !== 0 &&
+                                                'Tags involved in this release control scope'}
+                                        </SubSectionTitle>
+                                        <TagTable tags={tags ?? []} editMode={false} />
+                                    </SubSectionText>
+                                    <SubSectionText>
+                                        <SubSectionTitle>
+                                            {htCables?.length !== 0 && 'HT cables'}
+                                        </SubSectionTitle>
+                                        <HtCableTable htCables={htCables ?? []} editMode={false} />
+                                    </SubSectionText>
+                                </SectionWrapper>
+                            </>
+                        )}
 
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>
