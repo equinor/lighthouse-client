@@ -11,7 +11,15 @@ RUN pnpm install
 RUN pnpm bundle 
 
 # Production environment
-FROM nginx:1.20.2-alpine
+FROM docker.io/nginxinc/nginx-unprivileged:1.25.2-alpine
+WORKDIR /app
+COPY --from=build /app/dist /app
+# CMD ["sh", "env-replace.sh"]
+
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY .radix/nginx/conf.d/default.conf /default.conf
+COPY .radix/scripts/env-replace.sh env-replace.sh
+COPY .radix/scripts/run-nginx.sh run-nginx.sh
 
 # Dynatrace setup
 # ARG DYNATRACE_ADDRESS
@@ -24,36 +32,29 @@ FROM nginx:1.20.2-alpine
 # ENV LD_PRELOAD /home/dynatrace/oneagent/agent/lib64/liboneagentproc.so
 
 ## Add permissions for nginx user
-COPY --from=build /app/dist /usr/share/nginx/html
+# COPY --from=build /app/dist /usr/share/nginx/html
 
 ## Cooy Nginx
-COPY .radix/nginx/ /etc/nginx/
+# COPY .radix/nginx/ /etc/nginx/
 
 ## Copy Scripts
-COPY  .radix/scripts/ /etc/scripts/
+# COPY  .radix/scripts/ /etc/scripts/
 
+
+USER 0
+RUN chown -R nginx /etc/nginx/conf.d \
+    && chown -R nginx /app \
+    && chown -R nginx /usr/share/nginx/html \
+    && chmod +x run-nginx.sh \
+    && chmod +x env-replace.sh
 ## Server setup
-EXPOSE 80
-# USER 0
-
-#
-# RUN mkdir -p /var/cache/nginx && chown -R ${USER}:${GROUP} /var/cache/nginx && \
-#     mkdir -p /var/log/nginx  && chown -R ${USER}:${GROUP} /var/log/nginx && \
-#     mkdir -p /var/lib/nginx  && chown -R ${USER}:${GROUP} /var/lib/nginx && \
-#     touch /run/nginx.pid && chown -R ${USER}:${GROUP} /run/nginx.pid && \
-#     mkdir -p /etc/nginx/templates /etc/nginx/ssl/certs && \
-#     chown -R ${USER}:${GROUP} /etc/nginx && \
-#     chmod -R 777 /etc/nginx/conf.d
+USER 101
 
 # disable nginx user cuz running as non-root
-RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
+# RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
 
-# RUN chown -R nginx /usr/share/nginx \
-#   && chown -R nginx /var/cache/nginx \
-#   && chown -R nginx /usr/share/nginx \
-#   && chmod +x /etc/scripts/startup.sh 
 # Replac env
-CMD ["sh", "etc/scripts/env-replace.sh"]
 # USER 1001
 ## Run Scripts
-CMD ["sh","/etc/scripts/startup.sh"]
+CMD ["sh","run-nginx.sh"]
+
