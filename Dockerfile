@@ -34,13 +34,26 @@ COPY  .radix/scripts/ /etc/scripts/
 
 ## Server setup
 EXPOSE 80
-USER 0
+# USER 0
 
-# RUN chown -R nginx /usr/share/nginx/conf.d \
-#     && chown -R nginx /usr/share/nginx \
-#     && chmod +x /etc/scripts/startup.sh
+#
+# RUN mkdir -p /var/cache/nginx && chown -R ${USER}:${GROUP} /var/cache/nginx && \
+#     mkdir -p /var/log/nginx  && chown -R ${USER}:${GROUP} /var/log/nginx && \
+#     mkdir -p /var/lib/nginx  && chown -R ${USER}:${GROUP} /var/lib/nginx && \
+#     touch /run/nginx.pid && chown -R ${USER}:${GROUP} /run/nginx.pid && \
+#     mkdir -p /etc/nginx/templates /etc/nginx/ssl/certs && \
+#     chown -R ${USER}:${GROUP} /etc/nginx && \
+#     chmod -R 777 /etc/nginx/conf.d
+
+# disable nginx user cuz running as non-root
+RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
+
+# RUN chown -R nginx /usr/share/nginx \
+#   && chown -R nginx /var/cache/nginx \
+#   && chown -R nginx /usr/share/nginx \
+#   && chmod +x /etc/scripts/startup.sh 
 # Replac env
 CMD ["sh", "etc/scripts/env-replace.sh"]
-USER 101
+# USER 1001
 ## Run Scripts
 CMD ["sh","/etc/scripts/startup.sh"]
