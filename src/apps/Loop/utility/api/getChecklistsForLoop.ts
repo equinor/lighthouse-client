@@ -20,7 +20,7 @@ export const checklistColumnNames = [
 export const getChecklistsForLoop = async (famFilter: FamRequest, signal?: AbortSignal) => {
     const { FAM } = httpClient();
     const res = await FAM.fetchAsync(
-        `v1/typed/completion/custom_loopsidesheetchecklists/facility/JCA?view-version=v0`,
+        `v1/typed/completion/custom_loopsidesheetchecklists/facility/JCA?view-version=v1`,
         {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
