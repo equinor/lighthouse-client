@@ -1,24 +1,3 @@
-# FROM docker.io/node:20.9-alpine as builder
-# WORKDIR /app
-# COPY package*.json ./ 
-# RUN npm i -g pnpm && pnpm install 
-# COPY . .
-# RUN export NODE_OPTIONS=--max-old-space-size=32768
-# RUN pnpm build:radix
-#
-# FROM docker.io/nginxinc/nginx-unprivileged:1.25.2-alpine
-# WORKDIR /app
-# COPY --from=builder /app/build /app
-# COPY --from=builder /app/build /usr/share/nginx/html
-# COPY nginx/server.conf default.conf
-# COPY nginx/run_nginx.sh run_nginx.sh
-# USER 0
-# RUN chown -R nginx /etc/nginx/conf.d \
-#     && chown -R nginx /app \
-#     && chmod +x run_nginx.sh
-# USER 101
-# CMD /bin/sh -c ". run_nginx.sh"
-# uild environment
 FROM node:18.0.0 as build
 
 # Copy App
@@ -34,9 +13,6 @@ RUN pnpm bundle
 # Production environment
 FROM nginx:1.20.2-alpine
 
-## Install
-# RUN apk add python3
-
 # Dynatrace setup
 # ARG DYNATRACE_ADDRESS
 # ARG DYNATRACE_ENVIRONMENT_ID
@@ -51,13 +27,10 @@ FROM nginx:1.20.2-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 ## Cooy Nginx
-COPY .docker/nginx/ /etc/nginx/
+COPY .radix/nginx/ /etc/nginx/
 
 ## Copy Scripts
-COPY  .docker/scripts/ /etc/scripts/
-
-## Copy Env
-# COPY .env /etc/scripts/
+COPY  .radix/scripts/ /etc/scripts/
 
 ## Server setup
 EXPOSE 80
