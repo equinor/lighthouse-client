@@ -35,5 +35,12 @@ COPY  .radix/scripts/ /etc/scripts/
 ## Server setup
 EXPOSE 80
 USER 0
+
+RUN chown -R nginx /usr/share/nginx/conf.d \
+    && chown -R nginx /usr/share/nginx \
+    && chmod +x /etc/scripts/startup.sh
+# Replac env
+CMD ["sh", "etc/scripts/env-replace.sh"]
+USER 101
 ## Run Scripts
 CMD ["sh","/etc/scripts/startup.sh"]
