@@ -9,12 +9,13 @@ spec:
               from: feat/radix
     components:
         - name: frontend
+          src: '.'
           variables:
               AUTH_CONFIG: ''
               JC_CONFIG: 'bcd'
           ports:
               - name: http
-                port: 8080
+                port: 3000
           publicPort: http
           environmentConfig:
               - environment: dev

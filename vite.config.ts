@@ -5,14 +5,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [react()],
-
-    preview: {
-        port: 3000,
-    },
-    server: {
-        // https: true,
-        port: 3000,
-    },
     define: {
         'process.env': {},
     },
