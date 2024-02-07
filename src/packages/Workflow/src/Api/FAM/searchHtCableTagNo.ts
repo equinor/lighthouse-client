@@ -1,17 +1,18 @@
-import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
+import { RcScopeHtTag } from '../../../../../apps/ReleaseControl/types/releaseControl';
 
-export async function searchHtCableTagNo(value: string, signal?: AbortSignal): Promise<any[]> {
-    const { FAM } = httpClient();
-    const htExpression = generateExpressions('Register', 'Equals', ['HEAT_TRACING_CABLE']);
-    const tagNoExpression = generateExpressions('TagNo', 'Like', [value]);
+export async function searchHtCableTagNo(
+    searchTagNo: string,
+    signal?: AbortSignal
+): Promise<RcScopeHtTag[]> {
+    const { scopeChange } = httpClient();
+    const res = await scopeChange.fetch(
+        `api/scopetag/search-ht-tag?query=${encodeURIComponent(searchTagNo)}`,
+        { signal }
+    );
+    if (!res.ok) {
+        throw new Error('Failed to get HT tags');
+    }
 
-    const request = generateFamRequest(['TagNo'], 'And', [...htExpression, ...tagNoExpression]);
-    const res = await FAM.fetch('v1/typed/completion/completiontag/facility/JCA?view-version=v1', {
-        body: JSON.stringify(request),
-        method: 'POST',
-        headers: { ['content-type']: 'application/json' },
-        signal,
-    });
     return await res.json();
 }

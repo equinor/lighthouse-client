@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import { RemoveHtCableCell } from './RemoveHtCableCell';
 import { Icon } from '@equinor/lighthouse-components';
 import { LinkGroup } from './LinkGroup';
+import { RcScopeHtTag } from '../../../../types/releaseControl';
 
 interface HtCableTableProps {
-    htCables: FamTagType[];
+    htCables: RcScopeHtTag[];
     editMode: boolean;
 }
 
@@ -24,8 +25,7 @@ export const HtCableTable = ({ htCables, editMode }: HtCableTableProps): JSX.Ele
         />
     );
 };
-
-const columns: Column<FamTagType>[] = [
+const columns: Column<RcScopeHtTag>[] = [
     {
         id: 'tagNo',
         Header: 'Tag number',
@@ -62,12 +62,12 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'switchBoardTagNos',
         Header: 'Switchboard',
-        accessor: (item) => item.switchBoardTagNos,
+        accessor: (item) => item.switchboardTagNos,
     },
     {
         id: 'circuitTagNos',
         Header: 'Circuit',
-        accessor: (item) => item.circuitAndStarterTagNos,
+        accessor: (item) => item.circuitTagNos,
     },
     {
         id: 'installedCableLength',
@@ -119,7 +119,7 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'tagHeated',
         Header: 'Tag(s) heated',
-        accessor: (item) => item.heatedTagNos,
+        accessor: (item) => item.tagHeated,
     },
     {
         id: 'commissioningPackageNo',
@@ -161,7 +161,7 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'area',
         Header: 'Area',
-        accessor: (item) => item.area ?? item.location,
+        accessor: (item) => item.area,
     },
     {
         id: 'pidDrawings',

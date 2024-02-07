@@ -1,13 +1,14 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls, stidUrls, echoUrls } from '@equinor/procosys-urls';
 import { CellProps, Column, Table, defaultGroupByFn } from '@equinor/Table';
-import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
 import { Icon } from '@equinor/eds-core-react';
 import { LinkGroup } from './LinkGroup';
+import { RcScopeTag } from '../../../../types/releaseControl';
+
 interface TagTableProps {
-    tags: FamTagType[];
+    tags: RcScopeTag[];
     editMode: boolean;
 }
 export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
@@ -22,7 +23,7 @@ export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
         />
     );
 };
-const columns: Column<FamTagType>[] = [
+const columns: Column<RcScopeTag>[] = [
     {
         id: 'tagNo',
         Header: 'Tag number',
@@ -51,7 +52,7 @@ const columns: Column<FamTagType>[] = [
             stidUrl: stidUrls.getTagUrl(item.tagNo),
             echoUrl: echoUrls.getEchoUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeTag>) => (
             <StyledLinkGrouping>
                 <Link href={cell.value.stidUrl} target="_blank" hideUnderline title="Open in STID">
                     <StyledStidLogoLink src="images/stid_logo.svg" />
@@ -72,7 +73,7 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'register',
         Header: 'Tag type',
-        accessor: (item) => item.register,
+        accessor: (item) => item.tagType,
     },
     {
         id: 'tagMountedOn',
@@ -82,7 +83,7 @@ const columns: Column<FamTagType>[] = [
             currentKey: 'tagMountedOn',
             url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeTag>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
                 {cell.value.content.tagMountedOn}
             </Link>
@@ -104,7 +105,7 @@ const columns: Column<FamTagType>[] = [
             currentKey: 'commissioningPackageNo',
             url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeTag>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
                 {cell.value.content.commissioningPackageNo}
             </Link>
@@ -120,7 +121,7 @@ const columns: Column<FamTagType>[] = [
             currentKey: 'mechanicalCompletionPackageNo',
             url: proCoSysUrls.getMcUrl(item.mechanicalCompletionPackageUrlId || ''),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeTag>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
                 {cell.value.content.mechanicalCompletionPackageNo}
             </Link>
@@ -136,7 +137,7 @@ const columns: Column<FamTagType>[] = [
     {
         id: 'areas',
         Header: 'Area',
-        accessor: (item) => item.area ?? item.location,
+        accessor: (item) => item.area,
     },
     {
         id: 'pidDrawings',
@@ -147,7 +148,7 @@ const columns: Column<FamTagType>[] = [
             currentKey: 'tagNo',
             url: stidUrls.getTagUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => {
+        Cell: (cell: CellProps<RcScopeTag>) => {
             const links =
                 cell.value.content.pidDrawings?.map((x) => (
                     <Link
@@ -173,7 +174,7 @@ const columns: Column<FamTagType>[] = [
             currentKey: 'tagNo',
             url: stidUrls.getTagUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => {
+        Cell: (cell: CellProps<RcScopeTag>) => {
             const links =
                 cell.value.content.isoDrawings?.map((x) => (
                     <Link
