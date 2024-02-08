@@ -14,7 +14,7 @@ export type ReferenceType = ProcoSysTypes | StidTypes | FAMTypes | 'scopechanger
 
 export type StidTypes = 'document' | 'stidtag';
 
-export type FAMTypes = 'punch' | 'famtag' | 'htcable' | 'famtagno' | 'htcabletagno';
+export type FAMTypes = 'scopetag' | 'punch' | 'famtag' | 'htcable' | 'famtagno' | 'htcabletagno';
 
 export type ProcoSysTypes =
     | PCSOrigins
