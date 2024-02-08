@@ -29,8 +29,7 @@ USER 0
 RUN chown -R nginx /etc/nginx/conf.d \
     && chown -R nginx /app \
     && chown -R nginx /usr/share/nginx/html \
-    && chmod +x run-nginx.sh \
-    && chmod +x env-replace.sh
+    && chmod +x run-nginx.sh 
 USER 101
 CMD ["sh","run-nginx.sh"]
 
