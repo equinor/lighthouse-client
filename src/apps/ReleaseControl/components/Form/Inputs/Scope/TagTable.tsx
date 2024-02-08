@@ -6,6 +6,12 @@ import { RemoveTagCell } from './RemoveTagCell';
 import { Icon } from '@equinor/eds-core-react';
 import { LinkGroup } from './LinkGroup';
 import { RcScopeTag } from '../../../../types/releaseControl';
+import {
+    getMccrStatusByNumber,
+    getMccrStatusColorByStatus,
+} from '../../../../functions/statusUtils';
+import { StatusCircle } from '@equinor/CircuitDiagram';
+import { StyledRowView } from '../../../../Styles/WrapperStyles';
 
 interface TagTableProps {
     tags: RcScopeTag[];
@@ -57,6 +63,7 @@ const columns: Column<RcScopeTag>[] = [
         ),
         Aggregated: () => null,
         aggregate: 'count',
+        width: 110,
     },
     {
         id: 'links',
@@ -88,18 +95,26 @@ const columns: Column<RcScopeTag>[] = [
     },
     {
         id: 'commissioningStatus',
-        Header: 'Owner',
+        Header: 'MC Pkg Owner',
         accessor: (item) => item.commissioningStatus,
     },
     {
         id: 'mccrStatus',
-        Header: 'Tag MC status',
-        accessor: (item) => item.mccrStatus,
+        Header: 'Tag MC',
+        accessor: (item) => getMccrStatusByNumber(item.mccrStatus ?? 4),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <StyledRowView>
+                {cell.value}
+                <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+            </StyledRowView>
+        ),
+        width: 70,
     },
     {
         id: 'relatedHTCables',
         Header: 'HT on tag/line',
         accessor: (item) => item.relatedHTCables,
+        width: 170,
     },
     {
         id: 'mechanicalCompletionPackageNo',
@@ -116,6 +131,7 @@ const columns: Column<RcScopeTag>[] = [
         ),
         Aggregated: () => null,
         aggregate: 'count',
+        width: 90,
     },
     {
         id: 'commissioningPackageNo',
@@ -132,16 +148,18 @@ const columns: Column<RcScopeTag>[] = [
         ),
         Aggregated: () => null,
         aggregate: 'count',
+        width: 90,
     },
     {
         id: 'area',
         Header: 'Area',
         accessor: (item) => item.area,
+        width: 80,
     },
     {
         id: 'pidDrawings',
         Header: 'P&ID',
-        minWidth: 100,
+        width: 60,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
@@ -166,7 +184,7 @@ const columns: Column<RcScopeTag>[] = [
     },
     {
         id: 'isoDrawings',
-        minWidth: 100,
+        width: 60,
         Header: 'ISO',
         accessor: (item) => ({
             content: item,
@@ -207,6 +225,7 @@ const columns: Column<RcScopeTag>[] = [
         id: 'register',
         Header: 'Tag type',
         accessor: (item) => item.tagType,
+        width: 150,
     },
     {
         id: 'remove',
