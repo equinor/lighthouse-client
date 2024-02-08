@@ -223,6 +223,7 @@ export type RcScopeTag = {
     tagMoutedOnUrlId?: string | null;
     mccrStatus?: number | null;
     function?: string | null;
+    commissioningStatus?: string | null;
 };
 
 export type RcScopeHtTag = {
