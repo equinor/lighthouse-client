@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 2.21.0
+# 2.22.0
 
 -   [ReleaseControl] Add Tags and Heattrace tags to table view. Also added to filters.
+
+# 2.21.0
+
+-   [ReleaseControl] Fix bug where scopetags was not showing in edit mode in sidesheet
 
 # 2.20.4
 
