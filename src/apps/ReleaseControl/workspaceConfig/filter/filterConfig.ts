@@ -63,6 +63,24 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         sort: (s) => s.sort(sortOnYesNo),
     },
     {
+        name: 'Tags',
+        valueFormatter: ({ scopeTags }) => {
+            if (!scopeTags) {
+                return null;
+            }
+            return scopeTags?.map((x) => x.tagNo).filter((v, i, a) => a.indexOf(v) === i);
+        },
+    },
+    {
+        name: 'HT Tags',
+        valueFormatter: ({ scopeHTTags }) => {
+            if (!scopeHTTags) {
+                return null;
+            }
+            return scopeHTTags?.map((x) => x.tagNo).filter((v, i, a) => a.indexOf(v) === i);
+        },
+    },
+    {
         name: 'Disconnected',
         valueFormatter: ({ hasDisconnectedEquipment }) =>
             booleanToHumanReadable(hasDisconnectedEquipment),
@@ -71,7 +89,7 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
     {
         name: 'Contains Step',
         valueFormatter: ({ workflowSteps }) => {
-            return workflowSteps.map(x => x.name).filter((v, i, a) => a.indexOf(v) === i);
+            return workflowSteps.map((x) => x.name).filter((v, i, a) => a.indexOf(v) === i);
         },
     },
     {

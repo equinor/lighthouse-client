@@ -152,6 +152,18 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             width: 200,
         },
         {
+            id: 'tags',
+            Header: 'Tags',
+            accessor: (rc) => `${rc.scopeTags?.map((scopeTag) => scopeTag.tagNo).join(', ')}`,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 200,
+            Cell: (cell) => {
+                return <Monospace>{cell.row.values.tags}</Monospace>;
+            },
+        },
+
+        {
             id: 'rcAreas',
             accessor: 'areas',
             Header: 'Areas',
@@ -164,6 +176,17 @@ export const tableConfig: TableOptions<ReleaseControl> = {
                         {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
                     </Monospace>
                 );
+            },
+        },
+        {
+            id: 'heattraceTags',
+            Header: 'Heattrace tags',
+            accessor: (rc) => `${rc.scopeHTTags?.map((heattrace) => heattrace.tagNo).join(', ')}`,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 200,
+            Cell: (cell) => {
+                return <Monospace>{cell.row.values.heattraceTags}</Monospace>;
             },
         },
         {
