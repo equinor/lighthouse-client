@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.21.0
+
+-   [ReleaseControl] Add Tags and Heattrace tags to table view. Also added to filters.
+
 # 2.20.4
 
 -   [ReleaseControl] Updated FAM queries that uses preprocessed views (custom_punch and custom_loopsidesheetchecklists)
