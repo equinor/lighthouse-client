@@ -43,6 +43,22 @@ const columns: Column<RcScopeTag>[] = [
         aggregate: 'count',
     },
     {
+        id: 'tagMountedOn',
+        Header: 'Mounted on',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'tagMountedOn',
+            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.tagMountedOn}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
         id: 'links',
         Header: 'Links',
         width: 70,
@@ -71,47 +87,19 @@ const columns: Column<RcScopeTag>[] = [
         aggregate: 'count',
     },
     {
-        id: 'register',
-        Header: 'Tag type',
-        accessor: (item) => item.tagType,
+        id: 'commissioningStatus',
+        Header: 'Owner',
+        accessor: (item) => item.commissioningStatus,
     },
     {
-        id: 'tagMountedOn',
-        Header: 'Mounted on',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagMountedOn',
-            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
-        }),
-        Cell: (cell: CellProps<RcScopeTag>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.tagMountedOn}
-            </Link>
-        ),
-        Aggregated: () => null,
-        aggregate: 'count',
+        id: 'mccrStatus',
+        Header: 'Tag MC status',
+        accessor: (item) => item.mccrStatus,
     },
     {
         id: 'relatedHTCables',
-        Header: 'Related HT cables',
+        Header: 'HT on tag/line',
         accessor: (item) => item.relatedHTCables,
-    },
-
-    {
-        id: 'commissioningPackageNo',
-        Header: 'Comm',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
-        }),
-        Cell: (cell: CellProps<RcScopeTag>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.commissioningPackageNo}
-            </Link>
-        ),
-        Aggregated: () => null,
-        aggregate: 'count',
     },
     {
         id: 'mechanicalCompletionPackageNo',
@@ -130,12 +118,23 @@ const columns: Column<RcScopeTag>[] = [
         aggregate: 'count',
     },
     {
-        id: 'openWorkOrders',
-        Header: 'WO (open)',
-        accessor: (item) => item.openWorkOrders,
+        id: 'commissioningPackageNo',
+        Header: 'Comm',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.commissioningPackageNo}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
     },
     {
-        id: 'areas',
+        id: 'area',
         Header: 'Area',
         accessor: (item) => item.area,
     },
@@ -199,7 +198,16 @@ const columns: Column<RcScopeTag>[] = [
         Aggregated: () => null,
         aggregate: 'count',
     },
-
+    {
+        id: 'openWorkOrders',
+        Header: 'WO (open)',
+        accessor: (item) => item.openWorkOrders,
+    },
+    {
+        id: 'register',
+        Header: 'Tag type',
+        accessor: (item) => item.tagType,
+    },
     {
         id: 'remove',
         Header: '',
