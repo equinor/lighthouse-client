@@ -17,10 +17,6 @@ export async function fetchConfig(): Promise<AppConfigResult> {
     }
 
     setEnv(isProduction, config.CLIENT_ENV);
-    //When running locally
-    // if (import.meta.env.DEV === true) {
-    //     return JSON.parse(import.meta.env.VITE_JC_CONFIG);
-    // }
     if (!window.JC_CONFIG) {
         throw 'No JC config set';
     }
