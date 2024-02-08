@@ -10,9 +10,6 @@ declare global {
     }
 }
 export async function fetchClientConfig(): Promise<EnvConfig> {
-    // if (import.meta.env.DEV === true) {
-    //     return JSON.parse(import.meta.env.VITE_AUTH_CONFIG);
-    // }
     if (!window.AUTH_CONFIG) {
         throw new Error('Missing auth config.');
     }
