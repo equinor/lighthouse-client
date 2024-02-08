@@ -13,7 +13,6 @@ COPY --from=build /app/dist /app
 
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY .radix/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
-COPY .radix/scripts/env-replace.sh env-replace.sh
 COPY .radix/scripts/run-nginx.sh run-nginx.sh
 
 # Dynatrace setup
