@@ -60,7 +60,7 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                     <CreateRcTagTable
                         tags={
                             tags
-                                .filter(({ type }) => type === 'scopetag')
+                                .filter(({ type }) => type === 'scopetag' || type === 'famtag')
                                 .map((s) => s.object) as RcScopeTag[]
                         }
                         editMode={true}
