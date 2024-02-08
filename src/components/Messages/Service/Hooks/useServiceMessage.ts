@@ -42,8 +42,8 @@ export function useServiceMessage(): Return {
                 const data: ServiceMessage = {
                     message: message.message,
                     type: message.type,
-                    link: {},
-                    id: atob(message.message),
+                    link: undefined,
+                    id: btoa(message.message),
                     fromDate: '2019-02-09',
                     toDate: '2030-02-09',
                 };
