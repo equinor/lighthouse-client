@@ -12,7 +12,8 @@ spec:
           src: '.'
           variables:
               AUTH_CONFIG: ''
-              JC_CONFIG: 'bcd'
+              JC_CONFIG: ''
+              SERVICE_MESSAGE: ''
           ports:
               - name: http
                 port: 8080
