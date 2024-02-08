@@ -35,12 +35,25 @@ export function useServiceMessage(): Return {
 
     useEffect(() => {
         (async () => {
-            const response = await appConfig.fetchAsync('api/serviceMessage');
-            if (!response.ok) return;
-            const data = localMessage(await response.json());
-            if (data && data.id) {
-                setMessage(data);
-                setIsActive(true);
+            const response = window.SERVICE_MESSAGE;
+            if (!response || response.length == 0) return;
+            try {
+                const message = JSON.parse(response);
+                const data: ServiceMessage = {
+                    message: message.message,
+                    type: message.type,
+                    link: {},
+                    id: atob(message.message),
+                    fromDate: '2019-02-09',
+                    toDate: '2030-02-09',
+                };
+                const maybeMessage = localMessage(data);
+                if (maybeMessage && maybeMessage.id) {
+                    setMessage(maybeMessage);
+                    setIsActive(true);
+                }
+            } catch (e) {
+                console.error('Failed to load service message');
             }
         })();
     }, [appConfig]);
