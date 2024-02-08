@@ -6,6 +6,7 @@ declare global {
     interface Window {
         AUTH_CONFIG: string;
         JC_CONFIG: string;
+        SERVICE_MESSAGE: string;
     }
 }
 export async function fetchClientConfig(): Promise<EnvConfig> {
