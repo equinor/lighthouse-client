@@ -6,6 +6,10 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 # 2.23.0
 
+-   [ReleaseControl] Change order of filters and columns
+
+# 2.23.0
+
 -   [ReleaseControl] Add "Mc Pkg Owner" and "Tag MC" columns to scopetag table in sidesheet, and reorginize the columns
 
 # 2.22.0
