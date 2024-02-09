@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 # 2.24.1
 
--   [ReleaseControl] Add changelog info
+-   [ReleaseControl] Fix Handover redirect to old Handover
 
 # 2.24.0
 
