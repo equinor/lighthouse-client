@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 # 2.24.0
 
--   [ReleaseControl] Change order of filters, and column headers in the table view.
+-   [ReleaseControl] Change order of filters and column headers in the table view.
 
 # 2.23.0
 
