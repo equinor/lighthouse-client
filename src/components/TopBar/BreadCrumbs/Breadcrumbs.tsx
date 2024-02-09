@@ -70,6 +70,9 @@ function getRedirectUrl(key: string | undefined) {
     if (key === 'mechanical-completion') {
         return 'ConstructionAndCommissioning/mc';
     }
+    if (key === 'handover-new') {
+        return 'ConstructionAndCommissioning/handover';
+    }
     return 'ConstructionAndCommissioning/handover-new';
 }
 
