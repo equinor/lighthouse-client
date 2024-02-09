@@ -14,3 +14,7 @@ export const Wrapper = styled.div`
 export const Monospace = styled.div`
     font-variant-numeric: tabular-nums;
 `;
+
+export const StyledRowView = styled.div`
+    display: flex;
+`;
