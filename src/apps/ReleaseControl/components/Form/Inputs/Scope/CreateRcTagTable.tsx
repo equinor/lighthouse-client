@@ -4,6 +4,12 @@ import { CellProps, Column, Table, defaultGroupByFn } from '@equinor/Table';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
 import { RcScopeTag } from '../../../../types/releaseControl';
+import {
+    getMccrStatusByNumber,
+    getMccrStatusColorByStatus,
+} from '../../../../functions/statusUtils';
+import { StyledRowView } from '../../../../Styles/WrapperStyles';
+import { StatusCircle } from '@equinor/CircuitDiagram';
 
 interface TagTableProps {
     tags: RcScopeTag[];
@@ -43,6 +49,23 @@ const columns: Column<RcScopeTag>[] = [
         aggregate: 'count',
     },
     {
+        id: 'tagMountedOn',
+        Header: 'Mounted on',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'tagMountedOn',
+            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.tagMountedOn}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 110,
+    },
+    {
         id: 'links',
         Header: 'Links',
         width: 70,
@@ -71,47 +94,27 @@ const columns: Column<RcScopeTag>[] = [
         aggregate: 'count',
     },
     {
-        id: 'register',
-        Header: 'Tag type',
-        accessor: (item) => item.tagType,
+        id: 'commissioningStatus',
+        Header: 'MC Pkg Owner',
+        accessor: (item) => item.commissioningStatus,
     },
     {
-        id: 'tagMountedOn',
-        Header: 'Mounted on',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagMountedOn',
-            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
-        }),
+        id: 'mccrStatus',
+        Header: 'Tag MC',
+        accessor: (item) => getMccrStatusByNumber(item.mccrStatus ?? 4),
         Cell: (cell: CellProps<RcScopeTag>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.tagMountedOn}
-            </Link>
+            <StyledRowView>
+                {cell.value}
+                <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+            </StyledRowView>
         ),
-        Aggregated: () => null,
-        aggregate: 'count',
+        width: 70,
     },
     {
         id: 'relatedHTCables',
-        Header: 'Related HT cables',
+        Header: 'HT on tag/line',
         accessor: (item) => item.relatedHTCables,
-    },
-
-    {
-        id: 'commissioningPackageNo',
-        Header: 'Comm',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
-        }),
-        Cell: (cell: CellProps<RcScopeTag>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.commissioningPackageNo}
-            </Link>
-        ),
-        Aggregated: () => null,
-        aggregate: 'count',
+        width: 170,
     },
     {
         id: 'mechanicalCompletionPackageNo',
@@ -128,6 +131,30 @@ const columns: Column<RcScopeTag>[] = [
         ),
         Aggregated: () => null,
         aggregate: 'count',
+        width: 90,
+    },
+    {
+        id: 'commissioningPackageNo',
+        Header: 'Comm',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.commissioningPackageNo}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 90,
+    },
+    {
+        id: 'area',
+        Header: 'Area',
+        accessor: (item) => item.area,
+        width: 80,
     },
     {
         id: 'openWorkOrders',
@@ -135,9 +162,10 @@ const columns: Column<RcScopeTag>[] = [
         accessor: (item) => item.openWorkOrders,
     },
     {
-        id: 'areas',
-        Header: 'Area',
-        accessor: (item) => item.area,
+        id: 'register',
+        Header: 'Tag type',
+        accessor: (item) => item.tagType,
+        width: 150,
     },
     {
         id: 'remove',
