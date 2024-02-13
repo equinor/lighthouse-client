@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.25.1
+
+-   [ReleaseControl] Add and reorder the columns in CreateRcTagTable
+
 # 2.25.0
 
 -   [ReleaseControl] Loading antimation while getting workflows, instead of displaying "null - null"
--   
+
 # 2.24.1
 
 -   [ReleaseControl] Fix Handover redirect to old Handover
