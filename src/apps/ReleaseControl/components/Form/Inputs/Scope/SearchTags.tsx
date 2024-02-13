@@ -6,6 +6,7 @@ import { Select } from './ScopeSelect';
 import { SearchWrapper, Section } from './search.styles';
 import { RcScopeTag } from '../../../../types/releaseControl';
 import { CreateRcTagTable } from './CreateRcTagTable';
+import { getScopeTag } from '../../../../../../packages/Workflow/src/Api/Backend/getScopeTag';
 
 interface SearchTagsProps {
     onChange: (newTags: TypedSelectOption[]) => void;
@@ -26,7 +27,9 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         const items = await searchFAM(inputValue, type, getSignal());
         callback(items);
     }
-
+    async function lookupMountedTag(rcScopeTag: RcScopeTag) {
+        return await getScopeTag(rcScopeTag.tagMountedOn ?? '');
+    }
     const tagLoadOptions = (
         inputValue: string,
         callback: (
@@ -37,7 +40,7 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
     function addTag(value: TypedSelectOption) {
         onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
     }
-
+    console.log(lookupMountedTag(tags[tags.length]?.object as RcScopeTag));
     return (
         <div>
             <Section>

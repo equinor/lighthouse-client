@@ -19,7 +19,7 @@ interface TagTableProps {
 }
 export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
     if (tags.length === 0) return <></>;
-
+    console.log(tags);
     return (
         <Table
             data={tags}
