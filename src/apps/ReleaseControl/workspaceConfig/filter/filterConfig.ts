@@ -16,38 +16,38 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         valueFormatter: (s) => (s.currentWorkflowStep ? s.currentWorkflowStep.name : null),
     },
     {
-        name: 'State',
-        valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
-        defaultUncheckedValues: ['Voided'],
+        name: 'Contains Step',
+        valueFormatter: ({ workflowSteps }) => {
+            return workflowSteps.map((x) => x.name).filter((v, i, a) => a.indexOf(v) === i);
+        },
     },
-    { name: 'Phase', valueFormatter: ({ phase }) => phase },
-    { name: 'Status', valueFormatter: ({ workflowStatus }) => workflowStatus },
+    {
+        name: 'Next to Sign',
+        valueFormatter: (s) => getNextToSign(s),
+    },
+    {
+        name: 'Tags',
+        valueFormatter: ({ scopeTags }) => {
+            if (!scopeTags) {
+                return null;
+            }
+            return scopeTags?.map((x) => x.tagNo).filter((v, i, a) => a.indexOf(v) === i);
+        },
+    },
+    {
+        name: 'HT Tags',
+        valueFormatter: ({ scopeHTTags }) => {
+            if (!scopeHTTags) {
+                return null;
+            }
+            return scopeHTTags?.map((x) => x.tagNo).filter((v, i, a) => a.indexOf(v) === i);
+        },
+    },
     {
         name: 'System',
         valueFormatter: ({ systems }) =>
             systems
                 ?.map((system) => (system.toString() !== '' ? system.toString() : null))
-                .filter((v, i, a) => a.indexOf(v) === i),
-    },
-    {
-        name: 'Area',
-        valueFormatter: ({ areas }) =>
-            areas
-                ?.map((area) => (area !== '' ? area : null))
-                .filter((v, i, a) => a.indexOf(v) === i),
-    },
-    {
-        name: 'CommPk',
-        valueFormatter: ({ commPkNos }) =>
-            commPkNos
-                ?.map((commPk) => (commPk !== '' ? commPk : null))
-                .filter((v, i, a) => a.indexOf(v) === i),
-    },
-    {
-        name: 'Switchboard',
-        valueFormatter: ({ switchboards }) =>
-            switchboards
-                ?.map((switchboard) => (switchboard !== '' ? switchboard : null))
                 .filter((v, i, a) => a.indexOf(v) === i),
     },
     {
@@ -58,10 +58,37 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
                 .filter((v, i, a) => a.indexOf(v) === i),
     },
     {
-        name: 'Isolated',
-        valueFormatter: ({ hasIsolatedEquipment }) => booleanToHumanReadable(hasIsolatedEquipment),
-        sort: (s) => s.sort(sortOnYesNo),
+        name: 'Switchboard',
+        valueFormatter: ({ switchboards }) =>
+            switchboards
+                ?.map((switchboard) => (switchboard !== '' ? switchboard : null))
+                .filter((v, i, a) => a.indexOf(v) === i),
     },
+    {
+        name: 'State',
+        valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
+        defaultUncheckedValues: ['Voided'],
+    },
+    {
+        name: 'CommPk',
+        valueFormatter: ({ commPkNos }) =>
+            commPkNos
+                ?.map((commPk) => (commPk !== '' ? commPk : null))
+                .filter((v, i, a) => a.indexOf(v) === i),
+    },
+    {
+        name: 'Area',
+        valueFormatter: ({ areas }) =>
+            areas
+                ?.map((area) => (area !== '' ? area : null))
+                .filter((v, i, a) => a.indexOf(v) === i),
+    },
+    {
+        name: 'Time on step',
+        valueFormatter: ({ timeOnLastStep }) => weekConverter(Number(timeOnLastStep)),
+    },
+    { name: 'Phase', valueFormatter: ({ phase }) => phase },
+    { name: 'Status', valueFormatter: ({ workflowStatus }) => workflowStatus },
     {
         name: 'Disconnected',
         valueFormatter: ({ hasDisconnectedEquipment }) =>
@@ -69,18 +96,9 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         sort: (s) => s.sort(sortOnYesNo),
     },
     {
-        name: 'Contains Step',
-        valueFormatter: ({ workflowSteps }) => {
-            return workflowSteps.map(x => x.name).filter((v, i, a) => a.indexOf(v) === i);
-        },
-    },
-    {
-        name: 'Next to Sign',
-        valueFormatter: (s) => getNextToSign(s),
-    },
-    {
-        name: 'Time on step',
-        valueFormatter: ({ timeOnLastStep }) => weekConverter(Number(timeOnLastStep)),
+        name: 'Isolated',
+        valueFormatter: ({ hasIsolatedEquipment }) => booleanToHumanReadable(hasIsolatedEquipment),
+        sort: (s) => s.sort(sortOnYesNo),
     },
 ];
 
