@@ -80,6 +80,7 @@ export const CircuitDiagram = ({
         [circuitStarterTagNoString],
         () => getEleNetworks(circuitStarterTagNoString ?? ''),
         {
+            enabled: !!circuitStarterTagNoString,
             staleTime: Infinity,
             //no cache time since we need to fetch new updates every time because of possible isolations/disconnections
             cacheTime: 0,
