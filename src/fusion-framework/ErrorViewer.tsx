@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react-old';
 
 export const ErrorViewer = ({ error }: { readonly error: Error }) => {
     return (

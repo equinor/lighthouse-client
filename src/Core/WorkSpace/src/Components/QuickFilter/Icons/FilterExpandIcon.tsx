@@ -1,4 +1,4 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 
 interface FilterExpandIconProps {
     onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;

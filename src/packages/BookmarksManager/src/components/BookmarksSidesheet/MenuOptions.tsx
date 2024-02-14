@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { useCurrentUser } from '@equinor/lighthouse-portal-client';
 import { IconMenu } from '@equinor/overlay-menu';

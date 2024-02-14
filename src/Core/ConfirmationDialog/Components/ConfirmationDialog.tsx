@@ -1,4 +1,4 @@
-import { Button, Dialog, Scrim } from '@equinor/eds-core-react';
+import { Button, Dialog, Scrim } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 import { clearConfirmationDialog } from '../Functions/clearConfirmationDialog';
 import { useConfirmationDialog } from '../Hooks/useConfirmationDialog';

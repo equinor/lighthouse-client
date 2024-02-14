@@ -24,7 +24,7 @@ import { Pipetest } from './types/pipetestTypes';
 import { NoCircuitDiagramFound } from './Components/NoCircuitDiagramFound';
 import { StatusCircle } from './Components/StatusCircle';
 import { useEffect, useMemo, useState } from 'react';
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 
 export type CircuitDiagramTag = {
     tagNo: string;

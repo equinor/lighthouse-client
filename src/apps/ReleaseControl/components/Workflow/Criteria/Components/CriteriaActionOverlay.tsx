@@ -1,5 +1,5 @@
 import { useAtom } from '@dbeining/react-atom';
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 import { ReassignBar } from '../../ReassignBar/ReassignBar';
 import styled from 'styled-components';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';

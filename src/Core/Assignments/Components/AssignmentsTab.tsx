@@ -1,4 +1,4 @@
-import { Chip, Checkbox, CircularProgress } from '@equinor/eds-core-react';
+import { Chip, Checkbox, CircularProgress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useMemo, useState } from 'react';
 

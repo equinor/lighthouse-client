@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Icon, TextField, Typography } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Icon, TextField, Typography } from '@equinor/eds-core-react-old';
 import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { ChangeEvent, useEffect, useState } from 'react';

@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.27.1
+
+-   [ReleaseControl] Add icon indicating that there are one or more contributors on a step when editing
+# 2.27.0
+
+-   [ReleaseControl] Added more information to the description box while creating a RC.
+
+# 2.26.0
+
+-   [ReleaseControl] First step in workflow is not NOT assignable, and will always be RC - Coordinator
+
+# 2.25.1
+
+-   [ReleaseControl] Add and reorder the columns in CreateRcTagTable
+
+# 2.25.0
+
+-   [ReleaseControl] Loading antimation while getting workflows, instead of displaying "null - null"
+
+# 2.24.1
+
+-   [ReleaseControl] Fix Handover redirect to old Handover
+
+# 2.24.0
+
+-   [ReleaseControl] Change order of filters and column headers in the table view.
+
+# 2.23.0
+
+-   [ReleaseControl] Add "Mc Pkg Owner" and "Tag MC" columns to scopetag table in sidesheet, and reorginize the columns
+
+# 2.22.0
+
+-   [ReleaseControl] Add Tags and Heattrace tags to table view. Also added to filters.
+
 # 2.21.0
 
 -   [ReleaseControl] Fix bug where scopetags was not showing in edit mode in sidesheet

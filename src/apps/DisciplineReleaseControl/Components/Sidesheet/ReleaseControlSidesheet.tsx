@@ -1,4 +1,4 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { useLocationKey } from '@equinor/hooks';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
 import { SidesheetApi } from '@equinor/sidesheet';

@@ -1,4 +1,4 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { useEffect, useState } from 'react';
 import { ModelViewerContextProvider } from '../../../../packages/ModelViewer/context/modelViewerContext';

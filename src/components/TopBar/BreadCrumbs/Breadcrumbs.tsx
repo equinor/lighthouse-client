@@ -1,4 +1,4 @@
-import { Breadcrumbs } from '@equinor/eds-core-react';
+import { Breadcrumbs } from '@equinor/eds-core-react-old';
 import { Fragment, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -69,6 +69,9 @@ export const LocationBreadCrumbs = (): JSX.Element => {
 function getRedirectUrl(key: string | undefined) {
     if (key === 'mechanical-completion') {
         return 'ConstructionAndCommissioning/mc';
+    }
+    if (key === 'handover-new') {
+        return 'ConstructionAndCommissioning/handover';
     }
     return 'ConstructionAndCommissioning/handover-new';
 }

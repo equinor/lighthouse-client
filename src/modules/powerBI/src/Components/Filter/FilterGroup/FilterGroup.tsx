@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useState, useRef } from 'react';
 import { getFilterHeaderText } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterGroup/FilterGroup';

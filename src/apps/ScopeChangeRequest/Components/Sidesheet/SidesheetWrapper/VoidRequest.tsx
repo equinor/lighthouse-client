@@ -1,4 +1,4 @@
-import { Button, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react-old';
 import { Modal } from '@equinor/modal';
 import { useState } from 'react';
 import styled from 'styled-components';

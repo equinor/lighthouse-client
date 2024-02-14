@@ -15,7 +15,8 @@ import { useReleaseControlContext } from '../../../../hooks/useReleaseControlCon
 import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
-import { useWorkflowSigning } from '../../../../hooks';
+import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 
 interface CriteriaRenderProps {
     name: string;
@@ -49,7 +50,7 @@ export const CriteriaRender = ({
                 (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
         })
     );
-
+    const { isLoading } = useGetReleaseControl(requestId);
     const state = useAtom(actionWithCommentAtom);
 
     const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
@@ -90,13 +91,21 @@ export const CriteriaRender = ({
                                 <div>{name}</div>
                                 {criteria.signedAtUtc ? (
                                     <DetailText>
-                                        <div>
-                                            {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
-                                            {criteria.type ==
-                                                'RequireProcosysFunctionalRoleSignature' &&
-                                                `(${criteria.valueDescription})`}
-                                        </div>
-                                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                                        {!isLoading ? (
+                                            <>
+                                                <div>
+                                                    {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
+                                                    {criteria.type ==
+                                                        'RequireProcosysFunctionalRoleSignature' &&
+                                                        `(${criteria.valueDescription})`}
+                                                </div>
+                                                {criteria.signedComment && (
+                                                    <q>{criteria.signedComment}</q>
+                                                )}
+                                            </>
+                                        ) : (
+                                            <CircularProgress size={16} />
+                                        )}
                                     </DetailText>
                                 ) : (
                                     <DetailText>{criteria.valueDescription}</DetailText>

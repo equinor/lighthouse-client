@@ -1,4 +1,4 @@
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react-old';
 import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
 import { CheckboxWrapper } from './warrantyCaseDetailCheckbox.styles';
 

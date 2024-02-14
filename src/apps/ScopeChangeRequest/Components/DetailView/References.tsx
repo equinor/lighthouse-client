@@ -16,7 +16,7 @@ import { System as SystemComp } from './RelatedObjects/Systems/System';
 import { StidDocument } from '../StidDocument/StidDocument';
 import { Punch } from './RelatedObjects/Punch/Punch';
 import { useState } from 'react';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { McPkg } from './RelatedObjects/McPkg/McPkg';
 import { getReferenceIcon } from '@equinor/Workflow';

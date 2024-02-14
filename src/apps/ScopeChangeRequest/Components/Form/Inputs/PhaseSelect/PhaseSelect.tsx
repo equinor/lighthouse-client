@@ -1,4 +1,4 @@
-import { SingleSelect } from '@equinor/eds-core-react';
+import { SingleSelect } from '@equinor/eds-core-react-old';
 import { useQuery } from 'react-query';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 import { scopeChangeQueries } from '../../../../keys/queries';

@@ -40,6 +40,133 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             },
         },
         {
+            id: 'currentStep',
+            Header: 'Current step',
+            accessor: (rc) => rc.currentWorkflowStep,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 200,
+            Cell: (cell) => {
+                return <>{cell.row.values.currentStep?.name}</>;
+            },
+        },
+        {
+            id: 'timeOnStep',
+            Header: 'Time on step',
+            accessor: (rc) => `${rc.timeOnLastStep} days`,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 200,
+        },
+        {
+            id: 'status',
+            Header: 'Status',
+            accessor: (rc) => rc.workflowStatus,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+        },
+        {
+            id: 'rcSystems',
+            accessor: 'systems',
+            Header: 'Systems',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(
+                            cell.row.values.rcSystems ?? '',
+                            8
+                        )}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'rcSwitchboards',
+            accessor: 'switchboards',
+            Header: 'Switchboards',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSwitchboards, 4)}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'rcCircuits',
+            accessor: 'circuits',
+            Header: 'Circuits',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCircuits, 3)}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'tags',
+            Header: 'Tags',
+            accessor: (rc) => `${rc.scopeTags?.map((scopeTag) => scopeTag.tagNo).join(', ')}`,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 200,
+            Cell: (cell) => {
+                return <Monospace>{cell.row.values.tags}</Monospace>;
+            },
+        },
+        {
+            id: 'heattraceTags',
+            Header: 'HT tags',
+            accessor: (rc) => `${rc.scopeHTTags?.map((heattrace) => heattrace.tagNo).join(', ')}`,
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 200,
+            Cell: (cell) => {
+                return <Monospace>{cell.row.values.heattraceTags}</Monospace>;
+            },
+        },
+        {
+            id: 'rcAreas',
+            accessor: 'areas',
+            Header: 'Areas',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
+                    </Monospace>
+                );
+            },
+        },
+        {
+            id: 'rcCommPks',
+            accessor: 'commPkNos',
+            Header: 'CommPks',
+            Aggregated: () => null,
+            width: 300,
+            aggregate: 'count',
+            Cell: (cell) => {
+                return (
+                    <Monospace>
+                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCommPks, 3)}
+                    </Monospace>
+                );
+            },
+        },
+        {
             id: 'phase',
             Header: 'Phase',
             accessor: (rc) => rc.phase,
@@ -75,41 +202,6 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             },
         },
         {
-            id: 'status',
-            Header: 'Status',
-            accessor: (rc) => rc.workflowStatus,
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 100,
-        },
-        {
-            id: 'currentStep',
-            Header: 'Current step',
-            accessor: (rc) => rc.currentWorkflowStep,
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 200,
-            Cell: (cell) => {
-                return <>{cell.row.values.currentStep?.name}</>;
-            },
-        },
-        {
-            id: 'createdAt',
-            Header: 'Created at',
-            accessor: (rc) => rc.createdAtUtc,
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 100,
-            Cell: (cell) => {
-                return (
-                    <>
-                        {cell.row.values.createdAt &&
-                            new Date(cell.row.values.createdAt).toLocaleDateString('en-gb')}
-                    </>
-                );
-            },
-        },
-        {
             id: 'lastModified',
             Header: 'Last modified',
             accessor: (rc) => rc.modifiedAtUtc,
@@ -126,88 +218,18 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             },
         },
         {
-            id: 'rcSystems',
-            accessor: 'systems',
-            Header: 'Systems',
+            id: 'createdAt',
+            Header: 'Created at',
+            accessor: (rc) => rc.createdAtUtc,
             Aggregated: () => null,
-            width: 300,
             aggregate: 'count',
+            width: 100,
             Cell: (cell) => {
                 return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(
-                            cell.row.values.rcSystems ?? '',
-                            8
-                        )}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'timeOnStep',
-            Header: 'Time on step',
-            accessor: (rc) => `${rc.timeOnLastStep} days`,
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 200,
-        },
-        {
-            id: 'rcAreas',
-            accessor: 'areas',
-            Header: 'Areas',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcCommPks',
-            accessor: 'commPkNos',
-            Header: 'CommPks',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCommPks, 3)}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcSwitchboards',
-            accessor: 'switchboards',
-            Header: 'Switchboards',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSwitchboards, 4)}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcCircuits',
-            accessor: 'circuits',
-            Header: 'Circuits',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCircuits, 3)}
-                    </Monospace>
+                    <>
+                        {cell.row.values.createdAt &&
+                            new Date(cell.row.values.createdAt).toLocaleDateString('en-gb')}
+                    </>
                 );
             },
         },

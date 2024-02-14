@@ -1,4 +1,4 @@
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Progress } from '@equinor/eds-core-react-old';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';

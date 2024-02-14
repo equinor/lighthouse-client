@@ -1,4 +1,4 @@
-import { Accordion } from '@equinor/eds-core-react';
+import { Accordion } from '@equinor/eds-core-react-old';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useMemo } from 'react';
 import Icon from '../../../Icon/Icon';
