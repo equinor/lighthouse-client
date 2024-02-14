@@ -1,4 +1,5 @@
-import { SingleSelect } from '@equinor/eds-core-react';
+import { Icon, SingleSelect } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equinor/Workflow';
@@ -168,6 +169,13 @@ export const WorkflowStep = ({
                                 })
                             }
                         />
+                        {step.contributors && step.contributors?.length > 0 && (
+                            <Icon
+                                title="This step has contributors"
+                                color={tokens.colors.interactive.primary__resting.hex}
+                                name="group"
+                            />
+                        )}
                     </div>
                 </>
             )}
