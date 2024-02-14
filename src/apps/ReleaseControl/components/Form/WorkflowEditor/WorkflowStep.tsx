@@ -100,14 +100,9 @@ export const WorkflowStep = ({
                                     });
                                 }}
                                 classification="RELEASECONTROL"
-                                value={
-                                    step?.criteriaTemplates?.[0]?.type ===
-                                    'RequireProcosysFunctionalRoleSignature'
-                                        ? step?.criteriaTemplates?.[0]?.value
-                                        : step?.criteriaTemplates?.[0]?.valueDescription
-                                }
+                                value={'RC - Coordinator'}
                                 defaultResult={functionalRoles}
-                                isDisabled={isEditMode ? true : false}
+                                isDisabled={true}
                             />
                         </ResponsibleSelect>
                     </Selections>
