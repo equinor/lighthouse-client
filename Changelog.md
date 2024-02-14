@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.27.0
+
+-   [ReleaseControl] Added more information to the description box while creating a RC.
+
 # 2.26.0
 
 -   [ReleaseControl] First step in workflow is not NOT assignable, and will always be RC - Coordinator
