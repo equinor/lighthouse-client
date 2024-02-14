@@ -1,4 +1,5 @@
-import { SingleSelect } from '@equinor/eds-core-react';
+import { Icon, SingleSelect } from '@equinor/eds-core-react-old';
+import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equinor/Workflow';
@@ -100,14 +101,9 @@ export const WorkflowStep = ({
                                     });
                                 }}
                                 classification="RELEASECONTROL"
-                                value={
-                                    step?.criteriaTemplates?.[0]?.type ===
-                                    'RequireProcosysFunctionalRoleSignature'
-                                        ? step?.criteriaTemplates?.[0]?.value
-                                        : step?.criteriaTemplates?.[0]?.valueDescription
-                                }
+                                value={'RC - Coordinator'}
                                 defaultResult={functionalRoles}
-                                isDisabled={isEditMode ? true : false}
+                                isDisabled={true}
                             />
                         </ResponsibleSelect>
                     </Selections>
@@ -173,6 +169,13 @@ export const WorkflowStep = ({
                                 })
                             }
                         />
+                        {step.contributors && step.contributors?.length > 0 && (
+                            <Icon
+                                title="This step has contributors"
+                                color={tokens.colors.interactive.primary__resting.hex}
+                                name="group"
+                            />
+                        )}
                     </div>
                 </>
             )}

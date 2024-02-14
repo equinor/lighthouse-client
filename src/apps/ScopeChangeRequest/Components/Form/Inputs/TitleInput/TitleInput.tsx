@@ -1,4 +1,4 @@
-import { TextField } from '@equinor/eds-core-react';
+import { TextField } from '@equinor/eds-core-react-old';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 
 export const TitleInput = (): JSX.Element => {

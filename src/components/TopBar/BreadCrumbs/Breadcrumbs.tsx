@@ -1,4 +1,4 @@
-import { Breadcrumbs } from '@equinor/eds-core-react';
+import { Breadcrumbs } from '@equinor/eds-core-react-old';
 import { Fragment, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -73,6 +73,9 @@ function getRedirectUrl(key: string | undefined) {
     }
     if (key === 'loop-new') {
         return 'ConstructionAndCommissioning/loop';
+    }
+    if (key === 'handover-new') {
+        return 'ConstructionAndCommissioning/handover';
     }
     return 'ConstructionAndCommissioning/handover-new';
 }

@@ -14,7 +14,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { EleNetwork, EleNetworkCable } from '../types/eleNetwork';
 import { CheckListStatus } from '../types/pipetestTypes';
 import { StatusCircle } from './StatusCircle';
-import { Checkbox, Icon } from '@equinor/eds-core-react';
+import { Checkbox, Icon } from '@equinor/eds-core-react-old';
 import { Modal } from '@equinor/modal';
 import { memo, useState } from 'react';
 import { DisconnectModal } from './DisconnectModal';

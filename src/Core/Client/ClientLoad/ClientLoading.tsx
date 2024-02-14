@@ -1,4 +1,4 @@
-import { Progress } from '@equinor/eds-core-react';
+import { Progress } from '@equinor/eds-core-react-old';
 import { Fullscreen } from './client.styles';
 
 export const ClientLoading = (): JSX.Element => {

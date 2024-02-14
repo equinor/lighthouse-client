@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { useReleaseControlContext, useUnpackReferences } from '../../../hooks';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { HeaderTab, SidesheetTabList, Tab, TabList } from './sidesheetStyles';
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { EditScopeTab } from './EditTabs/EditScopeTab';
 import { EditWorkflowTab } from './EditTabs/EditWorkflowTab';
 import { HistoryTab } from './Tabs/HistoryTab';
 import { useEdsTabs } from '@equinor/hooks';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { FamTag, TypedSelectOption } from '@equinor/Workflow';
+import { TypedSelectOption } from '@equinor/Workflow';
+import { RcScopeHtTag, RcScopeTag } from '../../../types/releaseControl';
 
 export const ReleaseControlRequestEditForm = (): JSX.Element => {
     const releaseControl = useReleaseControlContext(({ releaseControl }) => releaseControl);
@@ -24,8 +25,14 @@ export const ReleaseControlRequestEditForm = (): JSX.Element => {
                 (punchListItem) => punchListItem.id
             ),
             scopeChangeRequestReferences: releaseControl?.scopeChangeRequestReferences,
+            scopeHTTags: releaseControl.scopeHTTags
+                ? releaseControl?.scopeHTTags.map((s) => s.tagNo)
+                : [],
+            scopeTags: releaseControl.scopeTags
+                ? releaseControl?.scopeTags.map((s) => s.tagNo)
+                : [],
             tags: releaseControl?.scopeTags?.map(
-                (famTag: FamTag): TypedSelectOption => ({
+                (famTag: RcScopeTag): TypedSelectOption => ({
                     label: `${famTag.tagNo}`,
                     value: famTag.tagNo,
                     type: 'famtag',
@@ -34,7 +41,7 @@ export const ReleaseControlRequestEditForm = (): JSX.Element => {
                 })
             ),
             htCables: releaseControl?.scopeHTTags?.map(
-                (famTag: FamTag): TypedSelectOption => ({
+                (famTag: RcScopeHtTag): TypedSelectOption => ({
                     label: `${famTag.tagNo}`,
                     value: famTag.tagNo,
                     type: 'htcable',

@@ -1,13 +1,20 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls, stidUrls, echoUrls } from '@equinor/procosys-urls';
 import { CellProps, Column, Table, defaultGroupByFn } from '@equinor/Table';
-import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { LinkGroup } from './LinkGroup';
+import { RcScopeTag } from '../../../../types/releaseControl';
+import {
+    getMccrStatusByNumber,
+    getMccrStatusColorByStatus,
+} from '../../../../functions/statusUtils';
+import { StatusCircle } from '@equinor/CircuitDiagram';
+import { StyledRowView } from '../../../../Styles/WrapperStyles';
+
 interface TagTableProps {
-    tags: FamTagType[];
+    tags: RcScopeTag[];
     editMode: boolean;
 }
 export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
@@ -22,7 +29,7 @@ export const TagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
         />
     );
 };
-const columns: Column<FamTagType>[] = [
+const columns: Column<RcScopeTag>[] = [
     {
         id: 'tagNo',
         Header: 'Tag number',
@@ -42,6 +49,23 @@ const columns: Column<FamTagType>[] = [
         aggregate: 'count',
     },
     {
+        id: 'tagMountedOn',
+        Header: 'Mounted on',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'tagMountedOn',
+            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.tagMountedOn}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 110,
+    },
+    {
         id: 'links',
         Header: 'Links',
         width: 70,
@@ -51,7 +75,7 @@ const columns: Column<FamTagType>[] = [
             stidUrl: stidUrls.getTagUrl(item.tagNo),
             echoUrl: echoUrls.getEchoUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeTag>) => (
             <StyledLinkGrouping>
                 <Link href={cell.value.stidUrl} target="_blank" hideUnderline title="Open in STID">
                     <StyledStidLogoLink src="images/stid_logo.svg" />
@@ -70,47 +94,27 @@ const columns: Column<FamTagType>[] = [
         aggregate: 'count',
     },
     {
-        id: 'register',
-        Header: 'Tag type',
-        accessor: (item) => item.register,
+        id: 'commissioningStatus',
+        Header: 'MC Pkg Owner',
+        accessor: (item) => item.commissioningStatus,
     },
     {
-        id: 'tagMountedOn',
-        Header: 'Mounted on',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagMountedOn',
-            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
-        }),
-        Cell: (cell: CellProps<FamTagType>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.tagMountedOn}
-            </Link>
+        id: 'mccrStatus',
+        Header: 'Tag MC',
+        accessor: (item) => getMccrStatusByNumber(item.mccrStatus ?? 4),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <StyledRowView>
+                {cell.value}
+                <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+            </StyledRowView>
         ),
-        Aggregated: () => null,
-        aggregate: 'count',
+        width: 70,
     },
     {
         id: 'relatedHTCables',
-        Header: 'Related HT cables',
+        Header: 'HT on tag/line',
         accessor: (item) => item.relatedHTCables,
-    },
-
-    {
-        id: 'commissioningPackageNo',
-        Header: 'Comm',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
-        }),
-        Cell: (cell: CellProps<FamTagType>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.commissioningPackageNo}
-            </Link>
-        ),
-        Aggregated: () => null,
-        aggregate: 'count',
+        width: 170,
     },
     {
         id: 'mechanicalCompletionPackageNo',
@@ -120,34 +124,48 @@ const columns: Column<FamTagType>[] = [
             currentKey: 'mechanicalCompletionPackageNo',
             url: proCoSysUrls.getMcUrl(item.mechanicalCompletionPackageUrlId || ''),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeTag>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
                 {cell.value.content.mechanicalCompletionPackageNo}
             </Link>
         ),
         Aggregated: () => null,
         aggregate: 'count',
+        width: 90,
     },
     {
-        id: 'openWorkOrders',
-        Header: 'WO (open)',
-        accessor: (item) => item.openWorkOrders,
+        id: 'commissioningPackageNo',
+        Header: 'Comm',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.commissioningPackageNo}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 90,
     },
     {
-        id: 'areas',
+        id: 'area',
         Header: 'Area',
-        accessor: (item) => item.area ?? item.location,
+        accessor: (item) => item.area,
+        width: 80,
     },
     {
         id: 'pidDrawings',
         Header: 'P&ID',
-        minWidth: 100,
+        width: 60,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
             url: stidUrls.getTagUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => {
+        Cell: (cell: CellProps<RcScopeTag>) => {
             const links =
                 cell.value.content.pidDrawings?.map((x) => (
                     <Link
@@ -166,14 +184,14 @@ const columns: Column<FamTagType>[] = [
     },
     {
         id: 'isoDrawings',
-        minWidth: 100,
+        width: 60,
         Header: 'ISO',
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
             url: stidUrls.getTagUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => {
+        Cell: (cell: CellProps<RcScopeTag>) => {
             const links =
                 cell.value.content.isoDrawings?.map((x) => (
                     <Link
@@ -198,7 +216,17 @@ const columns: Column<FamTagType>[] = [
         Aggregated: () => null,
         aggregate: 'count',
     },
-
+    {
+        id: 'openWorkOrders',
+        Header: 'WO (open)',
+        accessor: (item) => item.openWorkOrders,
+    },
+    {
+        id: 'register',
+        Header: 'Tag type',
+        accessor: (item) => item.tagType,
+        width: 150,
+    },
     {
         id: 'remove',
         Header: '',

@@ -1,4 +1,4 @@
-import { Chip, Tabs } from '@equinor/eds-core-react';
+import { Chip, Tabs } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
@@ -25,7 +25,17 @@ export const FlexColumn = styled.div`
     gap: 44px;
     overflow-wrap: break-word;
 `;
-
+export const StyledFlexColumnWorkflowTab = styled.div`
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    overflow-wrap: break-word;
+    max-width: 600px;
+`;
 export const FormWrapper = styled.form`
     display: grid;
     grid-column: 2;

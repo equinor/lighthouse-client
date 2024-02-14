@@ -1,4 +1,4 @@
-import { Banner, Icon } from '@equinor/eds-core-react';
+import { Banner, Icon } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 
 export const Fallback = (): JSX.Element => {

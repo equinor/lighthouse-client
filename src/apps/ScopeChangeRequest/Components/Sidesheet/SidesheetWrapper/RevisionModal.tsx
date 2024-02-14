@@ -1,4 +1,4 @@
-import { Button, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react-old';
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';

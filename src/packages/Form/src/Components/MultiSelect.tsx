@@ -1,4 +1,4 @@
-import { MultiSelect as Select } from '@equinor/eds-core-react';
+import { MultiSelect as Select } from '@equinor/eds-core-react-old';
 
 import { Field } from '../Types/field';
 import styled from 'styled-components';

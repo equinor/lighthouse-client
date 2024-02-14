@@ -1,4 +1,4 @@
-import { Banner } from '@equinor/eds-core-react';
+import { Banner } from '@equinor/eds-core-react-old';
 import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import styled from 'styled-components';

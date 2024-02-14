@@ -1,4 +1,4 @@
-import { Button, Icon, Progress, SingleSelect } from '@equinor/eds-core-react';
+import { Button, Icon, Progress, SingleSelect } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';

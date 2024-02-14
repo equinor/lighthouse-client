@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react-old';
 import { useSettings } from '../Hooks/useClientContext';
 import { PowerBIHome } from './PbiHome/PbiHome';
 import { Container, Content, Header, ViewportWrapper } from './clientHomeStyles';

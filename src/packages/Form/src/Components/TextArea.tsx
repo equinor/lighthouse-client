@@ -1,4 +1,4 @@
-import { TextField } from '@equinor/eds-core-react';
+import { TextField } from '@equinor/eds-core-react-old';
 import { Field } from '../Types/field';
 
 interface TextAreaProps<T> {

@@ -1,4 +1,4 @@
-import { DotProgress } from '@equinor/eds-core-react';
+import { DotProgress } from '@equinor/eds-core-react-old';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowNavigation } from 'react-arrow-navigation';
 import { useNavigate } from 'react-router';

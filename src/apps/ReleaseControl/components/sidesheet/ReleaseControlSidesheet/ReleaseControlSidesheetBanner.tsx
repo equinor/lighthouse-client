@@ -1,4 +1,4 @@
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 import { useIsReleaseControlMutatingOrFetching } from '../../../hooks';
 import { useReleaseControlContext } from '../../../hooks/useReleaseControlContext';
 import { Banner, BannerItemTitle, BannerItemValue, ChipText, SpinnerChip } from './sidesheetStyles';

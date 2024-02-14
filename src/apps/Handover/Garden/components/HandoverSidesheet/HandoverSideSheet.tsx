@@ -1,4 +1,4 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';

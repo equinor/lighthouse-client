@@ -1,4 +1,4 @@
-import { Button, Icon, Progress } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { components, Theme } from 'react-select';
 import styled from 'styled-components';
