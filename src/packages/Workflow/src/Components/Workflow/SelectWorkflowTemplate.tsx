@@ -1,5 +1,5 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
-import { SingleSelect } from '@equinor/eds-core-react';
+import { SingleSelect } from '@equinor/eds-core-react-old';
 import { Workflow, WorkflowTemplate } from '../../Types/WorkflowTypes';
 import { useState } from 'react';
 

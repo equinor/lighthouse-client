@@ -3,7 +3,7 @@ import { proCoSysUrls, stidUrls, echoUrls } from '@equinor/procosys-urls';
 import { CellProps, Column, Table, defaultGroupByFn } from '@equinor/Table';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { LinkGroup } from './LinkGroup';
 import { RcScopeTag } from '../../../../types/releaseControl';
 import {

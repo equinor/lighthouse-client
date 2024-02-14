@@ -20,7 +20,7 @@ import { Workflow } from '../../../Workflow/Workflow';
 import { WarrantyCaseDetailCheckbox } from '../../../WarrantyCaseDetailCheckbox/WarrantyCaseDetailCheckbox';
 import { GuesstimateDisciplineDetails } from '../../GuesstimateDisciplineDetails/GuesstimateDisciplineDetails';
 import { OriginLink } from '../../../DetailView/OriginLink';
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react-old';
 import { CheckboxWrapper } from '../../../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
 import { RevisionsList } from './RevisionList/RevisionList';
 import { AtsDetailCheckbox } from '../../../AtsScopeCheckbox/AtsCheckbox';

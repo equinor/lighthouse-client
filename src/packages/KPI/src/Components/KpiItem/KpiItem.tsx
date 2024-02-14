@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Tooltip } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react-old';
 import { useMemo } from 'react';
 import { Circle, StatusCard, Title, Value } from './KpiItemStyles';
 

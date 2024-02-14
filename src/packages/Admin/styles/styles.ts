@@ -1,4 +1,4 @@
-import { Button, Typography } from '@equinor/eds-core-react';
+import { Button, Typography } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 

@@ -1,4 +1,4 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 import { BookmarkResponse } from '../../../types';
 import { ButtonContainer } from './modal.styles';

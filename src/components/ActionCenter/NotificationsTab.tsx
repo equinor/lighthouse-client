@@ -1,4 +1,4 @@
-import { Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';

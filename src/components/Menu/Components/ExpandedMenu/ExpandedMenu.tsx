@@ -1,4 +1,4 @@
-import { Button, Icon, Search } from '@equinor/eds-core-react';
+import { Button, Icon, Search } from '@equinor/eds-core-react-old';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useMemo, useState } from 'react';
 import { useMenuContext } from '../../Context/MenuContext';

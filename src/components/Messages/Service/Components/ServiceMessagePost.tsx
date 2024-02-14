@@ -1,4 +1,4 @@
-import { Button, Scrim } from '@equinor/eds-core-react';
+import { Button, Scrim } from '@equinor/eds-core-react-old';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { storage } from '@equinor/lighthouse-utils';

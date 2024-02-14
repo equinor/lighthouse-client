@@ -1,4 +1,4 @@
-import { Icon, Progress } from '@equinor/eds-core-react';
+import { Icon, Progress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { Column, defaultGroupByFn, Table } from '@equinor/Table';
 import styled from 'styled-components';

@@ -1,4 +1,4 @@
-import { Button, SingleSelect, TextField } from '@equinor/eds-core-react';
+import { Button, SingleSelect, TextField } from '@equinor/eds-core-react-old';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { Discipline, proCoSysQueries } from '@equinor/Workflow';
 import { useQuery } from 'react-query';
