@@ -1,4 +1,4 @@
-import { Banner, Button, Icon } from '@equinor/eds-core-react';
+import { Banner, Button, Icon } from '@equinor/eds-core-react-old';
 import { useIsMounted } from '@equinor/lighthouse-utils';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';

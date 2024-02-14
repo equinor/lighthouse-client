@@ -1,4 +1,4 @@
-import { Menu } from '@equinor/eds-core-react';
+import { Menu } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useRef, useState } from 'react';

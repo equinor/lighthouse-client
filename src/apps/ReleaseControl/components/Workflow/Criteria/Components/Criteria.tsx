@@ -16,7 +16,7 @@ import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
 import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 
 interface CriteriaRenderProps {
     name: string;

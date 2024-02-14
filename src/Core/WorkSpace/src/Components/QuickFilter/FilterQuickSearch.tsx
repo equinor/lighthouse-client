@@ -1,4 +1,4 @@
-import { Search } from '@equinor/eds-core-react';
+import { Search } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -71,7 +71,7 @@ export const FilterQuickSearch = (): JSX.Element => {
     );
 };
 
-const EdsSearch = styled(Search) <{ hasValue: boolean }>`
+const EdsSearch = styled(Search)<{ hasValue: boolean }>`
     border: ${({ hasValue }) =>
         hasValue ? `1px solid ${tokens.colors.interactive.primary__resting.hex}` : 'none'};
 `;

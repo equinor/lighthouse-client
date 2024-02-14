@@ -1,4 +1,4 @@
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 import { useIsScopeChangeMutatingOrFetching } from '../../../../hooks/observers/useIsScopeChangeMutatingOrFetching';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';

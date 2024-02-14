@@ -1,4 +1,4 @@
-import { Icon, SingleSelect } from '@equinor/eds-core-react';
+import { Icon, SingleSelect } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';

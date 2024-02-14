@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '../../../../packages/Components/Icon';
 import { AttachmentVisualStyle } from './attachments.styles';

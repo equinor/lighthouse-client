@@ -1,4 +1,4 @@
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 import { useGetReleaseControl } from '../../../../hooks/useGetReleaseControl';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { Attachments } from '../../../Attachments/AttachmentsView';

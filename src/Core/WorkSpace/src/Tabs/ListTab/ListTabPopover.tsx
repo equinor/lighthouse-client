@@ -1,4 +1,4 @@
-import { Popover } from '@equinor/eds-core-react';
+import { Popover } from '@equinor/eds-core-react-old';
 import { ColumnMenuPicker, ExportToExcel } from '@equinor/Table';
 import { useWorkSpace } from '../..';
 import { tabApis } from '../../Context/LocationProvider';

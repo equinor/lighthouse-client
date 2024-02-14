@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, useCallback } from 'react';
 import { CellProps } from 'react-table';
 import { CellRenderProps, TableData } from '../../Types/types';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 const LinkCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {

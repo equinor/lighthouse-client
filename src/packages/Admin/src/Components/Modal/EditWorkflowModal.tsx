@@ -1,4 +1,4 @@
-import { Button, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react-old';
 import { WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { KeyboardEventHandler, useState } from 'react';
 import { updateContext } from '../../Atoms/updateContext';

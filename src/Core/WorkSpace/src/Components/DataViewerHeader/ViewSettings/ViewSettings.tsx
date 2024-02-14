@@ -1,4 +1,4 @@
-import { Icon, Popover } from '@equinor/eds-core-react';
+import { Icon, Popover } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useState, useRef, useMemo } from 'react';
 

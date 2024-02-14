@@ -1,4 +1,4 @@
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { Viewer } from '@equinor/lighthouse-model-viewer';

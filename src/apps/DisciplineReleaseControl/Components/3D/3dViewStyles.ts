@@ -1,4 +1,4 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 
 export const ThreeDModel = styled.div`
