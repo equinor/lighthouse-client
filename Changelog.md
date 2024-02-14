@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.26.0
+
+-   [ReleaseControl] First step in workflow is not NOT assignable, and will always be RC - Coordinator
+
 # 2.25.1
 
 -   [ReleaseControl] Add and reorder the columns in CreateRcTagTable
