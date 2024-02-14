@@ -24,7 +24,6 @@ export const DescriptionInput = (): JSX.Element => {
 };
 
 const descriptionDefaultInput = `Requested by: 
-Requested by:
 Area:
 System:
 Scaffolding [Yes/No], describe:
