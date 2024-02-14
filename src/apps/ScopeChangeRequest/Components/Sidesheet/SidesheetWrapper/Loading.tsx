@@ -1,4 +1,4 @@
-import { Progress } from '@equinor/eds-core-react';
+import { Progress } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 
 const LoadingContainer = styled.div`

@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 interface MenuItemProps {

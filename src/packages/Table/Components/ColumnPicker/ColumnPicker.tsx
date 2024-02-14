@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ReactSortable } from 'react-sortablejs';
-import { Checkbox, Icon } from '@equinor/eds-core-react';
+import { Checkbox, Icon } from '@equinor/eds-core-react-old';
 import { TableAPI, TableData } from '@equinor/Table';
 import { ColumnInstance } from 'react-table';
 

@@ -1,4 +1,4 @@
-import { Button, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react-old';
 import { KeyboardEventHandler } from 'react';
 import { ModalButtonContainer, ModalInputContainer } from '../../styles/styles';
 import { isolateCircuit } from '../Api/isolateCircuit';

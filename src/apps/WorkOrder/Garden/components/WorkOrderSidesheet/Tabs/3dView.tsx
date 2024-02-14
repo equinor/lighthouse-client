@@ -1,4 +1,4 @@
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { Viewer } from '@equinor/lighthouse-model-viewer';

@@ -1,4 +1,4 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { useEdsTabs } from '@equinor/hooks';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { HeaderTab, SidesheetTabList, Tab, TabList } from './sidesheetStyles';

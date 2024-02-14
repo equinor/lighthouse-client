@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { VirtualItem } from 'react-virtual';
 import styled from 'styled-components';

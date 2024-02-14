@@ -1,4 +1,4 @@
-import { Button, Icon, Menu } from '@equinor/eds-core-react';
+import { Button, Icon, Menu } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useRef, useState } from 'react';
 import { MenuItem } from '../../types/menuItem';

@@ -1,4 +1,4 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { updateContext } from '../../Atoms/updateContext';
 import { useAdminContext } from '../../Hooks/useAdminContext';

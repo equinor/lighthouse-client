@@ -1,4 +1,4 @@
-import { Menu } from '@equinor/eds-core-react';
+import { Menu } from '@equinor/eds-core-react-old';
 import { Icon } from '@equinor/lighthouse-components';
 import { useState } from 'react';
 import { VerticalMenu } from './SearchResultItemStyles';

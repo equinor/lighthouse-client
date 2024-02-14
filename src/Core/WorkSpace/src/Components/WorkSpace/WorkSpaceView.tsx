@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react-old';
 import { PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';

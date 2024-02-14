@@ -1,4 +1,4 @@
-import { Button, Icon, Checkbox, Popover } from '@equinor/eds-core-react';
+import { Button, Icon, Checkbox, Popover } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useState, useRef } from 'react';
 import { ReactSortable } from 'react-sortablejs';
