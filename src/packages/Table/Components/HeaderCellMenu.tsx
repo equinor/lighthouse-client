@@ -1,4 +1,4 @@
-import { Menu, Typography } from '@equinor/eds-core-react';
+import { Menu, Typography } from '@equinor/eds-core-react-old';
 import { HeaderCellProps } from './HeaderCell';
 
 interface HeaderCellMenuProps extends HeaderCellProps {

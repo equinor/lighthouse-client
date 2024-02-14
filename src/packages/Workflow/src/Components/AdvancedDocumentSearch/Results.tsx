@@ -1,4 +1,4 @@
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react-old';
 import { ResultLabel, ResultItem } from './advancedSearch.styles';
 import { useState } from 'react';
 import { TypedSelectOption } from '../PersonRoleSearch/typedSelectOption';

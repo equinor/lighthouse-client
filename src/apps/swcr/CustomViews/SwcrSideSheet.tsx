@@ -1,4 +1,4 @@
-import { Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react-old';
 import { SidesheetHeaderContent } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { Fragment, useEffect } from 'react';
@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { isProduction } from '../../../Core/Client/Functions';
 import useSignatures from '../hooks/useSignatures';
 import { SwcrPackage } from '../models/SwcrPackage';
-
 
 const SideSheetContainer = styled.div`
     display: flex;

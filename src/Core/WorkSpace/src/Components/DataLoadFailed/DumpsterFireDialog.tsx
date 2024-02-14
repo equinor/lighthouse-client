@@ -1,4 +1,4 @@
-import { Dialog, Typography } from '@equinor/eds-core-react';
+import { Dialog, Typography } from '@equinor/eds-core-react-old';
 
 interface DumpsterFireDialogProps {
     title?: string;

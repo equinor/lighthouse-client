@@ -1,4 +1,4 @@
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react-old';
 import { Hooks } from 'react-table';
 import styled from 'styled-components';
 import { TableData } from '../Types/types';

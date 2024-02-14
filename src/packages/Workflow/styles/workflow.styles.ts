@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { Button, SingleSelect } from '@equinor/eds-core-react';
+import { Button, SingleSelect } from '@equinor/eds-core-react-old';
 
 export const DraggableIconWrapper = styled.div`
     cursor: grab;

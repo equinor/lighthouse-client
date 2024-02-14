@@ -1,4 +1,4 @@
-import { Divider } from '@equinor/eds-core-react';
+import { Divider } from '@equinor/eds-core-react-old';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { LeftSection, RightSection } from './HeaderStyles';
 import { HeaderTabButtons } from './HeaderTabButtons/HeaderTabButtons';
