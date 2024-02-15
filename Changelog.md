@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 2.27.2
+# 2.27.3
 
 -   [ReleaseControl] Fix 404 network calls to elenetwork endpoint
+
+# 2.27.2
+
+-   [ReleaseControl] Fix incorrect tag status if value is null
 
 # 2.27.1
 
