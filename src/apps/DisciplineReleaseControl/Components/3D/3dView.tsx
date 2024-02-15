@@ -24,6 +24,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
 
     const { data } = useQuery([circuitStarterTagNos], () => getEleNetworks(circuitStarterTagNos), {
         staleTime: Infinity,
+        enabled: !!circuitStarterTagNos.length,
         cacheTime: Infinity,
     });
 
