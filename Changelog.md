@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.27.4
+
+-   [ReleaseControl] Change order of description while creating RC.
+
 # 2.27.3
 
 -   [ReleaseControl] Fix 404 network calls to elenetwork endpoint
