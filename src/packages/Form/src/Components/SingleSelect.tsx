@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { SingleSelect as Select } from '@equinor/eds-core-react';
+import { SingleSelect as Select } from '@equinor/eds-core-react-old';
 import { Field } from '../Types/field';
 import styled from 'styled-components';
 

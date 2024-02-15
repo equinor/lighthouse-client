@@ -1,5 +1,5 @@
 import { swap } from '@dbeining/react-atom';
-import { Button, Icon, Progress } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from 'react-query';
 import { IconMenu, MiniMenuButton, MenuItem } from '@equinor/overlay-menu';

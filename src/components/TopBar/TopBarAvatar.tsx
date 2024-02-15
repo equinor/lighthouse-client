@@ -1,4 +1,4 @@
-import { Avatar, Icon, Popover } from '@equinor/eds-core-react';
+import { Avatar, Icon, Popover } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';

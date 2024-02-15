@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@equinor/eds-core-react';
+import { Input } from '@equinor/eds-core-react-old';
 import { Field } from '../Types/field';
 import styled from 'styled-components';
 

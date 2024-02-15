@@ -1,4 +1,4 @@
-import { Button, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react-old';
 import { KeyboardEventHandler, useState } from 'react';
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useAdminMutation } from '../../Hooks/useAdminMutation';

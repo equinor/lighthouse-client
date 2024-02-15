@@ -1,4 +1,4 @@
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react-old';
 import { memo, useMemo } from 'react';
 import { FilterGroup, ValueFormatterFunction } from '../../Hooks/useFilterApi';
 

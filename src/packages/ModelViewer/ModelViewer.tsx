@@ -1,5 +1,5 @@
 import { RendererConfiguration } from '@equinor/echo3dweb-viewer';
-import { Button, CircularProgress } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { Icon } from '@equinor/lighthouse-components';

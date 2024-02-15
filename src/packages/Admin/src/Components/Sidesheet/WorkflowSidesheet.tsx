@@ -28,7 +28,7 @@ import { WorkflowSaveButtonBar } from './WorkflowSaveButtonBar';
 import { WorkflowCreateButtonBar } from './WorkflowCreateButtonBar';
 import { useAdminMutationWatcher } from '../../Hooks/useAdminMutationWatcher';
 import { useIsTemplateLoading } from '../../Hooks/useIsTemplateLoading';
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Progress } from '@equinor/eds-core-react-old';
 
 interface WorkflowSidesheetProps {
     item: Workflow;

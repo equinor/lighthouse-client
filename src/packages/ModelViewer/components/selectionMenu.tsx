@@ -1,4 +1,4 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/lighthouse-components';
 import { useModelViewerContext } from '../context/modelViewerContext';

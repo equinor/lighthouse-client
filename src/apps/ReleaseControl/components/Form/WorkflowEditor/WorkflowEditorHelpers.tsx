@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import {
     CreateReleaseControlStepModel,

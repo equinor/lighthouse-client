@@ -1,4 +1,4 @@
-import { SingleSelect } from '@equinor/eds-core-react';
+import { SingleSelect } from '@equinor/eds-core-react-old';
 import { useQuery } from 'react-query';
 
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
@@ -24,8 +24,8 @@ export const ScopeSelect = (): JSX.Element => {
                 !change.selectedItem
                     ? updateAtom({ scope: null })
                     : updateAtom({
-                        scope: scopes?.find(({ name }) => name === change.selectedItem),
-                    });
+                          scope: scopes?.find(({ name }) => name === change.selectedItem),
+                      });
             }}
         />
     );

@@ -1,4 +1,4 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 
 export const Container = styled.div`

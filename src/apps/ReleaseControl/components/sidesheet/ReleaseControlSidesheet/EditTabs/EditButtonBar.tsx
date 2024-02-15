@@ -1,4 +1,4 @@
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Progress } from '@equinor/eds-core-react-old';
 import { disableEditMode } from '../../../../Atoms/editModeAtom';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import {

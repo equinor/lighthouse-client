@@ -1,4 +1,4 @@
-import { TextField, Button, Divider } from '@equinor/eds-core-react';
+import { TextField, Button, Divider } from '@equinor/eds-core-react-old';
 import { useState } from 'react';
 import { submitContribution } from '../../../api/ScopeChange/Workflow';
 import { WorkflowIcon } from '../Components/WorkflowIcon';

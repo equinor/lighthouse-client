@@ -8,7 +8,7 @@ import { FilterCollapseIcon } from './Icons/FilterCollapsIcon';
 import { FilterExpandIcon } from './Icons/FilterExpandIcon';
 import { FilterClearIcon } from './Icons/FilterClear';
 import { CompactFilterWrapper, SearchLine, LeftSection, RightSection } from './quickFilterStyles';
-import { Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { useWorkSpace } from '@equinor/WorkSpace';

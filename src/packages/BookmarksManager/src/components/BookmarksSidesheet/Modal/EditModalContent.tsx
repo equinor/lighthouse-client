@@ -1,4 +1,4 @@
-import { Button, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react-old';
 import { useState } from 'react';
 import { patchBookmark } from '../../..';
 import { useBookmarkMutations } from '../../../hooks';

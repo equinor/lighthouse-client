@@ -1,4 +1,4 @@
-import { Dialog, Scrim } from '@equinor/eds-core-react';
+import { Dialog, Scrim } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 const DialogContainer = styled(Dialog)`
     width: 100%;

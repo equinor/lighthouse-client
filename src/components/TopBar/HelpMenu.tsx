@@ -1,4 +1,4 @@
-import { Icon, Popover, Typography } from '@equinor/eds-core-react';
+import { Icon, Popover, Typography } from '@equinor/eds-core-react-old';
 import { useLocationKey } from '@equinor/hooks';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useState, useRef, useMemo } from 'react';

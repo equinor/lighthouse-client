@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { SearchOrigin } from './SearchOrigin';
 import { SelectPunch } from './SelectPunch';
 import { SelectSWCR } from './SelectSWCR';
-import { MultiSelect, TextField } from '@equinor/eds-core-react';
+import { MultiSelect, TextField } from '@equinor/eds-core-react-old';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 import { Case, Switch } from '@equinor/JSX-Switch';
 

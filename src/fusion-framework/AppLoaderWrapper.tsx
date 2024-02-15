@@ -8,7 +8,7 @@ import {
     useBookmarkMutations,
 } from '../packages/BookmarksManager/src';
 import { useFusionBookmarks } from '../hooks/useFusionBookmarks';
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 import { useCurrentUser } from '@equinor/lighthouse-portal-client';
 

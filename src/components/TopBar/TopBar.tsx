@@ -1,5 +1,5 @@
 import { BookmarkSidesheet } from '@equinor/BookmarksManager';
-import { TopBar } from '@equinor/eds-core-react';
+import { TopBar } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { useClientContext } from '@equinor/lighthouse-portal-client';

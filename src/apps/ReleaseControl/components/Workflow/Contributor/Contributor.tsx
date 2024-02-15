@@ -1,4 +1,4 @@
-import { TextField, Button, Divider } from '@equinor/eds-core-react';
+import { TextField, Button, Divider } from '@equinor/eds-core-react-old';
 import { useState } from 'react';
 import { submitContribution } from '../../../api/releaseControl/Workflow';
 import { useReleaseControlContext } from '../../../hooks/useReleaseControlContext';

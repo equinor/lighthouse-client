@@ -1,4 +1,4 @@
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Progress } from '@equinor/eds-core-react-old';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { WorkflowStepAdminAtomApi } from '../../Atoms/workflowStepAdminAtomApi';
 import { useAdminContext } from '../../Hooks/useAdminContext';

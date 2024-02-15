@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 
 export interface ClickableIconProps {
@@ -6,7 +6,7 @@ export interface ClickableIconProps {
     onClick?: React.MouseEventHandler<SVGSVGElement>;
     color?: string | undefined;
     size?: 16 | 24 | 32 | 40 | 48;
-    title?: string 
+    title?: string;
 }
 
 /**
@@ -20,13 +20,13 @@ export const ClickableIcon = ({
     onClick,
     color = `${tokens.colors.interactive.primary__resting.hex}`,
     size = 24,
-    title 
+    title,
 }: ClickableIconProps): JSX.Element => {
     return (
         <Icon
             size={size}
             name={name}
-            title={title} 
+            title={title}
             onClick={onClick}
             style={{ cursor: 'pointer' }}
             color={color}

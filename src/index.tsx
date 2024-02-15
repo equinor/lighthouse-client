@@ -1,4 +1,4 @@
-import { Icon as EdsIcon } from '@equinor/eds-core-react';
+import { Icon as EdsIcon } from '@equinor/eds-core-react-old';
 import * as icons from '@equinor/eds-icons';
 import { render } from 'react-dom';
 import { Bootstrap } from './AppClient';

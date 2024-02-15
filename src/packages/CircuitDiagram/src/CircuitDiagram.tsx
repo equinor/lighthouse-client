@@ -24,7 +24,7 @@ import { Pipetest } from './types/pipetestTypes';
 import { NoCircuitDiagramFound } from './Components/NoCircuitDiagramFound';
 import { StatusCircle } from './Components/StatusCircle';
 import { useEffect, useMemo, useState } from 'react';
-import { Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react-old';
 
 export type CircuitDiagramTag = {
     tagNo: string;
@@ -80,6 +80,7 @@ export const CircuitDiagram = ({
         [circuitStarterTagNoString],
         () => getEleNetworks(circuitStarterTagNoString ?? ''),
         {
+            enabled: !!circuitStarterTagNoString,
             staleTime: Infinity,
             //no cache time since we need to fetch new updates every time because of possible isolations/disconnections
             cacheTime: 0,

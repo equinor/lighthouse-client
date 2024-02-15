@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { useRef, useState } from 'react';
 import { HeaderGroup } from 'react-table';
 import { TableData } from '../Types/types';

@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { AppGroupe, AppManifest } from '@equinor/lighthouse-portal-client';
 import { Link } from 'react-router-dom';

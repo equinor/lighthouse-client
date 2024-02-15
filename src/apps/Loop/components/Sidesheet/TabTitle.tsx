@@ -1,4 +1,4 @@
-import { Progress } from '@equinor/eds-core-react';
+import { Progress } from '@equinor/eds-core-react-old';
 
 type LoadingTabTitleProps<T> = {
     isLoading: boolean;

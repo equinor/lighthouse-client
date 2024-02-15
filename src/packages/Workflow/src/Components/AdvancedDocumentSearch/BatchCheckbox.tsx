@@ -1,4 +1,4 @@
-import { Checkbox, Tooltip } from '@equinor/eds-core-react';
+import { Checkbox, Tooltip } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 
 interface BatchCheckboxesProps {

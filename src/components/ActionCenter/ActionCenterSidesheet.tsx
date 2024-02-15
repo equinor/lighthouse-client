@@ -1,4 +1,4 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-import { Menu, Button, Search } from '@equinor/eds-core-react';
+import { Menu, Button, Search } from '@equinor/eds-core-react-old';
 import { Switch, Case } from '@equinor/JSX-Switch';
 import { EventHub } from '@equinor/lighthouse-utils';
 import { useState, useCallback, useMemo, useEffect } from 'react';

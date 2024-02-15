@@ -1,4 +1,4 @@
-import { TextField } from '@equinor/eds-core-react';
+import { TextField } from '@equinor/eds-core-react-old';
 import moment from 'moment';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 

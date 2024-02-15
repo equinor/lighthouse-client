@@ -1,4 +1,4 @@
-import { Menu, Button, Search } from '@equinor/eds-core-react';
+import { Menu, Button, Search } from '@equinor/eds-core-react-old';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../../packages/Filter/Hooks/useFilterApiContext';

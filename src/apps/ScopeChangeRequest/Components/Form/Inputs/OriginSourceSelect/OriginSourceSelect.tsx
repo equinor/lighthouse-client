@@ -1,4 +1,4 @@
-import { SingleSelect } from '@equinor/eds-core-react';
+import { SingleSelect } from '@equinor/eds-core-react-old';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 import { OriginType } from '../../../../types/scopeChangeRequest';
 

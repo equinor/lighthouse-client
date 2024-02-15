@@ -1,4 +1,4 @@
-import { Icon, Search } from '@equinor/eds-core-react';
+import { Icon, Search } from '@equinor/eds-core-react-old';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { useClickOutside } from '@equinor/lighthouse-utils';
 import React, { useCallback, useMemo, useRef, useState } from 'react';

@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react-old';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { ClickableIcon } from '../../../../../../packages/Components/Icon';
 import { useDataContext } from '../../../Context/DataProvider';

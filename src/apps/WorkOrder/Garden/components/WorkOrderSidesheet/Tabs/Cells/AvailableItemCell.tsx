@@ -1,6 +1,6 @@
 import { CellProps } from '@equinor/Table';
 import { WorkOrderMaterial } from '../../../../models';
-import { Tooltip, Icon } from '@equinor/eds-core-react';
+import { Tooltip, Icon } from '@equinor/eds-core-react-old';
 
 export const AvailableItemCell = (props: CellProps<WorkOrderMaterial, WorkOrderMaterial>) => {
     const { value } = props;

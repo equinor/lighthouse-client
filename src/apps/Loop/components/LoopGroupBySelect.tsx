@@ -1,4 +1,4 @@
-import { SingleSelect } from '@equinor/eds-core-react';
+import { SingleSelect } from '@equinor/eds-core-react-old';
 import { useParkViewContext } from '@equinor/ParkView';
 import { CustomGroupByKeys } from '../types';
 

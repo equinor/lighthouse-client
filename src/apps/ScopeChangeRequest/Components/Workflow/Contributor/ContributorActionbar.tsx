@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { useQuery, useQueryClient } from 'react-query';
 
 import { removeContributor } from '../../../api/ScopeChange/Workflow/removeContributor';

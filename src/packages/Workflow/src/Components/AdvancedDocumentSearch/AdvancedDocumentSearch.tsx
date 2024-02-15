@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Button, Icon, Progress, Scrim, TextField } from '@equinor/eds-core-react';
+import { Button, Icon, Progress, Scrim, TextField } from '@equinor/eds-core-react-old';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { tokens } from '@equinor/eds-tokens';
 

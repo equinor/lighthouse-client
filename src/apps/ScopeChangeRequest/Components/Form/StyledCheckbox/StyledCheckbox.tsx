@@ -1,4 +1,4 @@
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 
 interface StyledCheckboxProps {

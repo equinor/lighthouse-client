@@ -1,5 +1,5 @@
 import { deref } from '@dbeining/react-atom';
-import { Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { useWorkSpace } from '@equinor/WorkSpace';

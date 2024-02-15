@@ -1,4 +1,4 @@
-import { Button, Divider } from '@equinor/eds-core-react';
+import { Button, Divider } from '@equinor/eds-core-react-old';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router';

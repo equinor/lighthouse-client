@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';

@@ -1,5 +1,5 @@
 import { deref, useAtom } from '@dbeining/react-atom';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
 import { SidesheetApi } from '@equinor/sidesheet';

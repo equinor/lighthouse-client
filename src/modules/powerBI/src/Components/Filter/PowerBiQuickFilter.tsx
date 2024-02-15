@@ -1,4 +1,4 @@
-import { Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { FilterClearIcon } from '../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';

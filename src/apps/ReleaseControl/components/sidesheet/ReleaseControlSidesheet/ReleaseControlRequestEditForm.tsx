@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useReleaseControlContext, useUnpackReferences } from '../../../hooks';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { HeaderTab, SidesheetTabList, Tab, TabList } from './sidesheetStyles';
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { EditScopeTab } from './EditTabs/EditScopeTab';
 import { EditWorkflowTab } from './EditTabs/EditWorkflowTab';
 import { HistoryTab } from './Tabs/HistoryTab';

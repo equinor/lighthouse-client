@@ -1,4 +1,4 @@
-import { Progress } from '@equinor/eds-core-react';
+import { Progress } from '@equinor/eds-core-react-old';
 import { useMutation } from 'react-query';
 import { Row } from 'react-table';
 import { StyledButton } from './exportToExcel.styles';

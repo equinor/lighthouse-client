@@ -1,4 +1,4 @@
-import { Accordion } from '@equinor/eds-core-react';
+import { Accordion } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { Icon, MarkdownViewer } from '@equinor/lighthouse-components';
 import { FC } from 'react';
@@ -9,7 +9,7 @@ import {
     ErrorWrapper,
     Heading,
     HeadingWrapper,
-    RequirementsWrapper
+    RequirementsWrapper,
 } from './ReportErrorMessageStyles';
 
 interface ReportErrorMessageProps {

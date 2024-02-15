@@ -6,7 +6,7 @@ import { PowerBiHeader } from './PowerBiHeader';
 import { WorkspaceHeader } from './WorkspaceHeader';
 import { useEffect } from 'react';
 import { spawnConfirmationDialog } from '../../../../ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 import { useContactPerson } from '../../../../../hooks/useContactPerson';
 
 interface CompletionViewHeaderProps {

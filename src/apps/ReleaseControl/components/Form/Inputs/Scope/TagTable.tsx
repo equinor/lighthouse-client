@@ -3,7 +3,7 @@ import { proCoSysUrls, stidUrls, echoUrls } from '@equinor/procosys-urls';
 import { CellProps, Column, Table, defaultGroupByFn } from '@equinor/Table';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { LinkGroup } from './LinkGroup';
 import { RcScopeTag } from '../../../../types/releaseControl';
 import {
@@ -101,13 +101,18 @@ const columns: Column<RcScopeTag>[] = [
     {
         id: 'mccrStatus',
         Header: 'Tag MC',
-        accessor: (item) => getMccrStatusByNumber(item.mccrStatus ?? 4),
-        Cell: (cell: CellProps<RcScopeTag>) => (
-            <StyledRowView>
-                {cell.value}
-                <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
-            </StyledRowView>
-        ),
+        accessor: (item) => (item.mccrStatus ? getMccrStatusByNumber(item.mccrStatus) : null),
+        Cell: (cell: CellProps<RcScopeTag>) => {
+            if (!cell.value) {
+                return <></>;
+            }
+            return (
+                <StyledRowView>
+                    {cell.value}
+                    <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+                </StyledRowView>
+            );
+        },
         width: 70,
     },
     {

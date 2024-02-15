@@ -1,4 +1,4 @@
-import { CircularProgress, Icon, Input } from '@equinor/eds-core-react';
+import { CircularProgress, Icon, Input } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { validatePunch } from '@equinor/Workflow';
 import { useState } from 'react';

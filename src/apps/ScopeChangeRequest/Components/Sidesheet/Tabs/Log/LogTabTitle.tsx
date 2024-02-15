@@ -1,4 +1,4 @@
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 import { useIsFetching } from 'react-query';
 import styled from 'styled-components';
 import { scopeChangeQueries } from '../../../../keys/queries';

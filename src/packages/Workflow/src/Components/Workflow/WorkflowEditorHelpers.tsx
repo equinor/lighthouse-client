@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react-old';
 import { WorkflowStepTemplate, Criteria, CriteriaStatus } from '@equinor/Workflow';
 
 import { InsertAfter } from './InsertAfter';

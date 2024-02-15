@@ -6,7 +6,7 @@ import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { ProCoSysQueries } from '../../../hooks/ProCoSysQueries';
 import { DraggableReleaseControlStep } from '../../../types/releaseControl';
 import { WorkflowStep } from './WorkflowStep';
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react-old';
 
 const workflowOwner = 'ReleaseControl';
 

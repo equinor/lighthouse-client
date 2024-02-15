@@ -1,4 +1,4 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react-old';
 import { useEdsTabs } from '@equinor/hooks';
 import styled from 'styled-components';
 import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';

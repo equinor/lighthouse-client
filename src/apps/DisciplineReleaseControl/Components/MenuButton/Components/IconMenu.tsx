@@ -1,4 +1,4 @@
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -53,7 +53,11 @@ export const IconMenu = ({ items, onMenuOpen }: IconMenuProps): JSX.Element => {
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? null;
                     return (
-                        <Menu.Item disabled={x.isDisabled} onClick={() => x.onClick && x.onClick()} key={x.label + i}>
+                        <Menu.Item
+                            disabled={x.isDisabled}
+                            onClick={() => x.onClick && x.onClick()}
+                            key={x.label + i}
+                        >
                             <Icon />
                             <MenuText>{x.label}</MenuText>
                         </Menu.Item>

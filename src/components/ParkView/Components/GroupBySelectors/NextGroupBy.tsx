@@ -1,4 +1,4 @@
-import { SingleSelect } from '@equinor/eds-core-react';
+import { SingleSelect } from '@equinor/eds-core-react-old';
 import { useCallback } from 'react';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { SelectOneWrapper } from './groupBy.styles';

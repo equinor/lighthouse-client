@@ -1,5 +1,5 @@
 import { FileRejection, useDropzone } from 'react-dropzone';
-import { Icon, Progress } from '@equinor/eds-core-react';
+import { Icon, Progress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 

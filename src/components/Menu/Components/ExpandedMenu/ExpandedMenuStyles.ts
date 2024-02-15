@@ -1,4 +1,4 @@
-import { Scrim } from '@equinor/eds-core-react';
+import { Scrim } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { Link as ReactLink } from 'react-router-dom';
 import styled from 'styled-components';

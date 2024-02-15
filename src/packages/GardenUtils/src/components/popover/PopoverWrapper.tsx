@@ -1,4 +1,4 @@
-import { Popover } from '@equinor/eds-core-react';
+import { Popover } from '@equinor/eds-core-react-old';
 import { MutableRefObject, PropsWithChildren, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 

@@ -1,4 +1,4 @@
-import { Breadcrumbs } from '@equinor/eds-core-react';
+import { Breadcrumbs } from '@equinor/eds-core-react-old';
 import { Fragment, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';

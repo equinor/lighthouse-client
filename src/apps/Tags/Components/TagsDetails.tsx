@@ -1,4 +1,4 @@
-import { Tabs, Typography } from '@equinor/eds-core-react';
+import { Tabs, Typography } from '@equinor/eds-core-react-old';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useRef, useState } from 'react';
