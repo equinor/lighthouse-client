@@ -101,13 +101,18 @@ const columns: Column<RcScopeTag>[] = [
     {
         id: 'mccrStatus',
         Header: 'Tag MC',
-        accessor: (item) => getMccrStatusByNumber(item.mccrStatus ?? 4),
-        Cell: (cell: CellProps<RcScopeTag>) => (
-            <StyledRowView>
-                {cell.value}
-                <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
-            </StyledRowView>
-        ),
+        accessor: (item) => (item.mccrStatus ? getMccrStatusByNumber(item.mccrStatus) : null),
+        Cell: (cell: CellProps<RcScopeTag>) => {
+            if (!cell.value) {
+                return <></>;
+            }
+            return (
+                <StyledRowView>
+                    {cell.value}
+                    <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+                </StyledRowView>
+            );
+        },
         width: 70,
     },
     {
