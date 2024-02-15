@@ -36,10 +36,10 @@ Required finish date:
 
 Description of what is to be done (use the suggested wording below - if your not sure what to input for HT / other, just say not sure): 
 
-1.TAG:      HT:     Insu Tag:       What are you doing?:        P&ID:   HT-ISO:
-2.TAG:      HT:     Insu Tag:       What are you doing?:        P&ID:   HT-ISO:
-3.TAG:      HT:     Insu Tag:       What are you doing?:        P&ID:   HT-ISO:
-4.TAG:      HT:     Insu Tag:       What are you doing?:        P&ID:   HT-ISO:
-5.TAG:      HT:     Insu Tag:       What are you doing?:        P&ID:   HT-ISO:
-6.TAG:      HT:     Insu Tag:       What are you doing?:        P&ID:   HT-ISO:
+1.HT:	TAG:	InsuTag:	What are you doing?:	P&ID: 
+2.HT:	TAG:	InsuTag:	What are you doing?:	P&ID: 
+3.HT:	TAG:	InsuTag:	What are you doing?:	P&ID: 
+4.HT:	TAG:	InsuTag:	What are you doing?:	P&ID: 
+5.HT:	TAG:	InsuTag:	What are you doing?:	P&ID: 
+6.HT:	TAG:	InsuTag:	What are you doing?:	P&ID: 
 `;
