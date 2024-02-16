@@ -28,6 +28,10 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         callback(items);
     }
     async function lookupMountedTag(rcScopeTag: RcScopeTag) {
+        if (rcScopeTag.tagMountedOn === null) {
+            return null;
+        }
+
         return await getScopeTag(rcScopeTag.tagMountedOn ?? '');
     }
     const tagLoadOptions = (
@@ -41,6 +45,9 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
 
         lookupMountedTag(value.object as RcScopeTag).then((item) => {
+            if (item === null) {
+                return;
+            }
             item.tagType === 'INS' &&
                 onChange([
                     ...(DRCFormAtomApi.readAtomValue().tags ?? []),

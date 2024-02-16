@@ -31,7 +31,6 @@ interface WorkflowStepProps {
     steps: CreateReleaseControlStepModel[];
     functionalRoles?: FunctionalRole[];
     availableSteps: WorkflowStepTemplate[];
-    isEditMode?: boolean;
 }
 
 export const WorkflowStep = ({
@@ -39,7 +38,6 @@ export const WorkflowStep = ({
     steps,
     functionalRoles,
     availableSteps,
-    isEditMode,
 }: WorkflowStepProps): JSX.Element => {
     const { updateAtom } = DRCFormAtomApi;
 
