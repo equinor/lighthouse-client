@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 2.28.1
+# 2.28.2
 
 -   [ReleaseControl] Fix sequence contains no elements when patching a release control
+
+# 2.28.1
+
+-   [ReleaseControl] Fix Icon bug so the CreateRCSidesheet doesn't crash
 
 # 2.28.0
 
