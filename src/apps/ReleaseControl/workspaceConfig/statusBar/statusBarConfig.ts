@@ -36,7 +36,7 @@ export function statusBarConfig(data: ReleaseControl[]): StatusItem[] {
             title: '% closed',
             value: () => {
                 return (
-                    Number(
+                    ~~Number(
                         (100 * data?.filter((x) => x.state === 'Closed').length) / data?.length
                     )?.toFixed(2) + '%'
                 );
