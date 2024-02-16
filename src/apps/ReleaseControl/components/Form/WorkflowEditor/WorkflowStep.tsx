@@ -85,6 +85,7 @@ export const WorkflowStep = ({
                             />
                         </StepSelect>
                     </Selections>
+                    <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
                 </>
             ) : (
                 <>
