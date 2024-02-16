@@ -5,10 +5,10 @@ metadata:
 spec:
     environments:
         - name: dev
-            build:
+          build:
               from: feat/radix
         - name: dev2
-            build:
+          build:
               from: feat/radix
         - name: prod
     components:
