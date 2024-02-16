@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.27.5
+
+-   [ReleaseControl] Fix a bug where isProduction returns false in echoUrls
+
 # 2.27.4
 
 -   [ReleaseControl] Change order of description while creating RC.
