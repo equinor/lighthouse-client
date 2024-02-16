@@ -31,8 +31,7 @@ export const NavigationButton = styled.div`
 `;
 
 export const SelectionRow = styled.div`
-    display: flex;
-    flex-direction: row;
+    width: 400px;
 `;
 
 export const NewStepButton = styled(Button)`

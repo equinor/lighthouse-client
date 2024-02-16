@@ -1,4 +1,4 @@
-import { Icon, SingleSelect } from '@equinor/eds-core-react-old';
+import { Autocomplete, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
@@ -68,46 +68,23 @@ export const WorkflowStep = ({
                     <NumberCircle>{step.order}</NumberCircle>
                     <Selections>
                         <StepSelect>
-                            <SingleSelect
-                                items={availableSteps.map((s) => s.name)}
-                                label="Step"
-                                size={30}
-                                selectedOption={step.name}
+                            <Autocomplete
+                                options={availableSteps.map((s) => s.name)}
+                                label={'Step'}
+                                selectedOptions={[step.name]}
                                 readOnly={true}
-                                handleSelectedItemChange={(change) =>
+                                onOptionsChange={(change) =>
                                     updateAtom({
                                         workflowSteps: updateStepName(
                                             step,
                                             steps,
-                                            !change.selectedItem ? '' : change.selectedItem
+                                            change.selectedItems[0] ?? ''
                                         ),
                                     })
                                 }
                             />
                         </StepSelect>
-                        <ResponsibleSelect>
-                            <PCSPersonRoleSearch
-                                onSelect={(value) => {
-                                    if (!value) return;
-                                    const responsibleObject = value.object as UserObject;
-                                    updateAtom({
-                                        workflowSteps: updateStepResponsible(
-                                            step,
-                                            steps,
-                                            !value ? '' : value.value,
-                                            responsibleObject.email,
-                                            value.type
-                                        ),
-                                    });
-                                }}
-                                classification="RELEASECONTROL"
-                                value={'RC - Coordinator'}
-                                defaultResult={functionalRoles}
-                                isDisabled={true}
-                            />
-                        </ResponsibleSelect>
                     </Selections>
-                    <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
                 </>
             ) : (
                 <>
@@ -117,17 +94,16 @@ export const WorkflowStep = ({
                     <NumberCircle>{step.order}</NumberCircle>
                     <Selections>
                         <StepSelect>
-                            <SingleSelect
-                                items={availableSteps.map((s) => s.name)}
-                                label=""
-                                size={30}
-                                selectedOption={step.name}
-                                handleSelectedItemChange={(change) =>
+                            <Autocomplete
+                                options={availableSteps.map((s) => s.name)}
+                                label={''}
+                                selectedOptions={[step.name]}
+                                onOptionsChange={(change) =>
                                     updateAtom({
                                         workflowSteps: updateStepName(
                                             step,
                                             steps,
-                                            !change.selectedItem ? '' : change.selectedItem
+                                            change.selectedItems[0] ?? ''
                                         ),
                                     })
                                 }

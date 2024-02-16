@@ -1,7 +1,8 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
-import { SingleSelect } from '@equinor/eds-core-react-old';
 import { Workflow, WorkflowTemplate } from '../../Types/WorkflowTypes';
 import { useState } from 'react';
+import { Autocomplete } from '@equinor/eds-core-react';
+import { SelectionRow } from '../../../../../apps/ReleaseControl/components/Form/releaseControlProcessForm.styles';
 
 type SelectWorkflowTemplateProps = {
     workflowOwner: string;
@@ -31,17 +32,16 @@ export const SelectWorkflowTemplate = ({
         },
     });
     return (
-        <>
-            <SingleSelect
-                items={workflows?.map((x) => x.name) ?? []}
-                label=""
+        <SelectionRow>
+            <Autocomplete
+                options={workflows?.map((x) => x.name) ?? []}
+                label={''}
                 placeholder="Select workflow template"
-                size={35}
-                handleSelectedItemChange={(change) => {
-                    const id = workflows?.find((x) => x.name === change.selectedItem)?.id;
+                onOptionsChange={(change) => {
+                    const id = workflows?.find((x) => x.name === change.selectedItems[0])?.id;
                     setValue(id ?? '');
                 }}
             />
-        </>
+        </SelectionRow>
     );
 };
