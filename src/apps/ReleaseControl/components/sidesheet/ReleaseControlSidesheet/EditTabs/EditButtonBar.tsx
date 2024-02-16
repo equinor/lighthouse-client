@@ -1,7 +1,9 @@
 import { Button, Progress } from '@equinor/eds-core-react-old';
+import { useQueryClient } from 'react-query';
 import { disableEditMode } from '../../../../Atoms/editModeAtom';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import {
+    useGetReleaseControl,
     useReleaseControlContext,
     useReleaseControlMutation,
     useRequestMutations,
@@ -12,9 +14,8 @@ import { ActionBar, ButtonContainer } from '../../../Form/releaseControlProcessF
 export const EditButtonBar = (): JSX.Element => {
     const releaseControl = useReleaseControlContext(({ releaseControl }) => releaseControl);
     const { patchKey } = releaseControlMutationKeys(releaseControl.id);
-
+    const { refetch } = useGetReleaseControl(releaseControl.id);
     const isValid = DRCFormAtomApi.useIsValid();
-
     const { editReleaseControlMutation } = useRequestMutations();
 
     const { isLoading, mutate } = useReleaseControlMutation(
@@ -22,7 +23,10 @@ export const EditButtonBar = (): JSX.Element => {
         patchKey,
         editReleaseControlMutation,
         {
-            onSuccess: disableEditMode,
+            onSuccess: async () => {
+                await refetch();
+                disableEditMode();
+            },
         }
     );
 
