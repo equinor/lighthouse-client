@@ -39,8 +39,22 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
 
     function addTag(value: TypedSelectOption) {
         onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
+
+        lookupMountedTag(value.object as RcScopeTag).then((item) => {
+            item.tagType === 'INS' &&
+                onChange([
+                    ...(DRCFormAtomApi.readAtomValue().tags ?? []),
+                    {
+                        label: `${item.tagNo}`,
+                        value: item.tagNo,
+                        type: 'scopetag',
+                        searchValue: item.tagNo,
+                        object: item,
+                    },
+                ]);
+        });
     }
-    console.log(lookupMountedTag(tags[tags.length]?.object as RcScopeTag));
+
     return (
         <div>
             <Section>

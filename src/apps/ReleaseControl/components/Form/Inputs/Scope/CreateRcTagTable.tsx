@@ -4,7 +4,6 @@ import { CellProps, Column, Table, defaultGroupByFn } from '@equinor/Table';
 import styled from 'styled-components';
 import { RemoveTagCell } from './RemoveTagCell';
 import { RcScopeTag } from '../../../../types/releaseControl';
-import { getScopeTag } from '../../../../../../packages/Workflow/src/Api/Backend/getScopeTag';
 import {
     getMccrStatusByNumber,
     getMccrStatusColorByStatus,
@@ -20,10 +19,7 @@ interface TagTableProps {
 //This is similar to HtCableTable, but this table doesnt have P&ID link and ISO link for optimizations reasons.
 export const CreateRcTagTable = ({ tags, editMode }: TagTableProps): JSX.Element => {
     if (tags.length === 0) return <></>;
-    (async () => {
-        const a = await getScopeTag(tags[tags.length - 1].tagMountedOn ?? '');
-        tags.push(a);
-    })();
+
     return (
         <Table
             data={tags}
