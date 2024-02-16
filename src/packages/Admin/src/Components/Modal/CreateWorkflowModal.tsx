@@ -1,17 +1,25 @@
-import { Button, TextField } from '@equinor/eds-core-react-old';
-import { KeyboardEventHandler, useState } from 'react';
+import { Button } from '@equinor/eds-core-react';
+import { Form, FormikValues } from 'formik';
+import * as Yup from 'yup';
+
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useAdminMutation } from '../../Hooks/useAdminMutation';
 import { useAdminMutations } from '../../Hooks/useAdminMutations';
 import { adminMutationKeys } from '../../Queries/adminMutationKeys';
 import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
+import { TextField, FormContainer } from '../../../../EdsForm';
+
+const validationSchema = Yup.object().shape({
+    name: Yup.string()
+        .max(255, 'The name must be less than 255 characters!')
+        .required('(Required)'),
+});
 
 type CreateWorkflowModalProps = {
     setIsCreating: (isCreating: boolean) => void;
 };
 
 export const CreateWorkflowModal = ({ setIsCreating }: CreateWorkflowModalProps): JSX.Element => {
-    const [name, setName] = useState<string>('');
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
     const { createWorkflowMutation } = useAdminMutations();
@@ -20,63 +28,45 @@ export const CreateWorkflowModal = ({ setIsCreating }: CreateWorkflowModalProps)
 
     const { mutate } = useAdminMutation('', postKey, createWorkflowMutation);
 
-    async function createWorkflow() {
+    const onSubmit = async (values: FormikValues) => {
         mutate({
-            workflow: { id: '', name: name, changeCategory: null, owner: workflowOwner },
+            workflow: { id: '', name: values.name, changeCategory: null, owner: workflowOwner },
         });
         setIsCreating(false);
-    }
-
-    const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
     };
 
-    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            setIsCreating(false);
-        }
-        //Allow shift+enter linebreak
-        if (event.key === 'Enter' && !event.shiftKey && name !== '') {
-            event.preventDefault();
-            createWorkflow();
-        }
+    const onCancel = () => {
+        setIsCreating(false);
     };
 
     return (
-        <div onKeyDown={handleOnKeyPress} tabIndex={0}>
-            <ModalInputContainer>
-                <TextField
-                    variant="default"
-                    id="name"
-                    label="Name"
-                    value={name}
-                    onChange={onNameChange}
-                    multiline
-                    autoFocus={true}
-                    placeholder={'Write a name for the workflow'}
-                />
-            </ModalInputContainer>
-
-            <ModalButtonContainer>
-                <Button
-                    variant="contained"
-                    onClick={async () => {
-                        createWorkflow();
-                    }}
-                    disabled={name === ''}
-                >
-                    Create
-                </Button>
-                <Button
-                    variant="outlined"
-                    onClick={() => {
-                        setIsCreating(false);
-                    }}
-                >
-                    Cancel
-                </Button>
-            </ModalButtonContainer>
-        </div>
+        <FormContainer
+            initialValues={{ name: '' }}
+            validationSchema={validationSchema}
+            validateOnMount={true}
+            onSubmit={onSubmit}
+        >
+            {({ isValid }) => (
+                <Form>
+                    <ModalInputContainer>
+                        <TextField
+                            id="name"
+                            name="name"
+                            label="Name"
+                            multiline
+                            placeholder="Write a name for the workflow"
+                        />
+                    </ModalInputContainer>
+                    <ModalButtonContainer>
+                        <Button type="submit" variant="contained" disabled={!isValid}>
+                            Create
+                        </Button>
+                        <Button variant="outlined" onClick={onCancel}>
+                            Cancel
+                        </Button>
+                    </ModalButtonContainer>
+                </Form>
+            )}
+        </FormContainer>
     );
 };
