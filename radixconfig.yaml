@@ -5,8 +5,12 @@ metadata:
 spec:
     environments:
         - name: dev
-          build:
+            build:
               from: feat/radix
+        - name: dev2
+            build:
+              from: feat/radix
+        - name: prod
     components:
         - name: frontend
           src: '.'
@@ -20,6 +24,22 @@ spec:
           publicPort: http
           environmentConfig:
               - environment: dev
+                resources:
+                    requests:
+                        memory: '1024Mi'
+                        cpu: '800m'
+                    limits:
+                        memory: '4096Mi'
+                        cpu: '800m'
+              - environment: dev2
+                resources:
+                    requests:
+                        memory: '1024Mi'
+                        cpu: '800m'
+                    limits:
+                        memory: '4096Mi'
+                        cpu: '800m'
+              - environment: prod
                 resources:
                     requests:
                         memory: '1024Mi'
