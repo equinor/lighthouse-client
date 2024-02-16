@@ -1,5 +1,4 @@
-import { Icon } from '@equinor/eds-core-react-old';
-import { Autocomplete } from '@equinor/eds-core-react';
+import { Autocomplete, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';

@@ -1,4 +1,3 @@
-import { Button, Icon, Progress } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -26,7 +25,7 @@ import {
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
-import { Autocomplete } from '@equinor/eds-core-react';
+import { Autocomplete, Button, Icon, Progress } from '@equinor/eds-core-react';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom, clearState } = DRCFormAtomApi;
