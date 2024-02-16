@@ -34,6 +34,10 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions(filterOptions)
         .registerSearchOptions([
             {
+                name: 'Id',
+                valueFormatter: (pkg) => `RC${pkg.sequenceNumber}`,
+            },
+            {
                 name: 'Title',
                 valueFormatter: (pkg) => pkg.title,
             },
