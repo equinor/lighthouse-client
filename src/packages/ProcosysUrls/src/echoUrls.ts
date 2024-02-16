@@ -4,11 +4,10 @@ interface EchoUrls {
     getEchoUrl: (tagNumber: string) => string;
 }
 
-const getBaseUrl = isProduction()
-    ? 'https://echo.equinor.com'
-    : 'https://dt-echopedia-web-test.azurewebsites.net';
+const getBaseUrl = () =>
+    isProduction() ? 'https://echo.equinor.com' : 'https://dt-echopedia-web-test.azurewebsites.net';
 
 export const echoUrls: EchoUrls = {
     getEchoUrl: (tagNumber: string) =>
-        `${getBaseUrl}/echo3d?instCode=JCA&plantCode=jca&platformSectionId=Full-Pro&cadViewState=&tagNo=${tagNumber}`,
+        `${getBaseUrl()}/echo3d?instCode=JCA&plantCode=jca&platformSectionId=Full-Pro&cadViewState=&tagNo=${tagNumber}`,
 };
