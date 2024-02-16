@@ -1,5 +1,4 @@
 import { Button, Progress } from '@equinor/eds-core-react-old';
-import { useQueryClient } from 'react-query';
 import { disableEditMode } from '../../../../Atoms/editModeAtom';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import {
