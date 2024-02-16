@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 # 2.28.3
 
--   [ReleaseControl] Fix sequence contains no elements when patching a release control
+-   [ReleaseControl] Fix filterSearch so ID-search works
 
 # 2.28.2
 
