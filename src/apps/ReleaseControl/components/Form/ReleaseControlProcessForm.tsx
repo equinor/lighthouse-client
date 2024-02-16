@@ -1,4 +1,3 @@
-import { Button, Icon, Progress, SingleSelect } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -26,6 +25,7 @@ import {
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
+import { Autocomplete, Button, Icon, Progress } from '@equinor/eds-core-react';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom, clearState } = DRCFormAtomApi;
@@ -79,14 +79,13 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                             Select a workflow to start with or create a complete custom flow.
                         </div>
                         <SelectionRow>
-                            <SingleSelect
-                                items={workflows?.map((x) => x.name) ?? []}
+                            <Autocomplete
+                                options={workflows?.map((x) => x.name) ?? []}
                                 label="Workflow"
                                 placeholder="Select new or predefined workflow"
-                                size={35}
-                                handleSelectedItemChange={(change) => {
+                                onOptionsChange={(change) => {
                                     const id = workflows?.find(
-                                        (x) => x.name === change.selectedItem
+                                        (x) => x.name === change.selectedItems[0]
                                     )?.id;
                                     setValue(id ?? null);
                                 }}

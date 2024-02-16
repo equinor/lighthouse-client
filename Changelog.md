@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.28.1
+
+-   [ReleaseControl] Fix Icon bug so the CreateRCSidesheet doesn't crash
+
+# 2.28.0
+
+-   [ReleaseControl] Update all SingelSelect (old EDS component) in RC to Autocomplete (new EDS component)
+
 # 2.27.5
 
 -   [ReleaseControl] Fix a bug where isProduction returns false in echoUrls
