@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.28.5
+
+-   [ReleaseControl] Fix quickfiler infoship overlapsing advanced search in creatRC
+
 # 2.28.4
 
 -   [ReleaseControl] Fix KPI "% closed" shows NaN
