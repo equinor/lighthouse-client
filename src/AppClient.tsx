@@ -38,7 +38,7 @@ const queryClient = new QueryClient({
             retryDelay: 1000,
         },
         mutations: {
-            retry: 3,
+            retry: false,
             retryDelay: 1000,
         },
     },
