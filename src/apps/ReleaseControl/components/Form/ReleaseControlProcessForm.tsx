@@ -105,7 +105,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
 
 export const SubmitButtonBar = (): JSX.Element => {
     const { useIsValid, useAtomState } = DRCFormAtomApi;
-
+    const [isCreated, setIsCreated] = useState(false);
     const isValid = useIsValid();
 
     const step = useAtomState(({ step }) => step ?? 'scope');
@@ -126,10 +126,11 @@ export const SubmitButtonBar = (): JSX.Element => {
         );
     };
 
-    const { mutate, isLoading } = useMutation(createReleaseControlMutation, {
-        retry: 0,
+    const { mutate, isLoading, error, isError } = useMutation(createReleaseControlMutation, {
+        retry: false,
         onSuccess: (id) => {
             id && redirect(id);
+            setIsCreated(true);
             if (!id) throw 'error';
         },
     });
@@ -143,6 +144,10 @@ export const SubmitButtonBar = (): JSX.Element => {
         });
     };
 
+    if (isError) {
+        console.log(error);
+        return <div>Something went wrong creating new RC. Please try again later</div>;
+    }
     return (
         <ActionBar>
             <NavigationButton>
@@ -157,7 +162,7 @@ export const SubmitButtonBar = (): JSX.Element => {
                 )}
             </NavigationButton>
             <ButtonContainer>
-                {isLoading ? (
+                {isLoading || isCreated ? (
                     <Button variant="ghost_icon" disabled>
                         <Progress.Dots color="primary" />
                     </Button>
