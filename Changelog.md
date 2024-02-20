@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.28.6
+
+-   [ReleaseControl] Fix disable retry on creating an RC.
+
 # 2.28.5
 
--   [ReleaseControl] Fix quickfiler infoship overlapsing advanced search in creatRC
+-   [ReleaseControl] Fix quickfilter infochip overlapping advanced search in the create RC sidesheet
 
 # 2.28.4
 
