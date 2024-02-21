@@ -101,7 +101,7 @@ export const ScopeTab = (): JSX.Element => {
                             </SubSectionText>
                         </SectionWrapper>
                         <SectionHeading>Attachments</SectionHeading>
-                        {requestAccess.canPatch && <HotUpload />}
+                        <HotUpload />
                         <Attachments attachments={attachments} releaseControlId={id} />
                     </InnerSection>
                 </FlexColumn>
