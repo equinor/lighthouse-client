@@ -81,7 +81,7 @@ export const createConfig = (appSettings: AppConfigResult) => {
             });
         }
         Object.entries(appSettings.urls).forEach(([a, b]) => {
-            if (a == 'scopeChange' && true) {
+            if (a == 'scopeChange' && false) {
                 config.configureHttpClient(a, {
                     baseUri: 'https://localhost:50435',
                     defaultScopes: [appSettings.scope[a]],
