@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
 });
 
 type CreateWorkflowModalProps = {
-    setIsCreating: (isCreating: boolean) => void;
+    readonly setIsCreating: (isCreating: boolean) => void;
 };
 
 export const CreateWorkflowModal = ({ setIsCreating }: CreateWorkflowModalProps): JSX.Element => {

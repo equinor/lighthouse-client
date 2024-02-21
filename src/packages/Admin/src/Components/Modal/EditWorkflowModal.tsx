@@ -78,7 +78,7 @@ export const EditWorkflowModal = (): JSX.Element => {
                     </ModalInputContainer>
                     <ModalButtonContainer>
                         <Button type="submit" variant="contained" disabled={!isValid}>
-                            Create
+                            Save
                         </Button>
                         <Button variant="outlined" onClick={onCancel}>
                             Cancel
