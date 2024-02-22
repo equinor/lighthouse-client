@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.28.8
+
+-   [ReleaseControl] Fix voiding wrong RC
+
 # 2.28.7
 
 -   [ReleaseControl] Allow any READ user to upload attachment
