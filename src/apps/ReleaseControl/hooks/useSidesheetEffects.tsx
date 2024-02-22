@@ -72,7 +72,7 @@ export function useSidesheetEffects(
 
     useEffect(() => {
         actions.setMenuItems(makeMenuItems());
-    }, [editMode, canVoid, canUnVoid, canPatch, isVoided]);
+    }, [editMode, canVoid, canUnVoid, canPatch, isVoided, releaseControlId]);
 
     useEffect(() => {
         actions.setTitle(`RC${sequenceNumber} ${title}`);
