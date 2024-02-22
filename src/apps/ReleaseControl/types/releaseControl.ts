@@ -54,6 +54,11 @@ export type Contributor = {
     plant;
 };
 
+export type ContributorTemplate = {
+    oid: string;
+    instructionsToContributor: string;
+};
+
 export type DraggableReleaseControlStep = {
     id: string;
     item: CreateReleaseControlStepModel;
