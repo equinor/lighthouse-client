@@ -26,3 +26,5 @@ jobs:
 
       - name: trufflehog-actions-scan
         uses: edplato/trufflehog-actions-scan@master
+        with:
+          extra_args: --debug
