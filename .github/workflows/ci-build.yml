@@ -23,3 +23,6 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: trufflehog-actions-scan
+        uses: edplato/trufflehog-actions-scan@master
