@@ -28,12 +28,24 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
         callback(items);
     }
 
-    const htCableLoadOptions = (
+    const htCableLoadOptions = async (
         inputValue: string,
         callback: (
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
-    ) => loadOptions('htcabletagno', inputValue, callback);
+    ) => {
+        if (inputValue.trim().length >= 3) return;
+        await loadOptions('htcabletagno', inputValue, callback);
+        return callback([
+            {
+                label: 'Need at least three chars',
+                value: '',
+                type: 'htcabletagno',
+                searchValue: '',
+                object: null,
+            },
+        ]);
+    };
 
     function addHtCable(value: TypedSelectOption) {
         onChange([...(DRCFormAtomApi.readAtomValue().htCables ?? []), value]);

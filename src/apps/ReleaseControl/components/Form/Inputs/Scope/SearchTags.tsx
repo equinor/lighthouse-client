@@ -27,12 +27,24 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         callback(items);
     }
 
-    const tagLoadOptions = (
+    const tagLoadOptions = async (
         inputValue: string,
         callback: (
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
-    ) => loadOptions('famtagno', inputValue, callback);
+    ) => {
+        if (inputValue.trim().length >= 3)
+            return await loadOptions('famtagno', inputValue, callback);
+        return callback([
+            {
+                label: 'Need at least three chars',
+                value: '',
+                type: 'famtagno',
+                searchValue: '',
+                object: null,
+            },
+        ]);
+    };
 
     function addTag(value: TypedSelectOption) {
         onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
