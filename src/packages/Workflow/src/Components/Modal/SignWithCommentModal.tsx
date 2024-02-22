@@ -1,27 +1,35 @@
-import { Button, TextField } from '@equinor/eds-core-react-old';
+import { Button } from '@equinor/eds-core-react';
+import { Form, FormikValues } from 'formik';
+import * as Yup from 'yup';
+
 import {
     ButtonContainer,
     CriteriaSignState,
-    InputContainer,
     OnSignStepAction,
     WorkflowSigningParams,
 } from '@equinor/Workflow';
-import { KeyboardEventHandler, useState } from 'react';
+
 import { UseMutateFunction } from 'react-query';
 import { resetSigningAtom } from '../Atoms/signingAtom';
+import { FormContainer, TextField } from '../../../../EdsForm';
 
 type SignWithCommentModalProps = {
-    action: CriteriaSignState;
-    buttonText: string;
-    stepId: string;
-    criteriaId: string;
-    requestId: string;
-    useWorkflowSigning({
-        requestId,
-        criteriaId,
-        stepId,
-    }: WorkflowSigningParams): UseMutateFunction<void, unknown, OnSignStepAction, unknown>;
+    readonly action: CriteriaSignState;
+    readonly buttonText: string;
+    readonly stepId: string;
+    readonly criteriaId: string;
+    readonly requestId: string;
+    useWorkflowSigning(
+        props: WorkflowSigningParams
+    ): UseMutateFunction<void, unknown, OnSignStepAction, unknown>;
 };
+
+const validationSchema = Yup.object().shape({
+    comment: Yup.string()
+        .max(4000, 'The comment must be less than 4000 characters!')
+        .required('(Required)'),
+});
+
 export const SignWithCommentModal = ({
     action,
     buttonText,
@@ -30,72 +38,51 @@ export const SignWithCommentModal = ({
     requestId,
     useWorkflowSigning,
 }: SignWithCommentModalProps): JSX.Element => {
-    const [comment, setComment] = useState<string>('');
-
     const signMutation = useWorkflowSigning({
         criteriaId: criteriaId,
         requestId: requestId,
         stepId: stepId,
     });
 
-    const onCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setComment(e.target.value);
+    const onSubmit = async (values: FormikValues) => {
+        signMutation({
+            action: action,
+            comment: values.comment,
+        });
+        resetSigningAtom();
     };
 
-    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            resetSigningAtom();
-            setComment('');
-        }
-        //Allow shift+enter linebreak
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            signMutation({
-                action: action,
-                comment: comment,
-            });
-            resetSigningAtom();
-        }
+    const onCancel = () => {
+        resetSigningAtom();
     };
 
     return (
-        <div onKeyDown={handleOnKeyPress} tabIndex={0}>
-            <InputContainer>
-                <TextField
-                    variant="default"
-                    id="comment"
-                    label="Comment"
-                    value={comment}
-                    onChange={onCommentChange}
-                    multiline
-                    autoFocus={true}
-                />
-            </InputContainer>
+        <FormContainer
+            initialValues={{ comment: '' }}
+            validationSchema={validationSchema}
+            validateOnMount={true}
+            onSubmit={onSubmit}
+        >
+            {({ isValid, submitForm }) => (
+                <Form>
+                    <TextField
+                        id="comment"
+                        name="comment"
+                        label="Comment"
+                        multiline
+                        autoFocus={true}
+                    />
 
-            <ButtonContainer>
-                <Button
-                    variant="contained"
-                    onClick={() => {
-                        signMutation({
-                            action: action,
-                            comment: comment,
-                        });
-                        resetSigningAtom();
-                    }}
-                >
-                    {buttonText} with comment
-                </Button>
-                <Button
-                    variant="outlined"
-                    onClick={() => {
-                        resetSigningAtom();
-                        setComment('');
-                    }}
-                >
-                    Close
-                </Button>
-            </ButtonContainer>
-        </div>
+                    <ButtonContainer>
+                        <Button variant="contained" disabled={!isValid} onClick={submitForm}>
+                            {buttonText} with comment
+                        </Button>
+                        <Button variant="outlined" onClick={onCancel}>
+                            Cancel
+                        </Button>
+                    </ButtonContainer>
+                </Form>
+            )}
+        </FormContainer>
     );
 };
