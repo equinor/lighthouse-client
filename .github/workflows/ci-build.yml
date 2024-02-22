@@ -28,3 +28,8 @@ jobs:
         uses: edplato/trufflehog-actions-scan@master
         with:
           args: --debug
+      
+      - name: TruffleHog OSS 
+        uses: trufflesecurity/trufflehog@v3.68.0
+
+
