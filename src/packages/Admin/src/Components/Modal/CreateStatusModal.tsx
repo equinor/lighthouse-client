@@ -45,7 +45,7 @@ export const CreateStatusModal = ({
             validateOnMount={true}
             onSubmit={onSubmit}
         >
-            {({ isValid }) => (
+            {({ isValid, submitForm }) => (
                 <Form>
                     <ModalInputContainer>
                         <TextField
@@ -58,7 +58,7 @@ export const CreateStatusModal = ({
                         />
                     </ModalInputContainer>
                     <ModalButtonContainer>
-                        <Button type="submit" variant="contained" disabled={!isValid}>
+                        <Button variant="contained" disabled={!isValid} onClick={submitForm}>
                             Save
                         </Button>
                         <Button variant="outlined" onClick={onCancel}>

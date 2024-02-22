@@ -62,7 +62,6 @@ export const AddContributor = ({ close, stepId }: AddContributorProps): JSX.Elem
                                 <PCSPersonSearch person={contributor} setPerson={setContributor} />
                             </Section>
                             <Section>
-                                <Title>Contribution</Title>
                                 <TextField
                                     id="contributorTitle"
                                     name="contributorTitle"
@@ -116,6 +115,6 @@ const Section = styled.div`
     display: flex;
     gap: 0.6em;
     flex-direction: column;
-    margin: 0.2rem;
+    margin: 1rem 0.2rem;
     width: 100%;
 `;
