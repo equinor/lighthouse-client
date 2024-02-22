@@ -13,13 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
 
       - name: PNPM setup
         uses: ./.github/actions/pnpm-setup
 
       - name: Build
         run: pnpm build
+
+      - name: trufflehog-actions-scan
+        uses: edplato/trufflehog-actions-scan@master
+        with:
+          args: --debug
+      
+      - name: TruffleHog OSS 
+        uses: trufflesecurity/trufflehog@v3.68.0
+
+

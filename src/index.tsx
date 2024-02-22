@@ -8,6 +8,7 @@ import { GlobalStyle } from './Core/Client/styleProvider';
 EdsIconOld.add({ ...icons });
 EdsIcon.add({ ...icons });
 
+const r = 'HOGAAIUNNWHAHJJWUQYR';
 render(
     <>
         <GlobalStyle />
