@@ -6,6 +6,7 @@ import { Select } from './ScopeSelect';
 import { SearchWrapper, Section } from './search.styles';
 import { RcScopeTag } from '../../../../types/releaseControl';
 import { CreateRcTagTable } from './CreateRcTagTable';
+import { useState } from 'react';
 
 interface SearchTagsProps {
     onChange: (newTags: TypedSelectOption[]) => void;
@@ -15,6 +16,7 @@ interface SearchTagsProps {
 export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => {
     const { searchFAM } = useCompletionSearch();
     const { getSignal, abort } = useCancellationToken();
+    const [timer, setTimer] = useState<NodeJS.Timeout>();
 
     async function loadOptions(
         type: FAMTypes,
@@ -27,12 +29,24 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
         callback(items);
     }
 
-    const tagLoadOptions = (
+    const tagLoadOptions = async (
         inputValue: string,
         callback: (
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
-    ) => loadOptions('famtagno', inputValue, callback);
+    ) => {
+        if (inputValue.trim().length >= 3)
+            return await loadOptions('famtagno', inputValue, callback);
+        return callback([
+            {
+                label: 'Need at least three chars',
+                value: '',
+                type: 'famtagno',
+                searchValue: '',
+                object: null,
+            },
+        ]);
+    };
 
     function addTag(value: TypedSelectOption) {
         onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
@@ -44,7 +58,13 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                 <div>Tag involved in this release control</div>
                 <SearchWrapper>
                     <Select
-                        loadOptions={tagLoadOptions}
+                        loadOptions={(val, cb) => {
+                            if (timer) {
+                                clearTimeout(timer);
+                            }
+                            const newTimer = setTimeout(() => tagLoadOptions(val.trim(), cb), 500);
+                            setTimer(newTimer);
+                        }}
                         onChange={(
                             _: MultiValue<TypedSelectOption>,
                             actionMeta: ActionMeta<TypedSelectOption>
