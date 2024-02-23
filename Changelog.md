@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.29.1
+
+-   [Apps] Fix In-App breadcrumb navigation
+
 # 2.29.0
 
 -   [ReleaseControl] Add minimum 3 chars, debounce and trim in search to tags and ht in create RC sidesheet
