@@ -62,7 +62,7 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                             if (timer) {
                                 clearTimeout(timer);
                             }
-                            const newTimer = setTimeout(() => tagLoadOptions(val, cb), 500);
+                            const newTimer = setTimeout(() => tagLoadOptions(val.trim(), cb), 500);
                             setTimer(newTimer);
                         }}
                         onChange={(

@@ -62,7 +62,10 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
                             if (timer) {
                                 clearTimeout(timer);
                             }
-                            const newTimer = setTimeout(() => htCableLoadOptions(val, cb), 500);
+                            const newTimer = setTimeout(
+                                () => htCableLoadOptions(val.trim(), cb),
+                                500
+                            );
                             setTimer(newTimer);
                         }}
                         onChange={(
