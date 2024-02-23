@@ -6,6 +6,7 @@ import { Select } from './ScopeSelect';
 import { SearchWrapper, Section } from './search.styles';
 import { RcScopeTag } from '../../../../types/releaseControl';
 import { CreateRcTagTable } from './CreateRcTagTable';
+import { useState } from 'react';
 
 interface SearchTagsProps {
     onChange: (newTags: TypedSelectOption[]) => void;
@@ -15,6 +16,7 @@ interface SearchTagsProps {
 export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => {
     const { searchFAM } = useCompletionSearch();
     const { getSignal, abort } = useCancellationToken();
+    const [timer, setTimer] = useState<any>(null);
 
     async function loadOptions(
         type: FAMTypes,
@@ -56,7 +58,13 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                 <div>Tag involved in this release control</div>
                 <SearchWrapper>
                     <Select
-                        loadOptions={tagLoadOptions}
+                        loadOptions={(val, cb) => {
+                            if (timer) {
+                                clearTimeout(timer);
+                            }
+                            const newTimer = setTimeout(() => tagLoadOptions(val, cb), 500);
+                            setTimer(newTimer);
+                        }}
                         onChange={(
                             _: MultiValue<TypedSelectOption>,
                             actionMeta: ActionMeta<TypedSelectOption>
