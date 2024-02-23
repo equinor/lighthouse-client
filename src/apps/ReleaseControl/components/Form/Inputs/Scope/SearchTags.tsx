@@ -16,7 +16,7 @@ interface SearchTagsProps {
 export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => {
     const { searchFAM } = useCompletionSearch();
     const { getSignal, abort } = useCancellationToken();
-    const [timer, setTimer] = useState<any>(null);
+    const [timer, setTimer] = useState<NodeJS.Timeout>();
 
     async function loadOptions(
         type: FAMTypes,
