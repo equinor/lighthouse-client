@@ -6,6 +6,7 @@ import { Select } from './ScopeSelect';
 import { SearchWrapper, Section } from './search.styles';
 import { RcScopeHtTag } from '../../../../types/releaseControl';
 import { CreateRcHtCableTable } from './CreateRcHtCableTable';
+import { useState } from 'react';
 
 interface SearchHtCablesProps {
     onChange: (newHtCables: TypedSelectOption[]) => void;
@@ -14,8 +15,8 @@ interface SearchHtCablesProps {
 
 export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX.Element => {
     const { getSignal, abort } = useCancellationToken();
-
     const { searchFAM } = useCompletionSearch();
+    const [timer, setTimer] = useState<NodeJS.Timeout>();
 
     async function loadOptions(
         type: FAMTypes,
@@ -28,12 +29,24 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
         callback(items);
     }
 
-    const htCableLoadOptions = (
+    const htCableLoadOptions = async (
         inputValue: string,
         callback: (
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
-    ) => loadOptions('htcabletagno', inputValue, callback);
+    ) => {
+        if (inputValue.trim().length >= 3)
+            return await loadOptions('htcabletagno', inputValue, callback);
+        return callback([
+            {
+                label: 'Need at least three chars',
+                value: '',
+                type: 'htcabletagno',
+                searchValue: '',
+                object: null,
+            },
+        ]);
+    };
 
     function addHtCable(value: TypedSelectOption) {
         onChange([...(DRCFormAtomApi.readAtomValue().htCables ?? []), value]);
@@ -45,7 +58,16 @@ export const SearchHtCables = ({ onChange, htCables }: SearchHtCablesProps): JSX
                 <div>Related HT cables</div>
                 <SearchWrapper>
                     <Select
-                        loadOptions={htCableLoadOptions}
+                        loadOptions={(val, cb) => {
+                            if (timer) {
+                                clearTimeout(timer);
+                            }
+                            const newTimer = setTimeout(
+                                () => htCableLoadOptions(val.trim(), cb),
+                                500
+                            );
+                            setTimer(newTimer);
+                        }}
                         onChange={(
                             _: MultiValue<TypedSelectOption>,
                             actionMeta: ActionMeta<TypedSelectOption>
