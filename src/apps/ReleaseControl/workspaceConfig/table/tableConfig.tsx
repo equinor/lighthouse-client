@@ -58,7 +58,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             aggregate: 'count',
             width: 100,
         },
-        // { Adjust witdh when reimplementing this columns
+        // { Adjust width when reimplementing this column
         //     id: 'rcSystems',
         //     accessor: 'systems',
         //     Header: 'Systems',
@@ -76,7 +76,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         //         );
         //     },
         // },
-        // { Adjust witdh when reimplementing this columns
+        // { Adjust width when reimplementing this column
         //     id: 'rcSwitchboards',
         //     accessor: 'switchboards',
         //     Header: 'Switchboards',
@@ -91,7 +91,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         //         );
         //     },
         // },
-        // { Adjust witdh when reimplementing this columns
+        // { Adjust width when reimplementing this column
         //     id: 'rcCircuits',
         //     accessor: 'circuits',
         //     Header: 'Circuits',
@@ -128,7 +128,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
                 return <Monospace>{cell.row.values.heattraceTags}</Monospace>;
             },
         },
-        // { Adjust witdh when reimplementing this columns
+        // { Adjust width when reimplementing this column
         //     id: 'rcAreas',
         //     accessor: 'areas',
         //     Header: 'Areas',
@@ -143,7 +143,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         //         );
         //     },
         // },
-        // { Adjust witdh when reimplementing this columns
+        // { Adjust width when reimplementing this column
         //     id: 'rcCommPks',
         //     accessor: 'commPkNos',
         //     Header: 'CommPks',
