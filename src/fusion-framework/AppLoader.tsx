@@ -88,7 +88,7 @@ export const AppLoader = (props: { readonly appKey: string }) => {
             })
           );
         } catch (e) {
-          console.error("eee", e)
+          console.error(e)
         }
         setLoading(false);
       });
