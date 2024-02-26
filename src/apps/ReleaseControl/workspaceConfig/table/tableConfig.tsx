@@ -26,7 +26,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             accessor: (rc) => rc.title,
             Aggregated: () => null,
             aggregate: 'count',
-            width: 300,
+            width: 550,
         },
         {
             id: 'workflowSteps',
@@ -45,7 +45,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             accessor: (rc) => rc.currentWorkflowStep,
             Aggregated: () => null,
             aggregate: 'count',
-            width: 200,
+            width: 300,
             Cell: (cell) => {
                 return <>{cell.row.values.currentStep?.name}</>;
             },
