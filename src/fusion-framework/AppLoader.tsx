@@ -90,6 +90,7 @@ export const AppLoader = (props: { readonly appKey: string }) => {
         } catch (e) {
           console.error(e)
         }
+
         setLoading(false);
       });
       URL.revokeObjectURL(url);
