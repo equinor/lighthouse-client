@@ -98,7 +98,7 @@ export const AppLoader = (props: { readonly appKey: string }) => {
 
     /** teardown application when hook unmounts */
     return () => subscription.unsubscribe();
-  }, [fusion, currentApp, ref, isLoading]);
+  }, [fusion, currentApp, ref, isLoading, config, bundle, manifest]);
 
   if (error) {
     if (error.cause instanceof AppManifestError) {
