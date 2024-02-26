@@ -56,64 +56,56 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             accessor: (rc) => `${rc.timeOnLastStep} days`,
             Aggregated: () => null,
             aggregate: 'count',
-            width: 200,
-        },
-        {
-            id: 'status',
-            Header: 'Status',
-            accessor: (rc) => rc.workflowStatus,
-            Aggregated: () => null,
-            aggregate: 'count',
             width: 100,
         },
-        {
-            id: 'rcSystems',
-            accessor: 'systems',
-            Header: 'Systems',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(
-                            cell.row.values.rcSystems ?? '',
-                            8
-                        )}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcSwitchboards',
-            accessor: 'switchboards',
-            Header: 'Switchboards',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSwitchboards, 4)}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcCircuits',
-            accessor: 'circuits',
-            Header: 'Circuits',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCircuits, 3)}
-                    </Monospace>
-                );
-            },
-        },
+        // { Adjust witdh when reimplementing this columns
+        //     id: 'rcSystems',
+        //     accessor: 'systems',
+        //     Header: 'Systems',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(
+        //                     cell.row.values.rcSystems ?? '',
+        //                     8
+        //                 )}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
+        // { Adjust witdh when reimplementing this columns
+        //     id: 'rcSwitchboards',
+        //     accessor: 'switchboards',
+        //     Header: 'Switchboards',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSwitchboards, 4)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
+        // { Adjust witdh when reimplementing this columns
+        //     id: 'rcCircuits',
+        //     accessor: 'circuits',
+        //     Header: 'Circuits',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCircuits, 3)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
         {
             id: 'tags',
             Header: 'Tags',
@@ -136,36 +128,36 @@ export const tableConfig: TableOptions<ReleaseControl> = {
                 return <Monospace>{cell.row.values.heattraceTags}</Monospace>;
             },
         },
-        {
-            id: 'rcAreas',
-            accessor: 'areas',
-            Header: 'Areas',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcCommPks',
-            accessor: 'commPkNos',
-            Header: 'CommPks',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCommPks, 3)}
-                    </Monospace>
-                );
-            },
-        },
+        // { Adjust witdh when reimplementing this columns
+        //     id: 'rcAreas',
+        //     accessor: 'areas',
+        //     Header: 'Areas',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
+        // { Adjust witdh when reimplementing this columns
+        //     id: 'rcCommPks',
+        //     accessor: 'commPkNos',
+        //     Header: 'CommPks',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCommPks, 3)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
         {
             id: 'phase',
             Header: 'Phase',
