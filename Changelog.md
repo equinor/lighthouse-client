@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 # 2.30.1
 
--   [ReleaseControl] Adjust some columnwidths in table view
+-   [ReleaseControl] Adjust some column widths in table view
 
 # 2.30.0
 
