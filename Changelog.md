@@ -4,9 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
-# 2.29.1
+# 2.30.2
 
 -   [Apps] Fix In-App breadcrumb navigation
+
+# 2.30.1
+
+-   [ReleaseControl] Adjust some column widths in table view
+
+# 2.30.0
+
+-   [ReleaseControl] Remove (comment out) columns and filters that are missing data
 
 # 2.29.0
 
