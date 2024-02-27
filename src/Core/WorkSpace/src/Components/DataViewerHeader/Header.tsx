@@ -79,6 +79,9 @@ const makeRedirectUrl = (shortName: string) => {
     if (shortName === 'mc') {
         return window.location.href.split(shortName)[0].concat(`mechanical-completion`).toString();
     }
+    if (shortName === 'loop') {
+        return window.location.href.split(shortName)[0].concat(`loop-new`).toString();
+    }
     return '';
 };
 
