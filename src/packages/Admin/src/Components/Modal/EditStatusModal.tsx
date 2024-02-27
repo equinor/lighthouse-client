@@ -1,35 +1,41 @@
-import { Button, TextField } from '@equinor/eds-core-react-old';
+import { Button } from '@equinor/eds-core-react';
+import { Form, FormikValues } from 'formik';
+import { object, string } from 'yup';
+
 import { Workflow, WorkflowStepTemplate } from '@equinor/Workflow';
-import { KeyboardEventHandler, useState } from 'react';
 import { updateContext } from '../../Atoms/updateContext';
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useAdminMutation } from '../../Hooks/useAdminMutation';
 import { useAdminMutations } from '../../Hooks/useAdminMutations';
 import { adminMutationKeys } from '../../Queries/adminMutationKeys';
 import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
+import { FormContainer, TextField } from '../../../../EdsForm';
 
 type EditWorkflowStatusModalProps = {
-    setIsEditing: (isCreating: boolean) => void;
+    readonly setIsEditing: (isCreating: boolean) => void;
 };
+
+const validationSchema = object().shape({
+    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
+});
 
 export const EditStatusModal = ({ setIsEditing }: EditWorkflowStatusModalProps): JSX.Element => {
     const status = useAdminContext((s) => s.status);
-    const [name, setName] = useState<string>(status.name);
+
     const { patchKey } = adminMutationKeys(status.id);
 
     const { editWorkflowStatusMutation } = useAdminMutations();
 
     const { mutate } = useAdminMutation(status.id, patchKey, editWorkflowStatusMutation);
 
-    async function editStatus() {
-        mutate({ id: status.id, name: name });
-        status.name = name;
+    const onSubmit = async (values: FormikValues) => {
+        mutate({ id: status.id, name: values.name });
         updateContext({
             app: '',
             workflowOwner: '',
             workflow: {} as Workflow,
             workflowStep: {} as WorkflowStepTemplate,
-            status: status,
+            status: { ...status, name: values.name },
             isEditingWorkflow: false,
             isEditingStep: false,
             deletingWorkflow: false,
@@ -38,58 +44,41 @@ export const EditStatusModal = ({ setIsEditing }: EditWorkflowStatusModalProps):
         });
 
         setIsEditing(false);
-    }
-
-    const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
     };
 
-    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            setIsEditing(false);
-        }
-        //Allow shift+enter linebreak
-        if (event.key === 'Enter' && !event.shiftKey && name !== '') {
-            event.preventDefault();
-            editStatus();
-        }
+    const onCancel = () => {
+        setIsEditing(false);
     };
 
     return (
-        <div onKeyDown={handleOnKeyPress} tabIndex={0}>
-            <ModalInputContainer>
-                <TextField
-                    variant="default"
-                    id="name"
-                    label="Name"
-                    value={name}
-                    onChange={onNameChange}
-                    multiline
-                    autoFocus={true}
-                    placeholder={'Write a name for the status'}
-                />
-            </ModalInputContainer>
-
-            <ModalButtonContainer>
-                <Button
-                    variant="contained"
-                    onClick={async () => {
-                        editStatus();
-                    }}
-                    disabled={name === ''}
-                >
-                    Save
-                </Button>
-                <Button
-                    variant="outlined"
-                    onClick={() => {
-                        setIsEditing(false);
-                    }}
-                >
-                    Cancel
-                </Button>
-            </ModalButtonContainer>
-        </div>
+        <FormContainer
+            initialValues={status}
+            validationSchema={validationSchema}
+            validateOnMount={true}
+            onSubmit={onSubmit}
+        >
+            {({ isValid, submitForm }) => (
+                <Form>
+                    <ModalInputContainer>
+                        <TextField
+                            id="name"
+                            name="name"
+                            label="Name"
+                            multiline
+                            autoFocus={true}
+                            placeholder="Write a name for the status"
+                        />
+                    </ModalInputContainer>
+                    <ModalButtonContainer>
+                        <Button variant="contained" disabled={!isValid} onClick={submitForm}>
+                            Save
+                        </Button>
+                        <Button variant="outlined" onClick={onCancel}>
+                            Cancel
+                        </Button>
+                    </ModalButtonContainer>
+                </Form>
+            )}
+        </FormContainer>
     );
 };
