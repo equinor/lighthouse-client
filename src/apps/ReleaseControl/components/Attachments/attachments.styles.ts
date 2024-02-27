@@ -57,6 +57,7 @@ export const ViewWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: 600px;
 `;
 
 export const Link = styled.a`
