@@ -48,7 +48,8 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
             if (item === null) {
                 return;
             }
-            item.tagType === 'INS' &&
+            console.log(item);
+            item.tagType !== 'INS' &&
                 onChange([
                     ...(DRCFormAtomApi.readAtomValue().tags ?? []),
                     {

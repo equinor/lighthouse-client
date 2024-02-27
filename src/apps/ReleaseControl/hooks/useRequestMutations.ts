@@ -25,6 +25,7 @@ export function useRequestMutations(): RequestMutations {
     };
 
     const createReleaseControlMutation = async ({ draft, model }: CreateReleaseControlParams) => {
+        console.log('creating rc');
         const validatedModel = model as DRCFormModel;
         const rcID = await postReleaseControl(
             {

@@ -3,7 +3,7 @@ import { RcScopeTag } from '../../../../../apps/ReleaseControl/types/releaseCont
 
 export async function getScopeTag(getScopeTag: string, signal?: AbortSignal): Promise<RcScopeTag> {
     const { scopeChange } = httpClient();
-    const res = await scopeChange.fetch(`api/releasecontrol/${getScopeTag}/scopeTag`, { signal });
+    const res = await scopeChange.fetch(`api/releasecontrol/${getScopeTag}/parentTag`, { signal });
     if (!res.ok) {
         throw new Error(`Failed to get scopetag ${getScopeTag}`, { cause: res });
     }
