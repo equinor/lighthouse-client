@@ -26,7 +26,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             accessor: (rc) => rc.title,
             Aggregated: () => null,
             aggregate: 'count',
-            width: 300,
+            width: 550,
         },
         {
             id: 'workflowSteps',
@@ -45,7 +45,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             accessor: (rc) => rc.currentWorkflowStep,
             Aggregated: () => null,
             aggregate: 'count',
-            width: 200,
+            width: 300,
             Cell: (cell) => {
                 return <>{cell.row.values.currentStep?.name}</>;
             },
@@ -56,64 +56,56 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             accessor: (rc) => `${rc.timeOnLastStep} days`,
             Aggregated: () => null,
             aggregate: 'count',
-            width: 200,
-        },
-        {
-            id: 'status',
-            Header: 'Status',
-            accessor: (rc) => rc.workflowStatus,
-            Aggregated: () => null,
-            aggregate: 'count',
             width: 100,
         },
-        {
-            id: 'rcSystems',
-            accessor: 'systems',
-            Header: 'Systems',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(
-                            cell.row.values.rcSystems ?? '',
-                            8
-                        )}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcSwitchboards',
-            accessor: 'switchboards',
-            Header: 'Switchboards',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSwitchboards, 4)}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcCircuits',
-            accessor: 'circuits',
-            Header: 'Circuits',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCircuits, 3)}
-                    </Monospace>
-                );
-            },
-        },
+        // { Adjust width when reimplementing this column
+        //     id: 'rcSystems',
+        //     accessor: 'systems',
+        //     Header: 'Systems',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(
+        //                     cell.row.values.rcSystems ?? '',
+        //                     8
+        //                 )}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
+        // { Adjust width when reimplementing this column
+        //     id: 'rcSwitchboards',
+        //     accessor: 'switchboards',
+        //     Header: 'Switchboards',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcSwitchboards, 4)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
+        // { Adjust width when reimplementing this column
+        //     id: 'rcCircuits',
+        //     accessor: 'circuits',
+        //     Header: 'Circuits',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCircuits, 3)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
         {
             id: 'tags',
             Header: 'Tags',
@@ -136,36 +128,36 @@ export const tableConfig: TableOptions<ReleaseControl> = {
                 return <Monospace>{cell.row.values.heattraceTags}</Monospace>;
             },
         },
-        {
-            id: 'rcAreas',
-            accessor: 'areas',
-            Header: 'Areas',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
-                    </Monospace>
-                );
-            },
-        },
-        {
-            id: 'rcCommPks',
-            accessor: 'commPkNos',
-            Header: 'CommPks',
-            Aggregated: () => null,
-            width: 300,
-            aggregate: 'count',
-            Cell: (cell) => {
-                return (
-                    <Monospace>
-                        {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCommPks, 3)}
-                    </Monospace>
-                );
-            },
-        },
+        // { Adjust width when reimplementing this column
+        //     id: 'rcAreas',
+        //     accessor: 'areas',
+        //     Header: 'Areas',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcAreas ?? '', 5)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
+        // { Adjust width when reimplementing this column
+        //     id: 'rcCommPks',
+        //     accessor: 'commPkNos',
+        //     Header: 'CommPks',
+        //     Aggregated: () => null,
+        //     width: 300,
+        //     aggregate: 'count',
+        //     Cell: (cell) => {
+        //         return (
+        //             <Monospace>
+        //                 {generateCommaSeperatedStringArrayColumn(cell.row.values.rcCommPks, 3)}
+        //             </Monospace>
+        //         );
+        //     },
+        // },
         {
             id: 'phase',
             Header: 'Phase',
