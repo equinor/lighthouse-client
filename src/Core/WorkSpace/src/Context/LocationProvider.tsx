@@ -56,13 +56,15 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
      * Add default tab to url if id is undefined
      */
     useEffect(() => {
+        if (defaultTab === activeTab) return;
         if (!id) {
             navigate(`${location.pathname}/${defaultTab}${location.hash}` + location.search, {
                 replace: true,
             });
+            handleSetActiveTab(defaultTab);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [id, navigate, location]);
 
     useEffect(() => {
         const ev = new EventHub();

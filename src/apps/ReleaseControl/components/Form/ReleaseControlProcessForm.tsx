@@ -1,4 +1,3 @@
-import { Button, Icon, Progress, SingleSelect } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -26,6 +25,7 @@ import {
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
+import { Autocomplete, Button, Icon, Progress } from '@equinor/eds-core-react';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom, clearState } = DRCFormAtomApi;
@@ -79,14 +79,13 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                             Select a workflow to start with or create a complete custom flow.
                         </div>
                         <SelectionRow>
-                            <SingleSelect
-                                items={workflows?.map((x) => x.name) ?? []}
+                            <Autocomplete
+                                options={workflows?.map((x) => x.name) ?? []}
                                 label="Workflow"
                                 placeholder="Select new or predefined workflow"
-                                size={35}
-                                handleSelectedItemChange={(change) => {
+                                onOptionsChange={(change) => {
                                     const id = workflows?.find(
-                                        (x) => x.name === change.selectedItem
+                                        (x) => x.name === change.selectedItems[0]
                                     )?.id;
                                     setValue(id ?? null);
                                 }}
@@ -106,7 +105,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
 
 export const SubmitButtonBar = (): JSX.Element => {
     const { useIsValid, useAtomState } = DRCFormAtomApi;
-
+    const [isCreated, setIsCreated] = useState(false);
     const isValid = useIsValid();
 
     const step = useAtomState(({ step }) => step ?? 'scope');
@@ -127,10 +126,11 @@ export const SubmitButtonBar = (): JSX.Element => {
         );
     };
 
-    const { mutate, isLoading } = useMutation(createReleaseControlMutation, {
-        retry: 0,
+    const { mutate, isLoading, error, isError } = useMutation(createReleaseControlMutation, {
+        retry: false,
         onSuccess: (id) => {
             id && redirect(id);
+            setIsCreated(true);
             if (!id) throw 'error';
         },
     });
@@ -144,6 +144,10 @@ export const SubmitButtonBar = (): JSX.Element => {
         });
     };
 
+    if (isError) {
+        console.log(error);
+        return <div>Something went wrong creating new RC. Please try again later</div>;
+    }
     return (
         <ActionBar>
             <NavigationButton>
@@ -158,7 +162,7 @@ export const SubmitButtonBar = (): JSX.Element => {
                 )}
             </NavigationButton>
             <ButtonContainer>
-                {isLoading ? (
+                {isLoading || isCreated ? (
                     <Button variant="ghost_icon" disabled>
                         <Progress.Dots color="primary" />
                     </Button>

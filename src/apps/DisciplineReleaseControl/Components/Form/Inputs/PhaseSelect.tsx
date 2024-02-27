@@ -1,7 +1,7 @@
-import { SingleSelect } from '@equinor/eds-core-react-old';
 import { useQuery } from 'react-query';
 import { DRCFormAtomApi } from '../../../../ReleaseControl/Atoms/formAtomApi';
 import { releaseControlQueries } from '../../../../ReleaseControl/queries/queries';
+import { Autocomplete } from '@equinor/eds-core-react';
 
 export const PhaseSelect = (): JSX.Element => {
     const { phaseQuery } = releaseControlQueries;
@@ -12,16 +12,16 @@ export const PhaseSelect = (): JSX.Element => {
     const phase = useAtomState(({ phase }) => phase);
 
     return (
-        <SingleSelect
-            items={phases ?? []}
-            label={'Phase'}
+        <Autocomplete
+            options={phases ?? []}
+            label="Phase"
             meta="(Required)"
             placeholder="Select phase"
-            value={phase}
+            selectedOptions={[phase]}
             disabled={false}
-            handleSelectedItemChange={(e) =>
+            onOptionsChange={(change) =>
                 updateAtom({
-                    phase: e.selectedItem ?? undefined,
+                    phase: change.selectedItems[0] ?? undefined,
                 })
             }
         />

@@ -4,9 +4,78 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.30.2
+
+-   [Apps] Fix In-App breadcrumb navigation
+
+# 2.30.1
+
+-   [ReleaseControl] Adjust some column widths in table view
+
+# 2.30.0
+
+-   [ReleaseControl] Remove (comment out) columns and filters that are missing data
+
+# 2.29.0
+
+-   [ReleaseControl] Add minimum 3 chars, debounce and trim in search to tags and ht in create RC sidesheet
+
+# 2.28.8
+
+-   [ReleaseControl] Fix voiding wrong RC
+
+# 2.28.7
+
+-   [ReleaseControl] Allow any READ user to upload attachment
+
+# 2.28.6
+
+-   [ReleaseControl] Fix disable retry on creating an RC.
+
+# 2.28.5
+
+-   [ReleaseControl] Fix quickfilter infochip overlapping advanced search in the create RC sidesheet
+
+# 2.28.4
+
+-   [ReleaseControl] Fix KPI "% closed" shows NaN
+
+# 2.28.3
+
+-   [ReleaseControl] Fix filterSearch so ID-search works
+
+# 2.28.2
+
+-   [ReleaseControl] Fix sequence contains no elements when patching a release control
+
+# 2.28.1
+
+-   [ReleaseControl] Fix Icon bug so the CreateRCSidesheet doesn't crash
+
+# 2.28.0
+
+-   [ReleaseControl] Update all SingelSelect (old EDS component) in RC to Autocomplete (new EDS component)
+
+# 2.27.5
+
+-   [ReleaseControl] Fix a bug where isProduction returns false in echoUrls
+
+# 2.27.4
+
+-   [ReleaseControl] Change order of description while creating RC.
+
+# 2.27.3
+
+-   [ReleaseControl] Fix 404 network calls to elenetwork endpoint
+
+# 2.27.2
+
+-   [ReleaseControl] Fix incorrect tag status if value is null
+
 # 2.27.1
 
 -   [ReleaseControl] Add icon indicating that there are one or more contributors on a step when editing
+
 # 2.27.0
 
 -   [ReleaseControl] Added more information to the description box while creating a RC.
