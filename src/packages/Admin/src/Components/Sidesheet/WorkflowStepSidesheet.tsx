@@ -1,3 +1,6 @@
+import { Form, FormikValues } from 'formik';
+import { object, string } from 'yup';
+
 import { SidesheetApi } from '@equinor/sidesheet';
 import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 import { FlexColumn, Wrapper } from './sidesheet.styles';
@@ -6,17 +9,19 @@ import { useEffect } from 'react';
 import { updateContext } from '../../Atoms/updateContext';
 import { useWorkflowStepSidesheetEffects } from '../../Hooks/useWorkflowStepSidesheetEffects';
 import { WorkflowStepAdminAtomApi } from '../../Atoms/workflowStepAdminAtomApi';
-import { StepDescriptionInput } from '../Form/Inputs/StepDescriptionInput';
-import { StepCompletedStatusSelect } from '../Form/Inputs/StepCompletedStatusSelect';
 import { useGetWorkflowStep } from '../../Hooks/useGetWorkflowStep';
 import { useAdminMutationWatcher } from '../../Hooks/useAdminMutationWatcher';
-import { WorkflowStepCreateButtonBar } from './WorkflowStepCreateButtonBar';
-import { WorkflowStepSaveButtonBar } from './WorkflowStepSaveButtonBar';
-import { StepRejectedStatusSelect } from '../Form/Inputs/StepRejectedStatusSelect';
+import { WorkflowStepActions } from './WorkflowStepActions';
+import { Autocomplete, FormContainer, TextField } from '../../../../EdsForm';
+import {
+    useCreateWorkflowStep,
+    useUpdateWorkflowStep,
+} from '../../Hooks/useWorkflowStepFormActions';
+import { useWorkflowStepStatuses } from '../../Hooks/useWorkflowStepStatuses';
 
 interface WorkflowSidesheetProps {
-    item: WorkflowStepTemplate;
-    actions: SidesheetApi;
+    readonly item: WorkflowStepTemplate;
+    readonly actions: SidesheetApi;
 }
 
 export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps): JSX.Element {
@@ -27,7 +32,11 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
     useWorkflowStepSidesheetEffects(actions, item);
     useAdminMutationWatcher(item.id);
 
+    const { saveWorkflowStep, isLoading: isLoadingSave } = useUpdateWorkflowStep();
+    const { createWorkflowStep, isLoading: isLoadingCreate } = useCreateWorkflowStep();
+
     const { clearState, updateAtom } = WorkflowStepAdminAtomApi;
+
     useEffect(() => {
         clearState();
         updateContext({
@@ -50,26 +59,65 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
         });
     }, [item?.id, item?.name]);
 
-    const { useAtomState } = WorkflowStepAdminAtomApi;
-    const description = useAtomState((s) => s.description);
-    const workflowStatus = useAtomState(({ completedStatusName }) => completedStatusName);
+    const onSubmit = async (values: FormikValues) => {
+        updateAtom({ ...values });
+
+        if (!item.id) {
+            createWorkflowStep();
+            return;
+        }
+
+        saveWorkflowStep();
+    };
+
+    const onClose = async () => {
+        actions.closeSidesheet();
+    };
+
+    const workflowStatuses = useWorkflowStepStatuses();
+
+    const isLoading = isLoadingSave || isLoadingCreate;
+
+    const validationSchema = object().shape({
+        description: string()
+            .max(4000, 'The name must be less than 4000 characters!')
+            .required('(Required)'),
+        completedStatusName: string()
+            .oneOf(workflowStatuses, 'Select one of the options in the dropdown')
+            .required('(Required)'),
+    });
 
     return (
         <Wrapper>
-            <div>
-                <FlexColumn>
-                    General info
-                    <StepDescriptionInput description={description ?? ''} />
-                    When signed, change workflow status to:
-                    <StepCompletedStatusSelect workflowStatus={workflowStatus ?? ''} />
-                    {app !== 'releasecontrol' && <StepRejectedStatusSelect />}
-                </FlexColumn>
-            </div>
-            {item.id === '' ? (
-                <WorkflowStepCreateButtonBar actions={actions} />
-            ) : (
-                <WorkflowStepSaveButtonBar actions={actions} />
-            )}
+            <FormContainer
+                initialValues={item}
+                validationSchema={validationSchema}
+                validateOnMount={true}
+                onSubmit={onSubmit}
+            >
+                <Form>
+                    <FlexColumn>
+                        <span>General info</span>
+                        <TextField
+                            id="description"
+                            name="description"
+                            placeholder="Description"
+                            label="Write a description of the step if relevant. Will be shown to the user"
+                            multiline
+                        />
+
+                        <span>When signed, change workflow status to:</span>
+                        <Autocomplete
+                            name="completedStatusName"
+                            options={workflowStatuses}
+                            label="Workflow status when step is signed"
+                            placeholder="Select workflow status"
+                        />
+                    </FlexColumn>
+
+                    <WorkflowStepActions isLoading={isLoading} onClose={onClose} />
+                </Form>
+            </FormContainer>
         </Wrapper>
     );
 }

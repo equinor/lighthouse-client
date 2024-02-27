@@ -1,19 +1,24 @@
-import { Button, TextField } from '@equinor/eds-core-react-old';
-import { KeyboardEventHandler, useState } from 'react';
+import { Button } from '@equinor/eds-core-react';
+import { Form, FormikValues } from 'formik';
+import { object, string } from 'yup';
+
 import { openWorkflowStepSidesheet } from '../Workspace/WorkflowSteps';
 import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
+import { TextField, FormContainer } from '../../../../EdsForm';
+
+const validationSchema = object().shape({
+    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
+});
 
 type CreateWorkflowStepModalProps = {
-    setIsCreating: (isCreating: boolean) => void;
+    readonly setIsCreating: (isCreating: boolean) => void;
 };
 
 export const CreateStepModal = ({ setIsCreating }: CreateWorkflowStepModalProps): JSX.Element => {
-    const [name, setName] = useState<string>('');
-
-    async function createStep() {
+    const onSubmit = async (values: FormikValues) => {
         openWorkflowStepSidesheet({
             id: '',
-            name: name,
+            name: values.name,
             allowContributors: true,
             criterias: [],
             criteriaTemplates: [],
@@ -21,58 +26,41 @@ export const CreateStepModal = ({ setIsCreating }: CreateWorkflowStepModalProps)
             workflowStepCriteriaTemplates: [],
         });
         setIsCreating(false);
-    }
-
-    const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
     };
 
-    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            setIsCreating(false);
-        }
-        //Allow shift+enter linebreak
-        if (event.key === 'Enter' && !event.shiftKey && name !== '') {
-            event.preventDefault();
-            createStep();
-        }
+    const onCancel = () => {
+        setIsCreating(false);
     };
 
     return (
-        <div onKeyDown={handleOnKeyPress} tabIndex={0}>
-            <ModalInputContainer>
-                <TextField
-                    variant="default"
-                    id="name"
-                    label="Name"
-                    value={name}
-                    onChange={onNameChange}
-                    multiline
-                    autoFocus={true}
-                    placeholder={'Write a name for the step'}
-                />
-            </ModalInputContainer>
-
-            <ModalButtonContainer>
-                <Button
-                    variant="contained"
-                    onClick={async () => {
-                        createStep();
-                    }}
-                    disabled={name === ''}
-                >
-                    Continue
-                </Button>
-                <Button
-                    variant="outlined"
-                    onClick={() => {
-                        setIsCreating(false);
-                    }}
-                >
-                    Cancel
-                </Button>
-            </ModalButtonContainer>
-        </div>
+        <FormContainer
+            initialValues={{ name: '' }}
+            validationSchema={validationSchema}
+            validateOnMount={true}
+            onSubmit={onSubmit}
+        >
+            {({ isValid }) => (
+                <Form>
+                    <ModalInputContainer>
+                        <TextField
+                            id="name"
+                            name="name"
+                            label="Name"
+                            multiline
+                            autoFocus={true}
+                            placeholder="Write a name for the step"
+                        />
+                    </ModalInputContainer>
+                    <ModalButtonContainer>
+                        <Button type="submit" variant="contained" disabled={!isValid}>
+                            Create
+                        </Button>
+                        <Button variant="outlined" onClick={onCancel}>
+                            Cancel
+                        </Button>
+                    </ModalButtonContainer>
+                </Form>
+            )}
+        </FormContainer>
     );
 };
