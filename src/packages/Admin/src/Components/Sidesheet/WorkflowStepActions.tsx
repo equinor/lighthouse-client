@@ -1,4 +1,4 @@
-import { Button, Progress } from '@equinor/eds-core-react-old';
+import { Button, Progress } from '@equinor/eds-core-react';
 import { ActionBar, ButtonContainer } from './sidesheet.styles';
 import { useFormikContext } from 'formik';
 
