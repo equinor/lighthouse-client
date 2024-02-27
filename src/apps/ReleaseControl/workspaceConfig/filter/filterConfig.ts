@@ -22,6 +22,14 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         },
     },
     {
+        name: 'Contains Person',
+        valueFormatter: ({ workflowSteps }) => {
+            return workflowSteps
+                .map((x) => x.criterias.map((y) => y.valueDescription).toString())
+                .filter((v, i, a) => a.indexOf(v) === i);
+        },
+    },
+    {
         name: 'Next to Sign',
         valueFormatter: (s) => getNextToSign(s),
     },
