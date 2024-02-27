@@ -25,7 +25,8 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
         name: 'Contains Person',
         valueFormatter: ({ workflowSteps }) => {
             return workflowSteps
-                .map((x) => x.criterias.map((y) => y.valueDescription).toString())
+                .map((x) => x.criterias.map((y) => y.valueDescription))
+                .flat()
                 .filter((v, i, a) => a.indexOf(v) === i);
         },
     },
