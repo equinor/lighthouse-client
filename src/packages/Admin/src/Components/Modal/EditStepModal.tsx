@@ -1,6 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
 import { Form, FormikValues } from 'formik';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
 
 import { useMutation } from 'react-query';
@@ -10,10 +10,8 @@ import { useAdminMutations } from '../../Hooks/useAdminMutations';
 import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
 import { FormContainer, TextField } from '../../../../EdsForm';
 
-const validationSchema = Yup.object().shape({
-    name: Yup.string()
-        .max(255, 'The name must be less than 255 characters!')
-        .required('(Required)'),
+const validationSchema = object().shape({
+    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
 });
 
 export const EditStepModal = (): JSX.Element => {

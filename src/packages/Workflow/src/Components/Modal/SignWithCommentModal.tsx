@@ -1,6 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
 import { Form, FormikValues } from 'formik';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 
 import {
     ButtonContainer,
@@ -24,8 +24,8 @@ type SignWithCommentModalProps = {
     ): UseMutateFunction<void, unknown, OnSignStepAction, unknown>;
 };
 
-const validationSchema = Yup.object().shape({
-    comment: Yup.string()
+const validationSchema = object().shape({
+    comment: string()
         .max(4000, 'The comment must be less than 4000 characters!')
         .required('(Required)'),
 });

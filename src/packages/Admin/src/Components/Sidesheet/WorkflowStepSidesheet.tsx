@@ -1,5 +1,5 @@
 import { Form, FormikValues } from 'formik';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 
 import { SidesheetApi } from '@equinor/sidesheet';
 import { Workflow, WorkflowStatus, WorkflowStepTemplate } from '@equinor/Workflow';
@@ -78,11 +78,11 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
 
     const isLoading = isLoadingSave || isLoadingCreate;
 
-    const validationSchema = Yup.object().shape({
-        description: Yup.string()
+    const validationSchema = object().shape({
+        description: string()
             .max(4000, 'The name must be less than 4000 characters!')
             .required('(Required)'),
-        completedStatusName: Yup.string()
+        completedStatusName: string()
             .oneOf(workflowStatuses, 'Select one of the options in the dropdown')
             .required('(Required)'),
     });

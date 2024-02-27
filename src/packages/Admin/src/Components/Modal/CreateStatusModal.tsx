@@ -1,6 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
 import { Form, FormikValues } from 'formik';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 
 import { useAdminContext } from '../../Hooks/useAdminContext';
 import { useAdminMutation } from '../../Hooks/useAdminMutation';
@@ -14,10 +14,8 @@ type CreateWorkflowStatusModalProps = {
     readonly setIsCreating: (isCreating: boolean) => void;
 };
 
-const validationSchema = Yup.object().shape({
-    name: Yup.string()
-        .max(255, 'The name must be less than 255 characters!')
-        .required('(Required)'),
+const validationSchema = object().shape({
+    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
 });
 
 export const CreateStatusModal = ({

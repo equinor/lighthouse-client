@@ -1,15 +1,13 @@
 import { Button } from '@equinor/eds-core-react';
 import { Form, FormikValues } from 'formik';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 
 import { openWorkflowStepSidesheet } from '../Workspace/WorkflowSteps';
 import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
 import { TextField, FormContainer } from '../../../../EdsForm';
 
-const validationSchema = Yup.object().shape({
-    name: Yup.string()
-        .max(255, 'The name must be less than 255 characters!')
-        .required('(Required)'),
+const validationSchema = object().shape({
+    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
 });
 
 type CreateWorkflowStepModalProps = {

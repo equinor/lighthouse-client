@@ -1,6 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
 import { Form, FormikValues } from 'formik';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -17,8 +17,8 @@ interface AddContributorProps {
     readonly close: () => void;
 }
 
-const validationSchema = Yup.object().shape({
-    contributorTitle: Yup.string().max(2000, 'Maximum 2000 characters').required('(Required)'),
+const validationSchema = object().shape({
+    contributorTitle: string().max(2000, 'Maximum 2000 characters').required('(Required)'),
 });
 
 export const AddContributor = ({ close, stepId }: AddContributorProps): JSX.Element => {
