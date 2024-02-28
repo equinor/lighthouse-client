@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 2.31.1
+
+-   [ReleaseControl] Fix spacing between attachment and file size in sidesheet.
+
 # 2.31.0
 
 -   [ReleaseControl] Add new filter "Contains Person" that shows the role/person that are assigned a criteria
