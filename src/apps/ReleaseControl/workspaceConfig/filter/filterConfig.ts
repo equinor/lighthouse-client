@@ -2,8 +2,8 @@ import { FilterOptions, FilterValueType } from '@equinor/filter';
 import { ReleaseControl } from '../../types/releaseControl';
 
 const getNextToSign = (rc: ReleaseControl) => {
-    const nextToSign = rc.workflowSteps.find((fs) => {
-        if (fs.criterias[0]?.signedAtUtc === null) {
+    const nextToSign = rc.workflowSteps.find((step) => {
+        if (step.criterias[0]?.signedAtUtc === null) {
             return true;
         }
     });
@@ -18,12 +18,25 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
     {
         name: 'Contains Step',
         valueFormatter: ({ workflowSteps }) => {
-            return workflowSteps.map((x) => x.name).filter((v, i, a) => a.indexOf(v) === i);
+            return workflowSteps
+                .filter((x) => !x.isCompleted)
+                .map((x) => x.name)
+                .filter((v, i, a) => a.indexOf(v) === i);
         },
     },
     {
         name: 'Next to Sign',
         valueFormatter: (s) => getNextToSign(s),
+    },
+    {
+        name: 'Contains Person',
+        valueFormatter: ({ workflowSteps }) => {
+            return workflowSteps
+                .filter((x) => !x.isCompleted)
+                .map((x) => x.criterias.map((y) => y.valueDescription))
+                .flat()
+                .filter((v, i, a) => a.indexOf(v) === i);
+        },
     },
     {
         name: 'Tags',
