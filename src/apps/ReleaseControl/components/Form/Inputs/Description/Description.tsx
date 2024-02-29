@@ -23,23 +23,17 @@ export const DescriptionInput = (): JSX.Element => {
     );
 };
 
-const descriptionDefaultInput = `Requested by: 
-Area: 
-System: 
-Scaffolding [Yes/No], describe: 
-Valve insulation box, remove lid only [Yes/No], describe: 
-SAP AO number (if applicable): 
-PTW number(if applicable): 
-Safety Critical HT involved?: 
-Ideal start date: 
-Required finish date: 
+const descriptionDefaultInput = `--- Required inputs ---
+Requested by: 
+Scaffolding [Yes/No]: 
+--- Optional Inputs (if applicable) ---
+SAP AO number: 
+PTW number: 
+Safety Critical HT involved: 
 
 Description of what is to be done (use the suggested wording below - if your not sure what to input for HT / other, just say not sure): 
 
-1.HT:     TAG:     InsuTag:     What are you doing?:     P&ID: 
-2.HT:     TAG:     InsuTag:     What are you doing?:     P&ID: 
-3.HT:     TAG:     InsuTag:     What are you doing?:     P&ID: 
-4.HT:     TAG:     InsuTag:     What are you doing?:     P&ID: 
-5.HT:     TAG:     InsuTag:     What are you doing?:     P&ID: 
-6.HT:     TAG:     InsuTag:     What are you doing?:     P&ID: 
+(Example)
+1.TAG:    HT:      Insu-Tag:       Job description: 
+2.TAG:    HT:      Insu-Tag:       Job description: 
 `;
