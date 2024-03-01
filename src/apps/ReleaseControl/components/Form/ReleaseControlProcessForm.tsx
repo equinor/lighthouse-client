@@ -25,7 +25,7 @@ import {
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
-import { Autocomplete, Button, Icon, Progress } from '@equinor/eds-core-react';
+import { Autocomplete, Button, Icon, Progress, Typography } from '@equinor/eds-core-react';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom, clearState } = DRCFormAtomApi;
@@ -144,52 +144,55 @@ export const SubmitButtonBar = (): JSX.Element => {
         });
     };
 
-    if (isError) {
-        console.log(error);
-        return <div>Something went wrong creating new RC. Please try again later</div>;
-    }
     return (
-        <ActionBar>
-            <NavigationButton>
-                {step === 'workflow' && (
-                    <Button variant="outlined" onClick={() => updateStep('scope')}>
-                        <Icon
-                            name={'chevron_left'}
-                            color={tokens.colors.interactive.primary__resting.rgba}
-                        />
-                        Back to select scope
-                    </Button>
-                )}
-            </NavigationButton>
-            <ButtonContainer>
-                {isLoading || isCreated ? (
-                    <Button variant="ghost_icon" disabled>
-                        <Progress.Dots color="primary" />
-                    </Button>
-                ) : (
-                    <>
-                        {step === 'scope' && (
-                            <Button onClick={() => updateStep('workflow')}>
-                                Next: select workflow
-                                <Icon
-                                    name={'chevron_right'}
-                                    color={tokens.colors.text.static_icons__primary_white.hex}
-                                />
+        <>
+            {isError && (
+                <Typography variant="h3">
+                    An error occured creating the RC. Please try again later.
+                </Typography>
+            )}
+            <ActionBar>
+                <NavigationButton>
+                    {step === 'workflow' && (
+                        <Button variant="outlined" onClick={() => updateStep('scope')}>
+                            <Icon
+                                name={'chevron_left'}
+                                color={tokens.colors.interactive.primary__resting.rgba}
+                            />
+                            Back to select scope
+                        </Button>
+                    )}
+                </NavigationButton>
+                <ButtonContainer>
+                    {isLoading || isCreated ? (
+                        <Button variant="ghost_icon" disabled>
+                            <Progress.Dots color="primary" />
+                        </Button>
+                    ) : (
+                        <>
+                            {step === 'scope' && (
+                                <Button onClick={() => updateStep('workflow')}>
+                                    Next: select workflow
+                                    <Icon
+                                        name={'chevron_right'}
+                                        color={tokens.colors.text.static_icons__primary_white.hex}
+                                    />
+                                </Button>
+                            )}
+                            <Button disabled={!isValid} onClick={() => onMutate(false)}>
+                                Submit
                             </Button>
-                        )}
-                        <Button disabled={!isValid} onClick={() => onMutate(false)}>
-                            Submit
-                        </Button>
-                        <Button
-                            disabled={!isValid}
-                            onClick={() => onMutate(true)}
-                            variant="outlined"
-                        >
-                            Save
-                        </Button>
-                    </>
-                )}
-            </ButtonContainer>
-        </ActionBar>
+                            <Button
+                                disabled={!isValid}
+                                onClick={() => onMutate(true)}
+                                variant="outlined"
+                            >
+                                Save
+                            </Button>
+                        </>
+                    )}
+                </ButtonContainer>
+            </ActionBar>
+        </>
     );
 };

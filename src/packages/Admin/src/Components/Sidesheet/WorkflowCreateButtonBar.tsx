@@ -1,4 +1,4 @@
-import { Button, Progress } from '@equinor/eds-core-react-old';
+import { Button, Progress, Typography } from '@equinor/eds-core-react-old';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useMutation } from 'react-query';
 import { WorkflowAdminAtomApi } from '../../Atoms/workflowAdminAtomApi';
@@ -28,9 +28,9 @@ export const WorkflowCreateButtonBar = ({ actions }: WorkflowButtonBarProps): JS
     };
 
     return (
-        <ActionBar>
-            <ButtonContainer>
-                <>
+        <>
+            <ActionBar>
+                <ButtonContainer>
                     {isLoading ? (
                         <Button variant="ghost_icon" disabled>
                             <Progress.Dots color="primary" />
@@ -48,8 +48,8 @@ export const WorkflowCreateButtonBar = ({ actions }: WorkflowButtonBarProps): JS
                             </Button>
                         </>
                     )}
-                </>
-            </ButtonContainer>
-        </ActionBar>
+                </ButtonContainer>
+            </ActionBar>
+        </>
     );
 };

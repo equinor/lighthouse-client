@@ -8,13 +8,14 @@ import { useAdminMutation } from '../Hooks/useAdminMutation';
 type UseCreateWorkflowStepResult = {
     createWorkflowStep: () => void;
     isLoading: boolean;
+    isError: boolean;
 };
 
 export const useCreateWorkflowStep = (): UseCreateWorkflowStepResult => {
     const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
     const { createWorkflowStepMutation } = useAdminMutations();
-    const { isLoading, mutate } = useMutation(createWorkflowStepMutation);
+    const { isLoading, mutate, isError } = useMutation(createWorkflowStepMutation);
 
     const createWorkflowStep = (saveAndClose = false) => {
         const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
@@ -27,12 +28,14 @@ export const useCreateWorkflowStep = (): UseCreateWorkflowStepResult => {
     return {
         createWorkflowStep,
         isLoading,
+        isError,
     };
 };
 
 type UseUpdateWorkflowStepResult = {
     saveWorkflowStep: () => void;
     isLoading: boolean;
+    isError: boolean;
 };
 
 export const useUpdateWorkflowStep = (): UseUpdateWorkflowStepResult => {
@@ -42,7 +45,7 @@ export const useUpdateWorkflowStep = (): UseUpdateWorkflowStepResult => {
 
     const { editWorkflowStepMutation } = useAdminMutations();
 
-    const { isLoading, mutate } = useAdminMutation(
+    const { isLoading, mutate, isError } = useAdminMutation(
         workflowStep.id,
         patchKey,
         editWorkflowStepMutation
@@ -59,5 +62,6 @@ export const useUpdateWorkflowStep = (): UseUpdateWorkflowStepResult => {
     return {
         isLoading,
         saveWorkflowStep,
+        isError,
     };
 };

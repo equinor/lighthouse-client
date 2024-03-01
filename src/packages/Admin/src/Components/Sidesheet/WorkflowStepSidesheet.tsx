@@ -18,6 +18,8 @@ import {
     useUpdateWorkflowStep,
 } from '../../Hooks/useWorkflowStepFormActions';
 import { useWorkflowStepStatuses } from '../../Hooks/useWorkflowStepStatuses';
+import { isError } from 'react-query';
+import { Typography } from '@equinor/eds-core-react-old';
 
 interface WorkflowSidesheetProps {
     readonly item: WorkflowStepTemplate;
@@ -32,8 +34,16 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
     useWorkflowStepSidesheetEffects(actions, item);
     useAdminMutationWatcher(item.id);
 
-    const { saveWorkflowStep, isLoading: isLoadingSave } = useUpdateWorkflowStep();
-    const { createWorkflowStep, isLoading: isLoadingCreate } = useCreateWorkflowStep();
+    const {
+        saveWorkflowStep,
+        isLoading: isLoadingSave,
+        isError: isErrorUpdate,
+    } = useUpdateWorkflowStep();
+    const {
+        createWorkflowStep,
+        isLoading: isLoadingCreate,
+        isError: isErrorCreate,
+    } = useCreateWorkflowStep();
 
     const { clearState, updateAtom } = WorkflowStepAdminAtomApi;
 
@@ -86,7 +96,6 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
             .oneOf(workflowStatuses, 'Select one of the options in the dropdown')
             .required('(Required)'),
     });
-
     return (
         <Wrapper>
             <FormContainer
@@ -114,7 +123,11 @@ export function WorkflowStepSidesheet({ item, actions }: WorkflowSidesheetProps)
                             placeholder="Select workflow status"
                         />
                     </FlexColumn>
-
+                    {(isErrorCreate || isErrorUpdate) && (
+                        <Typography variant="h3">
+                            Unable to create/update Workflow step. Please try again later.
+                        </Typography>
+                    )}
                     <WorkflowStepActions isLoading={isLoading} onClose={onClose} />
                 </Form>
             </FormContainer>

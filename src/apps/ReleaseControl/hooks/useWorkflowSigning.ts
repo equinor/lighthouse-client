@@ -5,6 +5,7 @@ import { signCriteria } from '../api/releaseControl/Workflow';
 import { releaseControlMutationKeys } from '../queries/releaseControlMutationKeys';
 import { useReleaseControlContext } from './useReleaseControlContext';
 import { useReleaseControlMutation } from './useReleaseControlMutation';
+import { ErrorMessageFormat } from '../../ScopeChangeRequest/functions/ErrorMessage/errorMessageFormat';
 
 export interface OnSignStepAction {
     action: CriteriaSignState;
@@ -62,7 +63,14 @@ export function useWorkflowSigning({
                         criteriaId: criteriaId,
                         verdict: action,
                         comment: comment,
-                    }).then(() => queryClient.invalidateQueries({ queryKey: ['release'] }));
+                    }).then(() =>
+                        queryClient.invalidateQueries({ queryKey: ['release'] }).catch(() => {
+                            const bc = new BroadcastChannel('error_messages_rc');
+                            bc.postMessage(
+                                'There was an error signing the step. Please try again.'
+                            );
+                        })
+                    );
                 }
             );
         } else {
@@ -72,6 +80,15 @@ export function useWorkflowSigning({
                 criteriaId: criteriaId,
                 verdict: action,
                 comment: comment,
+            }).catch(() => {
+                const error: ErrorMessageFormat = {
+                    title: 'Something went wrong',
+                    description: 'Fail',
+                    queryKey: [],
+                    type: 'Mutation',
+                };
+                const bc = new BroadcastChannel('error_messages_rc');
+                bc.postMessage(error);
             });
         }
     }
