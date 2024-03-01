@@ -37,7 +37,7 @@
     "@equinor/fusion-framework-module-app": "^5.2.8",
     "@equinor/fusion-framework-module-bookmark": "^1.0.15",
     "@equinor/fusion-framework-module-context": "^4.0.16",
-    "@equinor/fusion-framework-module-http": "^5.1.1",
+    "@equinor/fusion-framework-module-http": "^5.1.6",
     "@equinor/fusion-framework-module-navigation": "^3.0.6",
     "@equinor/fusion-framework-module-services": "^3.2.2",
     "@equinor/fusion-framework-react": "^5.3.3",

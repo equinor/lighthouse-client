@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@cognite/reveal':
     specifier: ^3.0.2
@@ -47,8 +51,8 @@ dependencies:
     specifier: ^4.0.16
     version: 4.0.16(@equinor/fusion-framework-module@4.2.5)(@types/react@17.0.20)(react@17.0.2)(rxjs@7.8.1)(sass@1.43.2)
   '@equinor/fusion-framework-module-http':
-    specifier: ^5.1.1
-    version: 5.1.1
+    specifier: ^5.1.6
+    version: 5.1.6
   '@equinor/fusion-framework-module-navigation':
     specifier: ^3.0.6
     version: 3.0.6(@equinor/fusion-framework-module@4.2.5)(@remix-run/router@1.11.0)(rxjs@7.8.1)
@@ -57,10 +61,10 @@ dependencies:
     version: 3.2.2(@equinor/fusion-framework-module@4.2.5)(odata-query@7.0.4)
   '@equinor/fusion-framework-react':
     specifier: ^5.3.3
-    version: 5.3.3(@equinor/fusion-framework-module-http@5.1.1)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(sass@1.43.2)
+    version: 5.3.3(@equinor/fusion-framework-module-http@5.1.6)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(sass@1.43.2)
   '@equinor/fusion-framework-react-app':
     specifier: ^4.1.9
-    version: 4.1.9(@equinor/fusion-framework-module-http@5.1.1)(@remix-run/router@1.11.0)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(rxjs@7.8.1)(sass@1.43.2)
+    version: 4.1.9(@equinor/fusion-framework-module-http@5.1.6)(@remix-run/router@1.11.0)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(rxjs@7.8.1)(sass@1.43.2)
   '@equinor/fusion-framework-react-module':
     specifier: ^3.0.6
     version: 3.0.6(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
@@ -1170,7 +1174,7 @@ packages:
       '@equinor/fusion-framework-module': 4.2.5
       '@equinor/fusion-framework-module-app': 5.2.8(@types/react@17.0.20)(react@17.0.2)(sass@1.43.2)
       '@equinor/fusion-framework-module-event': 4.0.6
-      '@equinor/fusion-framework-module-http': 5.1.1
+      '@equinor/fusion-framework-module-http': 5.1.6
       '@equinor/fusion-framework-module-msal': 3.0.7
     transitivePeerDependencies:
       - '@edge-runtime/vm'
@@ -1317,12 +1321,21 @@ packages:
       - '@types/semver'
     dev: false
 
-  /@equinor/fusion-framework-module-http@5.1.1:
-    resolution: {integrity: sha512-mrbgvhCvkxsaW/6R0DzIVfnwk/HcuHWIVsK1IDxYRZ4c7OeofPFn52L7/cxZCKb2tgmqE5+0dPVv/SXMsmjHbA==}
+  /@equinor/fusion-framework-module-http@5.1.6:
+    resolution: {integrity: sha512-tuRQZ/tlKoaIjEBq+au26IzYPwFIcpOw5QUv9gyqHG8CEZszpHt5/De3JyGyxR1+dJq/DbowgtumDwGoLxBLyw==}
     dependencies:
-      '@equinor/fusion-framework-module': 4.2.5
-      '@equinor/fusion-framework-module-msal': 3.0.7
+      '@equinor/fusion-framework-module': 4.2.7
+      '@equinor/fusion-framework-module-msal': 3.0.10
       rxjs: 7.8.1
+    transitivePeerDependencies:
+      - '@types/semver'
+    dev: false
+
+  /@equinor/fusion-framework-module-msal@3.0.10:
+    resolution: {integrity: sha512-7VWNMXuNAAJ95WLT+POs+W6T8ymz3HUdq+3ujcfu8E52N3Q8dF3GtXOIUkJTGdczlpb+8bgi4STgD7eZ3h7bLQ==}
+    dependencies:
+      '@azure/msal-browser': 2.38.3
+      '@equinor/fusion-framework-module': 4.2.7
     transitivePeerDependencies:
       - '@types/semver'
     dev: false
@@ -1352,7 +1365,7 @@ packages:
     resolution: {integrity: sha512-dMWTcItoFnlIU+VgJPEGNhzKG1t8bj1zWMmP3MtkKpHx7R4i/cSGbw3gkwSB4w1Za1sAjCHRfCqHxNa6CJYMvg==}
     dependencies:
       '@equinor/fusion-framework-module': 4.2.5
-      '@equinor/fusion-framework-module-http': 5.1.1
+      '@equinor/fusion-framework-module-http': 5.1.6
       '@equinor/fusion-query': 4.0.3(@types/react@17.0.20)(react@17.0.2)(sass@1.43.2)
       rxjs: 7.8.1
     transitivePeerDependencies:
@@ -1398,7 +1411,19 @@ packages:
       semver: 7.5.4
     dev: false
 
-  /@equinor/fusion-framework-react-app@4.1.9(@equinor/fusion-framework-module-http@5.1.1)(@remix-run/router@1.11.0)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(rxjs@7.8.1)(sass@1.43.2):
+  /@equinor/fusion-framework-module@4.2.7:
+    resolution: {integrity: sha512-pWr6zfz7h8Kwv9g2S0dN0KbBHU/LLlAkrYi1tVRPoUbVfDAqNtTso7ymq3Y0CslAdQKRgpa6XsJadPAuVspc4g==}
+    peerDependencies:
+      '@types/semver': ^7.5.0
+    peerDependenciesMeta:
+      '@types/semver':
+        optional: true
+    dependencies:
+      rxjs: 7.8.1
+      semver: 7.5.4
+    dev: false
+
+  /@equinor/fusion-framework-react-app@4.1.9(@equinor/fusion-framework-module-http@5.1.6)(@remix-run/router@1.11.0)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(rxjs@7.8.1)(sass@1.43.2):
     resolution: {integrity: sha512-qvMpYS63yOIy0lCXZEdWR2pmRot/ac9WSeJFzcKEnQa77408xfiehyZjtTbfEl7H39SjkVMWfXx85CIQkFYOTg==}
     peerDependencies:
       '@equinor/fusion-framework-react-module-bookmark': '*'
@@ -1407,8 +1432,6 @@ packages:
       react: "^17.0.0 ||\_^18.0.0"
       react-dom: "^17.0.0 ||\_^18.0.0"
     peerDependenciesMeta:
-      '@equinor/fusion-framework-module-navigation':
-        optional: true
       '@equinor/fusion-framework-react-module-bookmark':
         optional: true
       '@equinor/fusion-framework-react-module-context':
@@ -1422,9 +1445,9 @@ packages:
       '@equinor/fusion-framework-module': 4.2.5
       '@equinor/fusion-framework-module-app': 5.2.8(@types/react@17.0.20)(react@17.0.2)(sass@1.43.2)
       '@equinor/fusion-framework-module-navigation': 3.0.6(@equinor/fusion-framework-module@4.2.5)(@remix-run/router@1.11.0)(rxjs@7.8.1)
-      '@equinor/fusion-framework-react': 5.3.3(@equinor/fusion-framework-module-http@5.1.1)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(sass@1.43.2)
+      '@equinor/fusion-framework-react': 5.3.3(@equinor/fusion-framework-module-http@5.1.6)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(sass@1.43.2)
       '@equinor/fusion-framework-react-module': 3.0.6(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
-      '@equinor/fusion-framework-react-module-http': 4.0.1(@equinor/fusion-framework-module-http@5.1.1)(@equinor/fusion-framework-react-module@3.0.6)(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
+      '@equinor/fusion-framework-react-module-http': 4.0.1(@equinor/fusion-framework-module-http@5.1.6)(@equinor/fusion-framework-react-module@3.0.6)(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.20
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
@@ -1452,7 +1475,7 @@ packages:
       - webdriverio
     dev: false
 
-  /@equinor/fusion-framework-react-module-http@4.0.1(@equinor/fusion-framework-module-http@5.1.1)(@equinor/fusion-framework-react-module@3.0.6)(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2):
+  /@equinor/fusion-framework-react-module-http@4.0.1(@equinor/fusion-framework-module-http@5.1.6)(@equinor/fusion-framework-react-module@3.0.6)(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-3Eo2JvRAeBE6a6MIZ+InmuccGjfDDSSPaFkmgQW1LPQDWfuGpEIwJ2mG4QRCU4Jr7Xt/Zaso2pkeZcZeuiUiUQ==}
     peerDependencies:
       '@equinor/fusion-framework-module-http': ^5.1.1
@@ -1466,7 +1489,7 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@equinor/fusion-framework-module-http': 5.1.1
+      '@equinor/fusion-framework-module-http': 5.1.6
       '@equinor/fusion-framework-react-module': 3.0.6(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.20
       react: 17.0.2
@@ -1493,7 +1516,7 @@ packages:
       - '@types/semver'
     dev: false
 
-  /@equinor/fusion-framework-react@5.3.3(@equinor/fusion-framework-module-http@5.1.1)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(sass@1.43.2):
+  /@equinor/fusion-framework-react@5.3.3(@equinor/fusion-framework-module-http@5.1.6)(@types/react@17.0.20)(odata-query@7.0.4)(react-dom@17.0.2)(react@17.0.2)(sass@1.43.2):
     resolution: {integrity: sha512-0Q36BGjqGA/pZuDnEXuGIYR3tmU4afkFD6QOJfMWwsz3HGCKf5j9Ge7vPSNXPt6ApD4DhLR3bckN/alqdlewmQ==}
     peerDependencies:
       '@equinor/fusion-framework-react-module-context': '*'
@@ -1514,7 +1537,7 @@ packages:
       '@equinor/fusion-framework': 7.0.23(@types/react@17.0.20)(odata-query@7.0.4)(react@17.0.2)(sass@1.43.2)
       '@equinor/fusion-framework-module': 4.2.5
       '@equinor/fusion-framework-react-module': 3.0.6(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
-      '@equinor/fusion-framework-react-module-http': 4.0.1(@equinor/fusion-framework-module-http@5.1.1)(@equinor/fusion-framework-react-module@3.0.6)(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
+      '@equinor/fusion-framework-react-module-http': 4.0.1(@equinor/fusion-framework-module-http@5.1.6)(@equinor/fusion-framework-react-module@3.0.6)(@types/react@17.0.20)(react-dom@17.0.2)(react@17.0.2)
       '@equinor/fusion-observable': 8.1.2(@types/react@17.0.20)(react@17.0.2)
       '@types/react': 17.0.20
       react: 17.0.2
@@ -1547,7 +1570,7 @@ packages:
       '@equinor/fusion-framework-module': 4.2.5
       '@equinor/fusion-framework-module-context': 4.0.17(@equinor/fusion-framework-module@4.2.5)(@types/react@17.0.20)(react@17.0.2)(rxjs@7.8.1)(sass@1.43.2)
       '@equinor/fusion-framework-module-event': 4.0.6
-      '@equinor/fusion-framework-module-http': 5.1.1
+      '@equinor/fusion-framework-module-http': 5.1.6
       '@equinor/fusion-framework-module-msal': 3.0.7
       '@equinor/fusion-framework-module-service-discovery': 7.0.13(@types/react@17.0.20)(react@17.0.2)(sass@1.43.2)
       '@equinor/fusion-framework-module-services': 3.2.2(@equinor/fusion-framework-module@4.2.5)(odata-query@7.0.4)
@@ -3137,8 +3160,6 @@ packages:
       prettier: ^2.8.8
     peerDependenciesMeta:
       '@types/prettier':
-        optional: true
-      '@types/refractor':
         optional: true
       prettier:
         optional: true
@@ -11699,7 +11720,3 @@ packages:
       toposort: 2.0.2
       type-fest: 2.19.0
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
