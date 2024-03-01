@@ -17,130 +17,137 @@ import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
 import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
 import { CircularProgress } from '@equinor/eds-core-react-old';
+import { MarkdownViewer } from '@equinor/markdown-editor';
 
 interface CriteriaRenderProps {
-    name: string;
-    criteria: Criteria;
-    contributors: Contributor[];
-    stepIndex: number;
-    stepStatus: CriteriaStatus;
-    order: number;
-    isLastCriteria: boolean;
-    stepId: string;
-    hideOptions?: boolean;
+  name: string;
+  description: string;
+  criteria: Criteria;
+  contributors: Contributor[];
+  stepIndex: number;
+  stepStatus: CriteriaStatus;
+  order: number;
+  isLastCriteria: boolean;
+  stepId: string;
+  hideOptions?: boolean;
 }
 
 export const CriteriaRender = ({
-    isLastCriteria,
-    name,
-    contributors,
-    criteria,
-    stepIndex,
-    stepStatus,
-    order,
-    stepId,
-    hideOptions,
+  isLastCriteria,
+  name,
+  description,
+  contributors,
+  criteria,
+  stepIndex,
+  stepStatus,
+  order,
+  stepId,
+  hideOptions,
 }: CriteriaRenderProps): JSX.Element => {
-    const { requestId, workflowStepsLength, isPast } = useReleaseControlContext(
-        ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
-            requestId: id,
-            workflowStepsLength: workflowSteps.length,
-            isPast:
-                (currentWorkflowStep?.order ?? 0) >
-                (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
-        })
-    );
-    const { isLoading } = useGetReleaseControl(requestId);
-    const state = useAtom(actionWithCommentAtom);
+  const { requestId, workflowStepsLength, isPast } = useReleaseControlContext(
+    ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
+      requestId: id,
+      workflowStepsLength: workflowSteps.length,
+      isPast:
+        (currentWorkflowStep?.order ?? 0) >
+        (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
+    })
+  );
+  const { isLoading } = useGetReleaseControl(requestId);
+  const state = useAtom(actionWithCommentAtom);
 
-    const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
-    const formattedDate = dateToDateTimeFormat(date);
+  const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
+  const formattedDate = dateToDateTimeFormat(date);
 
-    const [showAddContributor, setShowAddContributor] = useState(false);
-    return (
-        <WorkflowWrapper key={criteria.id}>
-            <WorklowIconAndLine>
-                <WorkflowIcon status={stepStatus} number={order + 1} />
-
-                {stepIndex !== workflowStepsLength - 1 && <VerticalLine active={isPast} />}
-            </WorklowIconAndLine>
-            <WorkflowRow>
-                <RowContent>
-                    {state && state.criteriaId === criteria.id && state.action === 'Reassign' ? (
-                        <CriteriaActionOverlay />
+  const [showAddContributor, setShowAddContributor] = useState(false);
+  return (
+    <WorkflowWrapper key={criteria.id}>
+      <WorklowIconAndLine>
+        <WorkflowIcon status={stepStatus} number={order + 1} />
+        {stepIndex !== workflowStepsLength - 1 && <VerticalLine active={isPast} />}
+      </WorklowIconAndLine>
+      <WorkflowRow>
+        <RowContent>
+          {state && state.criteriaId === criteria.id && state.action === 'Reassign' ? (
+            <CriteriaActionOverlay />
+          ) : (
+            <>
+              {state &&
+                state.criteriaId === criteria.id &&
+                state.action !== 'Reassign' && (
+                  <Modal
+                    title={'Write a comment'}
+                    content={
+                      <SignWithCommentModal
+                        action={state.action}
+                        buttonText={state.buttonText}
+                        criteriaId={state.criteriaId}
+                        stepId={state.stepId}
+                        requestId={requestId}
+                        useWorkflowSigning={useWorkflowSigning}
+                      />
+                    }
+                  />
+                )}
+              <span>
+                <div>{name}</div>
+                {criteria.signedAtUtc ? (
+                  <DetailText>
+                    {!isLoading ? (
+                      <>
+                        <div>
+                          {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
+                          {criteria.type ==
+                            'RequireProcosysFunctionalRoleSignature' &&
+                            `(${criteria.valueDescription})`}
+                        </div>
+                        {criteria.signedComment && (
+                          <q>{criteria.signedComment}</q>
+                        )}
+                      </>
                     ) : (
-                        <>
-                            {state &&
-                                state.criteriaId === criteria.id &&
-                                state.action !== 'Reassign' && (
-                                    <Modal
-                                        title={'Write a comment'}
-                                        content={
-                                            <SignWithCommentModal
-                                                action={state.action}
-                                                buttonText={state.buttonText}
-                                                criteriaId={state.criteriaId}
-                                                stepId={state.stepId}
-                                                requestId={requestId}
-                                                useWorkflowSigning={useWorkflowSigning}
-                                            />
-                                        }
-                                    />
-                                )}
-                            <span>
-                                <div>{name}</div>
-                                {criteria.signedAtUtc ? (
-                                    <DetailText>
-                                        {!isLoading ? (
-                                            <>
-                                                <div>
-                                                    {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
-                                                    {criteria.type ==
-                                                        'RequireProcosysFunctionalRoleSignature' &&
-                                                        `(${criteria.valueDescription})`}
-                                                </div>
-                                                {criteria.signedComment && (
-                                                    <q>{criteria.signedComment}</q>
-                                                )}
-                                            </>
-                                        ) : (
-                                            <CircularProgress size={16} />
-                                        )}
-                                    </DetailText>
-                                ) : (
-                                    <DetailText>{criteria.valueDescription}</DetailText>
-                                )}
-                            </span>
-                            {!hideOptions && (
-                                <CriteriaActionBar
-                                    stepId={stepId}
-                                    criteriaId={criteria.id}
-                                    stepOrder={order}
-                                    setShowAddContributor={() => setShowAddContributor(true)}
-                                />
-                            )}
-                        </>
+                      <CircularProgress size={16} />
                     )}
-                </RowContent>
+                  </DetailText>
+                ) : (
+                  <>
+                    <DetailText>{criteria.valueDescription}</DetailText>
+                    <MarkdownViewer>
+                      {description}
+                    </MarkdownViewer> 
+                  </>
+                )}
+              </span>
+              {!hideOptions && (
+                <CriteriaActionBar
+                  stepId={stepId}
+                  criteriaId={criteria.id}
+                  stepOrder={order}
+                  setShowAddContributor={() => setShowAddContributor(true)}
+                />
+              )}
+            </>
+          )}
+        </RowContent>
+      </WorkflowRow>
+      {showAddContributor && (
+        <WorkflowRow>
+          <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
+        </WorkflowRow>
+      )}
+      {isLastCriteria && (
+        <>
+          {contributors.map((contributor) => (
+            <WorkflowRow key={contributor.id}>
+              <ContributorRender
+                key={contributor.id}
+                contributor={contributor}
+                stepId={stepId}
+              />
             </WorkflowRow>
-            {showAddContributor && (
-                <WorkflowRow>
-                    <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
-                </WorkflowRow>
-            )}
-            {isLastCriteria && (
-                <>
-                    {contributors.map((contributor) => (
-                        <WorkflowRow key={contributor.id}>
-                            <ContributorRender
-                                key={contributor.id}
-                                contributor={contributor}
-                                stepId={stepId}
-                            />
-                        </WorkflowRow>
-                    ))}
-                </>
-            )}
-        </WorkflowWrapper>
-    );
+          ))}
+        </>
+      )}
+    </WorkflowWrapper>
+  );
 };
