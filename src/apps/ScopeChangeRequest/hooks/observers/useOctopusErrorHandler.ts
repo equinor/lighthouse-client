@@ -10,11 +10,13 @@ import { useGlobalQueryListener } from './useGlobalQueryListener';
  * If a query or mutation fails it will catch it and send it over a broadcast channel to the nearest reciever
  */
 export function useOctopusErrorHandler(): void {
+    console.log('Octopus init');
     /**
      * Callback function to be called when a mutation fails
      * @param mutationEvent
      */
     function onMutationError(mutationEvent: Mutation<unknown, unknown, void, unknown>): void {
+        console.log('On Mute Error');
         const errorMessage = parseError(mutationEvent.state.error);
         const error: ErrorMessageFormat = {
             title: errorMessage.title ?? 'Something went wrong',
@@ -31,6 +33,7 @@ export function useOctopusErrorHandler(): void {
      * @param query
      */
     function onQueryError(query: Query<any, any, any, any>): void {
+        console.log('OnError Query');
         const errorMessage = parseError(query.state.error);
         const error: ErrorMessageFormat = {
             title: errorMessage.title ?? 'Something went wrong',
@@ -48,6 +51,7 @@ export function useOctopusErrorHandler(): void {
 const FALLBACK_ERROR_MESSAGE = 'Something went wrong';
 
 function parseError(error: unknown): Partial<ErrorMessageFormat> {
+    console.log('ParseError');
     const parsedError: Partial<ErrorMessageFormat> = {
         title: '',
         description: '',
@@ -89,6 +93,7 @@ function parseError(error: unknown): Partial<ErrorMessageFormat> {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
+    console.log('Resolve err');
     if (isScopeChangeError(error)) {
         const scopeChangeError = error as ScopeChangeErrorFormat;
         return {
@@ -105,6 +110,7 @@ function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function isScopeChangeError(error: object): boolean {
+    console.log('Is Scope error');
     return 'statusCode' in error && 'title' in error;
 }
 

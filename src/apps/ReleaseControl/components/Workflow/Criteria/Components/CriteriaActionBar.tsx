@@ -40,7 +40,6 @@ export const CriteriaActionBar = ({
         })
     );
     const { canAddContributorQuery } = releaseControlQueries.workflowQueries;
-
     const { data: isAllowedToAddContributor } = useQuery(canAddContributorQuery(requestId, stepId));
 
     const iconGrey = tokens.colors.text.static_icons__tertiary.hex;
