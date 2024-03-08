@@ -1,8 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { AllStyledComponent } from '@remirror/styles/styled-components';
+type StyledContainerProps = {
+  isReadonly: boolean;
+}
 
-export const StyledContainer = styled(AllStyledComponent)`
+export const StyledContainer = styled(AllStyledComponent) <StyledContainerProps>`
     font-size: 16px;
     p {
         font-size: 16px !important;
@@ -29,11 +32,11 @@ export const StyledContainer = styled(AllStyledComponent)`
             .ProseMirror,
             .remirror-editor {
                 background-color: ${tokens.colors.ui.background__light.rgba};
-                min-height: 150px;
+                min-height: 50px;
                 height: auto;
                 max-height: 500px;
                 // Gray border bottom of the container
-                box-shadow: inset 0px -1px 0px 0px rgba(111, 111, 111, 1);
+                box-shadow: ${(props) => props.isReadonly ? "none" : "inset 0px -1px 0px 0px rgba(111, 111, 111, 1)"};
                 overflow: auto;
                 resize: vertical;
 
@@ -44,7 +47,7 @@ export const StyledContainer = styled(AllStyledComponent)`
 
                 // Custom green border of container when user is focusing on text field.
                 &:focus {
-                    box-shadow: #007079 0px 0px 0px 2px;
+                    box-shadow: ${props => props.isReadonly ? "none" : "#007079 0px 0px 0px 2px"};
                 }
 
                 // Placeholder text styling

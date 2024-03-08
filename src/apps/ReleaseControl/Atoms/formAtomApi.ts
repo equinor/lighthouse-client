@@ -108,8 +108,8 @@ function unPackReferencesAndScope(
 }
 
 function packWorkflowSteps(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlPackedSteps {
-  const editedSteps = api.readAtomValue().workflowSteps?.filter((x) => !x.isCompleted).map(s => ({ ...s, description: "Lets sign this B" })) ?? [];
-  const signedSteps = api.readAtomValue().workflowSteps?.filter((x) => x.isCompleted).map(s => ({ ...s, descriptioN: "Its signed boss" })) ?? [];
+  const editedSteps = api.readAtomValue().workflowSteps?.filter((x) => !x.isCompleted) ?? [];
+  const signedSteps = api.readAtomValue().workflowSteps?.filter((x) => x.isCompleted).map(s => ({ ...s, description: null })) ?? [];
   return {
     editedWorkflowSteps: editedSteps,
     signedWorkflowSteps: signedSteps,

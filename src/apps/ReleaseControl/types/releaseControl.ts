@@ -74,7 +74,7 @@ export type ReleaseControlStep = {
 };
 
 export type CreateReleaseControlStepModel = {
-  description: string;
+  description?: string | null;
   id?: string;
   name: string;
   order: number;

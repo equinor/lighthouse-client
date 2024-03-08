@@ -16,12 +16,12 @@ import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
 import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
-import { CircularProgress } from '@equinor/eds-core-react-old';
-import { MarkdownViewer } from '@equinor/markdown-editor';
+import { MarkdownRemirrorViewer } from '@equinor/markdown-editor';
+import { CircularProgress } from '@equinor/eds-core-react';
 
 interface CriteriaRenderProps {
   name: string;
-  description: string;
+  description: string | null;
   criteria: Criteria;
   contributors: Contributor[];
   stepIndex: number;
@@ -30,6 +30,7 @@ interface CriteriaRenderProps {
   isLastCriteria: boolean;
   stepId: string;
   hideOptions?: boolean;
+  isStepCompleted?: boolean;
 }
 
 export const CriteriaRender = ({
@@ -43,6 +44,7 @@ export const CriteriaRender = ({
   order,
   stepId,
   hideOptions,
+  isStepCompleted
 }: CriteriaRenderProps): JSX.Element => {
   const { requestId, workflowStepsLength, isPast } = useReleaseControlContext(
     ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
@@ -55,7 +57,6 @@ export const CriteriaRender = ({
   );
   const { isLoading } = useGetReleaseControl(requestId);
   const state = useAtom(actionWithCommentAtom);
-
   const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
   const formattedDate = dateToDateTimeFormat(date);
 
@@ -112,9 +113,7 @@ export const CriteriaRender = ({
                 ) : (
                   <>
                     <DetailText>{criteria.valueDescription}</DetailText>
-                    <MarkdownViewer>
-                      {description}
-                    </MarkdownViewer> 
+
                   </>
                 )}
               </span>
@@ -130,6 +129,11 @@ export const CriteriaRender = ({
           )}
         </RowContent>
       </WorkflowRow>
+      <div style={{ gridColumn: "2/5" }}>
+        <MarkdownRemirrorViewer editable={isStepCompleted ? false : "checkboxes-only"} initialContent={description ?? ""} onCheckboxTicked={e => {
+          console.log(e)
+        }} />
+      </div>
       {showAddContributor && (
         <WorkflowRow>
           <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
@@ -151,3 +155,4 @@ export const CriteriaRender = ({
     </WorkflowWrapper>
   );
 };
+

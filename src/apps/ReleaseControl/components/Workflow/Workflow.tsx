@@ -11,14 +11,15 @@ export const Workflow = (): JSX.Element => {
   return (
     <div>
       {workflowSteps.map(
-        ({ criterias, contributors, description, name, order, isCurrent, id }, stepIndex) => (
+        ({ criterias, contributors, description, isCompleted, name, order, isCurrent, id }, stepIndex) => (
           <Fragment key={id}>
             {criterias?.map((criteria, index) => (
               <CriteriaRender
+                isStepCompleted={isCompleted ?? false}
                 stepId={id ?? ''}
                 key={criteria.id}
                 contributors={contributors ?? []}
-                description={description}
+                description={description ?? null}
                 criteria={criteria}
                 isLastCriteria={criterias.length - 1 === index}
                 name={name}
