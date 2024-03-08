@@ -224,6 +224,9 @@ export type RcScopeTag = {
     mccrStatus?: number | null;
     function?: string | null;
     commissioningStatus?: string | null;
+    signedDate?: Date | null;
+    verifiedDate?: Date | null;
+    mechanicalCompletionResponsible?: string | null;
 };
 
 export type RcScopeHtTag = {

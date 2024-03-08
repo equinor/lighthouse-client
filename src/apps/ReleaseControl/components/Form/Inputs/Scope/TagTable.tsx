@@ -11,7 +11,7 @@ import {
     getMccrStatusColorByStatus,
 } from '../../../../functions/statusUtils';
 import { StatusCircle } from '@equinor/CircuitDiagram';
-import { StyledRowView } from '../../../../Styles/WrapperStyles';
+import { Monospace, StyledRowView } from '../../../../Styles/WrapperStyles';
 
 interface TagTableProps {
     tags: RcScopeTag[];
@@ -68,7 +68,7 @@ const columns: Column<RcScopeTag>[] = [
     {
         id: 'links',
         Header: 'Links',
-        width: 70,
+        width: 80,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
@@ -108,12 +108,46 @@ const columns: Column<RcScopeTag>[] = [
             }
             return (
                 <StyledRowView>
-                    {cell.value}
                     <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+                    {cell.value}
                 </StyledRowView>
             );
         },
         width: 70,
+    },
+    {
+        id: 'signedDate',
+        Header: 'Signed date',
+        accessor: (item) => item.signedDate,
+        width: 100,
+        Cell: (cell) => {
+            return (
+                <Monospace>
+                    {cell.row.values.signedDate &&
+                        new Date(cell.row.values.signedDate).toLocaleDateString('en-gb')}
+                </Monospace>
+            );
+        },
+    },
+    {
+        id: 'verifiedDate',
+        Header: 'Verified date',
+        accessor: (item) => item.verifiedDate,
+        width: 100,
+        Cell: (cell) => {
+            return (
+                <Monospace>
+                    {cell.row.values.verifiedDate &&
+                        new Date(cell.row.values.verifiedDate).toLocaleDateString('en-gb')}
+                </Monospace>
+            );
+        },
+    },
+    {
+        id: 'mechanicalCompletionResponsible',
+        Header: 'MC Responsible',
+        accessor: (item) => item.mechanicalCompletionResponsible,
+        width: 110,
     },
     {
         id: 'relatedHTCables',
@@ -262,5 +296,6 @@ const StyledLinkGrouping = styled.div`
     display: flex;
     align-items: center;
     gap: 0.2em;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding-right: 7px;
 `;
