@@ -15,9 +15,11 @@ import { useReleaseControlContext } from '../../../../hooks/useReleaseControlCon
 import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
-import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
+import { useGetReleaseControl, useRequestMutations, useWorkflowSigning } from '../../../../hooks';
 import { MarkdownRemirrorViewer } from '@equinor/markdown-editor';
 import { CircularProgress } from '@equinor/eds-core-react';
+import { useMutation } from 'react-query';
+import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 
 interface CriteriaRenderProps {
   name: string;
@@ -130,9 +132,7 @@ export const CriteriaRender = ({
         </RowContent>
       </WorkflowRow>
       <div style={{ gridColumn: "2/5" }}>
-        <MarkdownRemirrorViewer editable={isStepCompleted ? false : "checkboxes-only"} initialContent={description ?? ""} onCheckboxTicked={e => {
-          console.log(e)
-        }} />
+        <WorkflowStepMarkdownDescription description={description ?? ""} isStepCompleted={isStepCompleted ?? false} />
       </div>
       {showAddContributor && (
         <WorkflowRow>
@@ -156,3 +156,32 @@ export const CriteriaRender = ({
   );
 };
 
+type WorkflowStepMarkdownDescriptionProps = {
+  isStepCompleted: boolean;
+  description: string;
+}
+function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionProps) {
+
+  const { editReleaseControlMutation } = useRequestMutations();
+  const rc = useReleaseControlContext();
+  const { mutateAsync, isLoading, error } = useMutation({
+
+    mutationFn: async () => {
+      // DRCFormAtomApi.updateAtom(rc.releaseControl)
+      const model = DRCFormAtomApi.prepareReleaseControl();
+      await editReleaseControlMutation({
+        setAsOpen: true,
+        model: model
+      });
+
+    },
+  });
+
+  return (
+    <MarkdownRemirrorViewer editable={props.isStepCompleted ? false : "checkboxes-only"} initialContent={props.description} onCheckboxTicked={(e) => {
+      mutateAsync();
+      //do updating stuff here
+      //
+    }} />
+  )
+}
