@@ -227,6 +227,8 @@ export type RcScopeTag = {
     signedDate?: Date | null;
     verifiedDate?: Date | null;
     mechanicalCompletionResponsible?: string | null;
+    pidDrawings?: Drawing[];
+    isoDrawings?: Drawing[];
 };
 
 export type RcScopeHtTag = {
@@ -243,9 +245,19 @@ export type RcScopeHtTag = {
     mechanicalCompletionPackageNo?: string | null;
     mechanicalCompletionPackageUrlId?: string | null;
     openWorkOrders?: string | null;
-    openWorkOrderIds?: string | null;
+    status?: string | null;
     area: string;
     function: string | null;
     tagType: string;
     tagMountedOn?: string | null;
+    signedDate?: Date | null;
+    verifiedDate?: Date | null;
+    mechanicalCompletionHandoverStatus?: string | null;
+    isoDrawings?: Drawing[];
+};
+
+export type Drawing = {
+    docNo: string;
+    docTitle: string;
+    docType: string;
 };
