@@ -21,17 +21,18 @@ import {
   ToggleTaskListButton,
   ToggleItalicButton,
   ToggleBulletListButton,
-  useHelpers,
 } from '@remirror/react';
 
 import type { CreateEditorStateProps } from 'remirror';
 import type { RemirrorProps } from '@remirror/react';
 import { theme } from './theme';
 import { StyledContainer } from './editor.styles';
+import { HeatTraceExtension } from './extensions/addHtTagsExtension';
 
 export type ReactEditorProps = Pick<CreateEditorStateProps, 'stringHandler'> &
   Pick<RemirrorProps, 'initialContent' | 'editable' | 'autoFocus' | 'hooks'> & {
     placeholder?: string;
+    commandButtons: JSX.Element[]
   };
 export type MarkdownEditorProps = Partial<Omit<ReactEditorProps, 'stringHandler'>>;
 
@@ -51,6 +52,7 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
       new OrderedListExtension(),
       new MarkdownExtension({ copyAsMarkdown: false }),
       new HardBreakExtension(),
+      new HeatTraceExtension()
     ],
     [placeholder]
   );
@@ -70,6 +72,7 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
             <ToggleOrderedListButton />
             <ToggleBulletListButton />
             <ToggleTaskListButton />
+            {rest.commandButtons}
           </Toolbar>
           <EditorComponent />
           {children}

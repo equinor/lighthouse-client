@@ -18,6 +18,11 @@ export const StyledContainer = styled(AllStyledComponent) <StyledContainerProps>
         width: 10px;
         left: -16px;
     }
+
+    .remirror-list-item-checkbox {
+      margin: -4px;
+    }
+
     label {
         // Custom styling for unordered list items
         .remirror-collapsible-list-item-button {

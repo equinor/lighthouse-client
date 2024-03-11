@@ -15,11 +15,11 @@ import { useReleaseControlContext } from '../../../../hooks/useReleaseControlCon
 import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
-import { useGetReleaseControl, useRequestMutations, useWorkflowSigning } from '../../../../hooks';
+import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
 import { MarkdownRemirrorViewer } from '@equinor/markdown-editor';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { useMutation } from 'react-query';
-import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
+import { httpClient } from '../../../../../../Core/Client/Functions';
 
 interface CriteriaRenderProps {
   name: string;
@@ -115,7 +115,6 @@ export const CriteriaRender = ({
                 ) : (
                   <>
                     <DetailText>{criteria.valueDescription}</DetailText>
-
                   </>
                 )}
               </span>
@@ -131,9 +130,11 @@ export const CriteriaRender = ({
           )}
         </RowContent>
       </WorkflowRow>
-      <div style={{ gridColumn: "2/5" }}>
-        <WorkflowStepMarkdownDescription description={description ?? ""} isStepCompleted={isStepCompleted ?? false} />
-      </div>
+      {description && (
+        <div style={{ gridColumn: "2/5" }}>
+          <WorkflowStepMarkdownDescription stepId={stepId} description={description} isStepCompleted={isStepCompleted ?? false} />
+        </div>
+      )}
       {showAddContributor && (
         <WorkflowRow>
           <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
@@ -158,30 +159,38 @@ export const CriteriaRender = ({
 
 type WorkflowStepMarkdownDescriptionProps = {
   isStepCompleted: boolean;
+  stepId: string;
   description: string;
 }
+
 function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionProps) {
+  const releaseControlId = useReleaseControlContext(r => r.releaseControl.id);
 
-  const { editReleaseControlMutation } = useRequestMutations();
-  const rc = useReleaseControlContext();
-  const { mutateAsync, isLoading, error } = useMutation({
+  const { mutateAsync, error } = useMutation<void, void, { description: string }>({
+    mutationFn: async (args) => {
+      const { scopeChange } = httpClient()
+      await scopeChange.fetch(`api/releasecontrol/${releaseControlId}/workflow/step/${props.stepId}/description`, {
+        headers: {
+          ["content-type"]: "application/json",
 
-    mutationFn: async () => {
-      // DRCFormAtomApi.updateAtom(rc.releaseControl)
-      const model = DRCFormAtomApi.prepareReleaseControl();
-      await editReleaseControlMutation({
-        setAsOpen: true,
-        model: model
+        },
+        method: "PATCH",
+        body: JSON.stringify({ description: args.description })
       });
 
-    },
+
+    }
   });
 
   return (
-    <MarkdownRemirrorViewer editable={props.isStepCompleted ? false : "checkboxes-only"} initialContent={props.description} onCheckboxTicked={(e) => {
-      mutateAsync();
-      //do updating stuff here
-      //
-    }} />
+    <>
+      {error && (<div>Failed to update description</div>)}
+      <MarkdownRemirrorViewer editable={props.isStepCompleted ? false : "checkboxes-only"} initialContent={props.description} onCheckboxTicked={(e) => {
+        mutateAsync({
+          description: e
+        });
+      }}
+      />
+    </>
   )
 }

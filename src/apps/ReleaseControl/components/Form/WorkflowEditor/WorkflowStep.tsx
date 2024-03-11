@@ -1,12 +1,14 @@
-import { Autocomplete, Icon } from '@equinor/eds-core-react';
+import { Autocomplete, Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equinor/Workflow';
-import { OnChangeJSON, useHelpers } from '@remirror/react';
-import { useCallback } from 'react';
+import { CommandButton, OnChangeJSON, useHelpers } from '@remirror/react';
+import { useCallback, useState } from 'react';
 import { MarkdownEditor } from '../../../../../packages/MarkdownEditor/src';
+import { HeatTraceExtension } from '../../../../../packages/MarkdownEditor/src/extensions/addHtTagsExtension';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
+import { useReleaseControlContext } from '../../../hooks';
 import { CreateReleaseControlStepModel, UserObject } from '../../../types/releaseControl';
 import { CriteriaRender } from '../../Workflow/Criteria';
 import { getCriteriaStatus } from '../../Workflow/Utils/getCriteriaStatus';
@@ -45,6 +47,34 @@ export const WorkflowStep = ({
   isEditMode,
 }: WorkflowStepProps): JSX.Element => {
   const { updateAtom } = DRCFormAtomApi;
+  const releaseControl = useReleaseControlContext(rc => rc.releaseControl);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+  const addTags = () => {
+    const { updateAtom, readAtomValue } = DRCFormAtomApi;
+    const formState = readAtomValue();
+    const value = formState.workflowSteps?.find(s => s.id === step.id);
+    if (!value) {
+      return;
+    }
+    const appendList = makeMarkdownListFromStringArray(formState?.scopeTags ?? []);
+    value.description = value.description + "\n\n **Tags:** \n" + appendList;
+    updateAtom(formState)
+    setRefreshTrigger(s => !s)
+  }
+
+  const addHeatTracingCables = () => {
+    const { updateAtom, readAtomValue } = DRCFormAtomApi;
+    const formState = readAtomValue();
+    const value = formState.workflowSteps?.find(s => s.id === step.id);
+    if (!value) {
+      return;
+    }
+    const appendList = makeMarkdownListFromStringArray(formState?.scopeHTTags ?? []);
+    value.description = value.description + "\n\n **HT cables:** \n" + appendList;
+    updateAtom(formState)
+    setRefreshTrigger(s => !s)
+  }
 
   return (
     <>
@@ -166,15 +196,25 @@ export const WorkflowStep = ({
       </Line>
       <div style={{ width: "40%" }}>
         {!step.isCompleted && (
-          <MarkdownEditor initialContent={step.description ?? ""}>
-            <DescriptionChanges stepId={step.id!} />
-          </MarkdownEditor>
+          <>
+            <MarkdownEditor commandButtons={[
+              <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 1} />,
+              <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 1} />,
+            ]} key={refreshTrigger ? "yaaay" : "naaaa"} initialContent={step.description ?? ""}>
+              <DescriptionChanges stepId={step.id!} />
+            </MarkdownEditor>
+          </>
         )}
       </div>
 
     </>);
 
 };
+
+function makeMarkdownListFromStringArray(values: string[]) {
+  return values.map(s => `- [ ] ${s}`).join("\n") ?? "";
+}
+
 type DescriptionChangesProps = {
   stepId: string;
 }
