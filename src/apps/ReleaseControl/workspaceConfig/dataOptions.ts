@@ -32,7 +32,7 @@ export const dataSource: DataSource<ReleaseControl> = {
     },
 };
 
-const resolveDaysOnStep = (time: string) => {
+export const resolveDaysOnStep = (time: string) => {
     const oneWeek = 1000 * 60 * 60 * 24;
     const date = new Date(time);
     const today = new Date();
