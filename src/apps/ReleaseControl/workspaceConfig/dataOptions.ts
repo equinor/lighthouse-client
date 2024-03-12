@@ -15,17 +15,13 @@ export const dataSource: DataSource<ReleaseControl> = {
         const ogReleaseControl = (await res.json()) as Omit<ReleaseControl, 'timeOnLastStep'>[];
 
         return ogReleaseControl.map((rc): ReleaseControl => {
-            let timeOnLastStep = rc.workflowSteps
-                .slice()
-                .reverse()
-                .find((step) => {
+            const timeOnLastStep =
+                rc.workflowSteps.toReversed().find((step) => {
                     if (step.criterias[0]?.signedAtUtc) {
                         return true;
                     }
-                })?.criterias[0].signedAtUtc;
-            if (timeOnLastStep === undefined) {
-                timeOnLastStep = rc.createdAtUtc.toString();
-            }
+                })?.criterias[0].signedAtUtc ?? rc.createdAtUtc.toString();
+
             const daysOnStep = resolveDaysOnStep(timeOnLastStep);
             return { ...rc, timeOnLastStep: daysOnStep };
         });

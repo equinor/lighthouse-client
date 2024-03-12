@@ -11,18 +11,12 @@ export function ReleaseControlSidesheetBanner(): JSX.Element {
     const totalSteps = releaseControl.workflowSteps.length;
 
     const daysOnLastStep = () => {
-        let timeOnLastStep = releaseControl.workflowSteps
-            .slice()
-            .reverse()
-            .find((step) => {
+        const timeOnLastStep =
+            releaseControl.workflowSteps.toReversed().find((step) => {
                 if (step.criterias[0]?.signedAtUtc) {
                     return true;
                 }
-            })?.criterias[0].signedAtUtc;
-
-        if (timeOnLastStep === undefined) {
-            timeOnLastStep = releaseControl.createdAtUtc.toString();
-        }
+            })?.criterias[0].signedAtUtc ?? releaseControl.createdAtUtc.toString();
 
         const daysOnStep = resolveDaysOnStep(timeOnLastStep);
         return daysOnStep;
