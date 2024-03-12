@@ -237,8 +237,8 @@ export type RcScopeHtTag = {
     tagUrlId?: string | null;
     switchboardTagNos?: string | null;
     circuitTagNos?: string | null;
-    installedCableLength?: string | null;
-    estimatedCableLength?: string | null;
+    installedCableLength?: number | null;
+    estimatedCableLength?: number | null;
     tagHeated?: string | null;
     commissioningPackageNo?: string | null;
     commissioningPackageUrlId?: string | null;

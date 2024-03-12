@@ -102,10 +102,14 @@ const columns: Column<RcScopeHtTag>[] = [
         width: 100,
         Cell: (cell) => {
             return (
-                <Monospace>
-                    {cell.row.values.signedDate &&
-                        new Date(cell.row.values.signedDate).toLocaleDateString('en-gb')}
-                </Monospace>
+                <>
+                    {cell.row.values.signedDate ? (
+                        <Monospace>
+                            {cell.row.values.signedDate &&
+                                new Date(cell.row.values.signedDate).toLocaleDateString('en-gb')}
+                        </Monospace>
+                    ) : null}
+                </>
             );
         },
     },
@@ -116,10 +120,14 @@ const columns: Column<RcScopeHtTag>[] = [
         width: 100,
         Cell: (cell) => {
             return (
-                <Monospace>
-                    {cell.row.values.verifiedDate &&
-                        new Date(cell.row.values.verifiedDate).toLocaleDateString('en-gb')}
-                </Monospace>
+                <>
+                    {cell.row.values.signedDate ? (
+                        <Monospace>
+                            {cell.row.values.verifiedDate &&
+                                new Date(cell.row.values.verifiedDate).toLocaleDateString('en-gb')}
+                        </Monospace>
+                    ) : null}
+                </>
             );
         },
     },
@@ -145,7 +153,7 @@ const columns: Column<RcScopeHtTag>[] = [
                             name="check_circle_outlined"
                             title="Cable installed"
                         />
-                        {Number(cell.value.content.installedCableLength)}
+                        {cell.value.content.installedCableLength}
                     </StyledCenterCheckIcon>
                 );
             }
@@ -158,7 +166,7 @@ const columns: Column<RcScopeHtTag>[] = [
                             name="help_outline"
                             title="Estimated cable length"
                         />
-                        {Number(cell.value.content.estimatedCableLength)}
+                        {cell.value.content.estimatedCableLength}
                     </StyledCenterCheckIcon>
                 );
             }
