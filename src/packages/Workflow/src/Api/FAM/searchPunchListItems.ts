@@ -1,37 +1,40 @@
-import { generateExpressions, generateFamRequest } from '@equinor/fam-request-builder';
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { PunchListItem } from '../../Types/FAMTypes';
 import { throwOnError } from '../throwOnError';
 
+const columnNames: string[] = ['PunchItemNo', 'Description'];
+const facility = "JCA"
+const view = "Completion.CompletionPunchItem_v1"
 export async function searchPunchListItems(
-    id: string,
-    signal?: AbortSignal
+  id: string,
+  signal?: AbortSignal
 ): Promise<PunchListItem[]> {
-    const { FAM } = httpClient();
+  const { FAM } = httpClient();
 
-    const columnNames: string[] = ['PunchItemNo', 'Description'];
+  const res = await FAM.fetch(`v2/dynamic`, {
+    method: "POST",
+    headers: { ["content-type"]: "application/json" },
+    signal: signal,
+    body: JSON.stringify({
+      query: `
+SELECT ${columnNames.join(", ")}  FROM ${view} 
+WHERE PunchItemNo like '%${id}%' and facility = '${facility}'
+ORDER BY facility asc`,
+      pagination: {
+        skip: 0,
+        take: 50
+      },
+      options: null
+    })
+  })
 
-    const expressions = generateExpressions('PunchItemNo', 'Like', [id]);
+  await throwOnError(res, 'Failed to get punch list items');
 
-    const requestArgs = generateFamRequest(columnNames, 'Or', expressions, { take: 50, skip: 0 });
+  const punchListItems: { data: PunchListItem[] } = await res.json();
 
-    const res = await FAM.fetch(
-        'v1/typed/completion/completionPunchItem/facility/JCA?view-version=v1',
-        {
-            method: 'POST',
-            headers: { ['content-type']: 'application/json' },
-            body: JSON.stringify(requestArgs),
-            signal,
-        }
-    );
+  if (!Array.isArray(punchListItems.data)) {
+    throw 'Invalid response';
+  }
 
-    await throwOnError(res, 'Failed to get punch list items');
-
-    const punchListItems: PunchListItem[] = await res.json();
-
-    if (!Array.isArray(punchListItems)) {
-        throw 'Invalid response';
-    }
-
-    return punchListItems;
+  return punchListItems.data;
 }
