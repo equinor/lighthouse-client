@@ -10,7 +10,7 @@ export type TooltipProps = {
     criteria: Criteria;
     stepName?: string;
 };
-export function TooltipSidesheetContent(props: TooltipProps) {
+export function TooltipSidesheetContent(props: TooltipProps): JSX.Element {
     const { data, isLoading, error } = useQuery({
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.TenHours,

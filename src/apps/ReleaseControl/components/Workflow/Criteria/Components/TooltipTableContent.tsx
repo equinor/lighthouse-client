@@ -10,7 +10,8 @@ export type TooltipProps = {
     criteria: Criteria;
     stepName?: string;
 };
-export function TooltipTableContent(props: TooltipProps) {
+
+export function TooltipTableContent(props: TooltipProps): JSX.Element {
     const { data, isLoading, error } = useQuery({
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.TenHours,
