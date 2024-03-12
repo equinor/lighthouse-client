@@ -17,6 +17,7 @@ import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
 import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
 import { CircularProgress } from '@equinor/eds-core-react-old';
+import { CriteriaItem } from './CriteriaItem';
 
 interface CriteriaRenderProps {
     name: string;
@@ -28,6 +29,7 @@ interface CriteriaRenderProps {
     isLastCriteria: boolean;
     stepId: string;
     hideOptions?: boolean;
+    stepName?: string;
 }
 
 export const CriteriaRender = ({
@@ -40,16 +42,19 @@ export const CriteriaRender = ({
     order,
     stepId,
     hideOptions,
+    stepName,
 }: CriteriaRenderProps): JSX.Element => {
     const { requestId, workflowStepsLength, isPast } = useReleaseControlContext(
         ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
             requestId: id,
             workflowStepsLength: workflowSteps.length,
+            stepName: currentWorkflowStep.name,
             isPast:
                 (currentWorkflowStep?.order ?? 0) >
                 (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
         })
     );
+
     const { isLoading } = useGetReleaseControl(requestId);
     const state = useAtom(actionWithCommentAtom);
 
@@ -57,6 +62,7 @@ export const CriteriaRender = ({
     const formattedDate = dateToDateTimeFormat(date);
 
     const [showAddContributor, setShowAddContributor] = useState(false);
+
     return (
         <WorkflowWrapper key={criteria.id}>
             <WorklowIconAndLine>
@@ -108,7 +114,10 @@ export const CriteriaRender = ({
                                         )}
                                     </DetailText>
                                 ) : (
-                                    <DetailText>{criteria.valueDescription}</DetailText>
+                                    <CriteriaItem
+                                        criteria={criteria}
+                                        stepName={stepName}
+                                    ></CriteriaItem>
                                 )}
                             </span>
                             {!hideOptions && (
