@@ -201,7 +201,7 @@ export const WorkflowStep = ({
               <ToggleTaskListButton />,
               <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 1} />,
               <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 1} />,
-            ]} key={refreshTrigger ? "yaaay" : "naaaa"} initialContent={step.description ?? ""}>
+            ]} key={refreshTrigger ? "true" : "false"} initialContent={step.description ?? ""}>
               <DescriptionChanges stepId={step.id!} />
             </MarkdownEditor>
           </>
