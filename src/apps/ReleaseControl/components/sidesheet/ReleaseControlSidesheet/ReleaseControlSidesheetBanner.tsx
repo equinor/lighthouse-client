@@ -3,6 +3,7 @@ import { useIsReleaseControlMutatingOrFetching } from '../../../hooks';
 import { useReleaseControlContext } from '../../../hooks/useReleaseControlContext';
 import { Banner, BannerItemTitle, BannerItemValue, ChipText, SpinnerChip } from './sidesheetStyles';
 import { resolveDaysOnStep } from '../../../workspaceConfig';
+import { Criteria } from '@equinor/Workflow';
 
 export function ReleaseControlSidesheetBanner(): JSX.Element {
     const { releaseControl } = useReleaseControlContext();
@@ -11,14 +12,17 @@ export function ReleaseControlSidesheetBanner(): JSX.Element {
     const totalSteps = releaseControl.workflowSteps.length;
 
     const daysOnLastStep = () => {
-        const timeOnLastStep =
-            releaseControl.workflowSteps.toReversed().find((step) => {
-                if (step.criterias[0]?.signedAtUtc) {
-                    return true;
-                }
-            })?.criterias[0].signedAtUtc ?? releaseControl.createdAtUtc.toString();
+        const lastStep = releaseControl.workflowSteps
+            .filter((s) => s.criterias.every((s) => !!s.signedAtUtc))
+            .flatMap((s) => s.criterias)
+            .reduce((acc, curr) => {
+                if (!acc) return curr;
+                return new Date(acc.signedAtUtc).getTime() > new Date(curr.signedAtUtc).getTime()
+                    ? acc
+                    : curr;
+            }, null as Criteria | null)?.signedAtUtc;
 
-        const daysOnStep = resolveDaysOnStep(timeOnLastStep);
+        const daysOnStep = resolveDaysOnStep(lastStep ?? releaseControl.createdAtUtc.toString());
         return daysOnStep;
     };
 
