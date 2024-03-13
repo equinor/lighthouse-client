@@ -61,7 +61,7 @@ export const MarkdownRemirrorViewer: FC<PropsWithChildren<MarkdownRemirrorViewer
   });
 
   return (
-    <StyledContainer isReadonly={rest.editable == false} ref={parentEl}>
+    <StyledContainer ref={parentEl}>
       <ThemeProvider theme={theme}>
         <Remirror manager={manager} initialContent={initialContent} {...rest} editable={rest.editable == true || rest.editable == "checkboxes-only" ? true : false} onFocus={(e) => {
           // We want the editor to be non-editable but still want checkboxes to be able to be ticked

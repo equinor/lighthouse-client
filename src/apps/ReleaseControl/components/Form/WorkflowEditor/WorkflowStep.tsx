@@ -6,7 +6,6 @@ import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equi
 import { CommandButton, OnChangeJSON, ToggleTaskListButton, useHelpers } from '@remirror/react';
 import { useCallback, useState } from 'react';
 import { MarkdownEditor } from '../../../../../packages/MarkdownEditor/src';
-import { HeatTraceExtension } from '../../../../../packages/MarkdownEditor/src/extensions/addHtTagsExtension';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { useReleaseControlContext } from '../../../hooks';
 import { CreateReleaseControlStepModel, UserObject } from '../../../types/releaseControl';

@@ -18,7 +18,6 @@ import {
   useRemirror,
   ToggleBoldButton,
   ToggleOrderedListButton,
-  ToggleTaskListButton,
   ToggleItalicButton,
   ToggleBulletListButton,
 } from '@remirror/react';
@@ -69,7 +68,7 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
             <ToggleItalicButton />
             <ToggleOrderedListButton />
             <ToggleBulletListButton />
-             {rest?.commandButtons}
+            {rest?.commandButtons}
           </Toolbar>
           <EditorComponent />
           {children}
