@@ -69,8 +69,7 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
             <ToggleItalicButton />
             <ToggleOrderedListButton />
             <ToggleBulletListButton />
-            <ToggleTaskListButton />
-            {rest?.commandButtons}
+             {rest?.commandButtons}
           </Toolbar>
           <EditorComponent />
           {children}

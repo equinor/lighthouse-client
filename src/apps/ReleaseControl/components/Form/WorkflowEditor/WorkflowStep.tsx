@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equinor/Workflow';
-import { CommandButton, OnChangeJSON, useHelpers } from '@remirror/react';
+import { CommandButton, OnChangeJSON, ToggleTaskListButton, useHelpers } from '@remirror/react';
 import { useCallback, useState } from 'react';
 import { MarkdownEditor } from '../../../../../packages/MarkdownEditor/src';
 import { HeatTraceExtension } from '../../../../../packages/MarkdownEditor/src/extensions/addHtTagsExtension';
@@ -198,6 +198,7 @@ export const WorkflowStep = ({
         {!step.isCompleted && (
           <>
             <MarkdownEditor commandButtons={[
+              <ToggleTaskListButton />,
               <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 1} />,
               <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 1} />,
             ]} key={refreshTrigger ? "yaaay" : "naaaa"} initialContent={step.description ?? ""}>
