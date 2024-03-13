@@ -36,6 +36,10 @@ export function ReleaseControlSidesheetBanner(): JSX.Element {
                 value={`${releaseControl.currentWorkflowStep.order + 1}/${totalSteps}`}
             />
             <BannerItem
+                title="Target date"
+                value={new Date(releaseControl.plannedDueDate).toLocaleDateString('en-gb')}
+            />
+            <BannerItem
                 title={'RC State'}
                 value={releaseControl.isVoided ? 'Voided' : releaseControl.state}
             />
