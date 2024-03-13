@@ -15,6 +15,11 @@ export const StyledContainer = styled(AllStyledComponent)`
         width: 10px;
         left: -16px;
     }
+
+    .remirror-list-item-checkbox {
+      margin: -4px;
+    }
+
     label {
         // Custom styling for unordered list items
         .remirror-collapsible-list-item-button {
@@ -29,7 +34,7 @@ export const StyledContainer = styled(AllStyledComponent)`
             .ProseMirror,
             .remirror-editor {
                 background-color: ${tokens.colors.ui.background__light.rgba};
-                min-height: 150px;
+                min-height: 50px;
                 height: auto;
                 max-height: 500px;
                 // Gray border bottom of the container
