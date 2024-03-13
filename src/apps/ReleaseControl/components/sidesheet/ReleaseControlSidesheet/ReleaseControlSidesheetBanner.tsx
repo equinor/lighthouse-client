@@ -2,17 +2,41 @@ import { CircularProgress } from '@equinor/eds-core-react-old';
 import { useIsReleaseControlMutatingOrFetching } from '../../../hooks';
 import { useReleaseControlContext } from '../../../hooks/useReleaseControlContext';
 import { Banner, BannerItemTitle, BannerItemValue, ChipText, SpinnerChip } from './sidesheetStyles';
+import { resolveDaysOnStep } from '../../../workspaceConfig';
+import { Criteria } from '@equinor/Workflow';
 
 export function ReleaseControlSidesheetBanner(): JSX.Element {
     const { releaseControl } = useReleaseControlContext();
     const isLoading = useIsReleaseControlMutatingOrFetching(releaseControl.id);
+
+    const totalSteps = releaseControl.workflowSteps.length;
+
+    const daysOnLastStep = () => {
+        const lastStep = releaseControl.workflowSteps
+            .filter((s) => s.criterias.every((s) => !!s.signedAtUtc))
+            .flatMap((s) => s.criterias)
+            .reduce((acc, curr) => {
+                if (!acc) return curr;
+                return new Date(acc.signedAtUtc).getTime() > new Date(curr.signedAtUtc).getTime()
+                    ? acc
+                    : curr;
+            }, null as Criteria | null)?.signedAtUtc;
+
+        const daysOnStep = resolveDaysOnStep(lastStep ?? releaseControl.createdAtUtc.toString());
+        return daysOnStep;
+    };
+
     return (
         <Banner>
             <BannerItem title="" value="" />
-            <BannerItem title={'Phase'} value={releaseControl.phase} />
-            <BannerItem title={'Status'} value={releaseControl.workflowStatus} />
+            <BannerItem title="Current step" value={releaseControl.currentWorkflowStep.name} />
+            <BannerItem title="Time on curr. step" value={`${daysOnLastStep()} days`} />
             <BannerItem
-                title={'State'}
+                title="Curr. step/tot. steps"
+                value={`${releaseControl.currentWorkflowStep.order + 1}/${totalSteps}`}
+            />
+            <BannerItem
+                title={'RC State'}
                 value={releaseControl.isVoided ? 'Voided' : releaseControl.state}
             />
             {isLoading && (
