@@ -185,9 +185,9 @@ function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionP
   return (
     <>
       {error && (<div>Failed to update description</div>)}
-      <MarkdownRemirrorViewer editable={props.isStepCompleted ? false : "checkboxes-only"} initialContent={props.description} onCheckboxTicked={(e) => {
+      <MarkdownRemirrorViewer editable={props.isStepCompleted ? false : "checkboxes-only"} initialContent={props.description} onCheckboxTicked={(markdown) => {
         mutateAsync({
-          description: e
+          description: markdown
         });
       }}
       />
