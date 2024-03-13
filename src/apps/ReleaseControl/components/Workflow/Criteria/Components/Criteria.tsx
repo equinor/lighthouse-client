@@ -166,20 +166,8 @@ type WorkflowStepMarkdownDescriptionProps = {
 function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionProps) {
   const releaseControlId = useReleaseControlContext(r => r.releaseControl.id);
 
-  const { mutateAsync, error } = useMutation<void, void, { description: string }>({
-    mutationFn: async (args) => {
-      const { scopeChange } = httpClient()
-      await scopeChange.fetch(`api/releasecontrol/${releaseControlId}/workflow/step/${props.stepId}/description`, {
-        headers: {
-          ["content-type"]: "application/json",
-
-        },
-        method: "PATCH",
-        body: JSON.stringify({ description: args.description })
-      });
-
-
-    }
+  const { mutateAsync, error } = useMutation<void, void, UpdateWorkflowMarkdown>({
+    mutationFn: async (args) => updateWorkflowStepMarkdownDescription(args)
   });
 
   return (
@@ -187,10 +175,32 @@ function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionP
       {error && (<div>Failed to update description</div>)}
       <MarkdownRemirrorViewer editable={props.isStepCompleted ? false : "checkboxes-only"} initialContent={props.description} onCheckboxTicked={(markdown) => {
         mutateAsync({
-          description: markdown
+          description: markdown,
+          releaseControlId: releaseControlId,
+          stepId: props.stepId
         });
       }}
       />
     </>
   )
+}
+
+type UpdateWorkflowMarkdown = {
+  releaseControlId: string;
+  stepId: string;
+  description: string;
+}
+async function updateWorkflowStepMarkdownDescription({ stepId, description, releaseControlId }: UpdateWorkflowMarkdown) {
+  const { scopeChange } = httpClient()
+  await scopeChange.fetch(`api/releasecontrol/${releaseControlId}/workflow/step/${stepId}/description`, {
+    headers: {
+      ["content-type"]: "application/json",
+
+    },
+    method: "PATCH",
+    body: JSON.stringify({ description: description })
+  });
+
+
+
 }
