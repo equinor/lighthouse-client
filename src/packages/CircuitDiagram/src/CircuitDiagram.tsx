@@ -256,29 +256,31 @@ export const CircuitDiagram = ({
                                     </SwitchBoardContainer>
                                 );
                             })}
-                            <CircuitDiagramEditMode onMouseOver={onOpen} onMouseLeave={onClose}>
-                                {!isEditMode && (
-                                    <Button onClick={() => setIsEditMode(true)}>
-                                        Edit isolations
-                                    </Button>
-                                )}
-                                {isEditMode && (
-                                    <Button
-                                        variant="outlined"
-                                        onClick={() => {
-                                            setIsEditMode(false);
-                                            setComment('');
-                                        }}
-                                    >
-                                        Exit edit mode
-                                    </Button>
-                                )}
-                                {isOpen && (
-                                    <CircuitDiagramPopover cornerButton={true}>
-                                        {buttonText}
-                                    </CircuitDiagramPopover>
-                                )}
-                            </CircuitDiagramEditMode>
+                            {sidesheetType === 'rc' ? null : (
+                                <CircuitDiagramEditMode onMouseOver={onOpen} onMouseLeave={onClose}>
+                                    {!isEditMode && (
+                                        <Button onClick={() => setIsEditMode(true)}>
+                                            Edit isolations
+                                        </Button>
+                                    )}
+                                    {isEditMode && (
+                                        <Button
+                                            variant="outlined"
+                                            onClick={() => {
+                                                setIsEditMode(false);
+                                                setComment('');
+                                            }}
+                                        >
+                                            Exit edit mode
+                                        </Button>
+                                    )}
+                                    {isOpen && (
+                                        <CircuitDiagramPopover cornerButton={true}>
+                                            {buttonText}
+                                        </CircuitDiagramPopover>
+                                    )}
+                                </CircuitDiagramEditMode>
+                            )}
                         </CircuitDiagramContainer>
 
                         <CircuitDiagramFillerDiv />
