@@ -5,8 +5,8 @@ import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import { Select } from './ScopeSelect';
 import { SearchWrapper, Section } from './search.styles';
 import { RcScopeTag } from '../../../../types/releaseControl';
-import { CreateRcTagTable } from './CreateRcTagTable';
 import { useState } from 'react';
+import { TagTable } from './TagTable';
 
 interface SearchTagsProps {
     onChange: (newTags: TypedSelectOption[]) => void;
@@ -77,7 +77,7 @@ export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => 
                     />
                 </SearchWrapper>
                 <div>
-                    <CreateRcTagTable
+                    <TagTable
                         tags={
                             tags
                                 .filter(({ type }) => type === 'scopetag' || type === 'famtag')

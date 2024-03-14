@@ -224,6 +224,11 @@ export type RcScopeTag = {
     mccrStatus?: number | null;
     function?: string | null;
     commissioningStatus?: string | null;
+    signedDate?: Date | null;
+    verifiedDate?: Date | null;
+    mechanicalCompletionResponsible?: string | null;
+    pidDrawings?: Drawing[];
+    isoDrawings?: Drawing[];
 };
 
 export type RcScopeHtTag = {
@@ -232,17 +237,27 @@ export type RcScopeHtTag = {
     tagUrlId?: string | null;
     switchboardTagNos?: string | null;
     circuitTagNos?: string | null;
-    installedCableLength?: string | null;
-    estimatedCableLength?: string | null;
+    installedCableLength?: number | null;
+    estimatedCableLength?: number | null;
     tagHeated?: string | null;
     commissioningPackageNo?: string | null;
     commissioningPackageUrlId?: string | null;
     mechanicalCompletionPackageNo?: string | null;
     mechanicalCompletionPackageUrlId?: string | null;
     openWorkOrders?: string | null;
-    openWorkOrderIds?: string | null;
+    status?: string | null;
     area: string;
     function: string | null;
     tagType: string;
     tagMountedOn?: string | null;
+    signedDate?: Date | null;
+    verifiedDate?: Date | null;
+    mechanicalCompletionHandoverStatus?: string | null;
+    isoDrawings?: Drawing[];
+};
+
+export type Drawing = {
+    docNo: string;
+    docTitle: string;
+    docType: string;
 };
