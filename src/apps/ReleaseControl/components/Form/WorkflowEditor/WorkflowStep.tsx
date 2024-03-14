@@ -57,7 +57,7 @@ export const WorkflowStep = ({
       return;
     }
     const appendList = makeMarkdownListFromStringArray(formState?.scopeTags ?? []);
-    workflowStep.description = workflowStep.description + "\n\n **Tags:** \n" + appendList;
+    workflowStep.description = (workflowStep.description ?? "") + "\n\n **Tags:** \n" + appendList;
     updateAtom(formState)
     setRefreshTrigger(s => !s)
   }
@@ -70,7 +70,7 @@ export const WorkflowStep = ({
       return;
     }
     const appendList = makeMarkdownListFromStringArray(formState?.scopeHTTags ?? []);
-    workflowStep.description = workflowStep.description + "\n\n **HT cables:** \n" + appendList;
+    workflowStep.description = (workflowStep.description ?? "") + "\n\n **HT cables:** \n" + appendList;
     updateAtom(formState)
     setRefreshTrigger(s => !s)
   }
