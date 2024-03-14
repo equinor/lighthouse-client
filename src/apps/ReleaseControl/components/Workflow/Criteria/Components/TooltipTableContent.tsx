@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getPersonsInrole } from '../../../../api/releaseControl/Request/getPersonsInRole';
+import { getPersonsInRole } from '../../../../api/releaseControl/Request/getPersonsInRole';
 import { getPersonByAzureOid } from '../../../../api/releaseControl/Request/getPersonByAzureOid';
 import { CacheTime } from '@equinor/Workflow';
 import { DotProgress } from '@equinor/eds-core-react';
@@ -18,7 +18,7 @@ export function TooltipTableContent(props: TooltipProps): JSX.Element {
         queryKey: ['assignee', props.criteria.value],
         queryFn: async () => {
             const result = await (props.criteria.type == 'RequireProcosysFunctionalRoleSignature'
-                ? getPersonsInrole(props.criteria.value)
+                ? getPersonsInRole(props.criteria.value)
                 : getPersonByAzureOid(props.criteria.value));
             return result;
         },
