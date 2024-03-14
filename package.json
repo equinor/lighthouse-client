@@ -56,7 +56,7 @@
     "@tweenjs/tween.js": "^21.0.0",
     "base64-js": "^1.5.1",
     "camera-controls": "^1.34.1",
-    "dompurify": "^2.3.6",
+    "dompurify": "^3.0.9",
     "fast-levenshtein": "^3.0.0",
     "formik": "^2.4.5",
     "fuse.js": "^6.5.3",
