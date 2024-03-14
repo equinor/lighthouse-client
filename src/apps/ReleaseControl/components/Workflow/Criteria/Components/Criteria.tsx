@@ -17,6 +17,7 @@ import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
 import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
 import { CircularProgress } from '@equinor/eds-core-react-old';
+import { CriteriaItem } from './CriteriaItem';
 
 interface CriteriaRenderProps {
     name: string;
@@ -50,6 +51,7 @@ export const CriteriaRender = ({
                 (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
         })
     );
+
     const { isLoading } = useGetReleaseControl(requestId);
     const state = useAtom(actionWithCommentAtom);
 
@@ -57,6 +59,7 @@ export const CriteriaRender = ({
     const formattedDate = dateToDateTimeFormat(date);
 
     const [showAddContributor, setShowAddContributor] = useState(false);
+
     return (
         <WorkflowWrapper key={criteria.id}>
             <WorklowIconAndLine>
@@ -108,7 +111,7 @@ export const CriteriaRender = ({
                                         )}
                                     </DetailText>
                                 ) : (
-                                    <DetailText>{criteria.valueDescription}</DetailText>
+                                    <CriteriaItem criteria={criteria}></CriteriaItem>
                                 )}
                             </span>
                             {!hideOptions && (
