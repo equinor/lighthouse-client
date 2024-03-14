@@ -1,6 +1,6 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { DataSource } from '@equinor/WorkSpace';
-import { ReleaseControl } from '../types/releaseControl';
+import { Criteria, ReleaseControl } from '../types/releaseControl';
 
 async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { scopeChange } = httpClient();
@@ -14,25 +14,26 @@ export const dataSource: DataSource<ReleaseControl> = {
     responseParser: async (res) => {
         const ogReleaseControl = (await res.json()) as Omit<ReleaseControl, 'timeOnLastStep'>[];
 
-        return ogReleaseControl.map((rc): ReleaseControl => {
-            let timeOnLastStep = rc.workflowSteps
-                .slice()
-                .reverse()
-                .find((step) => {
-                    if (step.criterias[0]?.signedAtUtc) {
-                        return true;
-                    }
-                })?.criterias[0].signedAtUtc;
-            if (timeOnLastStep === undefined) {
-                timeOnLastStep = rc.createdAtUtc.toString();
-            }
-            const daysOnStep = resolveDaysOnStep(timeOnLastStep);
+        const data = ogReleaseControl.map((rc): ReleaseControl => {
+            const lastStep = rc.workflowSteps
+                .filter((s) => s.criterias.every((s) => !!s.signedAtUtc))
+                .flatMap((s) => s.criterias)
+                .reduce((acc, curr) => {
+                    if (!acc) return curr;
+                    return new Date(acc.signedAtUtc).getTime() >
+                        new Date(curr.signedAtUtc).getTime()
+                        ? acc
+                        : curr;
+                }, null as Criteria | null)?.signedAtUtc;
+
+            const daysOnStep = resolveDaysOnStep(lastStep ?? rc.createdAtUtc.toString());
             return { ...rc, timeOnLastStep: daysOnStep };
         });
+        return data;
     },
 };
 
-const resolveDaysOnStep = (time: string) => {
+export const resolveDaysOnStep = (time: string) => {
     const oneWeek = 1000 * 60 * 60 * 24;
     const date = new Date(time);
     const today = new Date();
