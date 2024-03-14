@@ -11,7 +11,7 @@ import {
     getMccrStatusColorByStatus,
 } from '../../../../functions/statusUtils';
 import { StatusCircle } from '@equinor/CircuitDiagram';
-import { StyledRowView } from '../../../../Styles/WrapperStyles';
+import { Monospace, StyledRowView } from '../../../../Styles/WrapperStyles';
 
 interface TagTableProps {
     tags: RcScopeTag[];
@@ -49,26 +49,15 @@ const columns: Column<RcScopeTag>[] = [
         aggregate: 'count',
     },
     {
-        id: 'tagMountedOn',
-        Header: 'Mounted on',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagMountedOn',
-            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
-        }),
-        Cell: (cell: CellProps<RcScopeTag>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.tagMountedOn}
-            </Link>
-        ),
-        Aggregated: () => null,
-        aggregate: 'count',
-        width: 110,
+        id: 'commissioningStatus',
+        Header: 'MC Pkg Owner',
+        accessor: (item) => item.commissioningStatus,
+        width: 120,
     },
     {
         id: 'links',
         Header: 'Links',
-        width: 70,
+        width: 80,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
@@ -94,9 +83,21 @@ const columns: Column<RcScopeTag>[] = [
         aggregate: 'count',
     },
     {
-        id: 'commissioningStatus',
-        Header: 'MC Pkg Owner',
-        accessor: (item) => item.commissioningStatus,
+        id: 'tagMountedOn',
+        Header: 'Mounted on',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'tagMountedOn',
+            url: proCoSysUrls.getTagUrl(item.tagMountedOnUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.tagMountedOn}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 110,
     },
     {
         id: 'mccrStatus',
@@ -108,22 +109,56 @@ const columns: Column<RcScopeTag>[] = [
             }
             return (
                 <StyledRowView>
-                    {cell.value}
                     <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+                    {cell.value}
                 </StyledRowView>
             );
         },
         width: 70,
     },
     {
+        id: 'signedDate',
+        Header: 'Signed date',
+        accessor: (item) => item.signedDate,
+        width: 100,
+        Cell: (cell) => {
+            return (
+                <Monospace>
+                    {cell.row.values.signedDate &&
+                        new Date(cell.row.values.signedDate).toLocaleDateString('en-gb')}
+                </Monospace>
+            );
+        },
+    },
+    {
+        id: 'verifiedDate',
+        Header: 'Verified date',
+        accessor: (item) => item.verifiedDate,
+        width: 100,
+        Cell: (cell) => {
+            return (
+                <Monospace>
+                    {cell.row.values.verifiedDate &&
+                        new Date(cell.row.values.verifiedDate).toLocaleDateString('en-gb')}
+                </Monospace>
+            );
+        },
+    },
+    {
+        id: 'mechanicalCompletionResponsible',
+        Header: 'MC Resp.',
+        accessor: (item) => item.mechanicalCompletionResponsible,
+        width: 70,
+    },
+    {
         id: 'relatedHTCables',
         Header: 'HT on tag/line',
         accessor: (item) => item.relatedHTCables,
-        width: 170,
+        width: 120,
     },
     {
         id: 'mechanicalCompletionPackageNo',
-        Header: 'MC',
+        Header: 'MC Pkg',
         accessor: (item) => ({
             content: item,
             currentKey: 'mechanicalCompletionPackageNo',
@@ -140,7 +175,7 @@ const columns: Column<RcScopeTag>[] = [
     },
     {
         id: 'commissioningPackageNo',
-        Header: 'Comm',
+        Header: 'Comm Pkg',
         accessor: (item) => ({
             content: item,
             currentKey: 'commissioningPackageNo',
@@ -159,7 +194,7 @@ const columns: Column<RcScopeTag>[] = [
         id: 'area',
         Header: 'Area',
         accessor: (item) => item.area,
-        width: 80,
+        width: 70,
     },
     {
         id: 'pidDrawings',
@@ -225,12 +260,13 @@ const columns: Column<RcScopeTag>[] = [
         id: 'openWorkOrders',
         Header: 'WO (open)',
         accessor: (item) => item.openWorkOrders,
+        width: 90,
     },
     {
         id: 'register',
         Header: 'Tag type',
         accessor: (item) => item.tagType,
-        width: 150,
+        width: 140,
     },
     {
         id: 'remove',
@@ -262,5 +298,6 @@ const StyledLinkGrouping = styled.div`
     display: flex;
     align-items: center;
     gap: 0.2em;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding-right: 7px;
 `;
