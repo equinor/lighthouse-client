@@ -71,12 +71,13 @@ const columns: Column<RcScopeHtTag>[] = [
         id: 'switchBoardTagNos',
         Header: 'Switchboard',
         accessor: (item) => item.switchboardTagNos,
-        width: 130,
+        width: 100,
     },
     {
         id: 'circuitTagNos',
         Header: 'Circuit',
         accessor: (item) => item.circuitTagNos,
+        width: 100,
     },
     {
         id: 'status',
