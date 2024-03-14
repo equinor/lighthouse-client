@@ -1,54 +1,60 @@
 apiVersion: radix.equinor.com/v1
 kind: RadixApplication
 metadata:
-    name: lighthouse-client
+  name: lighthouse-client
 spec:
-    dnsExternalAlias:
-        - alias: jc.fusion.dev.equinor.com
-          environment: dev
-          component: frontend
-          useCertificateAutomation: true
-    environments:
-        - name: dev
-          build:
-              from: feat/radix
-        - name: dev2
-          build:
-              from: feat/radix
-        - name: prod
-    components:
-        - name: frontend
-          src: '.'
-          variables:
-              AUTH_CONFIG: ''
-              JC_CONFIG: ''
-              SERVICE_MESSAGE: ''
-          ports:
-              - name: http
-                port: 8080
-          publicPort: http
-          environmentConfig:
-              - environment: dev
-                resources:
-                    requests:
-                        memory: '1024Mi'
-                        cpu: '800m'
-                    limits:
-                        memory: '4096Mi'
-                        cpu: '800m'
-              - environment: dev2
-                resources:
-                    requests:
-                        memory: '1024Mi'
-                        cpu: '800m'
-                    limits:
-                        memory: '4096Mi'
-                        cpu: '800m'
-              - environment: prod
-                resources:
-                    requests:
-                        memory: '1024Mi'
-                        cpu: '800m'
-                    limits:
-                        memory: '4096Mi'
-                        cpu: '800m'
+  dnsExternalAlias:
+    - alias: jc.fusion.dev.equinor.com
+      environment: dev
+      component: frontend
+      useCertificateAutomation: true
+
+    # - alias: jc.fusion.equinor.com
+    #   environment: prod
+    #   component: frontend
+    #   useCertificateAutomation: true
+
+  environments:
+    - name: dev
+      build:
+        from: feat/radix
+    - name: dev2
+      build:
+        from: feat/radix
+    - name: prod
+  components:
+    - name: frontend
+      src: "."
+      variables:
+        AUTH_CONFIG: ""
+        JC_CONFIG: ""
+        SERVICE_MESSAGE: ""
+      ports:
+        - name: http
+          port: 8080
+      publicPort: http
+      environmentConfig:
+        - environment: dev
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "800m"
+            limits:
+              memory: "4096Mi"
+              cpu: "800m"
+        - environment: dev2
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "800m"
+            limits:
+              memory: "4096Mi"
+              cpu: "800m"
+        - environment: prod
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "800m"
+            limits:
+              memory: "4096Mi"
+              cpu: "800m"
