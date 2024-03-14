@@ -52,12 +52,12 @@ export const WorkflowStep = ({
   const addTags = () => {
     const { updateAtom, readAtomValue } = DRCFormAtomApi;
     const formState = readAtomValue();
-    const value = formState.workflowSteps?.find(s => s.id === step.id);
-    if (!value) {
+    const workflowStep = formState.workflowSteps?.find(s => s.id === step.id);
+    if (!workflowStep) {
       return;
     }
     const appendList = makeMarkdownListFromStringArray(formState?.scopeTags ?? []);
-    value.description = value.description + "\n\n **Tags:** \n" + appendList;
+    workflowStep.description = workflowStep.description + "\n\n **Tags:** \n" + appendList;
     updateAtom(formState)
     setRefreshTrigger(s => !s)
   }
@@ -65,12 +65,12 @@ export const WorkflowStep = ({
   const addHeatTracingCables = () => {
     const { updateAtom, readAtomValue } = DRCFormAtomApi;
     const formState = readAtomValue();
-    const value = formState.workflowSteps?.find(s => s.id === step.id);
-    if (!value) {
+    const workflowStep = formState.workflowSteps?.find(s => s.id === step.id);
+    if (!workflowStep) {
       return;
     }
     const appendList = makeMarkdownListFromStringArray(formState?.scopeHTTags ?? []);
-    value.description = value.description + "\n\n **HT cables:** \n" + appendList;
+    workflowStep.description = workflowStep.description + "\n\n **HT cables:** \n" + appendList;
     updateAtom(formState)
     setRefreshTrigger(s => !s)
   }
@@ -212,8 +212,8 @@ export const WorkflowStep = ({
 
 };
 
-function makeMarkdownListFromStringArray(values: string[]) {
-  return values.map(s => `- [ ] ${s}`).join("\n") ?? "";
+function makeMarkdownListFromStringArray(tagNos: string[]) {
+  return tagNos.map(s => `- [ ] ${s}`).join("\n") ?? "";
 }
 
 type DescriptionChangesProps = {
@@ -225,11 +225,11 @@ export const DescriptionChanges = (props: DescriptionChangesProps): JSX.Element 
 
   const onChange = useCallback(() => {
     const formState = readAtomValue();
-    const value = formState.workflowSteps?.find(s => s.id == props.stepId);
-    if (!value) {
+    const workflowStep = formState.workflowSteps?.find(s => s.id == props.stepId);
+    if (!workflowStep) {
       return
     }
-    value.description = getMarkdown();
+    workflowStep.description = getMarkdown();
     updateAtom(formState)
   }, [getMarkdown, updateAtom]);
 
