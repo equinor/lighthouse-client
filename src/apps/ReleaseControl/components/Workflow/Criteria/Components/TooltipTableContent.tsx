@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { getPersonsInrole } from '../../../../api/releaseControl/Request/getPersonsInRole';
-import { getPersonByAzureOid } from '../../../../api/releaseControl/Request/getPersonByEmail';
+import { getPersonByAzureOid } from '../../../../api/releaseControl/Request/getPersonByAzureOid';
 import { CacheTime } from '@equinor/Workflow';
 import { DotProgress } from '@equinor/eds-core-react';
 import { StyledPersonInfoTooltip } from './criteria.styles';
