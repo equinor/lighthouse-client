@@ -17,4 +17,5 @@ export const Monospace = styled.div`
 
 export const StyledRowView = styled.div`
     display: flex;
+    gap: 0.3em;
 `;

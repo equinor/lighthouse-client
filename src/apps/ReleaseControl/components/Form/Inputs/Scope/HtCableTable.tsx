@@ -1,12 +1,14 @@
 import { tokens } from '@equinor/eds-tokens';
 import { proCoSysUrls, stidUrls } from '@equinor/procosys-urls';
 import { CellProps, Column, Table, defaultGroupByFn } from '@equinor/Table';
-import { FamTagType } from '@equinor/Workflow';
 import styled from 'styled-components';
 import { RemoveHtCableCell } from './RemoveHtCableCell';
 import { Icon } from '@equinor/lighthouse-components';
 import { LinkGroup } from './LinkGroup';
 import { RcScopeHtTag } from '../../../../types/releaseControl';
+import { Monospace, StyledRowView } from '../../../../Styles/WrapperStyles';
+import { StatusCircle } from '@equinor/CircuitDiagram';
+import { getMccrStatusColorByStatus } from '../../../../functions/statusUtils';
 
 interface HtCableTableProps {
     htCables: RcScopeHtTag[];
@@ -34,7 +36,7 @@ const columns: Column<RcScopeHtTag>[] = [
             currentKey: 'tagNo',
             url: proCoSysUrls.getTagUrl(item.tagUrlId || ''),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeHtTag>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
                 {cell.value.content.tagNo}
             </Link>
@@ -43,15 +45,21 @@ const columns: Column<RcScopeHtTag>[] = [
         aggregate: 'count',
     },
     {
-        id: 'stidLink',
-        Header: 'Links',
-        width: 60,
+        id: 'commissioningStatus',
+        Header: 'MC Pkg Owner',
+        accessor: (item) => item.mechanicalCompletionHandoverStatus,
+        width: 120,
+    },
+    {
+        id: 'link',
+        Header: 'Link',
+        width: 45,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
             url: stidUrls.getTagUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeHtTag>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
                 <StidLogoLink src="images/stid_logo.svg" />
             </Link>
@@ -63,11 +71,71 @@ const columns: Column<RcScopeHtTag>[] = [
         id: 'switchBoardTagNos',
         Header: 'Switchboard',
         accessor: (item) => item.switchboardTagNos,
+        width: 130,
     },
     {
         id: 'circuitTagNos',
         Header: 'Circuit',
         accessor: (item) => item.circuitTagNos,
+    },
+    {
+        id: 'status',
+        Header: 'Tag MC',
+        accessor: (item) => item.status,
+        Cell: (cell: CellProps<RcScopeHtTag>) => {
+            if (!cell.value) {
+                return <></>;
+            }
+            return (
+                <StyledRowView>
+                    <StatusCircle statusColor={getMccrStatusColorByStatus(cell.value)} />
+                    {cell.value}
+                </StyledRowView>
+            );
+        },
+        width: 70,
+    },
+    {
+        id: 'signedDate',
+        Header: 'Signed date',
+        accessor: (item) => item.signedDate,
+        width: 100,
+        Cell: (cell) => {
+            return (
+                <>
+                    {cell.row.values.signedDate ? (
+                        <Monospace>
+                            {cell.row.values.signedDate &&
+                                new Date(cell.row.values.signedDate).toLocaleDateString('en-gb')}
+                        </Monospace>
+                    ) : null}
+                </>
+            );
+        },
+    },
+    {
+        id: 'verifiedDate',
+        Header: 'Verified date',
+        accessor: (item) => item.verifiedDate,
+        width: 100,
+        Cell: (cell) => {
+            return (
+                <>
+                    {cell.row.values.signedDate ? (
+                        <Monospace>
+                            {cell.row.values.verifiedDate &&
+                                new Date(cell.row.values.verifiedDate).toLocaleDateString('en-gb')}
+                        </Monospace>
+                    ) : null}
+                </>
+            );
+        },
+    },
+    {
+        id: 'tagHeated',
+        Header: 'Tag(s) heated',
+        accessor: (item) => item.tagHeated,
+        width: 110,
     },
     {
         id: 'installedCableLength',
@@ -76,16 +144,16 @@ const columns: Column<RcScopeHtTag>[] = [
             content: item,
             currentKey: 'installedCableLength',
         }),
-        Cell: (cell: CellProps<FamTagType>) => {
+        Cell: (cell: CellProps<RcScopeHtTag>) => {
             if (cell.value.content.installedCableLength !== null) {
                 return (
                     <StyledCenterCheckIcon>
-                        {Number(cell.value.content.installedCableLength)}
                         <Icon
                             color={tokens.colors.interactive.success__text.hex}
                             name="check_circle_outlined"
-                            title="This cable is installed."
+                            title="Cable installed"
                         />
+                        {cell.value.content.installedCableLength}
                     </StyledCenterCheckIcon>
                 );
             }
@@ -93,12 +161,12 @@ const columns: Column<RcScopeHtTag>[] = [
             if (cell.value.content.estimatedCableLength !== null) {
                 return (
                     <StyledCenterCheckIcon>
-                        {Number(cell.value.content.estimatedCableLength)}
                         <Icon
                             color={tokens.colors.interactive.primary__hover.hex}
                             name="help_outline"
-                            title="Estimated"
+                            title="Estimated cable length"
                         />
+                        {cell.value.content.estimatedCableLength}
                     </StyledCenterCheckIcon>
                 );
             }
@@ -108,97 +176,65 @@ const columns: Column<RcScopeHtTag>[] = [
                     <Icon
                         color={tokens.colors.interactive.danger__text.hex}
                         name="close_circle_outlined"
-                        title="No installed cable."
+                        title="No installed cable"
                     />
                 </StyledCenterCheckIcon>
             );
         },
         Aggregated: () => null,
         aggregate: 'count',
-    },
-    {
-        id: 'tagHeated',
-        Header: 'Tag(s) heated',
-        accessor: (item) => item.tagHeated,
-    },
-    {
-        id: 'commissioningPackageNo',
-        Header: 'Comm',
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'commissioningPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
-        }),
-        Cell: (cell: CellProps<FamTagType>) => (
-            <Link href={cell.value.url} target="_blank" hideUnderline>
-                {cell.value.content.commissioningPackageNo}
-            </Link>
-        ),
-        Aggregated: () => null,
-        aggregate: 'count',
+        width: 100,
     },
     {
         id: 'mechanicalCompletionPackageNo',
-        Header: 'MC',
+        Header: 'MC Pkg',
         accessor: (item) => ({
             content: item,
             currentKey: 'mechanicalCompletionPackageNo',
             url: proCoSysUrls.getMcUrl(item.mechanicalCompletionPackageUrlId || ''),
         }),
-        Cell: (cell: CellProps<FamTagType>) => (
+        Cell: (cell: CellProps<RcScopeHtTag>) => (
             <Link href={cell.value.url} target="_blank" hideUnderline>
                 {cell.value.content.mechanicalCompletionPackageNo}
             </Link>
         ),
         Aggregated: () => null,
         aggregate: 'count',
+        width: 90,
     },
     {
-        id: 'openWorkOrders',
-        Header: 'WO (open)',
-        accessor: (item) => item.openWorkOrders,
+        id: 'commissioningPackageNo',
+        Header: 'Comm Pkg',
+        accessor: (item) => ({
+            content: item,
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(item.commissioningPackageUrlId || ''),
+        }),
+        Cell: (cell: CellProps<RcScopeHtTag>) => (
+            <Link href={cell.value.url} target="_blank" hideUnderline>
+                {cell.value.content.commissioningPackageNo}
+            </Link>
+        ),
+        Aggregated: () => null,
+        aggregate: 'count',
+        width: 90,
     },
     {
         id: 'area',
         Header: 'Area',
         accessor: (item) => item.area,
-    },
-    {
-        id: 'pidDrawings',
-        Header: 'P&ID',
-        minWidth: 100,
-        accessor: (item) => ({
-            content: item,
-            currentKey: 'tagNo',
-            url: stidUrls.getTagUrl(item.tagNo),
-        }),
-        Cell: (cell: CellProps<FamTagType>) => {
-            const links =
-                cell.value.content.pidDrawings?.map((x) => (
-                    <Link
-                        key={x.docNo}
-                        href={stidUrls.getDocUrl(x.docNo)}
-                        target="_blank"
-                        hideUnderline
-                    >
-                        <Icon name="link" />
-                    </Link>
-                )) ?? [];
-            return <LinkGroup links={links} maxLinks={3} overflowLink={cell.value.url} />;
-        },
-        Aggregated: () => null,
-        aggregate: 'count',
+        width: 70,
     },
     {
         id: 'isoDrawings',
         Header: 'ISO',
-        minWidth: 100,
+        width: 60,
         accessor: (item) => ({
             content: item,
             currentKey: 'tagNo',
             url: stidUrls.getTagUrl(item.tagNo),
         }),
-        Cell: (cell: CellProps<FamTagType>) => {
+        Cell: (cell: CellProps<RcScopeHtTag>) => {
             const links =
                 cell.value.content.isoDrawings?.map((x) => (
                     <Link
@@ -215,6 +251,12 @@ const columns: Column<RcScopeHtTag>[] = [
         },
         Aggregated: () => null,
         aggregate: 'count',
+    },
+    {
+        id: 'openWorkOrders',
+        Header: 'WO (open)',
+        accessor: (item) => item.openWorkOrders,
+        width: 90,
     },
     {
         id: 'remove',
@@ -238,6 +280,7 @@ const Link = styled.a`
 const StyledCenterCheckIcon = styled.div`
     display: flex;
     align-items: center;
+    gap: 0.3em;
 `;
 
 const StidLogoLink = styled.img`
