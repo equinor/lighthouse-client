@@ -20,6 +20,7 @@ import { MarkdownRemirrorViewer } from '@equinor/markdown-editor';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { useMutation } from 'react-query';
 import { httpClient } from '../../../../../../Core/Client/Functions';
+import styled from 'styled-components';
 
 interface CriteriaRenderProps {
   name: string;
@@ -113,9 +114,7 @@ export const CriteriaRender = ({
                     )}
                   </DetailText>
                 ) : (
-                  <>
-                    <DetailText>{criteria.valueDescription}</DetailText>
-                  </>
+                  <DetailText>{criteria.valueDescription}</DetailText>
                 )}
               </span>
               {!hideOptions && (
@@ -131,9 +130,9 @@ export const CriteriaRender = ({
         </RowContent>
       </WorkflowRow>
       {description && (
-        <div style={{ gridColumn: "2/5" }}>
+        <MarkdownDescriptionWrapper style={{ gridColumn: "2/5" }}>
           <WorkflowStepMarkdownDescription stepId={stepId} description={description} isStepCompleted={isStepCompleted ?? false} />
-        </div>
+        </MarkdownDescriptionWrapper>
       )}
       {showAddContributor && (
         <WorkflowRow>
@@ -184,7 +183,9 @@ function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionP
     </>
   )
 }
-
+const MarkdownDescriptionWrapper = styled.div`
+  grid-column: 2/5;
+`;
 type UpdateWorkflowMarkdown = {
   releaseControlId: string;
   stepId: string;
