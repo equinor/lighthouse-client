@@ -3,6 +3,11 @@ kind: RadixApplication
 metadata:
     name: lighthouse-client
 spec:
+    dnsExternalAlias:
+        - alias: jc.fusion.dev.equinor.com
+          environment: dev
+          component: frontend
+          useCertificateAutomation: true
     environments:
         - name: dev
           build:
