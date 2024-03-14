@@ -11,10 +11,7 @@ export const CriteriaItem = (props: TooltipProps) => {
         <DetailText onMouseLeave={setClose} onMouseOver={setOpen}>
             {props.criteria.valueDescription}
             {isOpen && (
-                <TooltipSidesheetContent
-                    criteria={props.criteria}
-                    stepName={props.stepName}
-                ></TooltipSidesheetContent>
+                <TooltipSidesheetContent criteria={props.criteria}></TooltipSidesheetContent>
             )}
         </DetailText>
     );

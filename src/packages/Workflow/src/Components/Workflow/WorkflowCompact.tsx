@@ -6,7 +6,6 @@ import { WorkflowStep } from '../../Types/WorkflowTypes';
 import { DisputedTableIcon } from '../WorkflowIcons/DisputedTableIcon';
 import { DefaultWorkflowDot } from './DefaultWorkflowDot';
 import { Criteria } from '../../../../../apps/ReleaseControl/types/releaseControl';
-import { TooltipSidesheetContent } from '../../../../../apps/ReleaseControl/components/Workflow/Criteria/Components/TooltipSidesheetContent';
 import { TooltipTableContent } from '../../../../../apps/ReleaseControl/components/Workflow/Criteria/Components/TooltipTableContent';
 
 interface WorkflowProps {
@@ -16,36 +15,31 @@ interface CriteriaWithParent {
     signedState: string | null;
     isCurrent: boolean;
     stepName: string;
-    criteria: Criteria[];
+    criteria: Criteria;
 }
 
 export function WorkflowCompact({ steps }: WorkflowProps): JSX.Element {
-    const compacted = steps?.reduce((acc, { name, criterias, isCurrent }) => {
-        criterias.forEach(({ signedState }) =>
-            acc.push({
-                stepName: name,
-                isCurrent: isCurrent,
-                signedState: signedState,
-                criteria: criterias,
-            })
-        );
-        return acc;
-    }, [] as CriteriaWithParent[]);
+    const compacted = steps?.flatMap(({ name, criterias, isCurrent }) =>
+        criterias.map((criteria) => ({
+            stepName: name,
+            isCurrent: isCurrent,
+            signedState: criteria.signedState,
+            criteria: criteria,
+        }))
+    ) as CriteriaWithParent[];
 
     return (
-        <>
-            <WorkflowStepContainer>
-                {compacted.map(({ isCurrent, signedState, stepName, criteria }, i) => (
-                    <CompactWorkflowDot
-                        signedState={signedState}
-                        isCurrent={isCurrent}
-                        stepName={stepName}
-                        key={i}
-                        criteria={criteria}
-                    />
-                ))}
-            </WorkflowStepContainer>
-        </>
+        <WorkflowStepContainer>
+            {compacted.map(({ isCurrent, signedState, stepName, criteria }) => (
+                <CompactWorkflowDot
+                    signedState={signedState}
+                    isCurrent={isCurrent}
+                    stepName={stepName}
+                    key={criteria.id}
+                    criteria={criteria}
+                />
+            ))}
+        </WorkflowStepContainer>
     );
 }
 
@@ -53,7 +47,7 @@ interface CompactWorkflowDotProps {
     signedState: string | null;
     isCurrent: boolean;
     stepName: string;
-    criteria: Criteria[];
+    criteria: Criteria;
 }
 const CompactWorkflowDot = ({
     isCurrent,
@@ -70,7 +64,7 @@ const CompactWorkflowDot = ({
         <div ref={anchorRef} onMouseLeave={setClose} onMouseOver={setOpen}>
             {getStatusFromCriteria(signedState, isCurrent)}
 
-            {isOpen && <TooltipTableContent criteria={criteria[0]} stepName={stepName} />}
+            {isOpen && <TooltipTableContent criteria={criteria} stepName={stepName} />}
         </div>
     );
 };

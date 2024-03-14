@@ -8,7 +8,6 @@ import { Criteria } from '../../../../types/releaseControl';
 
 export type TooltipProps = {
     criteria: Criteria;
-    stepName?: string;
 };
 export function TooltipSidesheetContent(props: TooltipProps): JSX.Element {
     const { data, isLoading, error } = useQuery({

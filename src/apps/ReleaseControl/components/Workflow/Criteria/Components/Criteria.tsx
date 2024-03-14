@@ -29,7 +29,6 @@ interface CriteriaRenderProps {
     isLastCriteria: boolean;
     stepId: string;
     hideOptions?: boolean;
-    stepName?: string;
 }
 
 export const CriteriaRender = ({
@@ -42,13 +41,11 @@ export const CriteriaRender = ({
     order,
     stepId,
     hideOptions,
-    stepName,
 }: CriteriaRenderProps): JSX.Element => {
     const { requestId, workflowStepsLength, isPast } = useReleaseControlContext(
         ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
             requestId: id,
             workflowStepsLength: workflowSteps.length,
-            stepName: currentWorkflowStep.name,
             isPast:
                 (currentWorkflowStep?.order ?? 0) >
                 (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
@@ -114,10 +111,7 @@ export const CriteriaRender = ({
                                         )}
                                     </DetailText>
                                 ) : (
-                                    <CriteriaItem
-                                        criteria={criteria}
-                                        stepName={stepName}
-                                    ></CriteriaItem>
+                                    <CriteriaItem criteria={criteria}></CriteriaItem>
                                 )}
                             </span>
                             {!hideOptions && (

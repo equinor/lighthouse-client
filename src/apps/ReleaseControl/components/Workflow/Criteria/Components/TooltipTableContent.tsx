@@ -25,21 +25,15 @@ export function TooltipTableContent(props: TooltipProps): JSX.Element {
     });
 
     if (error) {
-        const toolTipData =
-            'Step: ' +
-            props.stepName +
-            '\nRole: ' +
-            props.criteria.value +
-            '\nNo people in this role';
+        const toolTipData = `Step: ${props.stepName} 
+Role: ${props.criteria.value} 
+No people in this role`;
+
         return <StyledPersonInfoTooltip>{toolTipData}</StyledPersonInfoTooltip>;
     }
-    const tooltipData =
-        'Step: ' +
-        props.stepName +
-        '\nRole: ' +
-        props.criteria.valueDescription +
-        '\nPeople in this role: ' +
-        data;
+    const tooltipData = `Step: ${props.stepName}
+Role: ${props.criteria.valueDescription}
+People in this role: ${data}`;
     return (
         <StyledPersonInfoTooltip>
             {!isLoading ? tooltipData : <DotProgress size={32}></DotProgress>}
