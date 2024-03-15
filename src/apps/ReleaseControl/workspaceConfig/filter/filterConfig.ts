@@ -80,7 +80,7 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
     {
         name: 'State',
         valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
-        defaultUncheckedValues: ['Voided'],
+        defaultUncheckedValues: ['Voided', 'Closed'],
     },
     // {
     //     name: 'CommPk',

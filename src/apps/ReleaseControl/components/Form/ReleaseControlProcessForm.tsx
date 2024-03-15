@@ -50,6 +50,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                 workflowSteps:
                     (data as any)[0].workflowStepTemplates.map(
                         (x: CreateReleaseControlStepModel) => {
+                            x.description = "",
                             x.criteriaTemplates = x.workflowStepCriteriaTemplates ?? [];
                             return x;
                         }

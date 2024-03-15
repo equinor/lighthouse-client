@@ -9,7 +9,8 @@ import { readClientRegistry } from '../../../Core/Client/Functions';
 function isNewAppLoaded() {
     return (
         window.location.href.includes('handover-new') ||
-        window.location.href.includes('mechanical-completion')
+        window.location.href.includes('mechanical-completion') ||
+        window.location.href.includes('loop-new')
     );
 }
 
@@ -69,6 +70,9 @@ export const LocationBreadCrumbs = (): JSX.Element => {
 function getRedirectUrl(key: string | undefined) {
     if (key === 'mechanical-completion') {
         return 'ConstructionAndCommissioning/mc';
+    }
+    if (key === 'loop-new') {
+        return 'ConstructionAndCommissioning/loop';
     }
     if (key === 'handover-new') {
         return 'ConstructionAndCommissioning/handover';
