@@ -40,3 +40,14 @@ export const InputContainer = styled.div`
     flex-direction: column;
     gap: 2em;
 `;
+export const StyledPersonInfoTooltip = styled.div`
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    background-color: #121212;
+    padding: 5px;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-left: 15px;
+    white-space: pre;
+`;
