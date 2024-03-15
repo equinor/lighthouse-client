@@ -17,10 +17,14 @@ import { Modal } from '@equinor/modal';
 import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
 import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
 import { CircularProgress } from '@equinor/eds-core-react-old';
-import { CriteriaItem } from './CriteriaItem';
+import { useMutation } from 'react-query';
+import styled from 'styled-components';
+import { httpClient } from '../../../../../../Core/Client/Functions';
+import { MarkdownRemirrorViewer } from '../../../../../../packages/MarkdownEditor/src';
 
 interface CriteriaRenderProps {
     name: string;
+    description: string | null;
     criteria: Criteria;
     contributors: Contributor[];
     stepIndex: number;
@@ -29,11 +33,13 @@ interface CriteriaRenderProps {
     isLastCriteria: boolean;
     stepId: string;
     hideOptions?: boolean;
+    isStepCompleted?: boolean;
 }
 
 export const CriteriaRender = ({
     isLastCriteria,
     name,
+    description,
     contributors,
     criteria,
     stepIndex,
@@ -41,6 +47,7 @@ export const CriteriaRender = ({
     order,
     stepId,
     hideOptions,
+    isStepCompleted,
 }: CriteriaRenderProps): JSX.Element => {
     const { requestId, workflowStepsLength, isPast } = useReleaseControlContext(
         ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
@@ -51,20 +58,16 @@ export const CriteriaRender = ({
                 (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
         })
     );
-
     const { isLoading } = useGetReleaseControl(requestId);
     const state = useAtom(actionWithCommentAtom);
-
     const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
     const formattedDate = dateToDateTimeFormat(date);
 
     const [showAddContributor, setShowAddContributor] = useState(false);
-
     return (
         <WorkflowWrapper key={criteria.id}>
             <WorklowIconAndLine>
                 <WorkflowIcon status={stepStatus} number={order + 1} />
-
                 {stepIndex !== workflowStepsLength - 1 && <VerticalLine active={isPast} />}
             </WorklowIconAndLine>
             <WorkflowRow>
@@ -111,7 +114,7 @@ export const CriteriaRender = ({
                                         )}
                                     </DetailText>
                                 ) : (
-                                    <CriteriaItem criteria={criteria}></CriteriaItem>
+                                    <DetailText>{criteria.valueDescription}</DetailText>
                                 )}
                             </span>
                             {!hideOptions && (
@@ -126,6 +129,15 @@ export const CriteriaRender = ({
                     )}
                 </RowContent>
             </WorkflowRow>
+            {description && (
+                <MarkdownDescriptionWrapper style={{ gridColumn: '2/5' }}>
+                    <WorkflowStepMarkdownDescription
+                        stepId={stepId}
+                        description={description}
+                        isStepCompleted={isStepCompleted ?? false}
+                    />
+                </MarkdownDescriptionWrapper>
+            )}
             {showAddContributor && (
                 <WorkflowRow>
                     <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
@@ -147,3 +159,59 @@ export const CriteriaRender = ({
         </WorkflowWrapper>
     );
 };
+
+type WorkflowStepMarkdownDescriptionProps = {
+    isStepCompleted: boolean;
+    stepId: string;
+    description: string;
+};
+
+function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionProps) {
+    const releaseControlId = useReleaseControlContext((r) => r.releaseControl.id);
+
+    const { mutateAsync, error } = useMutation<void, void, UpdateWorkflowMarkdown>({
+        mutationFn: async (args) => updateWorkflowStepMarkdownDescription(args),
+    });
+
+    return (
+        <>
+            {error && <div>Failed to update description</div>}
+            <MarkdownRemirrorViewer
+                editable={props.isStepCompleted ? false : 'checkboxes-only'}
+                initialContent={props.description}
+                onCheckboxTicked={(markdown) => {
+                    mutateAsync({
+                        description: markdown,
+                        releaseControlId: releaseControlId,
+                        stepId: props.stepId,
+                    });
+                }}
+            />
+        </>
+    );
+}
+const MarkdownDescriptionWrapper = styled.div`
+    grid-column: 2/5;
+`;
+type UpdateWorkflowMarkdown = {
+    releaseControlId: string;
+    stepId: string;
+    description: string;
+};
+async function updateWorkflowStepMarkdownDescription({
+    stepId,
+    description,
+    releaseControlId,
+}: UpdateWorkflowMarkdown) {
+    const { scopeChange } = httpClient();
+    await scopeChange.fetch(
+        `api/releasecontrol/${releaseControlId}/workflow/step/${stepId}/description`,
+        {
+            headers: {
+                ['content-type']: 'application/json',
+            },
+            method: 'PATCH',
+            body: JSON.stringify({ description: description }),
+        }
+    );
+}
