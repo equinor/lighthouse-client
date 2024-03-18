@@ -9,10 +9,10 @@ spec:
       component: frontend
       useCertificateAutomation: true
 
-    # - alias: jc.fusion.equinor.com
-    #   environment: prod
-    #   component: frontend
-    #   useCertificateAutomation: true
+    - alias: jc.fusion.equinor.com
+      environment: prod
+      component: frontend
+      useCertificateAutomation: true
 
   environments:
     - name: dev
