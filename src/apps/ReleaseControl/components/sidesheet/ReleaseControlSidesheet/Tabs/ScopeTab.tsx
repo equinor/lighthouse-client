@@ -22,7 +22,6 @@ import {
 export const ScopeTab = (): JSX.Element => {
     const {
         description,
-        dueDate,
         tags,
         htCables,
         documents,
@@ -43,7 +42,6 @@ export const ScopeTab = (): JSX.Element => {
     }));
 
     const { isLoading } = useGetReleaseControl(id);
-    const { requestAccess } = useReleaseControlContext();
 
     return (
         <Wrapper>
@@ -55,10 +53,6 @@ export const ScopeTab = (): JSX.Element => {
                         <SectionWrapper>
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{description}</SubSectionText>
-                        </SectionWrapper>
-                        <SectionWrapper>
-                            <SubSectionTitle>Due date</SubSectionTitle>
-                            <SubSectionText>{dueDate.toLocaleDateString('en-gb')}</SubSectionText>
                         </SectionWrapper>
 
                         <SectionHeading>Scope</SectionHeading>
