@@ -12,33 +12,36 @@ Table of content
 - [Docker & Docker Compose](#docker--docker-compose)
   - [Manual](#manual)
 - [Libraries](#libraries)
-    - [Microsoft Authentication Library (MSAL)](#microsoft-authentication-library-msal)
-    - [React](#react)
+  - [Microsoft Authentication Library (MSAL)](#microsoft-authentication-library-msal)
+  - [React](#react)
 - [Testing](#testing)
-    - [JEST](#jest)
-    - [TS-JEST](#ts-jest)
+  - [JEST](#jest)
+  - [TS-JEST](#ts-jest)
 - [(Build) Tools for the job](#build-tools-for-the-job)
-    - [Styled Components](#styled-components)
-    - [TypeScript](#typescript)
-    - [Vitejs](#vitejs)
+  - [Styled Components](#styled-components)
+  - [TypeScript](#typescript)
+  - [Vitejs](#vitejs)
 - [Create new Release](#create-new-release)
 
 ## About
 
-Client for the Castberg project portal. The client can be 
+Client for the Castberg project portal. The client can be
 viewed at:
+
 - [https://jc.fusion.equinor.com/](https://jc.fusion.equinor.com/)
 - [https://jc.fusion.test.equinor.com/](https://jc.fusion.test.equinor.com/)
 - [https://jc.fusion.dev.equinor.com/](https://jc.fusion.dev.equinor.com/)
 
 ## Software - Required
+
 ### Required Software
-- NodeJS - https://nodejs.org/en/
-- Yarn Pkg - https://yarnpkg.com/lang/en/
+
+- [NodeJS](https://nodejs.org/en/)
+- [PNPM](https://pnpm.io/)([GitHub](https://github.com/pnpm/pnpm))
 
 ### Optional Software
+
 - Docker - https://www.docker.com/ (Only if you want to test production environment)
-- Python 3 - https://www.python.org/
 
 # How to run
 
@@ -55,8 +58,8 @@ $ yarn install
 $ yarn start
 ```
 
-
 # Development
+
 `yarn start` - Starts the dev environment with hot reloading
 `yarn test` - runs the test suite
 `yarn test-watch` - continual re-testing when files change
@@ -66,7 +69,8 @@ $ yarn start
 ```
 docker-compose up
 ```
-This starts the application in a production like environment. 
+
+This starts the application in a production like environment.
 
 ## Manual
 
@@ -82,32 +86,37 @@ $ docker run -it -p 3000:80 ppo:latest
 https://github.com/AzureAD/microsoft-authentication-library-for-js
 
 ### React
+
 https://reactjs.org/
 
 # Testing
 
 ### JEST
+
 https://jestjs.io/
 Testing Framework
 
 ### TS-JEST
+
 https://github.com/kulshekhar/ts-jest
 For running tests with Typescript and Typechecking
-
 
 # (Build) Tools for the job
 
 ### Styled Components
+
 General component styling
 
 https://www.styled-components.com
 
 ### TypeScript
+
 Better code quality and easier transition for developers coming from a typed language
 
 https://Typescriptlang.org
 
 ### Vitejs
+
 Building the application
 
 https://vitejs.dev/
@@ -120,9 +129,8 @@ To create a new Test Release, one must "publish" the changes in `dev` to `main` 
 
 2. Now you should "publish" all changes in `dev` by opening a new PR with all changes from `dev` to `main`. Get the PR reviewed and use `Merge Commits` when merging the PR.
 
-3. The [Azure Pipeline](https://dev.azure.com/Equinor/Johan%20Castberg%20-%20Portal/_build) will now build `main` and deploy the artifacts to the Test environment automatically. 
+3. The [Azure Pipeline](https://dev.azure.com/Equinor/Johan%20Castberg%20-%20Portal/_build) will now build `main` and deploy the artifacts to the Test environment automatically.
 
 4. Verify that the test environment and have relevant stakeholders test the functionality being deployed before deploying to Production. Two reviewers must approve the deployment to Production.
 
 > NB: make sure to align the deployment with backend changes.
-
