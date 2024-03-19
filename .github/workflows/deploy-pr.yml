@@ -14,7 +14,6 @@ on:
 permissions:
   contents: write
 
-env: ${{ inputs.environment }}
 jobs:
   deploy:
     name: Build and deploy to ${{inputs.environment}}
