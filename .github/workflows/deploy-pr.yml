@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Which env to set the service message in"
+        description: "Which env to deploy to"
         default: "dev"
         required: true
         type: choice
