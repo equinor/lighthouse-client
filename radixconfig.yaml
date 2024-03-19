@@ -17,7 +17,7 @@ spec:
   environments:
     - name: dev
       build:
-        from: dev
+        from: feat/radix
     - name: dev2
       build:
         from: dev2
