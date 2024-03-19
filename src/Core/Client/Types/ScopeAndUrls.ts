@@ -1,5 +1,4 @@
 export interface Scope {
-    appConfig: string;
     fusion: string;
     procosys: string;
     echoModelDist: string;
@@ -17,7 +16,6 @@ export interface Scope {
     fusionPeople: string;
 }
 export interface Urls {
-    appConfig: string;
     echoModelDist: string;
     echoHierarchy: string;
     fusion: string;
