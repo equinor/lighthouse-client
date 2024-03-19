@@ -19,7 +19,8 @@
     "format": "prettier --config ./.prettierrc --write ./src/**",
     "test-watch": "yarn  ci & jest --watchAll",
     "test-coverage": "yarn ci & jest --coverage",
-    "docker-build": "docker-compose up"
+    "docker-build": "docker-compose up",
+    "build:radix": "vite build --mode production"
   },
   "dependencies": {
     "@cognite/reveal": "^3.0.2",

@@ -11,3 +11,5 @@ Completes: AB#FILL_IN_YOUR_ISSUE_ID
 -   [ ] I have linked my DevOps task using the AB# tag.
 -   [ ] My code is easy to read, and comments are added where needed.
 -   [ ] My code is covered by tests.
+
+⛔ I understand by merging my pr the changes will be deployed to production immediately ⛔
