@@ -17,11 +17,14 @@ spec:
   environments:
     - name: dev
       build:
-        from: feat/radix
+        from: dev
     - name: dev2
       build:
-        from: feat/radix
+        from: dev2
     - name: prod
+      build:
+        from: main
+
   components:
     - name: frontend
       src: "."
