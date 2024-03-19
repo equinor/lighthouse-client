@@ -38,14 +38,22 @@ jobs:
           echo "::add-mask::$token"
           echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
 
-      - name: "Deploy API on Radix"
+      - name: "Update service message in radix"
         uses: equinor/radix-github-actions@v1
         with:
-          # rx set environment-variable --application lighthouse-client -e dev --variable SERVICE_MESSAGE --value test --component frontend
           args: >
             set environment-variable 
             --application lighthouse-client
             --environment dev 
             --variable 'SERVICE_MESSAGE'
-            --value 'Test from gh action'
+            --value 'Testing ....'
+            --component frontend
+
+      - name: "Restart component"
+        uses: equinor/radix-github-actions@v1
+        with:
+          args: >
+            restart component
+            --application lighthouse-client
+            --environment dev 
             --component frontend
