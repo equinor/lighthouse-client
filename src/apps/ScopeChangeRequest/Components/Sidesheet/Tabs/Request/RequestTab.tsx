@@ -26,10 +26,10 @@ import { RevisionsList } from './RevisionList/RevisionList';
 import { AtsDetailCheckbox } from '../../../AtsScopeCheckbox/AtsCheckbox';
 import { VoidedOrRevisionBanner } from './VoidedReasonBanner';
 import { MarkdownViewer } from '@equinor/markdown-editor';
-
+import DOMPurify from 'dompurify';
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
-
+    const cleanDescription = DOMPurify.sanitize(request.description);
     return (
         <Wrapper>
             <VoidedOrRevisionBanner />
@@ -41,7 +41,7 @@ export function RequestTab(): JSX.Element {
                         <SectionWrapper>
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>
-                                <MarkdownViewer>{request.description}</MarkdownViewer>
+                                <MarkdownViewer>{cleanDescription}</MarkdownViewer>
                             </SubSectionText>
                             <WarrantyCaseDetailCheckbox />
                         </SectionWrapper>
