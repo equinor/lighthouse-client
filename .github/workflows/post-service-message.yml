@@ -1,0 +1,52 @@
+name: "Post service message"
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Which env to set the service message in"
+        default: "dev"
+        required: true
+        type: choice
+        options:
+          - dev
+          - dev2
+          - prod
+      message:
+        description: "The service message"
+        required: true
+        type: string
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Az CLI login"
+        uses: azure/login@v1
+        with:
+          client-id: cd7fa259-12eb-415c-8b50-912b2ce5e73e
+          tenant-id: 3aa4a235-b6e2-48d5-9195-7fcf05b459b0
+          allow-no-subscriptions: true
+
+      - name: "Get Azure principal token for Radix"
+        run: |
+          token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv)
+          echo "::add-mask::$token"
+          echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
+
+      - name: "Deploy API on Radix"
+        uses: equinor/radix-github-actions@v1
+        with:
+          # rx set environment-variable --application lighthouse-client -e dev --variable SERVICE_MESSAGE --value test --component frontend
+          args: >
+            set environment-variable 
+            --application lighthouse-client
+            --environment dev 
+            --variable 'SERVICE_MESSAGE'
+            --value from-pr 
+            --component frontend
+            -f
