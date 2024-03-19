@@ -18,6 +18,7 @@ on:
 
 permissions:
   id-token: write
+env: ${{ inputs.environment }}
 
 jobs:
   deploy:
@@ -43,9 +44,9 @@ jobs:
           args: >
             set environment-variable 
             --application lighthouse-client
-            --environment ${{ inputs.environment }}
+            --environment '${{ inputs.environment }}'
             --variable 'SERVICE_MESSAGE'
-            --value ${{ inputs.message }}
+            --value '${{ inputs.message }}'
             --component frontend
 
       - name: "Restart component"
@@ -54,5 +55,5 @@ jobs:
           args: >
             restart component
             --application lighthouse-client
-            --environment ${{ inputs.environment }}
+            --environment '${{ inputs.environment }}'
             --component frontend
