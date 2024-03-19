@@ -13,7 +13,7 @@ on:
           - prod
       message:
         description: "The service message"
-        required: true
+        required: false
         type: string
 
 permissions:
