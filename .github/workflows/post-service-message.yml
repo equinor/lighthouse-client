@@ -47,5 +47,5 @@ jobs:
             --application lighthouse-client
             --environment dev 
             --variable 'SERVICE_MESSAGE'
-            --value "{'message':'Test from gh action','type':'warning'}"
+            --value 'Test from gh action'
             --component frontend

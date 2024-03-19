@@ -37,12 +37,15 @@ export function useServiceMessage(): Return {
     const stringifiedServiceMessage = window.SERVICE_MESSAGE;
     if (!stringifiedServiceMessage || stringifiedServiceMessage.length == 0) return;
     try {
-      const message = JSON.parse(stringifiedServiceMessage);
+      const message = stringifiedServiceMessage;
+      if(message.length == 0){
+        return;
+      }
       const data: ServiceMessage = {
-        message: message.message,
-        type: message.type,
+        message: message,
+        type: "warning",
         link: undefined,
-        id: btoa(message.message),
+        id: btoa(message),
         fromDate: '2019-02-09',
         toDate: '2030-02-09',
       };
