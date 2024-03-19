@@ -14,9 +14,3 @@ assignees: ''
 
 ## Acceptance Criteria
 <!-- How to test -->
-
-- [ ] when selecting 
-- [ ] items which covers
-- [ ] the expected outcome 
-
-<!-- Make sure correct milestone is selected! -->
