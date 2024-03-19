@@ -1,6 +1,5 @@
 export interface EnvConfig {
   readonly CLIENT_ENV: string;
-  readonly TENANT_ID: string;
 }
 declare global {
   interface Window {
