@@ -10,16 +10,7 @@
     "start": "vite",
     "build": "tsc -b",
     "bundle": "tsc && vite build",
-    "serve": "vite preview",
-    "create-config": "python ./.docker/scripts/create-client-config.py",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
-    "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
-    "lint-strict": "eslint --ext .js,.jsx,.ts,.tsx src --color --max-warnings=0",
     "test": "jest",
-    "format": "prettier --config ./.prettierrc --write ./src/**",
-    "test-watch": "yarn  ci & jest --watchAll",
-    "test-coverage": "yarn ci & jest --coverage",
-    "docker-build": "docker-compose up",
     "build:radix": "vite build --mode production"
   },
   "dependencies": {
