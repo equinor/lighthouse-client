@@ -5,7 +5,7 @@ COPY . /app
 
 RUN npm i -g pnpm@8.0.0
 RUN pnpm install
-RUN pnpm bundle 
+RUN pnpm build:radix
 
 FROM docker.io/nginxinc/nginx-unprivileged:1.25.2-alpine
 WORKDIR /app

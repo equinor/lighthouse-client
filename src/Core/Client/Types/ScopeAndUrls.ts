@@ -1,11 +1,9 @@
 export interface Scope {
-    appConfig: string;
     fusion: string;
     procosys: string;
     echoModelDist: string;
     echoHierarchy: string;
     scopeChange: string;
-    releaseControls: string;
     FAM: string;
     STID: string;
     fusionNotifications: string;
@@ -17,13 +15,11 @@ export interface Scope {
     fusionPeople: string;
 }
 export interface Urls {
-    appConfig: string;
     echoModelDist: string;
     echoHierarchy: string;
     fusion: string;
     procosys: string;
     scopeChange: string;
-    releaseControls: string;
     FAM: string;
     STID: string;
     fusionNotifications: string;
