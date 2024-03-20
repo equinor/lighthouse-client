@@ -64,12 +64,7 @@ export function useWorkflowSigning({
             criteriaId: criteriaId,
             verdict: action,
             comment: comment,
-          }).then(() =>
-            queryClient.invalidateQueries({ queryKey: ['release'] }).catch(() => {
-              const bc = new BroadcastChannel('error_messages_rc');
-              bc.postMessage('There was an error signing the step. Please try again.');
-            })
-          );
+          }).then(() => queryClient.invalidateQueries({ queryKey: ['release'] }));
         }
       );
     } else {
