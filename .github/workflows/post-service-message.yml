@@ -45,7 +45,7 @@ jobs:
             --application lighthouse-client
             --environment '${{ inputs.environment }}'
             --variable 'SERVICE_MESSAGE'
-            --value "{""""""type"""""":""""""warning"""""",""""""message"""""":""""""${{inputs.message}}""""""}"
+            --value="{"\""abc"\"":123,"\""connection"\"":"\""${{inputs.message}}"\""}"
             --component frontend
 
       - name: "Restart component"
