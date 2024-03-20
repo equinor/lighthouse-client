@@ -33,7 +33,6 @@ export function useWorkflowSigning({
       workflowSteps: releaseControl.workflowSteps,
     })
   );
-  useOctopusErrorHandler();
   const queryClient = useQueryClient();
 
   async function onSignStep({ action, comment }: OnSignStepAction) {
