@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Which env to set the service message in"
+        description: "Which env to deploy to"
         default: "dev"
         required: true
         type: choice
@@ -28,7 +28,7 @@ jobs:
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
-          git config user.name radix-pipeline
-          git config user.email github-actions@github.com
+          git config --global user.name radix-pipeline
+          git config --global user.email github-actions@github.com
           git fetch
           git push --force origin $BRANCH_NAME:${{inputs.environment}}

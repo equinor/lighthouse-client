@@ -12,8 +12,8 @@ on:
           - dev2
           - prod
       message:
-        description: "The service message"
-        required: true
+        description: "The service message, leave empty to delete current SM"
+        required: false
         type: string
 
 permissions:

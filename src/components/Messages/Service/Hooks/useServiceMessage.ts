@@ -12,8 +12,6 @@ interface Return {
 }
 
 export function useServiceMessage(): Return {
-  const appConfig = useHttpClient('appConfig');
-
   const [isActive, setIsActive] = useState<boolean>(false);
   const [message, setMessage] = useState<ServiceMessage | undefined>();
 
@@ -38,7 +36,7 @@ export function useServiceMessage(): Return {
     if (!stringifiedServiceMessage || stringifiedServiceMessage.length == 0) return;
     try {
       const message = stringifiedServiceMessage;
-      if(message.length == 0){
+      if (message.length == 0) {
         return;
       }
       const data: ServiceMessage = {
@@ -57,7 +55,7 @@ export function useServiceMessage(): Return {
     } catch (e) {
       console.error('Failed to load service message');
     }
-  }, [appConfig]);
+  }, []);
 
   return {
     message,
