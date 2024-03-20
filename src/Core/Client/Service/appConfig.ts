@@ -4,11 +4,10 @@ import { fetchClientConfig } from './envConfig';
 
 export async function fetchConfig(): Promise<AppConfigResult> {
   //When running locally
-  if (import.meta.env.DEV === true) {
-    console.log("Setting auth config from env")
-    window.AUTH_CONFIG = import.meta.env.VITE_AUTH_CONFIG;
-    window.JC_CONFIG = import.meta.env.VITE_JC_CONFIG;
-  }
+  console.log(import.meta.env.VITE_AUTH_CONFIG)
+  console.log("Setting auth config from env")
+  window.AUTH_CONFIG = import.meta.env.VITE_AUTH_CONFIG;
+  // window.JC_CONFIG = import.meta.env.VITE_JC_CONFIG;
 
   const config = await fetchClientConfig();
 
