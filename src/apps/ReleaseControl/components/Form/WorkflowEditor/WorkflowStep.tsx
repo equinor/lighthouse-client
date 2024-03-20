@@ -56,7 +56,7 @@ export const WorkflowStep = ({
     if (!workflowStep) {
       return;
     }
-    const appendList = makeMarkdownListFromStringArray(formState?.scopeTags ?? []);
+    const appendList = makeMarkdownListFromStringArray(formState?.tags?.map(s => s.value) ?? []);
     workflowStep.description = (workflowStep.description ?? "") + "\n\n **Tags:** \n" + appendList;
     updateAtom(formState)
     setRefreshTrigger(s => !s)
@@ -68,7 +68,7 @@ export const WorkflowStep = ({
     if (!workflowStep) {
       return;
     }
-    const appendList = makeMarkdownListFromStringArray(formState?.scopeHTTags ?? []);
+    const appendList = makeMarkdownListFromStringArray(formState?.htCables?.map(s => s.value) ?? []);
     workflowStep.description = (workflowStep.description ?? "") + "\n\n **HT cables:** \n" + appendList;
     updateAtom(formState)
     setRefreshTrigger(s => !s)
