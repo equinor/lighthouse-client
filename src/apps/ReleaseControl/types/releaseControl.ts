@@ -139,7 +139,7 @@ export type ReleaseControl = {
   hasComments: boolean;
   hasPendingContributions: boolean;
   allowContributors: boolean;
-  currentWorkflowStep: ReleaseControlStep;
+  currentWorkflowStep?: ReleaseControlStep;
   workflowSteps: CreateReleaseControlStepModel[];
   editedWorkflowSteps: ReleaseControlStep[];
   documents: ReleaseControlDocument[];

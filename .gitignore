@@ -3,5 +3,6 @@ dist
 build
 .vscode/
 
+.env
 # Remove yarn logs
 yarn-error.log

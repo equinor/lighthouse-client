@@ -29,11 +29,11 @@ export function ReleaseControlSidesheetBanner(): JSX.Element {
     return (
         <Banner>
             <BannerItem title="" value="" />
-            <BannerItem title="Current step" value={releaseControl.currentWorkflowStep.name} />
+            <BannerItem title="Current step" value={releaseControl.currentWorkflowStep?.name ?? "RC completed"} />
             <BannerItem title="Time on curr. step" value={`${daysOnLastStep()} days`} />
             <BannerItem
                 title="Curr. step/tot. steps"
-                value={`${releaseControl.currentWorkflowStep.order + 1}/${totalSteps}`}
+                value={`${releaseControl.currentWorkflowStep?.order ? releaseControl.currentWorkflowStep.order + 1 : totalSteps}/${totalSteps}`}
             />
             <BannerItem
                 title="Target date"
