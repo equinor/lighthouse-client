@@ -53,8 +53,10 @@ $ pnpm start
 # Development
 
 `pnpm start` - Starts the dev environment with hot reloading
-`yarn test` - runs the test suite
-`yarn test-watch` - continual re-testing when files change
+
+`pnpm test` - runs the test suite
+
+`pnpm test-watch` - continual re-testing when files change
 
 # Docker & Docker Compose
 
