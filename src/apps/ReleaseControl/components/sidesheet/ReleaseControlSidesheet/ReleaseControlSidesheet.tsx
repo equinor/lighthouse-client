@@ -22,6 +22,8 @@ import { SidesheetWrapper } from './sidesheetStyles';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { ReleaseControlDetailView } from './ReleaseControlDetailView';
 import { ReleaseControlRequestEditForm } from './ReleaseControlRequestEditForm';
+import { useOctopusErrorHandler } from '../../../../ScopeChangeRequest/hooks/observers/useOctopusErrorHandler';
+import { ScopeChangeErrorBanner } from '../../../../ScopeChangeRequest/Components/ErrorBanner/ErrorBanner';
 
 interface ReleaseControlSidesheetProps {
     item: ReleaseControl;
@@ -35,7 +37,7 @@ export const ReleaseControlSidesheet = ({
     const { data } = useGetReleaseControl(item.id, item);
     useReleaseControlAccess(item.id);
     useSidesheetEffects(actions, toggleEditMode, item.id);
-
+    useOctopusErrorHandler();
     const { clearState } = DRCFormAtomApi;
 
     const editMode = useAtom(sideSheetEditModeAtom);
@@ -51,6 +53,9 @@ export const ReleaseControlSidesheet = ({
 
     return (
         <SidesheetWrapper>
+            <>
+                <ScopeChangeErrorBanner clearOnPropChange={item.id}></ScopeChangeErrorBanner>
+            </>
             <Switch>
                 <Case when={editMode}>
                     <ReleaseControlRequestEditForm />
