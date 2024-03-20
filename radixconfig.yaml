@@ -32,7 +32,6 @@ spec:
         AUTH_CONFIG: ""
         JC_CONFIG: ""
         SERVICE_MESSAGE: ""
-        VITE_AUTH_CONFIG: ""
       ports:
         - name: http
           port: 8080
