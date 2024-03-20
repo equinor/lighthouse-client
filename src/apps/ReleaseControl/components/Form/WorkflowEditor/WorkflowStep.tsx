@@ -127,7 +127,7 @@ export const WorkflowStep = ({
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
             <NumberCircle style={{ gridRow: 1, gridColumn: 2 }}>{step.order}</NumberCircle>
-            <Selections style={{ gridRow: 1, gridColumn: 3 }}>
+            <Selections style={{ gridRow: 1, gridColumn: 3, display: "flex", alignItems: "flex-end" }}>
               <StepSelect>
                 <Autocomplete
                   options={availableSteps.map((s) => s.name)}
