@@ -48,6 +48,10 @@ jobs:
             --value="{"\""abc"\"":123,"\""connection"\"":"\""${{inputs.message}}"\""}"
             --component frontend
 
+      - name: Not sure if this works
+        shell: bash
+        run: rx set environment-variable --value="{"\""abc"\"":123,"\""connection"\"":"\""test"\""}" --component frontend --application lighthouse-client --variable SERVICE_MESSAGE --environment dev2
+
       - name: "Restart component"
         uses: equinor/radix-github-actions@v1
         with:
