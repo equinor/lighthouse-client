@@ -1,15 +1,15 @@
-# Description
+### Short summary
 
-Please include a summary of the change and which issue is fixed.
-List any external dependencies that are required for this change.
+Link to issue: 
 
-Completes: AB#FILL_IN_YOUR_ISSUE_ID
+### PR Checklist
+- [ ] I have performed a self-review of my own code
+- [ ] I have written a short summary of my changes in the PR
+- [ ] I have linked related issue to the PR
 
-## Checklist:
+> [!TIP]
+> To deploy the PR to Dev/Dev2, use the [Deploy PR to dev🚀](https://github.com/equinor/lighthouse-client/actions/workflows/deploy-pr.yml) action.
+> Remember to deploy any backend changes to Dev/Dev2 as well!
 
--   [ ] I have performed a self-review of my own code.
--   [ ] I have linked my DevOps task using the AB# tag.
--   [ ] My code is easy to read, and comments are added where needed.
--   [ ] My code is covered by tests.
-
-⛔ I understand by merging my pr the changes will be deployed to production immediately ⛔
+> [!CAUTION]
+> ⛔ I understand by merging my PR, the changes will be deployed to production immediately ⛔
