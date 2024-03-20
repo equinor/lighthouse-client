@@ -7,7 +7,7 @@ import { enableContext } from '@equinor/fusion-framework-module-context';
 import { enableBookmark } from '@equinor/fusion-framework-module-bookmark';
 import { isProduction } from '../Core/Client/Functions';
 import buildQuery from 'odata-query';
-import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { ApplicationInsights, ITelemetryItem } from '@microsoft/applicationinsights-web';
 
 export const createConfig = (appSettings: AppConfigResult) => {
   return async (config: FrameworkConfigurator) => {
@@ -64,7 +64,7 @@ export const createConfig = (appSettings: AppConfigResult) => {
         });
       });
 
-      builder.setResolveInitialContext(async (a) => {
+      builder.setResolveInitialContext(async () => {
         isProduction()
           ? '3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
           : '94dd5f4d-17f1-4312-bf75-ad75f4d9572c';
