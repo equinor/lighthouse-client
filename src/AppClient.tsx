@@ -144,7 +144,6 @@ const useSetupClients = () => {
   const fusionPeople = useHttpClient('fusionPeople');
   const fusionTasks = useHttpClient('fusionTasks');
   const procosys = useHttpClient('procosys');
-  const releaseControls = useHttpClient('releaseControls');
 
   useEffect(() => {
     registerClients({
@@ -160,7 +159,6 @@ const useSetupClients = () => {
       fusionPeople,
       fusionTasks,
       procosys,
-      releaseControls,
       scopeChange,
       STID,
     });
