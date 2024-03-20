@@ -25,11 +25,12 @@ Table of content
 
 ## About
 
+This repository contains nine different apps and many different PBI reports. Six of the apps is read-only. Only "Release Control", "Scope Change Request" and partially "Piping and Heat trace" (Discipline Release Control) has read and write. The backend for Release Control, Scope Change Request and Piping and Heat Trace can be found [here](https://github.com/equinor/lighthouse-scope-change-control-api).
+
 Client for the Castberg project portal. The client can be
 viewed at:
 
 - [https://jc.fusion.equinor.com/](https://jc.fusion.equinor.com/)
-- [https://jc.fusion.test.equinor.com/](https://jc.fusion.test.equinor.com/)
 - [https://jc.fusion.dev.equinor.com/](https://jc.fusion.dev.equinor.com/)
 
 ## Software - Required
