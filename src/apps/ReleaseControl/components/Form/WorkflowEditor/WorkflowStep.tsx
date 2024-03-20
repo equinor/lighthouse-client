@@ -122,12 +122,12 @@ export const WorkflowStep = ({
             <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
           </>
         ) : (
-          <>
-            <DraggableIconWrapper className={DraggableHandleSelector}>
+          <div style={{ display: "grid", gridTemplateRows: "50px 1fr", gridTemplateColumns: "5% 5% 80% 10%", alignItems: "center" }}>
+            <DraggableIconWrapper style={{ gridRow: 1, gridColumn: 1 }} className={DraggableHandleSelector}>
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
-            <NumberCircle>{step.order}</NumberCircle>
-            <Selections>
+            <NumberCircle style={{ gridRow: 1, gridColumn: 2 }}>{step.order}</NumberCircle>
+            <Selections style={{ gridRow: 1, gridColumn: 3 }}>
               <StepSelect>
                 <Autocomplete
                   options={availableSteps.map((s) => s.name)}
@@ -171,8 +171,9 @@ export const WorkflowStep = ({
               </ResponsibleSelect>
 
             </Selections>
-            <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
-            <div style={{ marginTop: '10px' }}>
+
+            <div style={{ marginTop: '10px', gridRow: 1, display: "flex", alignItems: "center" }}>
+              <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
               <ClickableIcon
                 name="close"
                 onClick={() =>
@@ -189,22 +190,21 @@ export const WorkflowStep = ({
                 />
               )}
             </div>
-          </>
+            <div style={{ gridRow: 2, gridColumn: "2/5" }}>
+              {!step.isCompleted && (
+                <MarkdownEditor commandButtons={[
+                  <ToggleTaskListButton />,
+                  <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0} />,
+                  <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 0} />,
+                  //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
+                ]} key={refreshTrigger ? "true" : "false"} initialContent={step.description ?? ""}>
+                  <DescriptionChanges stepId={step.id!} />
+                </MarkdownEditor>
+              )}
+            </div>
+          </div>
         )}
       </Line>
-      <div style={{ width: "40%" }}>
-        {!step.isCompleted && (
-          <MarkdownEditor commandButtons={[
-            <ToggleTaskListButton />,
-            <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0} />,
-            <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 0} />,
-            //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
-          ]} key={refreshTrigger ? "true" : "false"} initialContent={step.description ?? ""}>
-            <DescriptionChanges stepId={step.id!} />
-          </MarkdownEditor>
-        )}
-      </div>
-
     </>);
 
 };
