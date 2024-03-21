@@ -1,4 +1,4 @@
-import { Autocomplete, Icon } from '@equinor/eds-core-react';
+import { Autocomplete, Divider, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
@@ -80,6 +80,7 @@ export const WorkflowStep = ({
 
   return (
     <>
+      <Divider />
       <Line>
         {step.isCompleted ? (
           step.criterias !== undefined ? (
@@ -257,7 +258,7 @@ const StyledWorkflowStepRow = styled.div`
 
 const StyledMarkdownWrapper = styled.div`
   grid-row: 2;
-  grid-column 2/5;
+  grid-column: 2/5;
 `;
 
 const StyledWorkflowActionsWrapper = styled.div`
