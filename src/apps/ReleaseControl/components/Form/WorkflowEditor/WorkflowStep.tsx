@@ -5,6 +5,7 @@ import { IconMenu } from '@equinor/overlay-menu';
 import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equinor/Workflow';
 import { CommandButton, OnChangeJSON, ToggleTaskListButton, useHelpers } from '@remirror/react';
 import { useCallback, useState } from 'react';
+import styled from 'styled-components';
 import { MarkdownEditor } from '../../../../../packages/MarkdownEditor/src';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { useReleaseControlContext } from '../../../hooks';
@@ -122,7 +123,7 @@ export const WorkflowStep = ({
             <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
           </>
         ) : (
-          <div style={{ display: "grid", gridTemplateRows: "50px 1fr", gridTemplateColumns: "5% 5% 80% 10%", alignItems: "center" }}>
+          <StyledWorkflowStepRow>
             <DraggableIconWrapper style={{ gridRow: 1, gridColumn: 1 }} className={DraggableHandleSelector}>
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
@@ -172,7 +173,7 @@ export const WorkflowStep = ({
 
             </Selections>
 
-            <div style={{ marginTop: '10px', gridRow: 1, display: "flex", alignItems: "center" }}>
+            <StyledWorkflowActionsWrapper>
               <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
               <ClickableIcon
                 name="close"
@@ -189,8 +190,8 @@ export const WorkflowStep = ({
                   name="group"
                 />
               )}
-            </div>
-            <div style={{ gridRow: 2, gridColumn: "2/5" }}>
+            </StyledWorkflowActionsWrapper>
+            <StyledMarkdownWrapper>
               {!step.isCompleted && (
                 <MarkdownEditor commandButtons={[
                   <ToggleTaskListButton />,
@@ -201,8 +202,8 @@ export const WorkflowStep = ({
                   <DescriptionChanges stepId={step.id!} />
                 </MarkdownEditor>
               )}
-            </div>
-          </div>
+            </StyledMarkdownWrapper>
+          </StyledWorkflowStepRow>
         )}
       </Line>
     </>);
@@ -232,4 +233,23 @@ export const DescriptionChanges = (props: DescriptionChangesProps): JSX.Element 
 
   return <OnChangeJSON onChange={onChange} />;
 };
+
+const StyledWorkflowStepRow = styled.div`
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 5% 5% 80% 10%;
+  align-items: center;
+`;
+
+const StyledMarkdownWrapper = styled.div`
+  grid-row: 2;
+  grid-column 2/5;
+`;
+
+const StyledWorkflowActionsWrapper = styled.div`
+  margin-top: 10px;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+`;
 
