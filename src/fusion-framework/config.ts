@@ -7,7 +7,7 @@ import { enableContext } from '@equinor/fusion-framework-module-context';
 import { enableBookmark } from '@equinor/fusion-framework-module-bookmark';
 import { isProduction } from '../Core/Client/Functions';
 import buildQuery from 'odata-query';
-import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { ApplicationInsights, ITelemetryItem } from '@microsoft/applicationinsights-web';
 
 export const createConfig = (appSettings: AppConfigResult) => {
   return async (config: FrameworkConfigurator) => {
@@ -29,6 +29,7 @@ export const createConfig = (appSettings: AppConfigResult) => {
           enableAjaxPerfTracking: true,
         },
       });
+      appInsights.core.addTelemetryInitializer(ignorePowerBiGenericError);
       appInsights.loadAppInsights();
       appInsights.trackPageView();
     }
@@ -63,7 +64,7 @@ export const createConfig = (appSettings: AppConfigResult) => {
         });
       });
 
-      builder.setResolveInitialContext(async (a) => {
+      builder.setResolveInitialContext(async () => {
         isProduction()
           ? '3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
           : '94dd5f4d-17f1-4312-bf75-ad75f4d9572c';
@@ -95,3 +96,18 @@ export const createConfig = (appSettings: AppConfigResult) => {
     });
   };
 };
+//Will ignore the powerbi custom event isTrusted errors
+function ignorePowerBiGenericError<T extends ITelemetryItem>(a: T) {
+  if (a.name !== "Microsoft.ApplicationInsights.{0}.Exception" || !Object.keys(a.data ?? {}).includes("message")) {
+    return true
+  }
+
+  if (a.data?.message == `CustomEvent: {"isTrusted":false}`) {
+    return false;
+  }
+
+  if (a.data?.message === 'ErrorEvent: ResizeObserver loop completed with undelivered notifications.') {
+    return false;
+  }
+  return true;
+}
