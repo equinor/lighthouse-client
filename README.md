@@ -42,7 +42,7 @@ viewed at:
 
 ### Optional Software
 
-- Docker - https://www.docker.com/ (Only if you want to test production environment)
+- Docker - https://www.docker.com/ 
 
 # How to run
 
@@ -58,14 +58,6 @@ $ pnpm start
 `pnpm test` - runs the test suite
 
 `pnpm test-watch` - continual re-testing when files change
-
-# Docker & Docker Compose
-
-```
-docker-compose up
-```
-
-This starts the application in a production like environment.
 
 ## Manual
 
