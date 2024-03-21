@@ -1,10 +1,11 @@
-import { Autocomplete, Button, Icon } from '@equinor/eds-core-react';
+import { Autocomplete, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import { FunctionalRole, PCSPersonRoleSearch, WorkflowStepTemplate } from '@equinor/Workflow';
 import { CommandButton, OnChangeJSON, ToggleTaskListButton, useHelpers } from '@remirror/react';
 import { useCallback, useState } from 'react';
+import styled from 'styled-components';
 import { MarkdownEditor } from '../../../../../packages/MarkdownEditor/src';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { useReleaseControlContext } from '../../../hooks';
@@ -122,12 +123,12 @@ export const WorkflowStep = ({
             <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
           </>
         ) : (
-          <>
-            <DraggableIconWrapper className={DraggableHandleSelector}>
+          <StyledWorkflowStepRow>
+            <DraggableIconWrapper style={{ gridRow: 1, gridColumn: 1 }} className={DraggableHandleSelector}>
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
-            <NumberCircle>{step.order}</NumberCircle>
-            <Selections>
+            <NumberCircle style={{ gridRow: 1, gridColumn: 2 }}>{step.order}</NumberCircle>
+            <Selections style={{ gridRow: 1, gridColumn: 3, display: "flex", alignItems: "flex-end" }}>
               <StepSelect>
                 <Autocomplete
                   options={availableSteps.map((s) => s.name)}
@@ -171,8 +172,9 @@ export const WorkflowStep = ({
               </ResponsibleSelect>
 
             </Selections>
-            <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
-            <div style={{ marginTop: '10px' }}>
+
+            <StyledWorkflowActionsWrapper>
+              <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
               <ClickableIcon
                 name="close"
                 onClick={() =>
@@ -188,23 +190,22 @@ export const WorkflowStep = ({
                   name="group"
                 />
               )}
-            </div>
-          </>
+            </StyledWorkflowActionsWrapper>
+            <StyledMarkdownWrapper>
+              {!step.isCompleted && (
+                <MarkdownEditor commandButtons={[
+                  <ToggleTaskListButton />,
+                  <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0} />,
+                  <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 0} />,
+                  //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
+                ]} key={refreshTrigger ? "true" : "false"} initialContent={step.description ?? ""}>
+                  <DescriptionChanges stepId={step.id!} />
+                </MarkdownEditor>
+              )}
+            </StyledMarkdownWrapper>
+          </StyledWorkflowStepRow>
         )}
       </Line>
-      <div style={{ width: "40%" }}>
-        {!step.isCompleted && (
-          <MarkdownEditor commandButtons={[
-            <ToggleTaskListButton />,
-            <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0} />,
-            <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 0} />,
-            //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
-          ]} key={refreshTrigger ? "true" : "false"} initialContent={step.description ?? ""}>
-            <DescriptionChanges stepId={step.id!} />
-          </MarkdownEditor>
-        )}
-      </div>
-
     </>);
 
 };
@@ -232,4 +233,23 @@ export const DescriptionChanges = (props: DescriptionChangesProps): JSX.Element 
 
   return <OnChangeJSON onChange={onChange} />;
 };
+
+const StyledWorkflowStepRow = styled.div`
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 5% 5% 80% 10%;
+  align-items: center;
+`;
+
+const StyledMarkdownWrapper = styled.div`
+  grid-row: 2;
+  grid-column 2/5;
+`;
+
+const StyledWorkflowActionsWrapper = styled.div`
+  margin-top: 10px;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+`;
 
