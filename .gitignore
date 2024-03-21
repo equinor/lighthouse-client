@@ -6,3 +6,4 @@ build
 .env
 # Remove yarn logs
 yarn-error.log
+src/fusion-framework/config.ts
