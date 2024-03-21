@@ -13,7 +13,6 @@ interface useGlobalQueryListenerParams {
  */
 export const useGlobalQueryListener = ({ onQueryError }: useGlobalQueryListenerParams): void => {
     const queryClient = useQueryClient();
-
     useEffect(() => {
         const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
             if (!event) return;
