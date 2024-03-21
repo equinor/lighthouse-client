@@ -47,33 +47,36 @@ export const WorkflowStep = ({
   isEditMode,
 }: WorkflowStepProps): JSX.Element => {
   const { updateAtom } = DRCFormAtomApi;
-  const releaseControl = useReleaseControlContext(rc => rc.releaseControl);
+  const releaseControl = useReleaseControlContext((rc) => rc.releaseControl);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   const addTags = () => {
     const { updateAtom, readAtomValue } = DRCFormAtomApi;
     const formState = readAtomValue();
-    const workflowStep = formState.workflowSteps?.find(s => s.id === step.id);
+    const workflowStep = formState.workflowSteps?.find((s) => s.id === step.id);
     if (!workflowStep) {
       return;
     }
-    const appendList = makeMarkdownListFromStringArray(formState?.scopeTags ?? []);
-    workflowStep.description = (workflowStep.description ?? "") + "\n\n **Tags:** \n" + appendList;
-    updateAtom(formState)
-    setRefreshTrigger(s => !s)
-  }
+    const appendList = makeMarkdownListFromStringArray(formState?.tags?.map((s) => s.value) ?? []);
+    workflowStep.description = (workflowStep.description ?? '') + '\n\n **Tags:** \n' + appendList;
+    updateAtom(formState);
+    setRefreshTrigger((s) => !s);
+  };
   const addHeatTracingCables = () => {
     const { updateAtom, readAtomValue } = DRCFormAtomApi;
     const formState = readAtomValue();
-    const workflowStep = formState.workflowSteps?.find(s => s.id === step.id);
+    const workflowStep = formState.workflowSteps?.find((s) => s.id === step.id);
     if (!workflowStep) {
       return;
     }
-    const appendList = makeMarkdownListFromStringArray(formState?.scopeHTTags ?? []);
-    workflowStep.description = (workflowStep.description ?? "") + "\n\n **HT cables:** \n" + appendList;
-    updateAtom(formState)
-    setRefreshTrigger(s => !s)
-  }
+    const appendList = makeMarkdownListFromStringArray(
+      formState?.htCables?.map((s) => s.value) ?? []
+    );
+    workflowStep.description =
+      (workflowStep.description ?? '') + '\n\n **HT cables:** \n' + appendList;
+    updateAtom(formState);
+    setRefreshTrigger((s) => !s);
+  };
 
   return (
     <>
@@ -110,11 +113,7 @@ export const WorkflowStep = ({
                   readOnly={true}
                   onOptionsChange={(change) =>
                     updateAtom({
-                      workflowSteps: updateStepName(
-                        step,
-                        steps,
-                        change.selectedItems[0] ?? ''
-                      ),
+                      workflowSteps: updateStepName(step, steps, change.selectedItems[0] ?? ''),
                     })
                   }
                 />
@@ -124,11 +123,16 @@ export const WorkflowStep = ({
           </>
         ) : (
           <StyledWorkflowStepRow>
-            <DraggableIconWrapper style={{ gridRow: 1, gridColumn: 1 }} className={DraggableHandleSelector}>
+            <DraggableIconWrapper
+              style={{ gridRow: 1, gridColumn: 1 }}
+              className={DraggableHandleSelector}
+            >
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
             <NumberCircle style={{ gridRow: 1, gridColumn: 2 }}>{step.order}</NumberCircle>
-            <Selections style={{ gridRow: 1, gridColumn: 3, display: "flex", alignItems: "flex-end" }}>
+            <Selections
+              style={{ gridRow: 1, gridColumn: 3, display: 'flex', alignItems: 'flex-end' }}
+            >
               <StepSelect>
                 <Autocomplete
                   options={availableSteps.map((s) => s.name)}
@@ -136,11 +140,7 @@ export const WorkflowStep = ({
                   selectedOptions={[step.name]}
                   onOptionsChange={(change) =>
                     updateAtom({
-                      workflowSteps: updateStepName(
-                        step,
-                        steps,
-                        change.selectedItems[0] ?? ''
-                      ),
+                      workflowSteps: updateStepName(step, steps, change.selectedItems[0] ?? ''),
                     })
                   }
                 />
@@ -162,15 +162,13 @@ export const WorkflowStep = ({
                   }}
                   classification="RELEASECONTROL"
                   value={
-                    step?.criteriaTemplates?.[0]?.type ===
-                      'RequireProcosysFunctionalRoleSignature'
+                    step?.criteriaTemplates?.[0]?.type === 'RequireProcosysFunctionalRoleSignature'
                       ? step?.criteriaTemplates?.[0]?.value
                       : step?.criteriaTemplates?.[0]?.valueDescription
                   }
                   defaultResult={functionalRoles}
                 />
               </ResponsibleSelect>
-
             </Selections>
 
             <StyledWorkflowActionsWrapper>
@@ -193,12 +191,28 @@ export const WorkflowStep = ({
             </StyledWorkflowActionsWrapper>
             <StyledMarkdownWrapper>
               {!step.isCompleted && (
-                <MarkdownEditor commandButtons={[
-                  <ToggleTaskListButton />,
-                  <CommandButton label={"Add heat tracing cables"} icon={<Icon size={16} name="heat_trace" />} commandName={"add_ht_cables"} onSelect={() => addHeatTracingCables()} enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0} />,
-                  <CommandButton label={"Add tags"} icon={<Icon size={16} name="tag" />} commandName={"add_tags"} onSelect={() => addTags()} enabled={(releaseControl?.scopeTags ?? [])?.length > 0} />,
-                  //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
-                ]} key={refreshTrigger ? "true" : "false"} initialContent={step.description ?? ""}>
+                <MarkdownEditor
+                  commandButtons={[
+                    <ToggleTaskListButton />,
+                    <CommandButton
+                      label={'Add heat tracing cables'}
+                      icon={<Icon size={16} name="heat_trace" />}
+                      commandName={'add_ht_cables'}
+                      onSelect={() => addHeatTracingCables()}
+                      enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0}
+                    />,
+                    <CommandButton
+                      label={'Add tags'}
+                      icon={<Icon size={16} name="tag" />}
+                      commandName={'add_tags'}
+                      onSelect={() => addTags()}
+                      enabled={(releaseControl?.scopeTags ?? [])?.length > 0}
+                    />,
+                    //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
+                  ]}
+                  key={refreshTrigger ? 'true' : 'false'}
+                  initialContent={step.description ?? ''}
+                >
                   <DescriptionChanges stepId={step.id!} />
                 </MarkdownEditor>
               )}
@@ -206,29 +220,29 @@ export const WorkflowStep = ({
           </StyledWorkflowStepRow>
         )}
       </Line>
-    </>);
-
+    </>
+  );
 };
 
 function makeMarkdownListFromStringArray(tagNos: string[]) {
-  return tagNos.map(s => `- [ ] ${s}`).join("\n") ?? "";
+  return tagNos.map((s) => `- [ ] ${s}`).join('\n') ?? '';
 }
 
 type DescriptionChangesProps = {
   stepId: string;
-}
+};
 export const DescriptionChanges = (props: DescriptionChangesProps): JSX.Element => {
   const { updateAtom, readAtomValue } = DRCFormAtomApi;
   const { getMarkdown } = useHelpers(true);
 
   const onChange = useCallback(() => {
     const formState = readAtomValue();
-    const workflowStep = formState.workflowSteps?.find(s => s.id == props.stepId);
+    const workflowStep = formState.workflowSteps?.find((s) => s.id == props.stepId);
     if (!workflowStep) {
-      return
+      return;
     }
     workflowStep.description = getMarkdown();
-    updateAtom(formState)
+    updateAtom(formState);
   }, [getMarkdown, updateAtom]);
 
   return <OnChangeJSON onChange={onChange} />;
@@ -252,4 +266,3 @@ const StyledWorkflowActionsWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
-
