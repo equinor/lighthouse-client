@@ -10,45 +10,45 @@ import { FormBanner } from '../Form/FormBanner/FormBanner';
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 
 interface ScopeChangeCreateFormProps {
-    actions: SidesheetApi;
+  actions: SidesheetApi;
 }
 
 export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): JSX.Element => {
-    useOctopusErrorHandler();
+  useOctopusErrorHandler();
 
-    useEffect(() => {
-        scopeChangeCreateContext.updateAtom(actions);
-        actions.setHasUnsavedChanges(true);
-        actions.setTitle('Create new scope change request');
-        actions.setWidth(1150);
+  useEffect(() => {
+    scopeChangeCreateContext.updateAtom(actions);
+    actions.setHasUnsavedChanges(true);
+    actions.setTitle('Create new scope change request');
+    actions.setWidth(1150);
 
-        return () => {
-            deref(getSidesheetContext()).SidesheetComponent !== ScopeChangeCreateForm &&
-                scopeChangeFormAtomApi.clearState();
-        };
-    }, []);
+    return () => {
+      deref(getSidesheetContext()).SidesheetComponent !== ScopeChangeCreateForm &&
+        scopeChangeFormAtomApi.clearState();
+    };
+  }, []);
 
-    return (
-        <>
-            <ScopeChangeErrorBanner />
-            <FormBanner state={undefined} />
-            <Wrapper>
-                <ScopeChangeRequestForm />
-            </Wrapper>
-        </>
-    );
+  return (
+    <>
+      <ScopeChangeErrorBanner />
+      <FormBanner state={undefined} />
+      <Wrapper>
+        <ScopeChangeRequestForm />
+      </Wrapper>
+    </>
+  );
 };
 
 const bannerHeight = '76px';
 const topBarHeight = '50px';
 
 const Wrapper = styled.div`
-    padding: 20px 20px;
-    display: flex;
-    flex-direction: column;
-    height: calc(100% - ${topBarHeight} - ${bannerHeight});
-    justify-content: space-between;
-    overflow: scroll;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - ${topBarHeight} - ${bannerHeight});
+  justify-content: space-between;
+  overflow: scroll;
 `;
 
 export const scopeChangeCreateContext = createAtom<SidesheetApi>({} as SidesheetApi);

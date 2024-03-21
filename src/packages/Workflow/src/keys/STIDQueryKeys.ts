@@ -1,13 +1,13 @@
 interface STIDQueryKeys {
-    baseKey: string[];
-    document: (docNo: string) => string[];
+  baseKey: string[];
+  document: (docNo: string) => string[];
 }
 
 export function stidQueryKeys(): STIDQueryKeys {
-    const baseKey = ['STID'];
+  const baseKey = ['STID'];
 
-    return {
-        baseKey: baseKey,
-        document: (docNo: string) => [...baseKey, 'document', docNo],
-    };
+  return {
+    baseKey: baseKey,
+    document: (docNo: string) => [...baseKey, 'document', docNo],
+  };
 }

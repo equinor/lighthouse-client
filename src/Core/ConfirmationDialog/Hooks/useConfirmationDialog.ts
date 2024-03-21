@@ -4,11 +4,11 @@ import { getDialogContext } from '../Context/dialogContext';
 import { DialogState } from '../State/dialogState';
 
 export const useConfirmationDialog = (): DialogState | undefined => {
-    const state = useAtom(getDialogContext());
+  const state = useAtom(getDialogContext());
 
-    return {
-        dialogText: state.dialogText || '',
-        dialogTitle: state.dialogTitle || '',
-        onConfirm: state.onConfirm,
-    };
+  return {
+    dialogText: state.dialogText || '',
+    dialogTitle: state.dialogTitle || '',
+    onConfirm: state.onConfirm,
+  };
 };

@@ -7,34 +7,34 @@ import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
 import { proCoSysUrls } from '@equinor/procosys-urls';
 
 interface SystemProps {
-    system: ScopeChangeSystem;
+  system: ScopeChangeSystem;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
-    const { procosysPlantId } = useFacility();
+  const { procosysPlantId } = useFacility();
 
-    const { getSystemsQuery } = proCoSysQueries;
-    const { data } = useQuery<unknown, unknown, PCSSystem[]>(getSystemsQuery(procosysPlantId));
+  const { getSystemsQuery } = proCoSysQueries;
+  const { data } = useQuery<unknown, unknown, PCSSystem[]>(getSystemsQuery(procosysPlantId));
 
-    const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
+  const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
 
-    useEffect(() => {
-        if (data) {
-            const match = data.find((x) => x.Id === system.procosysId);
-            setFoundSystem(match);
-        }
-    }, [data, system.procosysId]);
+  useEffect(() => {
+    if (data) {
+      const match = data.find((x) => x.Id === system.procosysId);
+      setFoundSystem(match);
+    }
+  }, [data, system.procosysId]);
 
-    return (
-        <Wrapper
-            onClick={() => window.open(proCoSysUrls.getSystemUrl(system.procosysId), '_blank')}
-            key={system.id}
-        >
-            <TextWrapper>
-                <Link>
-                    {system.procosysCode} - {foundSystem?.Description}
-                </Link>
-            </TextWrapper>
-        </Wrapper>
-    );
+  return (
+    <Wrapper
+      onClick={() => window.open(proCoSysUrls.getSystemUrl(system.procosysId), '_blank')}
+      key={system.id}
+    >
+      <TextWrapper>
+        <Link>
+          {system.procosysCode} - {foundSystem?.Description}
+        </Link>
+      </TextWrapper>
+    </Wrapper>
+  );
 };

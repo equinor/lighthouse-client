@@ -1,6 +1,5 @@
 # Core Sidesheet setup Readme
 
-
 ## Sidesheet Simple
 
 ```Mermaid
@@ -17,14 +16,14 @@ sequenceDiagram
     SM->>WAPI: Requests all available sidesheet for user
     WAPI->>SM: Return all sidesheet widgets manifests available
 
-    note over C: clients clicks button to produce sidesheet 
+    note over C: clients clicks button to produce sidesheet
     P-->>SM: Requests sidesheet by id
     note over SM: Determine if sidesheet files had been loaded.
     SM-->>WAPI: request sidesheet component by id
     WAPI->>SM: Return sidesheet component
 
     note over SM: Stores component for later use.
-    SM->>P: Mounts Sidesheet 
+    SM->>P: Mounts Sidesheet
     P->>C: Displays sidesheet to client
 ```
 
@@ -44,13 +43,13 @@ sequenceDiagram
     SM->>WAPI: Requests all available sidesheet for user
     WAPI->>SM: Return all sidesheet widgets manifests available
 
-    note over C: clients clicks button to produce sidesheet 
+    note over C: clients clicks button to produce sidesheet
     P-->>SM: Requests sidesheet by id
     note over SM: Determine if sidesheet files had been loaded.
     SM-->>WAPI: Request sidesheet component by id
     WAPI->>SM: Return sidesheet component
 
-    note over SM: Determine or id resolver is needed. 
+    note over SM: Determine or id resolver is needed.
     SM-->>WAPI: Request resolver function
     WAPI->>SM: Reruns resolver function
 
@@ -72,20 +71,20 @@ sequenceDiagram
     participant WAPI as WidgetsAPI
 
     C->>P: Client enters Portal
-    
-    P-->>FM: Request awaitable factories for user 
+
+    P-->>FM: Request awaitable factories for user
 
     FM-->>WAPI: Requests factory widgets by type "creators"
 
     WAPI->>FM: Return all factory widgets manifests awaitable
- 
+
     note over FM: Determine manifest with access check functions
     FM-->>WAPI: Request access check functions.
 
     WAPI->>FM: Return access check function.
 
     note over FM: Executes access check function.
-    
-    FM->> P: Returns awaitable factories.  
-    P->> C: Display awaitable factories to client.  
+
+    FM->> P: Returns awaitable factories.
+    P->> C: Display awaitable factories to client.
 ```

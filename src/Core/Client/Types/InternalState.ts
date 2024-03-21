@@ -1,4 +1,4 @@
 export interface InternalState {
-    clientId: string;
-    tenantId: string;
+  clientId: string;
+  tenantId: string;
 }

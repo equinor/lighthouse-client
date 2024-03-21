@@ -1,7 +1,6 @@
-# The Client 
+# The Client
 
 The main hart of the project portal.
-
 
 ## The Client
 
@@ -21,11 +20,10 @@ orchestrate creation of the client
             render(<Client {...client} />, document.getElementById('root'));
         }
     });
-    
+
 ```
-### Global State Context 
 
-
+### Global State Context
 
 ## Global HttpClient
 
@@ -56,7 +54,6 @@ export async function getTags() {
 Example of changing the base url on a internal httpClient for testing purpose.
 Should only be done under development and not shipped to production.
 
-
 ```TS
 import {httpClient} from "@equinor/lighthouse-portal-client"
 
@@ -69,14 +66,11 @@ export async function getScopes() {
 ```
 
 The httpClient will also provide a `logOptions` function for debug purpose, login the current options of the selected httpClient.
-`addScope` function enables you to change the scope of the httpClient. This basicity creates a new client with the current scope 
-
+`addScope` function enables you to change the scope of the httpClient. This basicity creates a new client with the current scope
 
 ```TS
-    
+
     const { scopeChange } = httpClient();
     scopeChange.logOptions();
 
 ```
-
-

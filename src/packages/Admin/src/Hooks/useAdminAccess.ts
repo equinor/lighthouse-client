@@ -6,40 +6,40 @@ import { useAdminContext } from './useAdminContext';
 import { adminQueries } from './../Queries/queries';
 
 export interface AdminAccess extends OptionRequestResult {
-    canDelete: boolean;
+  canDelete: boolean;
 }
 
 export function useAdminAccess(id: string): void {
-    const { canDeleteQuery, permissionsQuery } = adminQueries.permissionQueries;
-    const app = useAdminContext((s) => s.app);
+  const { canDeleteQuery, permissionsQuery } = adminQueries.permissionQueries;
+  const app = useAdminContext((s) => s.app);
 
-    useQuery({
-        ...canDeleteQuery(id, app),
-        onSuccess: (canDelete) => {
-            swap(adminAtom, (old) => ({
-                ...old,
-                requestAccess: {
-                    ...(old.requestAccess
-                        ? old.requestAccess
-                        : {
-                              canDelete: false,
-                              canGet: false,
-                              canPatch: false,
-                              canPost: false,
-                              canPut: false,
-                          }),
-                    canDelete: canDelete,
-                },
-            }));
+  useQuery({
+    ...canDeleteQuery(id, app),
+    onSuccess: (canDelete) => {
+      swap(adminAtom, (old) => ({
+        ...old,
+        requestAccess: {
+          ...(old.requestAccess
+            ? old.requestAccess
+            : {
+                canDelete: false,
+                canGet: false,
+                canPatch: false,
+                canPost: false,
+                canPut: false,
+              }),
+          canDelete: canDelete,
         },
-    });
-    useQuery({
-        ...permissionsQuery(id, app),
-        onSuccess: (data) => {
-            swap(adminAtom, (old) => ({
-                ...old,
-                requestAccess: { ...old.requestAccess, ...data },
-            }));
-        },
-    });
+      }));
+    },
+  });
+  useQuery({
+    ...permissionsQuery(id, app),
+    onSuccess: (data) => {
+      swap(adminAtom, (old) => ({
+        ...old,
+        requestAccess: { ...old.requestAccess, ...data },
+      }));
+    },
+  });
 }

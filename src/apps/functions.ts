@@ -15,40 +15,40 @@ import { workOrderResolverFunction } from './WorkOrder/utility/sidesheetConfig';
 import { htResolverFunction, rcResolverFunction } from './DisciplineReleaseControl/sidesheet';
 
 export const functions: FunctionManifest[] = [
-    changeCreatorAccessFunction,
-    releaseCreatorAccessFunction,
-    changeResolverFunction,
-    htResolverFunction as any,
-    rcResolverFunction as any,
-    swcrResolverFunction,
-    workOrderResolverFunction,
-    mcResolverFunction,
-    releaseResolverFunction,
-    mcResolverFunction,
-    tagResolverFunction,
-    loopResolverFunction,
-    workflowResolverFunction,
-    punchResolverFunction,
-    queryResolverFunction,
-    workflowStepResolverFunction,
+  changeCreatorAccessFunction,
+  releaseCreatorAccessFunction,
+  changeResolverFunction,
+  htResolverFunction as any,
+  rcResolverFunction as any,
+  swcrResolverFunction,
+  workOrderResolverFunction,
+  mcResolverFunction,
+  releaseResolverFunction,
+  mcResolverFunction,
+  tagResolverFunction,
+  loopResolverFunction,
+  workflowResolverFunction,
+  punchResolverFunction,
+  queryResolverFunction,
+  workflowStepResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {
-    return new Promise((resolve, reject) => {
-        const currentFunction = functions.find((fn) => fn.functionId === functionId);
-        if (currentFunction) {
-            resolve(currentFunction);
-        }
-        reject(new Error(`No function found by id: ${functionId}`));
-    });
+  return new Promise((resolve, reject) => {
+    const currentFunction = functions.find((fn) => fn.functionId === functionId);
+    if (currentFunction) {
+      resolve(currentFunction);
+    }
+    reject(new Error(`No function found by id: ${functionId}`));
+  });
 }
 
 export async function fetchFunctions(type?: string): Promise<FunctionManifest[]> {
-    return new Promise((resolve) => {
-        if (type) {
-            resolve(functions.filter((fn) => fn.type === type));
-        }
+  return new Promise((resolve) => {
+    if (type) {
+      resolve(functions.filter((fn) => fn.type === type));
+    }
 
-        resolve(functions);
-    });
+    resolve(functions);
+  });
 }

@@ -3,7 +3,7 @@ import { useBookmarkContext } from '../../../Context/BookmarkContext';
 import { WorkspaceBookmarkPayload } from '../types';
 
 export const useWorkspaceBookmarks = () => {
-    const { applyBookmark, saveBookmark } = useBookmarkContext<WorkspaceBookmarkPayload>();
+  const { applyBookmark, saveBookmark } = useBookmarkContext<WorkspaceBookmarkPayload>();
 
-    useBookmarkEvents({ applyFn: applyBookmark, saveFn: saveBookmark });
+  useBookmarkEvents({ applyFn: applyBookmark, saveFn: saveBookmark });
 };

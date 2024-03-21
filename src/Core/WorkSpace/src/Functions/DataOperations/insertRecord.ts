@@ -1,15 +1,15 @@
 import { QueryCacheArgs } from './queryCacheArgs';
 
 interface InsertRecordParams {
-    item: unknown;
+  item: unknown;
 }
 
 export function insertRecord<T>(
-    { item }: InsertRecordParams,
-    { queryApi, queryClient, key }: QueryCacheArgs<T>
+  { item }: InsertRecordParams,
+  { queryApi, queryClient, key }: QueryCacheArgs<T>
 ): void {
-    const query = queryClient.getQueryCache().find(key);
-    if (!query || !queryApi.data) return;
+  const query = queryClient.getQueryCache().find(key);
+  if (!query || !queryApi.data) return;
 
-    query.setData([item, ...queryApi.data]);
+  query.setData([item, ...queryApi.data]);
 }

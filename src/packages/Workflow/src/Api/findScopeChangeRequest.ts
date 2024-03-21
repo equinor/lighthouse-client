@@ -3,23 +3,23 @@ import { ScopeChangeRequest } from '../Types/ScopeChangeRequest';
 import { throwOnError } from './throwOnError';
 
 export async function findScopeChangeRequest(
-    searchString: string,
-    signal?: AbortSignal
+  searchString: string,
+  signal?: AbortSignal
 ): Promise<ScopeChangeRequest[]> {
-    const { scopeChange } = httpClient();
+  const { scopeChange } = httpClient();
 
-    const res = await scopeChange.fetch(`api/scope-change-requests/${searchString}/find`, {
-        method: 'GET',
-        body: null,
-        signal,
-    });
+  const res = await scopeChange.fetch(`api/scope-change-requests/${searchString}/find`, {
+    method: 'GET',
+    body: null,
+    signal,
+  });
 
-    await throwOnError(res, 'Failed to find scope change requests');
-    const scopeChangeRequests: ScopeChangeRequest[] = await res.json();
+  await throwOnError(res, 'Failed to find scope change requests');
+  const scopeChangeRequests: ScopeChangeRequest[] = await res.json();
 
-    if (!Array.isArray(scopeChangeRequests)) {
-        throw 'Invalid response';
-    }
+  if (!Array.isArray(scopeChangeRequests)) {
+    throw 'Invalid response';
+  }
 
-    return scopeChangeRequests;
+  return scopeChangeRequests;
 }

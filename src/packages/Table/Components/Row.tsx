@@ -1,1 +1,1 @@
-export const Row = ({})
+export const Row = {};

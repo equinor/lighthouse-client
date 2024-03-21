@@ -9,7 +9,7 @@
 import { tokens } from '@equinor/eds-tokens';
 
 describe('skip', () => {
-    it('Should skip because stuff doesnt work', () => expect(true).toEqual(true));
+  it('Should skip because stuff doesnt work', () => expect(true).toEqual(true));
 });
 
 // describe('circuitDiagramHelpers tests', () => {

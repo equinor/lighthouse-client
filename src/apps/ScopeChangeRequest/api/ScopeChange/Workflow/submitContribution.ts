@@ -2,36 +2,36 @@ import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../functions/throwError';
 
 interface SubmitContributionParams {
-    requestId: string;
-    stepId: string;
-    contributorId: string;
-    suggestion: Suggestion;
-    comment?: string;
+  requestId: string;
+  stepId: string;
+  contributorId: string;
+  suggestion: Suggestion;
+  comment?: string;
 }
 
 type Suggestion = 'Comment' | 'SuggestRejection' | 'SuggestApproval';
 
 export async function submitContribution({
-    contributorId,
-    requestId,
-    stepId,
-    suggestion,
-    comment,
+  contributorId,
+  requestId,
+  stepId,
+  suggestion,
+  comment,
 }: SubmitContributionParams): Promise<void> {
-    const { scopeChange } = httpClient();
+  const { scopeChange } = httpClient();
 
-    const requestOptions = {
-        method: 'POST',
-        headers: { ['content-type']: 'application/json' },
-        body: JSON.stringify({
-            comment: comment,
-            suggestion: suggestion,
-        }),
-    };
-    const res = await scopeChange.fetch(
-        `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors/${contributorId}/contribute`,
-        requestOptions
-    );
+  const requestOptions = {
+    method: 'POST',
+    headers: { ['content-type']: 'application/json' },
+    body: JSON.stringify({
+      comment: comment,
+      suggestion: suggestion,
+    }),
+  };
+  const res = await scopeChange.fetch(
+    `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors/${contributorId}/contribute`,
+    requestOptions
+  );
 
-    await throwOnError(res);
+  await throwOnError(res);
 }

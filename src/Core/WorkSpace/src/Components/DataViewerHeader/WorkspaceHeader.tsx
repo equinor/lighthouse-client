@@ -11,35 +11,35 @@ import { useFilterApiContext } from '@equinor/filter';
 import { ViewSettings } from './ViewSettings/ViewSettings';
 
 interface WorkspaceHeaderProps {
-    tabs: TabsConfigItem[];
-    group: string;
-    shortName: string;
+  tabs: TabsConfigItem[];
+  group: string;
+  shortName: string;
 }
 
 export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps): JSX.Element => {
-    const {
-        filterState: { getFilteredData },
-    } = useFilterApiContext();
+  const {
+    filterState: { getFilteredData },
+  } = useFilterApiContext();
 
-    const data = getFilteredData();
-    const { statusFunc, key } = useDataContext();
+  const data = getFilteredData();
+  const { statusFunc, key } = useDataContext();
 
-    const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
-    return (
-        <>
-            <LeftSection>
-                <FillSection>
-                    <StatusBar statusItems={statusItems} />
-                </FillSection>
-            </LeftSection>
-            <RightSection>
-                <Presets />
-                <CreatorButton />
+  const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
+  return (
+    <>
+      <LeftSection>
+        <FillSection>
+          <StatusBar statusItems={statusItems} />
+        </FillSection>
+      </LeftSection>
+      <RightSection>
+        <Presets />
+        <CreatorButton />
 
-                <HeaderTabButtons tabs={tabs} />
+        <HeaderTabButtons tabs={tabs} />
 
-                <ViewSettings tabs={tabs} />
-            </RightSection>
-        </>
-    );
+        <ViewSettings tabs={tabs} />
+      </RightSection>
+    </>
+  );
 };

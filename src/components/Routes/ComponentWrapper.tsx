@@ -5,18 +5,18 @@ import { ModelViewerContextProvider } from '../../packages/ModelViewer/context/m
 import { DefaultRouteComponent } from './DefaultRouteComponent';
 
 export function ComponentWrapper(route: AppManifest): JSX.Element {
-    const { appConfig, internal, settings } = useClientContext();
-    const Component = route.app?.component || DefaultRouteComponent;
-    const api = {
-        ...route,
-        appConfig,
-        isProduction: settings.isProduction,
-    };
-    return (
-        <ErrorBoundary FallbackComponent={ErrorFallback} routeName={route.title}>
-            <ModelViewerContextProvider>
-                <Component {...api} />
-            </ModelViewerContextProvider>
-        </ErrorBoundary>
-    );
+  const { appConfig, internal, settings } = useClientContext();
+  const Component = route.app?.component || DefaultRouteComponent;
+  const api = {
+    ...route,
+    appConfig,
+    isProduction: settings.isProduction,
+  };
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback} routeName={route.title}>
+      <ModelViewerContextProvider>
+        <Component {...api} />
+      </ModelViewerContextProvider>
+    </ErrorBoundary>
+  );
 }

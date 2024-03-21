@@ -1,5 +1,5 @@
 export type Access = {
-    expirationUtc: string;
-    token: string;
-    error?: string;
+  expirationUtc: string;
+  token: string;
+  error?: string;
 };

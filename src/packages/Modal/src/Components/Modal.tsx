@@ -1,31 +1,31 @@
 import { Dialog, Scrim } from '@equinor/eds-core-react-old';
 import styled from 'styled-components';
 const DialogContainer = styled(Dialog)`
-    width: 100%;
-    padding: 0.8rem 0.8rem;
-    min-width: 350px;
+  width: 100%;
+  padding: 0.8rem 0.8rem;
+  min-width: 350px;
 `;
 const DialogPadding = styled.div`
-    padding-left: 1em;
-    padding-right: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
 `;
 
 const TitleSection = styled.h2`
-    width: 100%;
+  width: 100%;
 `;
 type ModalProps = {
-    title: string;
-    content: React.ReactNode;
+  title: string;
+  content: React.ReactNode;
 };
 export const Modal = ({ title, content }: ModalProps): JSX.Element => {
-    return (
-        <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
-            <DialogContainer>
-                <DialogPadding>
-                    <TitleSection>{title}</TitleSection>
-                    {content}
-                </DialogPadding>
-            </DialogContainer>
-        </Scrim>
-    );
+  return (
+    <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
+      <DialogContainer>
+        <DialogPadding>
+          <TitleSection>{title}</TitleSection>
+          {content}
+        </DialogPadding>
+      </DialogContainer>
+    </Scrim>
+  );
 };

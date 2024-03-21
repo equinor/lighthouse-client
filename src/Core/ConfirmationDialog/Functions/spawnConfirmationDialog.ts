@@ -2,15 +2,15 @@ import { getDialogContext } from '../Context/dialogContext';
 import { dispatch } from '../State/actions';
 
 export function spawnConfirmationDialog(
-    dialogText: string,
-    dialogTitle: string,
-    onConfirm: () => void | Promise<void>
+  dialogText: string,
+  dialogTitle: string,
+  onConfirm: () => void | Promise<void>
 ): void {
-    dispatch(getDialogContext(), () => {
-        return {
-            dialogText,
-            dialogTitle,
-            onConfirm,
-        };
-    });
+  dispatch(getDialogContext(), () => {
+    return {
+      dialogText,
+      dialogTitle,
+      onConfirm,
+    };
+  });
 }

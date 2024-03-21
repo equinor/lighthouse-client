@@ -7,49 +7,49 @@ import { PBIOptions } from '../Types';
 import { Filter } from '../Types/filter';
 
 interface PowerBIResult {
-    config: IReportEmbedConfiguration;
-    error: FusionPBIError | undefined;
+  config: IReportEmbedConfiguration;
+  error: FusionPBIError | undefined;
 }
 
 export interface FusionPBIError {
-    resourceIdentifierstring?: string;
-    code: ContextErrorType;
-    message: string;
+  resourceIdentifierstring?: string;
+  code: ContextErrorType;
+  message: string;
 }
 
 export function usePowerBI(
-    resource: string,
-    filterOptions?: Filter[],
-    options?: PBIOptions
+  resource: string,
+  filterOptions?: Filter[],
+  options?: PBIOptions
 ): PowerBIResult {
-    const { getConfig } = useFusionClient(resource, filterOptions, options);
-    const [error, setError] = useState<FusionPBIError>();
-    const [config, setReportConfig] = useState<IReportEmbedConfiguration>({
-        type: 'report',
-        embedUrl: undefined,
-        tokenType: models.TokenType.Embed,
-        accessToken: undefined,
-        // permissions: models.Permissions.All,
-        settings: undefined,
-        bookmark: undefined,
-    });
+  const { getConfig } = useFusionClient(resource, filterOptions, options);
+  const [error, setError] = useState<FusionPBIError>();
+  const [config, setReportConfig] = useState<IReportEmbedConfiguration>({
+    type: 'report',
+    embedUrl: undefined,
+    tokenType: models.TokenType.Embed,
+    accessToken: undefined,
+    // permissions: models.Permissions.All,
+    settings: undefined,
+    bookmark: undefined,
+  });
 
-    useEffect(() => {
-        async function setupReportConfig() {
-            setError(undefined);
-            try {
-                const fusionConfig = await getConfig();
+  useEffect(() => {
+    async function setupReportConfig() {
+      setError(undefined);
+      try {
+        const fusionConfig = await getConfig();
 
-                setReportConfig((config) => ({ ...config, ...fusionConfig }));
-            } catch (error: any) {
-                setError(error);
-            }
-        }
-        setupReportConfig();
-    }, [resource, filterOptions]);
+        setReportConfig((config) => ({ ...config, ...fusionConfig }));
+      } catch (error: any) {
+        setError(error);
+      }
+    }
+    setupReportConfig();
+  }, [resource, filterOptions]);
 
-    return {
-        config,
-        error,
-    };
+  return {
+    config,
+    error,
+  };
 }

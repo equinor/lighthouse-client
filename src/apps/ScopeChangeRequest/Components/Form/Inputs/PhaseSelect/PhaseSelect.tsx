@@ -4,26 +4,26 @@ import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomAp
 import { scopeChangeQueries } from '../../../../keys/queries';
 
 export const PhaseSelect = (): JSX.Element => {
-    const { phaseQuery } = scopeChangeQueries;
-    const { data: phases } = useQuery(phaseQuery);
+  const { phaseQuery } = scopeChangeQueries;
+  const { data: phases } = useQuery(phaseQuery);
 
-    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
+  const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
 
-    const phase = useAtomState(({ phase }) => phase);
+  const phase = useAtomState(({ phase }) => phase);
 
-    return (
-        <SingleSelect
-            items={phases ?? []}
-            label={'Phase'}
-            meta="(Required)"
-            placeholder="Select phase"
-            value={phase}
-            disabled={false}
-            handleSelectedItemChange={(e) =>
-                updateAtom({
-                    phase: e.selectedItem ?? undefined,
-                })
-            }
-        />
-    );
+  return (
+    <SingleSelect
+      items={phases ?? []}
+      label={'Phase'}
+      meta="(Required)"
+      placeholder="Select phase"
+      value={phase}
+      disabled={false}
+      handleSelectedItemChange={(e) =>
+        updateAtom({
+          phase: e.selectedItem ?? undefined,
+        })
+      }
+    />
+  );
 };

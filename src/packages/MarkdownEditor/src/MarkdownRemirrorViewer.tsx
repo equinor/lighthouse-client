@@ -29,7 +29,7 @@ export type ReactEditorProps = Pick<CreateEditorStateProps, 'stringHandler'> &
   Pick<RemirrorProps, 'initialContent' | 'autoFocus' | 'hooks'> & {
     placeholder?: string;
     onCheckboxTicked?: (val: string) => void;
-    editable: boolean | "checkboxes-only";
+    editable: boolean | 'checkboxes-only';
   };
 export type MarkdownRemirrorViewerProps = Partial<Omit<ReactEditorProps, 'stringHandler'>>;
 
@@ -40,7 +40,7 @@ export const MarkdownRemirrorViewer: FC<PropsWithChildren<MarkdownRemirrorViewer
   onCheckboxTicked,
   ...rest
 }) => {
-  const parentEl = useRef<HTMLDivElement | null>(null)
+  const parentEl = useRef<HTMLDivElement | null>(null);
   const extensions = useCallback(
     () => [
       new PlaceholderExtension({ placeholder }),
@@ -63,18 +63,26 @@ export const MarkdownRemirrorViewer: FC<PropsWithChildren<MarkdownRemirrorViewer
   return (
     <StyledContainer ref={parentEl}>
       <ThemeProvider theme={theme}>
-        <Remirror manager={manager} initialContent={initialContent} {...rest} editable={rest.editable == true || rest.editable == "checkboxes-only" ? true : false} onFocus={(e) => {
-          // We want the editor to be non-editable but still want checkboxes to be able to be ticked
-          e.view.dom.blur();
-        }}>
+        <Remirror
+          manager={manager}
+          initialContent={initialContent}
+          {...rest}
+          editable={rest.editable == true || rest.editable == 'checkboxes-only' ? true : false}
+          onFocus={(e) => {
+            // We want the editor to be non-editable but still want checkboxes to be able to be ticked
+            e.view.dom.blur();
+          }}
+        >
           <EditorComponent />
-          <DescriptionChanges handler={(v) => {
-            onCheckboxTicked && onCheckboxTicked(v)
-          }} />
+          <DescriptionChanges
+            handler={(v) => {
+              onCheckboxTicked && onCheckboxTicked(v);
+            }}
+          />
           {children}
         </Remirror>
       </ThemeProvider>
-    </StyledContainer >
+    </StyledContainer>
   );
 };
 
@@ -82,7 +90,7 @@ export const DescriptionChanges = (props: { handler: (val: string) => void }): J
   const { getMarkdown } = useHelpers(true);
 
   const onChange = useCallback(() => {
-    props.handler(getMarkdown())
+    props.handler(getMarkdown());
   }, [getMarkdown, props.handler]);
 
   return <OnChangeJSON onChange={onChange} />;

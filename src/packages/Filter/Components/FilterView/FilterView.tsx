@@ -4,30 +4,30 @@ import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
 import { FilterGroups, FilterGroupWrapper, Wrapper } from './FilterView-style';
 
 interface FilterViewProps {
-    visibleFilterGroups: string[];
+  visibleFilterGroups: string[];
 }
 
 export const FilterView = ({ visibleFilterGroups }: FilterViewProps): JSX.Element => {
-    const {
-        filterGroupState: { getGroupValues },
-    } = useFilterApiContext();
+  const {
+    filterGroupState: { getGroupValues },
+  } = useFilterApiContext();
 
-    return (
-        <Wrapper>
-            <FilterGroups>
-                {visibleFilterGroups
-                    .map(
-                        (groupName): FilterGroup => ({
-                            name: groupName,
-                            values: getGroupValues(groupName),
-                        })
-                    )
-                    .map((filterGroup, index) => (
-                        <FilterGroupWrapper key={`col-${filterGroup.name}-${index}`}>
-                            <FilterGroupeComponent filterGroup={filterGroup} />
-                        </FilterGroupWrapper>
-                    ))}
-            </FilterGroups>
-        </Wrapper>
-    );
+  return (
+    <Wrapper>
+      <FilterGroups>
+        {visibleFilterGroups
+          .map(
+            (groupName): FilterGroup => ({
+              name: groupName,
+              values: getGroupValues(groupName),
+            })
+          )
+          .map((filterGroup, index) => (
+            <FilterGroupWrapper key={`col-${filterGroup.name}-${index}`}>
+              <FilterGroupeComponent filterGroup={filterGroup} />
+            </FilterGroupWrapper>
+          ))}
+      </FilterGroups>
+    </Wrapper>
+  );
 };

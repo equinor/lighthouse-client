@@ -6,32 +6,32 @@ import { ChevronUp, ChevronDown } from '../../../components/ParkView/Icons/Chevr
 import { CustomGroupView } from '../../../components/ParkView/Models/gardenOptions';
 
 const SwcrGroup = styled(Pack)`
-    min-width: 50px;
+  min-width: 50px;
 `;
 
 const Title = styled.div`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const GroupText = styled.div`
-    display: flex;
+  display: flex;
 `;
 
 const Chevron = styled.div`
-    min-width: 24px;
+  min-width: 24px;
 `;
 
 export function SwcrGroupView({ data, onClick }: CustomGroupView<SwcrPackage>): JSX.Element {
-    return (
-        <SwcrGroup key={data.value + data.groupKey} onClick={onClick}>
-            {data.status?.statusElement}
-            <GroupText>
-                <Title>{data.value}</Title>
-                <Count>({data.count})</Count>
-            </GroupText>
-            <Chevron>{data.isExpanded ? <ChevronUp /> : <ChevronDown />}</Chevron>
-        </SwcrGroup>
-    );
+  return (
+    <SwcrGroup key={data.value + data.groupKey} onClick={onClick}>
+      {data.status?.statusElement}
+      <GroupText>
+        <Title>{data.value}</Title>
+        <Count>({data.count})</Count>
+      </GroupText>
+      <Chevron>{data.isExpanded ? <ChevronUp /> : <ChevronDown />}</Chevron>
+    </SwcrGroup>
+  );
 }

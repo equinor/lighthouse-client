@@ -8,55 +8,55 @@ import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { ActionBar, ButtonContainer } from './ScopeChangeForm.styles';
 
 export const EditFormActionBar = (): JSX.Element => {
-    const request = useScopeChangeContext(({ request }) => request);
-    const { patchKey } = scopeChangeMutationKeys(request.id);
+  const request = useScopeChangeContext(({ request }) => request);
+  const { patchKey } = scopeChangeMutationKeys(request.id);
 
-    const isValid = scopeChangeFormAtomApi.useIsValid();
+  const isValid = scopeChangeFormAtomApi.useIsValid();
 
-    const { editScopeChangeMutation } = useRequestMutations();
+  const { editScopeChangeMutation } = useRequestMutations();
 
-    const { isLoading, mutate } = useScopeChangeMutation(
-        request.id,
-        patchKey,
-        editScopeChangeMutation,
-        {
-            onSuccess: disableEditMode,
-        }
-    );
+  const { isLoading, mutate } = useScopeChangeMutation(
+    request.id,
+    patchKey,
+    editScopeChangeMutation,
+    {
+      onSuccess: disableEditMode,
+    }
+  );
 
-    const handleSave = (setAsOpen: boolean) => {
-        const { prepareRequest } = scopeChangeFormAtomApi;
-        mutate({
-            model: prepareRequest(),
-            setAsOpen: setAsOpen,
-        });
-    };
+  const handleSave = (setAsOpen: boolean) => {
+    const { prepareRequest } = scopeChangeFormAtomApi;
+    mutate({
+      model: prepareRequest(),
+      setAsOpen: setAsOpen,
+    });
+  };
 
-    return (
-        <ActionBar>
-            <ButtonContainer>
-                <>
-                    {isLoading ? (
-                        <Button variant="ghost_icon" disabled>
-                            <Progress.Dots color="primary" />
-                        </Button>
-                    ) : (
-                        <>
-                            <Button variant="outlined" onClick={disableEditMode}>
-                                Cancel
-                            </Button>
-                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
-                                Save
-                            </Button>
-                            {request.state === 'Draft' && (
-                                <Button disabled={!isValid} onClick={() => handleSave(true)}>
-                                    Submit
-                                </Button>
-                            )}
-                        </>
-                    )}
-                </>
-            </ButtonContainer>
-        </ActionBar>
-    );
+  return (
+    <ActionBar>
+      <ButtonContainer>
+        <>
+          {isLoading ? (
+            <Button variant="ghost_icon" disabled>
+              <Progress.Dots color="primary" />
+            </Button>
+          ) : (
+            <>
+              <Button variant="outlined" onClick={disableEditMode}>
+                Cancel
+              </Button>
+              <Button disabled={!isValid} onClick={() => handleSave(false)}>
+                Save
+              </Button>
+              {request.state === 'Draft' && (
+                <Button disabled={!isValid} onClick={() => handleSave(true)}>
+                  Submit
+                </Button>
+              )}
+            </>
+          )}
+        </>
+      </ButtonContainer>
+    </ActionBar>
+  );
 };

@@ -1,11 +1,9 @@
-# WorkSpace 
+# WorkSpace
 
 - [] WorkSpace config Module.
 - [] Workspace Provider Wrapper.
 
-
-## Workspace Configuration 
-
+## Workspace Configuration
 
 ```TS
 
@@ -30,7 +28,7 @@ const workspaceManifest = {
     color: '#7B3A96',
     widgets: {}
     functions: {}
-}    
+}
 
 const creator = setupCreator({
     widgetId: 'workspaceCreator',

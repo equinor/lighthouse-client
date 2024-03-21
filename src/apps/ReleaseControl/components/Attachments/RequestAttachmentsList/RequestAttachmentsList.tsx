@@ -4,33 +4,33 @@ import { releaseControlMutationKeys } from '../../../queries/releaseControlMutat
 import { AttachmentVisual } from '../AttachmentVisual';
 
 export const RequestAttachmentsList = (): JSX.Element => {
-    const { attachments, id } = useReleaseControlContext((s) => ({
-        attachments: s.releaseControl.attachments,
-        id: s.releaseControl.id,
-    }));
+  const { attachments, id } = useReleaseControlContext((s) => ({
+    attachments: s.releaseControl.attachments,
+    id: s.releaseControl.id,
+  }));
 
-    const { deleteAttachmentKey } = releaseControlMutationKeys(id);
-    const { mutate: removeAttachment } = useReleaseControlMutation(
-        id,
-        deleteAttachmentKey,
-        deleteAttachment
-    );
+  const { deleteAttachmentKey } = releaseControlMutationKeys(id);
+  const { mutate: removeAttachment } = useReleaseControlMutation(
+    id,
+    deleteAttachmentKey,
+    deleteAttachment
+  );
 
-    return (
-        <div>
-            {attachments?.map((attachment) => (
-                <AttachmentVisual
-                    key={attachment.id}
-                    name={attachment.fileName}
-                    fileSize={attachment.fileSize}
-                    onRemove={() =>
-                        removeAttachment({
-                            releaseControlId: id,
-                            attachmentId: attachment.id,
-                        })
-                    }
-                />
-            ))}
-        </div>
-    );
+  return (
+    <div>
+      {attachments?.map((attachment) => (
+        <AttachmentVisual
+          key={attachment.id}
+          name={attachment.fileName}
+          fileSize={attachment.fileSize}
+          onRemove={() =>
+            removeAttachment({
+              releaseControlId: id,
+              attachmentId: attachment.id,
+            })
+          }
+        />
+      ))}
+    </div>
+  );
 };

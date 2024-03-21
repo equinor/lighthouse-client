@@ -5,12 +5,12 @@ import { useEffect, useRef } from 'react';
  * @returns boolean
  */
 export function useIsMounted(): { current: boolean } {
-    const componentIsMounted = useRef(true);
-    useEffect(
-        () => () => {
-            componentIsMounted.current = false;
-        },
-        []
-    );
-    return componentIsMounted;
+  const componentIsMounted = useRef(true);
+  useEffect(
+    () => () => {
+      componentIsMounted.current = false;
+    },
+    []
+  );
+  return componentIsMounted;
 }

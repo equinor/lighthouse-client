@@ -4,18 +4,18 @@ import { followUpColorMap, orderedProCoSysStatuses } from './pcsFollowUp';
 import { proCoSysWorkOrderColorMap } from './pcsWorkOrder';
 
 const getWoStatusFromDates = (workOrder: WorkOrder): ProcosysStatuses => {
-    if (workOrder.w10ActualDate) return ProcosysStatuses.SentToPlanning;
-    if (workOrder.w9ActualDate) return ProcosysStatuses.ASBuiltCompleted;
-    if (workOrder.w8ActualDate) return ProcosysStatuses.SentDC;
-    if (workOrder.w7ActualDate) return ProcosysStatuses.Cancelled;
-    if (workOrder.w6ActualDate) return ProcosysStatuses.ComplByMC;
-    if (workOrder.w5ActualDate) return ProcosysStatuses.FromField;
-    if (workOrder.w4ActualDate) return ProcosysStatuses.ToField;
-    if (workOrder.w3ActualDate) return ProcosysStatuses.MCDocsPrepared;
-    if (workOrder.w2ActualDate) return ProcosysStatuses.ToMC;
-    if (workOrder.w1ActualDate) return ProcosysStatuses.Prepared;
+  if (workOrder.w10ActualDate) return ProcosysStatuses.SentToPlanning;
+  if (workOrder.w9ActualDate) return ProcosysStatuses.ASBuiltCompleted;
+  if (workOrder.w8ActualDate) return ProcosysStatuses.SentDC;
+  if (workOrder.w7ActualDate) return ProcosysStatuses.Cancelled;
+  if (workOrder.w6ActualDate) return ProcosysStatuses.ComplByMC;
+  if (workOrder.w5ActualDate) return ProcosysStatuses.FromField;
+  if (workOrder.w4ActualDate) return ProcosysStatuses.ToField;
+  if (workOrder.w3ActualDate) return ProcosysStatuses.MCDocsPrepared;
+  if (workOrder.w2ActualDate) return ProcosysStatuses.ToMC;
+  if (workOrder.w1ActualDate) return ProcosysStatuses.Prepared;
 
-    return ProcosysStatuses.NoStatus;
+  return ProcosysStatuses.NoStatus;
 };
 
 /**
@@ -24,39 +24,39 @@ const getWoStatusFromDates = (workOrder: WorkOrder): ProcosysStatuses => {
  * w1-w10 actual date properties.
  */
 export const getWoStatus = (workOrder: WorkOrder): ProcosysStatuses => {
-    switch (workOrder.jobStatus) {
-        case 'W01':
-            return ProcosysStatuses.Prepared;
+  switch (workOrder.jobStatus) {
+    case 'W01':
+      return ProcosysStatuses.Prepared;
 
-        case 'W02':
-            return ProcosysStatuses.ToMC;
+    case 'W02':
+      return ProcosysStatuses.ToMC;
 
-        case 'W03':
-            return ProcosysStatuses.MCDocsPrepared;
+    case 'W03':
+      return ProcosysStatuses.MCDocsPrepared;
 
-        case 'W04':
-            return ProcosysStatuses.ToField;
+    case 'W04':
+      return ProcosysStatuses.ToField;
 
-        case 'W05':
-            return ProcosysStatuses.FromField;
+    case 'W05':
+      return ProcosysStatuses.FromField;
 
-        case 'W06':
-            return ProcosysStatuses.ComplByMC;
+    case 'W06':
+      return ProcosysStatuses.ComplByMC;
 
-        case 'W07':
-            return ProcosysStatuses.Cancelled;
+    case 'W07':
+      return ProcosysStatuses.Cancelled;
 
-        case 'W08':
-            return ProcosysStatuses.SentDC;
+    case 'W08':
+      return ProcosysStatuses.SentDC;
 
-        case 'W09':
-            return ProcosysStatuses.ASBuiltCompleted;
+    case 'W09':
+      return ProcosysStatuses.ASBuiltCompleted;
 
-        case 'W10':
-            return ProcosysStatuses.SentToPlanning;
-    }
+    case 'W10':
+      return ProcosysStatuses.SentToPlanning;
+  }
 
-    return getWoStatusFromDates(workOrder);
+  return getWoStatusFromDates(workOrder);
 };
 /**
  * Because material statuses can be inconsistent we need to check for both possibilities of a material status.
@@ -64,32 +64,32 @@ export const getWoStatus = (workOrder: WorkOrder): ProcosysStatuses => {
  * This function returns an array such as: ['m01', 'm1'] and uses this to see if the workorder's material status matches any of the array values.
  */
 const prepareMaterialStatus = (status: MaterialStatus): string[] => {
-    const statusLower = status.toLowerCase();
+  const statusLower = status.toLowerCase();
 
-    let number = statusLower.replace(/[^0-9]+/, '');
-    if (number.length === 1) {
-        number = '0' + number;
-    }
+  let number = statusLower.replace(/[^0-9]+/, '');
+  if (number.length === 1) {
+    number = '0' + number;
+  }
 
-    if (!number.length) {
-        return [statusLower];
-    }
+  if (!number.length) {
+    return [statusLower];
+  }
 
-    return [statusLower, 'm' + number];
+  return [statusLower, 'm' + number];
 };
 const woHasMaterialStatus = (workOrder: WorkOrder, ...statuses: MaterialStatus[]) => {
-    const materialStatuses = statuses
-        .map((status) => prepareMaterialStatus(status))
-        .reduce((all, current) => all.concat(current), []);
-    const woMaterialStatus = workOrder?.materialStatus?.toLowerCase();
-    return materialStatuses.filter(
-        (materialStatus) => woMaterialStatus?.indexOf(materialStatus) === 0
-    ).length;
+  const materialStatuses = statuses
+    .map((status) => prepareMaterialStatus(status))
+    .reduce((all, current) => all.concat(current), []);
+  const woMaterialStatus = workOrder?.materialStatus?.toLowerCase();
+  return materialStatuses.filter(
+    (materialStatus) => woMaterialStatus?.indexOf(materialStatus) === 0
+  ).length;
 };
 const materialOk = (workOrder: WorkOrder) => woHasMaterialStatus(workOrder, 'M12', 'M13', 'MN');
 
 const materialAvailable = (workOrder: WorkOrder) =>
-    woHasMaterialStatus(workOrder, 'M07', 'M09', 'M10', 'M11', 'M12', 'MN');
+  woHasMaterialStatus(workOrder, 'M07', 'M09', 'M10', 'M11', 'M12', 'MN');
 
 /**
  * Function to retrieve "follow up" status of a package based on the package's projectProgress
@@ -97,21 +97,18 @@ const materialAvailable = (workOrder: WorkOrder) =>
  * Will be used if the current grouping of the garden is "wp".
  */
 export const getFollowUpStatus = (workOrder: WorkOrder) => {
-    const status = getWoStatus(workOrder);
-    const statusIndex = orderedProCoSysStatuses.indexOf(status);
+  const status = getWoStatus(workOrder);
+  const statusIndex = orderedProCoSysStatuses.indexOf(status);
 
-    if (workOrder.projectProgress && parseFloat(workOrder.projectProgress) >= 100) {
-        return FollowUpStatuses.WOFinished;
-    } else if (materialOk(workOrder) && [4, 5, 6, 7, 8, 9, 10].indexOf(statusIndex) > -1) {
-        return FollowUpStatuses.MaterialAndWoOk;
-    } else if (
-        materialAvailable(workOrder) &&
-        [3, 4, 5, 6, 7, 8, 9, 10].indexOf(statusIndex) > -1
-    ) {
-        return FollowUpStatuses.MaterialAndWoAvailable;
-    }
+  if (workOrder.projectProgress && parseFloat(workOrder.projectProgress) >= 100) {
+    return FollowUpStatuses.WOFinished;
+  } else if (materialOk(workOrder) && [4, 5, 6, 7, 8, 9, 10].indexOf(statusIndex) > -1) {
+    return FollowUpStatuses.MaterialAndWoOk;
+  } else if (materialAvailable(workOrder) && [3, 4, 5, 6, 7, 8, 9, 10].indexOf(statusIndex) > -1) {
+    return FollowUpStatuses.MaterialAndWoAvailable;
+  }
 
-    return FollowUpStatuses.MaterialAndOrWoNotAvailable;
+  return FollowUpStatuses.MaterialAndOrWoNotAvailable;
 };
 
 /**
@@ -122,10 +119,10 @@ export const getFollowUpStatus = (workOrder: WorkOrder) => {
 export const getStatus = (filter: string) => (filter === 'wp' ? getWoStatus : getFollowUpStatus);
 
 export const getColor = (filter: string) =>
-    filter === 'wp' ? proCoSysWorkOrderColorMap : followUpColorMap;
+  filter === 'wp' ? proCoSysWorkOrderColorMap : followUpColorMap;
 
 export const getTextColorForStatus = (status: string) => {
-    return status === FollowUpStatuses.WOFinished || status === ProcosysStatuses.ComplByMC
-        ? '#ffffff'
-        : '#212121';
+  return status === FollowUpStatuses.WOFinished || status === ProcosysStatuses.ComplByMC
+    ? '#ffffff'
+    : '#212121';
 };

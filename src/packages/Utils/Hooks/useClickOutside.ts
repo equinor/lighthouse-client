@@ -5,23 +5,23 @@ import { MutableRefObject, useEffect } from 'react';
  * @param handler Function that is fired off when clicks outside of the DOM element are detected. Wrap in useCallback.
  */
 export const useClickOutside = (
-    ref: MutableRefObject<HTMLElement | null>,
-    handler: (evt: Event) => void
+  ref: MutableRefObject<HTMLElement | null>,
+  handler: (evt: Event) => void
 ): void => {
-    useEffect(() => {
-        const listener = (evt: Event) => {
-            if (!ref.current || ref.current.contains(evt.target as Node)) {
-                return;
-            }
-            handler(evt);
-        };
+  useEffect(() => {
+    const listener = (evt: Event) => {
+      if (!ref.current || ref.current.contains(evt.target as Node)) {
+        return;
+      }
+      handler(evt);
+    };
 
-        document.addEventListener('mouseup', listener);
-        document.addEventListener('touchstart', listener);
+    document.addEventListener('mouseup', listener);
+    document.addEventListener('touchstart', listener);
 
-        return () => {
-            document.removeEventListener('mouseup', listener);
-            document.removeEventListener('touchstart', listener);
-        };
-    }, [ref, handler]);
+    return () => {
+      document.removeEventListener('mouseup', listener);
+      document.removeEventListener('touchstart', listener);
+    };
+  }, [ref, handler]);
 };

@@ -5,15 +5,15 @@ import { releaseControlQueries } from '../queries/queries';
 import { ReleaseControl } from '../types/releaseControl';
 
 export function useGetReleaseControl(id: string, initialData?: ReleaseControl) {
-    const { baseQuery } = releaseControlQueries;
-    return useQuery({
-        ...baseQuery(id),
-        placeholderData: initialData,
-        refetchInterval: CacheTime.TenMinutes,
-        refetchOnWindowFocus: true,
-        cacheTime: CacheTime.TenMinutes,
-        onSuccess: (s) => {
-            updateContext(s);
-        },
-    });
+  const { baseQuery } = releaseControlQueries;
+  return useQuery({
+    ...baseQuery(id),
+    placeholderData: initialData,
+    refetchInterval: CacheTime.TenMinutes,
+    refetchOnWindowFocus: true,
+    cacheTime: CacheTime.TenMinutes,
+    onSuccess: (s) => {
+      updateContext(s);
+    },
+  });
 }

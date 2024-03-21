@@ -13,144 +13,140 @@ import { useSideSheet } from '../Hooks/useSideSheet';
 import { CustomSidesheet, SidesheetApi } from '../Types/SidesheetApi';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, minWidth, width, isMinimized, color } = useSideSheet();
-    const { closeSidesheet, setIsMinimized, setWidth, setHasUnsavedChanges } =
-        useInternalSidesheetFunction();
+  const { SidesheetComponent, props, minWidth, width, isMinimized, color } = useSideSheet();
+  const { closeSidesheet, setIsMinimized, setWidth, setHasUnsavedChanges } =
+    useInternalSidesheetFunction();
 
-    const handleMinimize = () => {
-        setIsMinimized((prev) => !prev);
-    };
+  const handleMinimize = () => {
+    setIsMinimized((prev) => !prev);
+  };
 
-    // Header stuff
-    const [title, setTitle] = useState<JSX.Element | string | null>();
-    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  // Header stuff
+  const [title, setTitle] = useState<JSX.Element | string | null>();
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
 
-    const handleSetTitle = (value: JSX.Element | string | null | undefined) => {
-        setTitle(value);
-    };
+  const handleSetTitle = (value: JSX.Element | string | null | undefined) => {
+    setTitle(value);
+  };
 
-    function swapComponent<T>(
-        SidesheetContent?: CustomSidesheet<T>,
-        props?: T,
-        manifest?: Partial<WidgetManifest>
-    ) {
-        openSidesheet(SidesheetContent, props, manifest);
-    }
+  function swapComponent<T>(
+    SidesheetContent?: CustomSidesheet<T>,
+    props?: T,
+    manifest?: Partial<WidgetManifest>
+  ) {
+    openSidesheet(SidesheetContent, props, manifest);
+  }
 
-    const actions: SidesheetApi = {
-        closeSidesheet: closeSidesheet,
-        setIsMinimized: setIsMinimized,
-        setWidth: setWidth,
-        setTitle: handleSetTitle,
-        setMenuItems: setMenuItems,
-        swapComponent: swapComponent,
-        setHasUnsavedChanges: setHasUnsavedChanges,
-    };
+  const actions: SidesheetApi = {
+    closeSidesheet: closeSidesheet,
+    setIsMinimized: setIsMinimized,
+    setWidth: setWidth,
+    setTitle: handleSetTitle,
+    setMenuItems: setMenuItems,
+    swapComponent: swapComponent,
+    setHasUnsavedChanges: setHasUnsavedChanges,
+  };
 
-    const sidesheetProps = { item: props, actions: actions };
+  const sidesheetProps = { item: props, actions: actions };
 
-    if (!SidesheetComponent) return null;
+  if (!SidesheetComponent) return null;
 
-    if (isMinimized) {
-        return (
-            //HACK: auto doesnt work?
-            <div style={{ width: '24px' }}>
-                <ColourTab appColor={color} onClick={handleMinimize}>
-                    <Icon name="chevron_left" color={'white'} />
-                </ColourTab>
-                <RotatedText>{title}</RotatedText>
-                <div style={{ display: 'none' }}>
-                    <SidesheetComponent {...sidesheetProps} />
-                </div>
-            </div>
-        );
-    }
-
+  if (isMinimized) {
     return (
-        <div style={{ height: '100%' }}>
-            <Resizable
-                size={{ width: width, height: '100%' }}
-                maxWidth={'100vw'}
-                onResizeStop={(e, direction, ref, d) => {
-                    if (width + d.width < minWidth) {
-                        //setWidth(defaultWidth);
-                        setIsMinimized(true);
-                    } else {
-                        setWidth(width + d.width);
-                    }
-                }}
-            >
-                <Header>
-                    <LeftHeader>
-                        <ColourTab appColor={color} onClick={handleMinimize}>
-                            <Icon name="chevron_right" size={24} color={'white'} />
-                        </ColourTab>
-                        <Title>{title}</Title>
-                    </LeftHeader>
-
-                    <RightHeader>
-                        {menuItems.length > 0 && <IconMenu placement="bottom" items={menuItems} />}
-                        <Button variant="ghost_icon" onClick={closeSidesheet}>
-                            <Icon
-                                name="close"
-                                size={24}
-                                color={tokens.colors.interactive.primary__resting.hex}
-                            />
-                        </Button>
-                    </RightHeader>
-                </Header>
-
-                <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
-                    <div style={{ height: '95%' }}>
-                        <SidesheetComponent {...sidesheetProps} />
-                    </div>
-                </ErrorBoundary>
-            </Resizable>
+      //HACK: auto doesnt work?
+      <div style={{ width: '24px' }}>
+        <ColourTab appColor={color} onClick={handleMinimize}>
+          <Icon name="chevron_left" color={'white'} />
+        </ColourTab>
+        <RotatedText>{title}</RotatedText>
+        <div style={{ display: 'none' }}>
+          <SidesheetComponent {...sidesheetProps} />
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div style={{ height: '100%' }}>
+      <Resizable
+        size={{ width: width, height: '100%' }}
+        maxWidth={'100vw'}
+        onResizeStop={(e, direction, ref, d) => {
+          if (width + d.width < minWidth) {
+            //setWidth(defaultWidth);
+            setIsMinimized(true);
+          } else {
+            setWidth(width + d.width);
+          }
+        }}
+      >
+        <Header>
+          <LeftHeader>
+            <ColourTab appColor={color} onClick={handleMinimize}>
+              <Icon name="chevron_right" size={24} color={'white'} />
+            </ColourTab>
+            <Title>{title}</Title>
+          </LeftHeader>
+
+          <RightHeader>
+            {menuItems.length > 0 && <IconMenu placement="bottom" items={menuItems} />}
+            <Button variant="ghost_icon" onClick={closeSidesheet}>
+              <Icon name="close" size={24} color={tokens.colors.interactive.primary__resting.hex} />
+            </Button>
+          </RightHeader>
+        </Header>
+
+        <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
+          <div style={{ height: '95%' }}>
+            <SidesheetComponent {...sidesheetProps} />
+          </div>
+        </ErrorBoundary>
+      </Resizable>
+    </div>
+  );
 };
 
 const LeftHeader = styled.div`
-    display: flex;
-    gap: 0.5em;
-    flex-direction: row;
-    align-items: center;
-    overflow: hidden;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
 `;
 
 const RightHeader = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: fit-content;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
 `;
 
 const Title = styled.div`
-    font-size: 24px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    height: 76px;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 76px;
+  align-items: center;
 `;
 
 const ColourTab = styled.div<{ appColor: string }>`
-    display: flex;
-    align-items: center;
-    background-color: ${({ appColor }) => appColor};
-    height: 76px;
-    width: 24px;
+  display: flex;
+  align-items: center;
+  background-color: ${({ appColor }) => appColor};
+  height: 76px;
+  width: 24px;
 `;
 
 const RotatedText = styled.span`
-    display: inline-block;
-    transform: rotate(90deg);
-    transform-origin: left;
-    margin-left: 10px;
-    white-space: nowrap;
-    font-size: 14px;
+  display: inline-block;
+  transform: rotate(90deg);
+  transform-origin: left;
+  margin-left: 10px;
+  white-space: nowrap;
+  font-size: 14px;
 `;

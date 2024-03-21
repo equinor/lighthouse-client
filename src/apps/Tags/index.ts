@@ -4,13 +4,13 @@ import { tagResolver } from './Functions/resolver';
 import { Tag } from './Types/tag';
 
 const sidesheetCreator = setupWorkspaceSidesheet<Tag, 'tagDetails'>({
-    id: 'tagDetails',
-    color: '#7B3A96',
-    component: TagDetail,
-    props: {
-        objectIdentifier: 'TagNo',
-        function: tagResolver,
-    },
+  id: 'tagDetails',
+  color: '#7B3A96',
+  component: TagDetail,
+  props: {
+    objectIdentifier: 'TagNo',
+    function: tagResolver,
+  },
 });
 
 export const tagWidgetManifest = sidesheetCreator('SidesheetManifest');

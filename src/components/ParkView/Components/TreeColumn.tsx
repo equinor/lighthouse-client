@@ -7,53 +7,52 @@ import { defaultSortFunction } from '../Utils/utilities';
 import { useMemo } from 'react';
 
 interface TreeColumnProps<T extends Record<PropertyKey, unknown>> {
-    group: DataSet<T>;
-    fieldSettings?: FieldSettings<T>;
+  group: DataSet<T>;
+  fieldSettings?: FieldSettings<T>;
 }
 
 const Groups = styled.div`
-    width: 100%;
-    box-sizing: border-box;
+  width: 100%;
+  box-sizing: border-box;
 
-    > div {
-        width: 100%;
-        margin: 0px;
-    }
+  > div {
+    width: 100%;
+    margin: 0px;
+  }
 `;
 
 export function TreeColumn<T extends Record<PropertyKey, unknown>>({
-    group,
-    fieldSettings,
+  group,
+  fieldSettings,
 }: TreeColumnProps<T>): JSX.Element | null {
-    const columnExpanded = group.isExpanded;
-    const subGroupKeys = useMemo(
-        () => group.subGroups.map((sub) => sub.value) || [],
-        [group.subGroups]
-    );
+  const columnExpanded = group.isExpanded;
+  const subGroupKeys = useMemo(
+    () => group.subGroups.map((sub) => sub.value) || [],
+    [group.subGroups]
+  );
 
-    if (!group) return null;
+  if (!group) return null;
 
-    return (
-        <>
-            {group.items[0] != null ? (
-                <Items data={group.items} columnExpanded={columnExpanded} />
-            ) : (
-                <Groups>
-                    {subGroupKeys
-                        .sort(
-                            fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getColumnSort ||
-                                defaultSortFunction
-                        )
-                        .map((groupKey, index) => (
-                            <Group
-                                key={groupKey + index}
-                                group={group.subGroups[index]}
-                                columnExpanded={columnExpanded}
-                                fieldSettings={fieldSettings}
-                            />
-                        ))}
-                </Groups>
-            )}
-        </>
-    );
+  return (
+    <>
+      {group.items[0] != null ? (
+        <Items data={group.items} columnExpanded={columnExpanded} />
+      ) : (
+        <Groups>
+          {subGroupKeys
+            .sort(
+              fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getColumnSort || defaultSortFunction
+            )
+            .map((groupKey, index) => (
+              <Group
+                key={groupKey + index}
+                group={group.subGroups[index]}
+                columnExpanded={columnExpanded}
+                fieldSettings={fieldSettings}
+              />
+            ))}
+        </Groups>
+      )}
+    </>
+  );
 }

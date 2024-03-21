@@ -8,53 +8,49 @@ import { ANALYTICS } from '../Header';
 import { Divider } from '../HeaderStyles';
 
 interface HeaderTabButtonsProps {
-    tabs: TabsConfigItem[];
+  tabs: TabsConfigItem[];
 }
 
 export const HeaderTabButtons = ({ tabs }: HeaderTabButtonsProps): JSX.Element => {
-    const { hasPowerBi } = useViewerContext();
-    const { handleSetActiveTab, activeTab } = useLocationContext();
+  const { hasPowerBi } = useViewerContext();
+  const { handleSetActiveTab, activeTab } = useLocationContext();
 
-    return (
+  return (
+    <>
+      {hasPowerBi && (
         <>
-            {hasPowerBi && (
-                <>
-                    <TabButton
-                        onClick={() => handleSetActiveTab(ANALYTICS)}
-                        aria-selected={activeTab === ANALYTICS}
-                        title={'Power Bi analytics'}
-                        color={
-                            activeTab === ANALYTICS
-                                ? tokens.colors.interactive.primary__resting.hex
-                                : undefined
-                        }
-                    >
-                        <Icon name={'bar_chart'} />
-                    </TabButton>
-                    <Divider />
-                </>
-            )}
-            {tabs.map((tab) => {
-                if (tab.tabId === ANALYTICS) return;
-                const Icon = tab.icon;
-
-                const isActiveTab = activeTab === tab.tabId;
-
-                return (
-                    <TabButton
-                        onClick={() => handleSetActiveTab(tab.tabId)}
-                        key={`tab-${tab.icon}`}
-                        aria-selected={isActiveTab}
-                        title={tab.title}
-                        color={
-                            isActiveTab ? tokens.colors.interactive.primary__resting.hex : undefined
-                        }
-                    >
-                        <Icon />
-                    </TabButton>
-                );
-            })}
-            <Divider />
+          <TabButton
+            onClick={() => handleSetActiveTab(ANALYTICS)}
+            aria-selected={activeTab === ANALYTICS}
+            title={'Power Bi analytics'}
+            color={
+              activeTab === ANALYTICS ? tokens.colors.interactive.primary__resting.hex : undefined
+            }
+          >
+            <Icon name={'bar_chart'} />
+          </TabButton>
+          <Divider />
         </>
-    );
+      )}
+      {tabs.map((tab) => {
+        if (tab.tabId === ANALYTICS) return;
+        const Icon = tab.icon;
+
+        const isActiveTab = activeTab === tab.tabId;
+
+        return (
+          <TabButton
+            onClick={() => handleSetActiveTab(tab.tabId)}
+            key={`tab-${tab.icon}`}
+            aria-selected={isActiveTab}
+            title={tab.title}
+            color={isActiveTab ? tokens.colors.interactive.primary__resting.hex : undefined}
+          >
+            <Icon />
+          </TabButton>
+        );
+      })}
+      <Divider />
+    </>
+  );
 };

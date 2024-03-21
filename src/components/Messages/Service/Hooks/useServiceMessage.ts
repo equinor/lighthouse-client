@@ -41,7 +41,7 @@ export function useServiceMessage(): Return {
       }
       const data: ServiceMessage = {
         message: message,
-        type: "warning",
+        type: 'warning',
         link: undefined,
         id: btoa(message),
         fromDate: '2019-02-09',

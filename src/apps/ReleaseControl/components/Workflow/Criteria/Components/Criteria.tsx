@@ -77,23 +77,21 @@ export const CriteriaRender = ({
             <CriteriaActionOverlay />
           ) : (
             <>
-              {state &&
-                state.criteriaId === criteria.id &&
-                state.action !== 'Reassign' && (
-                  <Modal
-                    title={'Write a comment'}
-                    content={
-                      <SignWithCommentModal
-                        action={state.action}
-                        buttonText={state.buttonText}
-                        criteriaId={state.criteriaId}
-                        stepId={state.stepId}
-                        requestId={requestId}
-                        useWorkflowSigning={useWorkflowSigning}
-                      />
-                    }
-                  />
-                )}
+              {state && state.criteriaId === criteria.id && state.action !== 'Reassign' && (
+                <Modal
+                  title={'Write a comment'}
+                  content={
+                    <SignWithCommentModal
+                      action={state.action}
+                      buttonText={state.buttonText}
+                      criteriaId={state.criteriaId}
+                      stepId={state.stepId}
+                      requestId={requestId}
+                      useWorkflowSigning={useWorkflowSigning}
+                    />
+                  }
+                />
+              )}
               <span>
                 <div>{name}</div>
                 {criteria.signedAtUtc ? (
@@ -102,13 +100,10 @@ export const CriteriaRender = ({
                       <>
                         <div>
                           {`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}
-                          {criteria.type ==
-                            'RequireProcosysFunctionalRoleSignature' &&
+                          {criteria.type == 'RequireProcosysFunctionalRoleSignature' &&
                             `(${criteria.valueDescription})`}
                         </div>
-                        {criteria.signedComment && (
-                          <q>{criteria.signedComment}</q>
-                        )}
+                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
                       </>
                     ) : (
                       <CircularProgress size={16} />
@@ -148,11 +143,7 @@ export const CriteriaRender = ({
         <>
           {contributors.map((contributor) => (
             <WorkflowRow key={contributor.id}>
-              <ContributorRender
-                key={contributor.id}
-                contributor={contributor}
-                stepId={stepId}
-              />
+              <ContributorRender key={contributor.id} contributor={contributor} stepId={stepId} />
             </WorkflowRow>
           ))}
         </>
@@ -192,7 +183,7 @@ function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionP
   );
 }
 const MarkdownDescriptionWrapper = styled.div`
-    grid-column: 2/5;
+  grid-column: 2/5;
 `;
 type UpdateWorkflowMarkdown = {
   releaseControlId: string;

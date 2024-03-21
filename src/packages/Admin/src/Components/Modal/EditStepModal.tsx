@@ -11,76 +11,76 @@ import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
 import { FormContainer, TextField } from '../../../../EdsForm';
 
 const validationSchema = object().shape({
-    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
+  name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
 });
 
 export const EditStepModal = (): JSX.Element => {
-    const step = useAdminContext((s) => s.workflowStep);
+  const step = useAdminContext((s) => s.workflowStep);
 
-    const { editWorkflowStepMutation } = useAdminMutations();
+  const { editWorkflowStepMutation } = useAdminMutations();
 
-    const { mutate } = useMutation(editWorkflowStepMutation);
+  const { mutate } = useMutation(editWorkflowStepMutation);
 
-    const onSubmit = async (values: FormikValues) => {
-        mutate({ workflowStep: { ...step, name: values.name }, saveAndClose: false });
-        updateContext({
-            app: '',
-            workflowOwner: '',
-            workflow: {} as Workflow,
-            workflowStep: step,
-            status: {} as WorkflowStatus,
-            isEditingWorkflow: false,
-            isEditingStep: false,
-            deletingWorkflow: false,
-            deletingStep: false,
-            deletingStatus: false,
-        });
-    };
+  const onSubmit = async (values: FormikValues) => {
+    mutate({ workflowStep: { ...step, name: values.name }, saveAndClose: false });
+    updateContext({
+      app: '',
+      workflowOwner: '',
+      workflow: {} as Workflow,
+      workflowStep: step,
+      status: {} as WorkflowStatus,
+      isEditingWorkflow: false,
+      isEditingStep: false,
+      deletingWorkflow: false,
+      deletingStep: false,
+      deletingStatus: false,
+    });
+  };
 
-    const onCancel = () => {
-        updateContext({
-            app: '',
-            workflowOwner: '',
-            workflow: {} as Workflow,
-            workflowStep: {} as WorkflowStepTemplate,
-            status: {} as WorkflowStatus,
-            isEditingWorkflow: false,
-            isEditingStep: false,
-            deletingWorkflow: false,
-            deletingStep: false,
-            deletingStatus: false,
-        });
-    };
+  const onCancel = () => {
+    updateContext({
+      app: '',
+      workflowOwner: '',
+      workflow: {} as Workflow,
+      workflowStep: {} as WorkflowStepTemplate,
+      status: {} as WorkflowStatus,
+      isEditingWorkflow: false,
+      isEditingStep: false,
+      deletingWorkflow: false,
+      deletingStep: false,
+      deletingStatus: false,
+    });
+  };
 
-    return (
-        <FormContainer
-            initialValues={step}
-            validationSchema={validationSchema}
-            validateOnMount={true}
-            onSubmit={onSubmit}
-        >
-            {({ isValid }) => (
-                <Form>
-                    <ModalInputContainer>
-                        <TextField
-                            id="name"
-                            name="name"
-                            label="Name"
-                            multiline
-                            autoFocus={true}
-                            placeholder="Write a name for the step"
-                        />
-                    </ModalInputContainer>
-                    <ModalButtonContainer>
-                        <Button type="submit" variant="contained" disabled={!isValid}>
-                            Save
-                        </Button>
-                        <Button variant="outlined" onClick={onCancel}>
-                            Cancel
-                        </Button>
-                    </ModalButtonContainer>
-                </Form>
-            )}
-        </FormContainer>
-    );
+  return (
+    <FormContainer
+      initialValues={step}
+      validationSchema={validationSchema}
+      validateOnMount={true}
+      onSubmit={onSubmit}
+    >
+      {({ isValid }) => (
+        <Form>
+          <ModalInputContainer>
+            <TextField
+              id="name"
+              name="name"
+              label="Name"
+              multiline
+              autoFocus={true}
+              placeholder="Write a name for the step"
+            />
+          </ModalInputContainer>
+          <ModalButtonContainer>
+            <Button type="submit" variant="contained" disabled={!isValid}>
+              Save
+            </Button>
+            <Button variant="outlined" onClick={onCancel}>
+              Cancel
+            </Button>
+          </ModalButtonContainer>
+        </Form>
+      )}
+    </FormContainer>
+  );
 };

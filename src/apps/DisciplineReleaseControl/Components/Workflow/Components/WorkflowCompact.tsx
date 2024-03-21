@@ -3,62 +3,62 @@ import { WorkflowDot } from './WorkflowDot';
 import styled from 'styled-components';
 
 interface WorkflowProps<T> {
-    steps: T[];
-    statusDotFunc: (
-        item: T
-    ) => 'Complete' | 'Inactive' | 'Outstanding' | 'PunchAError' | 'PunchBError';
-    spanDirection?: 'vertical' | 'horizontal';
-    dotSize?: number;
-    isPopoverDisabled?: boolean;
+  steps: T[];
+  statusDotFunc: (
+    item: T
+  ) => 'Complete' | 'Inactive' | 'Outstanding' | 'PunchAError' | 'PunchBError';
+  spanDirection?: 'vertical' | 'horizontal';
+  dotSize?: number;
+  isPopoverDisabled?: boolean;
 }
 
 export function WorkflowCompact<T>({
-    steps,
-    statusDotFunc,
-    dotSize,
-    isPopoverDisabled,
+  steps,
+  statusDotFunc,
+  dotSize,
+  isPopoverDisabled,
 }: WorkflowProps<T>): JSX.Element {
-    return (
-        <>
-            <WorkflowStepContainer>
-                {steps.map((x, id) => {
-                    return (
-                        <div key={id}>
-                            <WorkflowStep>
-                                <WorkflowDot
-                                    height={dotSize}
-                                    width={dotSize}
-                                    state={statusDotFunc(x)}
-                                    circleText={(x as any).workflowStepText}
-                                    popoverText={(x as any).stepName}
-                                    active={statusDotFunc(x) !== 'Inactive'}
-                                    isPopoverDisabled={isPopoverDisabled}
-                                    underline={(x as any).underline}
-                                />
-                            </WorkflowStep>
-                        </div>
-                    );
-                })}
-            </WorkflowStepContainer>
-        </>
-    );
+  return (
+    <>
+      <WorkflowStepContainer>
+        {steps.map((x, id) => {
+          return (
+            <div key={id}>
+              <WorkflowStep>
+                <WorkflowDot
+                  height={dotSize}
+                  width={dotSize}
+                  state={statusDotFunc(x)}
+                  circleText={(x as any).workflowStepText}
+                  popoverText={(x as any).stepName}
+                  active={statusDotFunc(x) !== 'Inactive'}
+                  isPopoverDisabled={isPopoverDisabled}
+                  underline={(x as any).underline}
+                />
+              </WorkflowStep>
+            </div>
+          );
+        })}
+      </WorkflowStepContainer>
+    </>
+  );
 }
 
 const WorkflowStep = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2px;
 `;
 
 export interface WorkflowStep {
-    id: string;
-    name: string;
-    order: number;
-    isCompleted: boolean;
+  id: string;
+  name: string;
+  order: number;
+  isCompleted: boolean;
 }
 
 export const WorkflowStepContainer = styled.div`
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 `;

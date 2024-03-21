@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 
 interface Cancellation {
-    abort: () => void;
-    getSignal: () => AbortSignal;
+  abort: () => void;
+  getSignal: () => AbortSignal;
 }
 
 /**
@@ -10,14 +10,14 @@ interface Cancellation {
  * @returns getSignal and abort function
  */
 export function useCancellationToken(): Cancellation {
-    const controller = useRef(new AbortController());
+  const controller = useRef(new AbortController());
 
-    function abort() {
-        controller.current.abort();
-        controller.current = new AbortController();
-    }
+  function abort() {
+    controller.current.abort();
+    controller.current = new AbortController();
+  }
 
-    const getSignal = () => controller.current.signal;
+  const getSignal = () => controller.current.signal;
 
-    return { abort, getSignal };
+  return { abort, getSignal };
 }

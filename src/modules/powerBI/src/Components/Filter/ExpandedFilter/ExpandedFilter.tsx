@@ -9,52 +9,52 @@ import { FilterController } from '../types';
 import { FilterItemsProvider } from './FilterItems/FilterItemsProvider';
 
 interface ExpandedFilterProps {
-    controller: FilterController;
+  controller: FilterController;
 }
 
 export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element {
-    const {
-        activeFilters,
-        handleOnChange,
-        slicerFilters,
-        visibleFilters,
-        setVisibleFilters,
-        resetFilter,
-        isFilterExpanded,
-        setIsFilterExpanded,
-        isAnyFiltersActive,
-    } = controller;
+  const {
+    activeFilters,
+    handleOnChange,
+    slicerFilters,
+    visibleFilters,
+    setVisibleFilters,
+    resetFilter,
+    isFilterExpanded,
+    setIsFilterExpanded,
+    isAnyFiltersActive,
+  } = controller;
 
-    return (
-        <ExpandedFilterWrapper>
-            <FilterItemsWrapper>
-                {visibleFilters.map((groupName) => (
-                    <FilterItemsProvider key={groupName}>
-                        <FilterItems
-                            controller={controller}
-                            handleOnChange={handleOnChange}
-                            handleOnSelectAll={controller.handleOnSelectAll}
-                            activeFilters={activeFilters}
-                            group={slicerFilters.find((s) => s.type === groupName) as PowerBiFilter}
-                        />
-                    </FilterItemsProvider>
-                ))}
-            </FilterItemsWrapper>
-            <Sidebar>
-                <div onClick={() => setIsFilterExpanded(!isFilterExpanded)}>
-                    {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
-                </div>
-                <FilterClearIcon
-                    isDisabled={!isAnyFiltersActive()}
-                    onClick={async () => await resetFilter()}
-                />
+  return (
+    <ExpandedFilterWrapper>
+      <FilterItemsWrapper>
+        {visibleFilters.map((groupName) => (
+          <FilterItemsProvider key={groupName}>
+            <FilterItems
+              controller={controller}
+              handleOnChange={handleOnChange}
+              handleOnSelectAll={controller.handleOnSelectAll}
+              activeFilters={activeFilters}
+              group={slicerFilters.find((s) => s.type === groupName) as PowerBiFilter}
+            />
+          </FilterItemsProvider>
+        ))}
+      </FilterItemsWrapper>
+      <Sidebar>
+        <div onClick={() => setIsFilterExpanded(!isFilterExpanded)}>
+          {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
+        </div>
+        <FilterClearIcon
+          isDisabled={!isAnyFiltersActive()}
+          onClick={async () => await resetFilter()}
+        />
 
-                <ToggleHideFilterPopover
-                    allFilters={slicerFilters.map((s) => s.type)}
-                    setVisibleFilters={setVisibleFilters}
-                    visibleFilters={visibleFilters}
-                />
-            </Sidebar>
-        </ExpandedFilterWrapper>
-    );
+        <ToggleHideFilterPopover
+          allFilters={slicerFilters.map((s) => s.type)}
+          setVisibleFilters={setVisibleFilters}
+          visibleFilters={visibleFilters}
+        />
+      </Sidebar>
+    </ExpandedFilterWrapper>
+  );
 }

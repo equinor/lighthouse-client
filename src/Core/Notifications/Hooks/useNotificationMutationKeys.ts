@@ -1,18 +1,18 @@
 interface NotificationKeys {
-    baseKey: string[];
-    read: string[];
+  baseKey: string[];
+  read: string[];
 }
 
 /**
  * MutationKeys for notifications
  */
 export function useNotificationMutationKeys(): NotificationKeys {
-    const baseKey = ['notifications'];
+  const baseKey = ['notifications'];
 
-    const mutationKeys = {
-        baseKey: baseKey,
-        read: [...baseKey, 'read'],
-    };
+  const mutationKeys = {
+    baseKey: baseKey,
+    read: [...baseKey, 'read'],
+  };
 
-    return mutationKeys;
+  return mutationKeys;
 }

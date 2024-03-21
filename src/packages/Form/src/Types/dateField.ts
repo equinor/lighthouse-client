@@ -1,4 +1,4 @@
 export interface DateField {
-    type: 'Date';
-    CustomInputType?: React.FC;
+  type: 'Date';
+  CustomInputType?: React.FC;
 }

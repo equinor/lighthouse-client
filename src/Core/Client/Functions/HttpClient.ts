@@ -2,8 +2,8 @@ import { HttpClients } from '../Types/HttpClients';
 import { readClients } from './Readers';
 
 export interface HttpClientOptions {
-    scope: string;
-    baseUrl?: string;
+  scope: string;
+  baseUrl?: string;
 }
 
 /**
@@ -23,7 +23,7 @@ export interface HttpClientOptions {
  * @return {*}  {HttpClients}
  */
 export function httpClient(): HttpClients {
-    const clients = readClients();
+  const clients = readClients();
 
-    return clients;
+  return clients;
 }

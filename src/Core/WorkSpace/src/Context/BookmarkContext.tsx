@@ -1,21 +1,21 @@
 import { deref } from '@dbeining/react-atom';
 import {
-    ApplyEventArgs,
-    favouriteBookmark,
-    getBookmarkById,
-    headBookmark,
-    SaveEventArgs,
-    useBookmarkMutations,
-    useBookmarks,
+  ApplyEventArgs,
+  favouriteBookmark,
+  getBookmarkById,
+  headBookmark,
+  SaveEventArgs,
+  useBookmarkMutations,
+  useBookmarks,
 } from '@equinor/BookmarksManager';
 import { useFilterApiContext } from '@equinor/filter';
 import { PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import {
-    ApplyBookmark,
-    GardenPayload,
-    SaveBookmark,
-    WorkspaceBookmarkPayload,
+  ApplyBookmark,
+  GardenPayload,
+  SaveBookmark,
+  WorkspaceBookmarkPayload,
 } from '../Util/bookmarks/types';
 import { useLocationContext } from './LocationProvider';
 import { useViewerContext } from './ViewProvider';
@@ -25,151 +25,151 @@ import { useSearchParams } from 'react-router-dom';
 import { useCurrentUser } from '@equinor/lighthouse-portal-client';
 
 type Context<T> = {
-    applyBookmark: (args: ApplyEventArgs) => Promise<ApplyBookmark<T>>;
-    saveBookmark: SaveBookmark<T>;
+  applyBookmark: (args: ApplyEventArgs) => Promise<ApplyBookmark<T>>;
+  saveBookmark: SaveBookmark<T>;
 };
 
 const BookmarkContext = createContext(
-    {} as Context<PowerBIBookmarkPayload | WorkspaceBookmarkPayload>
+  {} as Context<PowerBIBookmarkPayload | WorkspaceBookmarkPayload>
 );
 
 type BookmarkContextWrapperProps = {};
 
 export const BookmarkContextWrapper = ({
-    children,
+  children,
 }: PropsWithChildren<BookmarkContextWrapperProps>): JSX.Element => {
-    const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-    const {
-        filterState: { getFilterState },
-        operations: { setFilterState },
-    } = useFilterApiContext();
+  const {
+    filterState: { getFilterState },
+    operations: { setFilterState },
+  } = useFilterApiContext();
 
-    const { activeTab, handleSetActiveTab } = useLocationContext();
-    const { setActivePage, pbiReport } = useViewerContext();
-    const user = useCurrentUser();
+  const { activeTab, handleSetActiveTab } = useLocationContext();
+  const { setActivePage, pbiReport } = useViewerContext();
+  const user = useCurrentUser();
 
-    const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
-        PowerBIBookmarkPayload | WorkspaceBookmarkPayload
-    >();
-    const favourite = useBookmarkMutations(favouriteBookmark);
+  const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
+    PowerBIBookmarkPayload | WorkspaceBookmarkPayload
+  >();
+  const favourite = useBookmarkMutations(favouriteBookmark);
 
-    const handlePowerBiApply = (
-        bookmark: PowerBIBookmarkPayload,
-        isRedirect?: boolean
-    ): PowerBIBookmarkPayload | void => {
-        if (activeTab !== 'analytics') {
-            setActivePage(
-                {
-                    pageId: bookmark.name,
-                    pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
-                },
-                {
-                    bookmark: { state: bookmark.bookmarkState },
-                    defaultPage: bookmark?.mainPage || bookmark.name,
-                }
-            );
-            handleSetActiveTab('analytics');
-            return;
-        } else {
-            setActivePage({
-                pageId: bookmark.name,
-                pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
-            });
-            if (isRedirect) {
-                pbiReport && pbiReport.bookmarksManager.applyState(bookmark.bookmarkState);
-                return;
-            }
-
-            return bookmark;
+  const handlePowerBiApply = (
+    bookmark: PowerBIBookmarkPayload,
+    isRedirect?: boolean
+  ): PowerBIBookmarkPayload | void => {
+    if (activeTab !== 'analytics') {
+      setActivePage(
+        {
+          pageId: bookmark.name,
+          pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
+        },
+        {
+          bookmark: { state: bookmark.bookmarkState },
+          defaultPage: bookmark?.mainPage || bookmark.name,
         }
+      );
+      handleSetActiveTab('analytics');
+      return;
+    } else {
+      setActivePage({
+        pageId: bookmark.name,
+        pageTitle: bookmark?.mainPageDisplayName || bookmark.displayName,
+      });
+      if (isRedirect) {
+        pbiReport && pbiReport.bookmarksManager.applyState(bookmark.bookmarkState);
+        return;
+      }
+
+      return bookmark;
+    }
+  };
+
+  const handleWorkspaceApply = (bookmark: WorkspaceBookmarkPayload) => {
+    if (bookmark.activeTab !== activeTab) {
+      handleSetActiveTab(bookmark.activeTab);
+    }
+    const gardenApi = deref(gardenApiAtom);
+    if (gardenApi && bookmark.activeTab === 'garden') {
+      gardenApi.mutations.setGroupKeys(bookmark.garden?.groupByKeys || []);
+      gardenApi.mutations.setCustomGroupKeys(bookmark.garden?.customGroupByKeys || {});
+      gardenApi.mutations.setGardenKey(
+        bookmark.garden?.gardenKey || gardenApi.states.getGardenKey()
+      );
+    }
+    setFilterState(bookmark.filter);
+  };
+  const applyBookmark = async ({ id }: ApplyEventArgs) => {
+    const bookmark = await handleApplyBookmark(id);
+    if (isWorkspaceBookmark(bookmark)) {
+      handleWorkspaceApply(bookmark);
+    } else {
+      return handlePowerBiApply(bookmark);
+    }
+  };
+
+  const handleWorkspaceSave = async ({ appKey, subSystem, title }: SaveEventArgs) => {
+    const filterState = getFilterState();
+    const gardenApi = deref(gardenApiAtom);
+    let gardenPayload: GardenPayload = {};
+    if (gardenApi) {
+      gardenPayload = {
+        customGroupByKeys: gardenApi.states.getCustomGroupByKeys(),
+        gardenKey: gardenApi.states.getGardenKey(),
+        groupByKeys: gardenApi.states.getCurrentGroupByKeys(),
+      };
+    }
+
+    const bookmarkPayload: WorkspaceBookmarkPayload = {
+      activeTab,
+      garden: gardenPayload,
+      filter: filterState,
     };
 
-    const handleWorkspaceApply = (bookmark: WorkspaceBookmarkPayload) => {
-        if (bookmark.activeTab !== activeTab) {
-            handleSetActiveTab(bookmark.activeTab);
-        }
-        const gardenApi = deref(gardenApiAtom);
-        if (gardenApi && bookmark.activeTab === 'garden') {
-            gardenApi.mutations.setGroupKeys(bookmark.garden?.groupByKeys || []);
-            gardenApi.mutations.setCustomGroupKeys(bookmark.garden?.customGroupByKeys || {});
-            gardenApi.mutations.setGardenKey(
-                bookmark.garden?.gardenKey || gardenApi.states.getGardenKey()
-            );
-        }
-        setFilterState(bookmark.filter);
-    };
-    const applyBookmark = async ({ id }: ApplyEventArgs) => {
-        const bookmark = await handleApplyBookmark(id);
-        if (isWorkspaceBookmark(bookmark)) {
+    await handleSaveBookmarks({
+      capturedBookmark: bookmarkPayload,
+      appKey,
+      subSystem,
+      bookmarkTitle: title,
+    });
+  };
+  const saveBookmark = (): SaveBookmark<WorkspaceBookmarkPayload | PowerBIBookmarkPayload> => {
+    if (activeTab === 'analytics') {
+      return handleSaveBookmarks;
+    } else {
+      return handleWorkspaceSave;
+    }
+  };
+  useEffect(() => {
+    const bookmarkId = searchParams.get('bookmarkId');
+    if (bookmarkId) {
+      (async () => {
+        const bookmarkRes = await getBookmarkById(bookmarkId);
+        if (bookmarkRes) {
+          if (bookmarkRes.createdBy.azureUniqueId !== user?.id) {
+            // Check if bookmark is not already favourited by user
+            !(await headBookmark(bookmarkId)) && favourite(bookmarkId);
+          }
+          const bookmark = await handleApplyBookmark(bookmarkId);
+
+          if (isWorkspaceBookmark(bookmark)) {
             handleWorkspaceApply(bookmark);
-        } else {
-            return handlePowerBiApply(bookmark);
+          } else {
+            return handlePowerBiApply(bookmark, true);
+          }
         }
-    };
-
-    const handleWorkspaceSave = async ({ appKey, subSystem, title }: SaveEventArgs) => {
-        const filterState = getFilterState();
-        const gardenApi = deref(gardenApiAtom);
-        let gardenPayload: GardenPayload = {};
-        if (gardenApi) {
-            gardenPayload = {
-                customGroupByKeys: gardenApi.states.getCustomGroupByKeys(),
-                gardenKey: gardenApi.states.getGardenKey(),
-                groupByKeys: gardenApi.states.getCurrentGroupByKeys(),
-            };
-        }
-
-        const bookmarkPayload: WorkspaceBookmarkPayload = {
-            activeTab,
-            garden: gardenPayload,
-            filter: filterState,
-        };
-
-        await handleSaveBookmarks({
-            capturedBookmark: bookmarkPayload,
-            appKey,
-            subSystem,
-            bookmarkTitle: title,
-        });
-    };
-    const saveBookmark = (): SaveBookmark<WorkspaceBookmarkPayload | PowerBIBookmarkPayload> => {
-        if (activeTab === 'analytics') {
-            return handleSaveBookmarks;
-        } else {
-            return handleWorkspaceSave;
-        }
-    };
-    useEffect(() => {
-        const bookmarkId = searchParams.get('bookmarkId');
-        if (bookmarkId) {
-            (async () => {
-                const bookmarkRes = await getBookmarkById(bookmarkId);
-                if (bookmarkRes) {
-                    if (bookmarkRes.createdBy.azureUniqueId !== user?.id) {
-                        // Check if bookmark is not already favourited by user
-                        !(await headBookmark(bookmarkId)) && favourite(bookmarkId);
-                    }
-                    const bookmark = await handleApplyBookmark(bookmarkId);
-
-                    if (isWorkspaceBookmark(bookmark)) {
-                        handleWorkspaceApply(bookmark);
-                    } else {
-                        return handlePowerBiApply(bookmark, true);
-                    }
-                }
-            })();
-        }
-    }, [searchParams]);
-    return (
-        <BookmarkContext.Provider value={{ applyBookmark, saveBookmark: saveBookmark() }}>
-            {children}
-        </BookmarkContext.Provider>
-    );
+      })();
+    }
+  }, [searchParams]);
+  return (
+    <BookmarkContext.Provider value={{ applyBookmark, saveBookmark: saveBookmark() }}>
+      {children}
+    </BookmarkContext.Provider>
+  );
 };
 
 export const useBookmarkContext = <
-    T extends PowerBIBookmarkPayload | WorkspaceBookmarkPayload
+  T extends PowerBIBookmarkPayload | WorkspaceBookmarkPayload
 >(): Context<T> => {
-    return useContext(BookmarkContext);
+  return useContext(BookmarkContext);
 };

@@ -9,62 +9,62 @@ import { gardenApiAtom } from '../../Util/bookmarks/gardenBookmarks/gardenApiAto
 import { TabButton } from '../ToggleButton';
 
 export function Presets(): JSX.Element {
-    const { presetOptions } = useWorkSpace();
+  const { presetOptions } = useWorkSpace();
 
-    const { activeTab } = useLocationContext();
-    const {
-        operations: { setFilterState },
-    } = useFilterApiContext();
+  const { activeTab } = useLocationContext();
+  const {
+    operations: { setFilterState },
+  } = useFilterApiContext();
 
-    function handleClick(presetName: string) {
-        const preset = presetOptions?.find(({ name }) => name === presetName);
-        if (!preset) return;
+  function handleClick(presetName: string) {
+    const preset = presetOptions?.find(({ name }) => name === presetName);
+    if (!preset) return;
 
-        setFilterState(preset.filter.filterGroups);
+    setFilterState(preset.filter.filterGroups);
 
-        switch (preset.type) {
-            case 'garden': {
-                const gardenApi = deref(gardenApiAtom);
-                gardenApi?.mutations.setGardenKey(preset.garden.gardenKey);
-                gardenApi?.mutations.setGroupKeys(preset.garden.groupByKeys ?? []);
-                preset.garden.customGroupByKeys &&
-                    gardenApi?.mutations.setCustomGroupKeys(preset.garden.customGroupByKeys);
-                break;
-            }
+    switch (preset.type) {
+      case 'garden': {
+        const gardenApi = deref(gardenApiAtom);
+        gardenApi?.mutations.setGardenKey(preset.garden.gardenKey);
+        gardenApi?.mutations.setGroupKeys(preset.garden.groupByKeys ?? []);
+        preset.garden.customGroupByKeys &&
+          gardenApi?.mutations.setCustomGroupKeys(preset.garden.customGroupByKeys);
+        break;
+      }
 
-            case 'table': {
-                break;
-            }
-        }
+      case 'table': {
+        break;
+      }
     }
+  }
 
-    return (
-        <>
-            {presetOptions
-                ?.filter(({ type }) => type === activeTab)
-                .map((x) => (
-                    <TabButton
-                        aria-selected={false}
-                        onClick={() => handleClick(x.name)}
-                        key={x.name}
-                        width="80px"
-                    >
-                        <PresetChip>{x.name}</PresetChip>
-                    </TabButton>
-                ))}
-        </>
-    );
+  return (
+    <>
+      {presetOptions
+        ?.filter(({ type }) => type === activeTab)
+        .map((x) => (
+          <TabButton
+            aria-selected={false}
+            onClick={() => handleClick(x.name)}
+            key={x.name}
+            width="80px"
+          >
+            <PresetChip>{x.name}</PresetChip>
+          </TabButton>
+        ))}
+    </>
+  );
 }
 
 const PresetChip = styled(Chip)`
-    z-index: auto;
+  z-index: auto;
 
-    :hover {
-        color: ${tokens.colors.text.static_icons__secondary.rgba};
-        background: ${tokens.colors.interactive.primary__hover_alt.rgba};
+  :hover {
+    color: ${tokens.colors.text.static_icons__secondary.rgba};
+    background: ${tokens.colors.interactive.primary__hover_alt.rgba};
 
-        > svg > path {
-            fill: ${tokens.colors.text.static_icons__secondary.rgba};
-        }
+    > svg > path {
+      fill: ${tokens.colors.text.static_icons__secondary.rgba};
     }
+  }
 `;

@@ -5,22 +5,22 @@ import { Area as PCSArea, proCoSysQueries } from '@equinor/Workflow';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 
 interface AreaProps {
-    area: AreaInterface;
+  area: AreaInterface;
 }
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
-    const { procosysPlantId } = useFacility();
-    const { getAreaByCodeQuery } = proCoSysQueries;
+  const { procosysPlantId } = useFacility();
+  const { getAreaByCodeQuery } = proCoSysQueries;
 
-    const { data } = useQuery<unknown, unknown, PCSArea>(
-        getAreaByCodeQuery(area.procosysCode, procosysPlantId)
-    );
+  const { data } = useQuery<unknown, unknown, PCSArea>(
+    getAreaByCodeQuery(area.procosysCode, procosysPlantId)
+  );
 
-    return (
-        <Wrapper key={area.id}>
-            <Link>
-                {area.procosysCode} - {data?.Description}
-            </Link>
-        </Wrapper>
-    );
+  return (
+    <Wrapper key={area.id}>
+      <Link>
+        {area.procosysCode} - {data?.Description}
+      </Link>
+    </Wrapper>
+  );
 };

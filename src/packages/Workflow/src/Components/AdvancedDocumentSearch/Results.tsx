@@ -4,27 +4,27 @@ import { useState } from 'react';
 import { TypedSelectOption } from '../PersonRoleSearch/typedSelectOption';
 
 interface ResultProps {
-    result: TypedSelectOption;
-    handleClick: (result: TypedSelectOption, action: 'Add' | 'Remove') => void;
-    isSelected: (x: TypedSelectOption) => boolean;
+  result: TypedSelectOption;
+  handleClick: (result: TypedSelectOption, action: 'Add' | 'Remove') => void;
+  isSelected: (x: TypedSelectOption) => boolean;
 }
 
 export const Result = ({ result, handleClick, isSelected }: ResultProps): JSX.Element => {
-    const [isChecked, setIsChecked] = useState(isSelected(result));
+  const [isChecked, setIsChecked] = useState(isSelected(result));
 
-    return (
-        <>
-            <ResultItem key={result.value}>
-                <Checkbox
-                    crossOrigin={undefined}
-                    checked={isChecked}
-                    onChange={() => {
-                        handleClick(result, isChecked ? 'Remove' : 'Add');
-                        setIsChecked((prev) => !prev);
-                    }}
-                />
-                <ResultLabel>{result.label}</ResultLabel>
-            </ResultItem>
-        </>
-    );
+  return (
+    <>
+      <ResultItem key={result.value}>
+        <Checkbox
+          crossOrigin={undefined}
+          checked={isChecked}
+          onChange={() => {
+            handleClick(result, isChecked ? 'Remove' : 'Add');
+            setIsChecked((prev) => !prev);
+          }}
+        />
+        <ResultLabel>{result.label}</ResultLabel>
+      </ResultItem>
+    </>
+  );
 };

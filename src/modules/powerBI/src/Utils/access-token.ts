@@ -6,23 +6,23 @@ import { Access } from '../Types/access';
  * Use setter and getter methods on the instance to access the private `access` variable.
  */
 export class AccessToken {
-    private static instance: AccessToken;
-    private access: Access | undefined;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() {}
+  private static instance: AccessToken;
+  private access: Access | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
 
-    public static getInstance(): AccessToken {
-        if (!AccessToken.instance) {
-            AccessToken.instance = new AccessToken();
-        }
-        return AccessToken.instance;
+  public static getInstance(): AccessToken {
+    if (!AccessToken.instance) {
+      AccessToken.instance = new AccessToken();
     }
+    return AccessToken.instance;
+  }
 
-    setAccess(v: Access): void {
-        this.access = v;
-    }
+  setAccess(v: Access): void {
+    this.access = v;
+  }
 
-    getAccess(): Access | undefined {
-        return this.access;
-    }
+  getAccess(): Access | undefined {
+    return this.access;
+  }
 }

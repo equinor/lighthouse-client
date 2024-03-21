@@ -6,34 +6,34 @@ import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 
 interface DisciplineProps {
-    discipline: ScopeChangeDiscipline;
+  discipline: ScopeChangeDiscipline;
 }
 
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
-    const { procosysPlantId } = useFacility();
+  const { procosysPlantId } = useFacility();
 
-    const { getDisciplinesQuery } = proCoSysQueries;
+  const { getDisciplinesQuery } = proCoSysQueries;
 
-    const { data } = useQuery<unknown, unknown, PCSDiscipline[]>(
-        getDisciplinesQuery(procosysPlantId)
-    );
+  const { data } = useQuery<unknown, unknown, PCSDiscipline[]>(
+    getDisciplinesQuery(procosysPlantId)
+  );
 
-    const [foundDiscipline, setFoundDiscipline] = useState<PCSDiscipline | null>();
+  const [foundDiscipline, setFoundDiscipline] = useState<PCSDiscipline | null>();
 
-    useEffect(() => {
-        if (data) {
-            const match = data.find((x) => x.Code === discipline.procosysCode);
-            setFoundDiscipline(match);
-        }
-    }, [data, discipline.procosysCode]);
+  useEffect(() => {
+    if (data) {
+      const match = data.find((x) => x.Code === discipline.procosysCode);
+      setFoundDiscipline(match);
+    }
+  }, [data, discipline.procosysCode]);
 
-    return (
-        <Wrapper key={discipline.id}>
-            <TextWrapper>
-                <Link>
-                    {discipline.procosysCode} - {foundDiscipline?.Description}
-                </Link>
-            </TextWrapper>
-        </Wrapper>
-    );
+  return (
+    <Wrapper key={discipline.id}>
+      <TextWrapper>
+        <Link>
+          {discipline.procosysCode} - {foundDiscipline?.Description}
+        </Link>
+      </TextWrapper>
+    </Wrapper>
+  );
 };

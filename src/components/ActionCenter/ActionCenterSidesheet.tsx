@@ -10,71 +10,66 @@ import { NotificationsTab } from './NotificationsTab';
 import { TabTitle } from './TabTitle';
 
 interface ActionCenterSidesheetProps {
-    actions: SidesheetApi;
+  actions: SidesheetApi;
 }
 
 export function ActionCenterSidesheet({
-    actions: { setTitle, closeSidesheet },
+  actions: { setTitle, closeSidesheet },
 }: ActionCenterSidesheetProps): JSX.Element {
-    const [activeTab, setActiveTab] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<number>(0);
 
-    useEffect(() => {
-        activeTab === 0 ? setTitle('Notifications') : setTitle('Tasks');
-    }, [activeTab]);
+  useEffect(() => {
+    activeTab === 0 ? setTitle('Notifications') : setTitle('Tasks');
+  }, [activeTab]);
 
-    const { unreadNotificationCards } = useNotificationCenter();
-    const { assignments } = useAssignments();
+  const { unreadNotificationCards } = useNotificationCenter();
+  const { assignments } = useAssignments();
 
-    const handleChange = (index: number) => setActiveTab(index);
-    return (
-        <>
-            <Wrapper>
-                <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <TabsList>
-                        <Tabs.Tab>
-                            <TabTitle
-                                count={unreadNotificationCards.length ?? 0}
-                                titleName={'Notifications'}
-                            />
-                        </Tabs.Tab>
-                        <Tabs.Tab>
-                            <TabTitle count={assignments.length} titleName={'Tasks'} />
-                        </Tabs.Tab>
-                    </TabsList>
-                    <Tabs.Panels>
-                        <Tabs.Panel>
-                            {activeTab === 0 && (
-                                <NotificationsTab onClickNotification={closeSidesheet} />
-                            )}
-                        </Tabs.Panel>
-                        <Tabs.Panel>{activeTab === 1 && <AssignmentsTab />}</Tabs.Panel>
-                    </Tabs.Panels>
-                </Tabs>
-            </Wrapper>
-        </>
-    );
+  const handleChange = (index: number) => setActiveTab(index);
+  return (
+    <>
+      <Wrapper>
+        <Tabs activeTab={activeTab} onChange={handleChange}>
+          <TabsList>
+            <Tabs.Tab>
+              <TabTitle count={unreadNotificationCards.length ?? 0} titleName={'Notifications'} />
+            </Tabs.Tab>
+            <Tabs.Tab>
+              <TabTitle count={assignments.length} titleName={'Tasks'} />
+            </Tabs.Tab>
+          </TabsList>
+          <Tabs.Panels>
+            <Tabs.Panel>
+              {activeTab === 0 && <NotificationsTab onClickNotification={closeSidesheet} />}
+            </Tabs.Panel>
+            <Tabs.Panel>{activeTab === 1 && <AssignmentsTab />}</Tabs.Panel>
+          </Tabs.Panels>
+        </Tabs>
+      </Wrapper>
+    </>
+  );
 }
 
 export const actionCenterSidesheetWidgetManifest: WidgetManifest = {
-    widgetId: 'actionCenter',
-    widgetType: 'sidesheet',
+  widgetId: 'actionCenter',
+  widgetType: 'sidesheet',
 };
 
 export const actionCenterSidesheetWidgetComponent: ComponentManifest = {
-    widgetId: 'actionCenter',
-    widgetType: 'sidesheet',
-    widget: ActionCenterSidesheet,
+  widgetId: 'actionCenter',
+  widgetType: 'sidesheet',
+  widget: ActionCenterSidesheet,
 };
 
 const TabsList = styled(Tabs.List)`
-    grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const Wrapper = styled.div`
-    background-color: white;
-    width: auto;
-    height: 200px;
-    min-height: 800px;
-    height: 100%;
-    overflow: scroll;
+  background-color: white;
+  width: auto;
+  height: 200px;
+  min-height: 800px;
+  height: 100%;
+  overflow: scroll;
 `;

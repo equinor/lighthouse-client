@@ -12,73 +12,73 @@ import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
 import { FormContainer, TextField } from '../../../../EdsForm';
 
 type EditWorkflowStatusModalProps = {
-    readonly setIsEditing: (isCreating: boolean) => void;
+  readonly setIsEditing: (isCreating: boolean) => void;
 };
 
 const validationSchema = object().shape({
-    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
+  name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
 });
 
 export const EditStatusModal = ({ setIsEditing }: EditWorkflowStatusModalProps): JSX.Element => {
-    const status = useAdminContext((s) => s.status);
+  const status = useAdminContext((s) => s.status);
 
-    const { patchKey } = adminMutationKeys(status.id);
+  const { patchKey } = adminMutationKeys(status.id);
 
-    const { editWorkflowStatusMutation } = useAdminMutations();
+  const { editWorkflowStatusMutation } = useAdminMutations();
 
-    const { mutate } = useAdminMutation(status.id, patchKey, editWorkflowStatusMutation);
+  const { mutate } = useAdminMutation(status.id, patchKey, editWorkflowStatusMutation);
 
-    const onSubmit = async (values: FormikValues) => {
-        mutate({ id: status.id, name: values.name });
-        updateContext({
-            app: '',
-            workflowOwner: '',
-            workflow: {} as Workflow,
-            workflowStep: {} as WorkflowStepTemplate,
-            status: { ...status, name: values.name },
-            isEditingWorkflow: false,
-            isEditingStep: false,
-            deletingWorkflow: false,
-            deletingStep: false,
-            deletingStatus: false,
-        });
+  const onSubmit = async (values: FormikValues) => {
+    mutate({ id: status.id, name: values.name });
+    updateContext({
+      app: '',
+      workflowOwner: '',
+      workflow: {} as Workflow,
+      workflowStep: {} as WorkflowStepTemplate,
+      status: { ...status, name: values.name },
+      isEditingWorkflow: false,
+      isEditingStep: false,
+      deletingWorkflow: false,
+      deletingStep: false,
+      deletingStatus: false,
+    });
 
-        setIsEditing(false);
-    };
+    setIsEditing(false);
+  };
 
-    const onCancel = () => {
-        setIsEditing(false);
-    };
+  const onCancel = () => {
+    setIsEditing(false);
+  };
 
-    return (
-        <FormContainer
-            initialValues={status}
-            validationSchema={validationSchema}
-            validateOnMount={true}
-            onSubmit={onSubmit}
-        >
-            {({ isValid, submitForm }) => (
-                <Form>
-                    <ModalInputContainer>
-                        <TextField
-                            id="name"
-                            name="name"
-                            label="Name"
-                            multiline
-                            autoFocus={true}
-                            placeholder="Write a name for the status"
-                        />
-                    </ModalInputContainer>
-                    <ModalButtonContainer>
-                        <Button variant="contained" disabled={!isValid} onClick={submitForm}>
-                            Save
-                        </Button>
-                        <Button variant="outlined" onClick={onCancel}>
-                            Cancel
-                        </Button>
-                    </ModalButtonContainer>
-                </Form>
-            )}
-        </FormContainer>
-    );
+  return (
+    <FormContainer
+      initialValues={status}
+      validationSchema={validationSchema}
+      validateOnMount={true}
+      onSubmit={onSubmit}
+    >
+      {({ isValid, submitForm }) => (
+        <Form>
+          <ModalInputContainer>
+            <TextField
+              id="name"
+              name="name"
+              label="Name"
+              multiline
+              autoFocus={true}
+              placeholder="Write a name for the status"
+            />
+          </ModalInputContainer>
+          <ModalButtonContainer>
+            <Button variant="contained" disabled={!isValid} onClick={submitForm}>
+              Save
+            </Button>
+            <Button variant="outlined" onClick={onCancel}>
+              Cancel
+            </Button>
+          </ModalButtonContainer>
+        </Form>
+      )}
+    </FormContainer>
+  );
 };

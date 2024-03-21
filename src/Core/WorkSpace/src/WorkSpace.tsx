@@ -7,26 +7,26 @@ import { WorkspaceProviders } from './Context/WorkspaceProviders';
 export type WorkspaceProps = Omit<ClientApi, 'createWorkSpace' | 'createPowerBiViewer'>;
 
 export const WorkSpace = (props: WorkspaceProps): JSX.Element => {
-    return (
-        <ErrorBoundary FallbackComponent={ErrorFallback} routeName={props.title}>
-            <Routes>
-                <Route
-                    path={`/`}
-                    element={
-                        <WorkspaceProviders>
-                            <WorkSpaceView {...props} />
-                        </WorkspaceProviders>
-                    }
-                />
-                <Route
-                    path={`/:id`}
-                    element={
-                        <WorkspaceProviders>
-                            <WorkSpaceView {...props} />
-                        </WorkspaceProviders>
-                    }
-                />
-            </Routes>
-        </ErrorBoundary>
-    );
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback} routeName={props.title}>
+      <Routes>
+        <Route
+          path={`/`}
+          element={
+            <WorkspaceProviders>
+              <WorkSpaceView {...props} />
+            </WorkspaceProviders>
+          }
+        />
+        <Route
+          path={`/:id`}
+          element={
+            <WorkspaceProviders>
+              <WorkSpaceView {...props} />
+            </WorkspaceProviders>
+          }
+        />
+      </Routes>
+    </ErrorBoundary>
+  );
 };

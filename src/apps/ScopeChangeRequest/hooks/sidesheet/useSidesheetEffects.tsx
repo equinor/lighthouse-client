@@ -12,92 +12,87 @@ import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 
 export function useSidesheetEffects(
-    actions: SidesheetApi,
-    toggleEditMode: () => void,
-    requestId: string,
-    setRevisionMode: () => void,
-    toggleVoidMode: () => void
+  actions: SidesheetApi,
+  toggleEditMode: () => void,
+  requestId: string,
+  setRevisionMode: () => void,
+  toggleVoidMode: () => void
 ): void {
-    const { canPatch, canVoid, canUnVoid, title, isVoided, id, serialNumber, workflowSteps } =
-        useScopeChangeContext((s) => ({ ...s.requestAccess, ...s.request }));
+  const { canPatch, canVoid, canUnVoid, title, isVoided, id, serialNumber, workflowSteps } =
+    useScopeChangeContext((s) => ({ ...s.requestAccess, ...s.request }));
 
-    const editMode = useAtom(sideSheetEditModeAtom);
+  const editMode = useAtom(sideSheetEditModeAtom);
 
-    const { unvoidKey } = scopeChangeMutationKeys(requestId);
-    const { mutate: unVoidRequestMutation } = useScopeChangeMutation(
-        requestId,
-        unvoidKey,
-        unVoidRequest
+  const { unvoidKey } = scopeChangeMutationKeys(requestId);
+  const { mutate: unVoidRequestMutation } = useScopeChangeMutation(
+    requestId,
+    unvoidKey,
+    unVoidRequest
+  );
+
+  const makeMenuItems = () => {
+    const menuItems: MenuItem[] = [];
+
+    if (!deref(sideSheetEditModeAtom)) {
+      if (workflowSteps && !isAfterApproval(workflowSteps)) {
+        menuItems.push({
+          icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
+          label: 'Edit request',
+          isDisabled: !canPatch,
+          onClick: toggleEditMode,
+        });
+      }
+    }
+    if (!isVoided) {
+      menuItems.push({
+        label: 'Create revision',
+        icon: <Icon name="copy" />,
+        isDisabled: isVoided,
+        onClick: setRevisionMode,
+      });
+    }
+    menuItems.push(
+      isVoided
+        ? {
+            label: 'Unvoid request',
+            onClick: () => unVoidRequestMutation({ requestId }),
+            isDisabled: !canUnVoid,
+            icon: (
+              <Icon
+                name="restore_from_trash"
+                color={tokens.colors.interactive.primary__resting.hex}
+              />
+            ),
+          }
+        : {
+            label: 'Void request',
+            onClick: () => toggleVoidMode(),
+            isDisabled: !canVoid,
+            icon: (
+              <Icon name="delete_to_trash" color={tokens.colors.interactive.danger__resting.hex} />
+            ),
+          }
     );
+    return menuItems;
+  };
 
-    const makeMenuItems = () => {
-        const menuItems: MenuItem[] = [];
-
-        if (!deref(sideSheetEditModeAtom)) {
-            if (workflowSteps && !isAfterApproval(workflowSteps)) {
-                menuItems.push({
-                    icon: (
-                        <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />
-                    ),
-                    label: 'Edit request',
-                    isDisabled: !canPatch,
-                    onClick: toggleEditMode,
-                });
-            }
-        }
-        if (!isVoided) {
-            menuItems.push({
-                label: 'Create revision',
-                icon: <Icon name="copy" />,
-                isDisabled: isVoided,
-                onClick: setRevisionMode,
-            });
-        }
-        menuItems.push(
-            isVoided
-                ? {
-                      label: 'Unvoid request',
-                      onClick: () => unVoidRequestMutation({ requestId }),
-                      isDisabled: !canUnVoid,
-                      icon: (
-                          <Icon
-                              name="restore_from_trash"
-                              color={tokens.colors.interactive.primary__resting.hex}
-                          />
-                      ),
-                  }
-                : {
-                      label: 'Void request',
-                      onClick: () => toggleVoidMode(),
-                      isDisabled: !canVoid,
-                      icon: (
-                          <Icon
-                              name="delete_to_trash"
-                              color={tokens.colors.interactive.danger__resting.hex}
-                          />
-                      ),
-                  }
-        );
-        return menuItems;
+  useEffect(() => {
+    actions.setMenuItems(makeMenuItems());
+    return () => {
+      actions.setMenuItems([]);
     };
+  }, [editMode, canVoid, canUnVoid, canPatch, workflowSteps]);
 
-    useEffect(() => {
-        actions.setMenuItems(makeMenuItems());
-        return () => {
-            actions.setMenuItems([]);
-        };
-    }, [editMode, canVoid, canUnVoid, canPatch, workflowSteps]);
+  useEffect(() => {
+    actions.setTitle(`${serialNumber} ${title}`);
+  }, [id]);
 
-    useEffect(() => {
-        actions.setTitle(`${serialNumber} ${title}`);
-    }, [id]);
-
-    /** Only run once */
-    useEffect(() => {
-        actions.setWidth(1150);
-    }, []);
+  /** Only run once */
+  useEffect(() => {
+    actions.setWidth(1150);
+  }, []);
 }
 
 function isAfterApproval(steps: WorkflowStep[]): boolean {
-    return Boolean(steps.find((s) => s.name === 'Approval')?.isCompleted);
+  return Boolean(steps.find((s) => s.name === 'Approval')?.isCompleted);
 }

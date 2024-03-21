@@ -9,14 +9,14 @@ import { widgetManifestStore } from './widgetsStore';
  * @return {*}  {Promise<WidgetManifest[]>}
  */
 export async function getWidgetManifests(): Promise<WidgetManifest[]> {
-    if (widgetManifestStore.length === 1 || widgetManifestStore.length === 0) {
-        const widgetManifests = await fetchWidgets();
-        widgetManifests.forEach((widgetManifest) => {
-            _addWidgetManifest(widgetManifest);
-        });
-        return widgetManifests;
-    }
-    return widgetManifestStore;
+  if (widgetManifestStore.length === 1 || widgetManifestStore.length === 0) {
+    const widgetManifests = await fetchWidgets();
+    widgetManifests.forEach((widgetManifest) => {
+      _addWidgetManifest(widgetManifest);
+    });
+    return widgetManifests;
+  }
+  return widgetManifestStore;
 }
 
 /**
@@ -27,24 +27,22 @@ export async function getWidgetManifests(): Promise<WidgetManifest[]> {
  * @return {*}  {Promise<WidgetManifest[]>}
  */
 export async function getWidgetManifestByType(widgetType: string): Promise<WidgetManifest[]> {
-    const currentManifests = widgetManifestStore.filter(
-        (widget) => widget.widgetType === widgetType
-    );
-    if (currentManifests.length > 0) return currentManifests;
+  const currentManifests = widgetManifestStore.filter((widget) => widget.widgetType === widgetType);
+  if (currentManifests.length > 0) return currentManifests;
 
-    const widgetManifests = await fetchWidgets(widgetType);
-    if (widgetManifests.length) {
-        widgetManifests.forEach((widgetManifest) => {
-            try {
-                _addWidgetManifest(widgetManifest);
-            } catch (error) {
-                console.warn(error);
-            }
-        });
-        return widgetManifests;
-    }
+  const widgetManifests = await fetchWidgets(widgetType);
+  if (widgetManifests.length) {
+    widgetManifests.forEach((widgetManifest) => {
+      try {
+        _addWidgetManifest(widgetManifest);
+      } catch (error) {
+        console.warn(error);
+      }
+    });
+    return widgetManifests;
+  }
 
-    throw new Error(`Failed to find WidgetManifest by type ${widgetType}`);
+  throw new Error(`Failed to find WidgetManifest by type ${widgetType}`);
 }
 
 /**
@@ -56,16 +54,16 @@ export async function getWidgetManifestByType(widgetType: string): Promise<Widge
  * @return {*}  {Promise<WidgetManifest>}
  */
 export async function getWidgetManifest(widgetId: string): Promise<WidgetManifest> {
-    const currentManifest = widgetManifestStore.find((widget) => widget.widgetId === widgetId);
-    if (currentManifest) return currentManifest;
+  const currentManifest = widgetManifestStore.find((widget) => widget.widgetId === widgetId);
+  if (currentManifest) return currentManifest;
 
-    const widgetManifest = await fetchWidget(widgetId);
-    if (widgetManifest) {
-        _addWidgetManifest(widgetManifest);
-        return widgetManifest;
-    }
+  const widgetManifest = await fetchWidget(widgetId);
+  if (widgetManifest) {
+    _addWidgetManifest(widgetManifest);
+    return widgetManifest;
+  }
 
-    throw new Error(`Failed to find WidgetManifest with id ${widgetId}`);
+  throw new Error(`Failed to find WidgetManifest with id ${widgetId}`);
 }
 
 /**
@@ -75,9 +73,9 @@ export async function getWidgetManifest(widgetId: string): Promise<WidgetManifes
  * @return {*}  {WidgetManifest}
  */
 function _addWidgetManifest(manifest: WidgetManifest): WidgetManifest {
-    if (widgetManifestStore.find((widget) => widget.widgetId === manifest.widgetId)) {
-        throw new Error(`WidgetManifest already exist with id ${manifest.widgetId}`);
-    }
-    widgetManifestStore.push(manifest);
-    return manifest;
+  if (widgetManifestStore.find((widget) => widget.widgetId === manifest.widgetId)) {
+    throw new Error(`WidgetManifest already exist with id ${manifest.widgetId}`);
+  }
+  widgetManifestStore.push(manifest);
+  return manifest;
 }

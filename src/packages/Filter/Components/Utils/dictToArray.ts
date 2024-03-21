@@ -7,5 +7,5 @@
  * @return {*}  {T[]}
  */
 export function dictToArray<T>(dict: Record<string, T>): T[] {
-    return Object.keys(dict).map((k) => dict[k]);
+  return Object.keys(dict).map((k) => dict[k]);
 }

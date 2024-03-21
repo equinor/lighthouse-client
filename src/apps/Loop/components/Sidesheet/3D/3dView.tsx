@@ -11,69 +11,67 @@ import { TagMap, TagOverlay } from '../../../../../packages/ModelViewer/componen
 import { Loop } from '../../../types';
 import { getLoopContent } from '../../../utility/api';
 export const ThreeDModel = styled.div`
-    height: ${() => window.innerHeight - 250 + 'px'};
+  height: ${() => window.innerHeight - 250 + 'px'};
 `;
 
 const Center = styled.div`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 type ThreeDViewProps = {
-    loop: Loop;
+  loop: Loop;
 };
 const columnNames = ['LoopNo', 'ContentTagNo', 'MechanicalCompletionStatus', 'Register'];
 export const ThreeDView = ({ loop }: ThreeDViewProps) => {
-    const { echoPlantId } = useFacility();
-    const expressions = generateExpressions('loopNo', 'Equals', [loop.loopNo]);
-    const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
-    const { data, isLoading } = useQuery(['3D', 'loopcontent', loop.loopNo], ({ signal }) =>
-        getLoopContent(requestArgs, signal)
-    );
-    const tags = useMemo(() => data?.map((a) => a.contentTagNo), [data]);
+  const { echoPlantId } = useFacility();
+  const expressions = generateExpressions('loopNo', 'Equals', [loop.loopNo]);
+  const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
+  const { data, isLoading } = useQuery(['3D', 'loopcontent', loop.loopNo], ({ signal }) =>
+    getLoopContent(requestArgs, signal)
+  );
+  const tags = useMemo(() => data?.map((a) => a.contentTagNo), [data]);
 
-    if (isLoading) {
-        return (
-            <Center>
-                <CircularProgress />
-                <div>Fetching loop content</div>
-            </Center>
-        );
-    }
-
-    if (!data || data.length === 0) {
-        return (
-            <Center>
-                <h1>No loop content</h1>
-            </Center>
-        );
-    }
-    const tagOverlay = data.reduce((acc, curr) => {
-        acc[curr.contentTagNo] = {
-            tagNo: curr.contentTagNo,
-            status: curr.clStatus || '',
-            type: curr.register || '',
-        };
-        return acc;
-    }, {} as TagMap);
-
+  if (isLoading) {
     return (
-        <ThreeDModel>
-            <Viewer tags={tags} echoPlantId={echoPlantId} padding={1} platformSectionId="Full-Pro">
-                <TagOverlay
-                    tagOverlay={tagOverlay}
-                    iconResolver={() => 'tag'}
-                    statusResolver={(status) =>
-                        status !== ''
-                            ? statusColorMap[status]
-                            : tokens.colors.interactive.primary__resting.rgba
-                    }
-                />
-            </Viewer>
-        </ThreeDModel>
+      <Center>
+        <CircularProgress />
+        <div>Fetching loop content</div>
+      </Center>
     );
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <Center>
+        <h1>No loop content</h1>
+      </Center>
+    );
+  }
+  const tagOverlay = data.reduce((acc, curr) => {
+    acc[curr.contentTagNo] = {
+      tagNo: curr.contentTagNo,
+      status: curr.clStatus || '',
+      type: curr.register || '',
+    };
+    return acc;
+  }, {} as TagMap);
+
+  return (
+    <ThreeDModel>
+      <Viewer tags={tags} echoPlantId={echoPlantId} padding={1} platformSectionId="Full-Pro">
+        <TagOverlay
+          tagOverlay={tagOverlay}
+          iconResolver={() => 'tag'}
+          statusResolver={(status) =>
+            status !== '' ? statusColorMap[status] : tokens.colors.interactive.primary__resting.rgba
+          }
+        />
+      </Viewer>
+    </ThreeDModel>
+  );
 };

@@ -1,16 +1,11 @@
-
-
-
-
-
 Example filter structure:
 {
-    values: ["Johan Castberg"],
-    target: {
-        table: 'Dim_MasterProject',
-        column: 'Project'
-    },
-    operator: "In"
+values: ["Johan Castberg"],
+target: {
+table: 'Dim_MasterProject',
+column: 'Project'
+},
+operator: "In"
 }
 
 Report links:

@@ -1,4 +1,4 @@
 export interface TextInput {
-    type: 'TextInput';
-    CustomInputType?: React.FC;
+  type: 'TextInput';
+  CustomInputType?: React.FC;
 }

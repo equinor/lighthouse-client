@@ -5,4 +5,3 @@ export * from './Models/data';
 export type { GardenGroups } from './Models/data';
 export * from './Models/fieldSettings';
 export * from './Models/gardenOptions';
-

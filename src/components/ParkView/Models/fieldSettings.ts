@@ -1,17 +1,17 @@
 export type GetSortFunction = (a: string, b: string) => number;
 export type GetKeyFunction<T> = (
-    item: T,
-    itemKey: keyof T | string,
-    customGroupByKeys?: Record<string, unknown>
+  item: T,
+  itemKey: keyof T | string,
+  customGroupByKeys?: Record<string, unknown>
 ) => string[] | string;
 
 export type FieldSetting<ItemType> = {
-    key?: keyof ItemType | string;
-    label?: string;
-    getKey?: GetKeyFunction<ItemType>;
-    getColumnSort?: GetSortFunction;
-    /** Set to true if no other grouping should be available after this */
-    lastStep?: boolean;
+  key?: keyof ItemType | string;
+  label?: string;
+  getKey?: GetKeyFunction<ItemType>;
+  getColumnSort?: GetSortFunction;
+  /** Set to true if no other grouping should be available after this */
+  lastStep?: boolean;
 };
 
 /**
@@ -24,5 +24,5 @@ export type FieldSetting<ItemType> = {
  * @template ExtendedFields (optional) string literal that defines fields that does not exist on the base model.
  */
 export type FieldSettings<ItemType, ExtendedFields extends string = never> = Partial<
-    Record<keyof ItemType | ExtendedFields, FieldSetting<ItemType>>
+  Record<keyof ItemType | ExtendedFields, FieldSetting<ItemType>>
 >;

@@ -17,45 +17,42 @@ import { TopBarAvatar } from './TopBarAvatar';
 import { Header, Icons, TopBarWrapper } from './TopBarStyle';
 
 const ClientTopBar = (): JSX.Element => {
-    const {
-        settings: { clientEnv },
-    } = useClientContext();
+  const {
+    settings: { clientEnv },
+  } = useClientContext();
 
-    const { toggleMenu } = useMenuContext();
+  const { toggleMenu } = useMenuContext();
 
-    return (
-        <TopBarWrapper>
-            <Header>
-                <div
-                    onClick={() => {
-                        toggleMenu();
-                    }}
-                    style={{ cursor: 'pointer' }}
-                >
-                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
-                </div>
-                <Logo />
-                <ErrorBoundary FallbackComponent={() => <div></div>}>
-                    <LocationBreadCrumbs />
-                </ErrorBoundary>
-            </Header>
-            <TopBar.CustomContent>
-                <DevBar env={clientEnv} />
-            </TopBar.CustomContent>
-            <TopBar.Actions>
-                <Icons>
-                    <TopBarAvatar />
-                    <NotificationBell />
-                    <HelpMenu />
-                    <ClickableIcon
-                        name="bookmarks"
-                        onClick={() => openSidesheet(BookmarkSidesheet)}
-                    />
-                    {clientEnv === 'dev' && <GlobalSearch />}
-                </Icons>
-            </TopBar.Actions>
-        </TopBarWrapper>
-    );
+  return (
+    <TopBarWrapper>
+      <Header>
+        <div
+          onClick={() => {
+            toggleMenu();
+          }}
+          style={{ cursor: 'pointer' }}
+        >
+          <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
+        </div>
+        <Logo />
+        <ErrorBoundary FallbackComponent={() => <div></div>}>
+          <LocationBreadCrumbs />
+        </ErrorBoundary>
+      </Header>
+      <TopBar.CustomContent>
+        <DevBar env={clientEnv} />
+      </TopBar.CustomContent>
+      <TopBar.Actions>
+        <Icons>
+          <TopBarAvatar />
+          <NotificationBell />
+          <HelpMenu />
+          <ClickableIcon name="bookmarks" onClick={() => openSidesheet(BookmarkSidesheet)} />
+          {clientEnv === 'dev' && <GlobalSearch />}
+        </Icons>
+      </TopBar.Actions>
+    </TopBarWrapper>
+  );
 };
 
 export default ClientTopBar;

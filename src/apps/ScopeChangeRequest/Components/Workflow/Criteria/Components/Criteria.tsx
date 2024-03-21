@@ -17,109 +17,103 @@ import { Modal } from '@equinor/modal';
 import { useWorkflowSigning } from '../../../../hooks/mutations/useWorkflowSigning';
 
 interface CriteriaRenderProps {
-    name: string;
-    criteria: Criteria;
-    contributors: Contributor[];
-    stepIndex: number;
-    stepStatus: CriteriaStatus;
-    order: number;
-    isLastCriteria: boolean;
-    stepId: string;
+  name: string;
+  criteria: Criteria;
+  contributors: Contributor[];
+  stepIndex: number;
+  stepStatus: CriteriaStatus;
+  order: number;
+  isLastCriteria: boolean;
+  stepId: string;
 }
 
 export const CriteriaRender = ({
-    isLastCriteria,
-    name,
-    contributors,
-    criteria,
-    stepIndex,
-    stepStatus,
-    order,
-    stepId,
+  isLastCriteria,
+  name,
+  contributors,
+  criteria,
+  stepIndex,
+  stepStatus,
+  order,
+  stepId,
 }: CriteriaRenderProps): JSX.Element => {
-    const { requestId, workflowStepsLength, isPast } = useScopeChangeContext(
-        ({ request: { id, workflowSteps, currentWorkflowStep } }) => ({
-            requestId: id,
-            workflowStepsLength: workflowSteps?.length ?? 0,
-            isPast:
-                (currentWorkflowStep?.order ?? 0) >
-                (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
-        })
-    );
+  const { requestId, workflowStepsLength, isPast } = useScopeChangeContext(
+    ({ request: { id, workflowSteps, currentWorkflowStep } }) => ({
+      requestId: id,
+      workflowStepsLength: workflowSteps?.length ?? 0,
+      isPast:
+        (currentWorkflowStep?.order ?? 0) >
+        (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
+    })
+  );
 
-    const state = useAtom(actionWithCommentAtom);
+  const state = useAtom(actionWithCommentAtom);
 
-    const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
-    const formattedDate = dateToDateTimeFormat(date);
+  const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
+  const formattedDate = dateToDateTimeFormat(date);
 
-    const [showAddContributor, setShowAddContributor] = useState(false);
+  const [showAddContributor, setShowAddContributor] = useState(false);
 
-    return (
-        <WorkflowWrapper key={criteria.id}>
-            <WorklowIconAndLine>
-                <WorkflowIcon status={stepStatus} number={order + 1} />
+  return (
+    <WorkflowWrapper key={criteria.id}>
+      <WorklowIconAndLine>
+        <WorkflowIcon status={stepStatus} number={order + 1} />
 
-                {stepIndex !== workflowStepsLength - 1 && <VerticalLine active={isPast} />}
-            </WorklowIconAndLine>
-            <WorkflowRow>
-                <RowContent>
-                    {state && state.criteriaId === criteria.id && state.action === 'Reassign' ? (
-                        <CriteriaActionOverlay />
-                    ) : (
-                        <>
-                            {state &&
-                                state.criteriaId === criteria.id &&
-                                state.action !== 'Reassign' && (
-                                    <Modal
-                                        title={'Write a comment'}
-                                        content={
-                                            <SignWithCommentModal
-                                                action={state.action}
-                                                buttonText={state.buttonText}
-                                                criteriaId={state.criteriaId}
-                                                stepId={state.stepId}
-                                                requestId={requestId}
-                                                useWorkflowSigning={useWorkflowSigning}
-                                            />
-                                        }
-                                    />
-                                )}
-                            <span>
-                                <div>{name}</div>
-                                {criteria.signedAtUtc ? (
-                                    <DetailText>
-                                        <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
-                                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
-                                    </DetailText>
-                                ) : (
-                                    <DetailText>{criteria.valueDescription}</DetailText>
-                                )}
-                            </span>
-
-                            <CriteriaActionBar
-                                stepId={stepId}
-                                criteriaId={criteria.id}
-                                stepOrder={order}
-                                setShowAddContributor={() => setShowAddContributor(true)}
-                            />
-                        </>
-                    )}
-                </RowContent>
-            </WorkflowRow>
-            {showAddContributor && (
-                <WorkflowRow>
-                    <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
-                </WorkflowRow>
-            )}
-            {contributors.map((contributor) => (
-                <WorkflowRow key={contributor.id}>
-                    <ContributorRender
-                        key={contributor.id}
-                        contributor={contributor}
-                        stepId={stepId}
+        {stepIndex !== workflowStepsLength - 1 && <VerticalLine active={isPast} />}
+      </WorklowIconAndLine>
+      <WorkflowRow>
+        <RowContent>
+          {state && state.criteriaId === criteria.id && state.action === 'Reassign' ? (
+            <CriteriaActionOverlay />
+          ) : (
+            <>
+              {state && state.criteriaId === criteria.id && state.action !== 'Reassign' && (
+                <Modal
+                  title={'Write a comment'}
+                  content={
+                    <SignWithCommentModal
+                      action={state.action}
+                      buttonText={state.buttonText}
+                      criteriaId={state.criteriaId}
+                      stepId={state.stepId}
+                      requestId={requestId}
+                      useWorkflowSigning={useWorkflowSigning}
                     />
-                </WorkflowRow>
-            ))}
-        </WorkflowWrapper>
-    );
+                  }
+                />
+              )}
+              <span>
+                <div>{name}</div>
+                {criteria.signedAtUtc ? (
+                  <DetailText>
+                    <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                    {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                  </DetailText>
+                ) : (
+                  <DetailText>{criteria.valueDescription}</DetailText>
+                )}
+              </span>
+
+              <CriteriaActionBar
+                stepId={stepId}
+                criteriaId={criteria.id}
+                stepOrder={order}
+                setShowAddContributor={() => setShowAddContributor(true)}
+              />
+            </>
+          )}
+        </RowContent>
+      </WorkflowRow>
+      {showAddContributor && (
+        <WorkflowRow>
+          <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
+        </WorkflowRow>
+      )}
+      {contributors.map((contributor) => (
+        <WorkflowRow key={contributor.id}>
+          <ContributorRender key={contributor.id} contributor={contributor} stepId={stepId} />
+        </WorkflowRow>
+      ))}
+    </WorkflowWrapper>
+  );
 };

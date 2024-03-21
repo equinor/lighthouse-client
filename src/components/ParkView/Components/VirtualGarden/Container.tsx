@@ -11,98 +11,98 @@ import { Container } from './styles';
 import { VirtualGarden } from './VirtualGarden';
 
 interface VirtualContainerProps {
-    onGardenReady?: (api: GardenApi) => void;
+  onGardenReady?: (api: GardenApi) => void;
 }
 
 export const VirtualContainer = <T extends Record<PropertyKey, unknown>>({
-    onGardenReady,
+  onGardenReady,
 }: VirtualContainerProps): JSX.Element | null => {
-    const [widths, setWidths] = useState<number[]>([]);
-    const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [widths, setWidths] = useState<number[]>([]);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-    const {
-        data,
-        groupByKeys,
-        gardenKey,
-        options,
-        status,
-        fieldSettings,
-        customGroupByKeys,
-        itemWidth,
-        collapseSubGroupsByDefault,
-        intercepters,
-        onSelect,
-    } = useParkViewContext<T>();
+  const {
+    data,
+    groupByKeys,
+    gardenKey,
+    options,
+    status,
+    fieldSettings,
+    customGroupByKeys,
+    itemWidth,
+    collapseSubGroupsByDefault,
+    intercepters,
+    onSelect,
+  } = useParkViewContext<T>();
 
-    const handleOnItemClick = useCallback((item: T) => setSelectedItem(onSelect(item)), [onSelect]);
+  const handleOnItemClick = useCallback((item: T) => setSelectedItem(onSelect(item)), [onSelect]);
 
-    const [garden, setGarden] = useState<DataSet<T>[]>([]);
+  const [garden, setGarden] = useState<DataSet<T>[]>([]);
 
-    const setSelectedCallback = useCallback(
-        (callback: SelectedRowCallback | string) =>
-            setSelectedItem(typeof callback === 'function' ? callback(garden) : callback),
-        [garden]
+  const setSelectedCallback = useCallback(
+    (callback: SelectedRowCallback | string) =>
+      setSelectedItem(typeof callback === 'function' ? callback(garden) : callback),
+    [garden]
+  );
+
+  const { createGardenApi } = useGardenApi(selectedItem, setSelectedCallback);
+
+  useEffect(() => {
+    setGarden(
+      createGarden({
+        dataSet: data,
+        groupingKeys: groupByKeys,
+        isExpanded: !collapseSubGroupsByDefault,
+        gardenKey: gardenKey,
+        status: status,
+        groupDescriptionFunc: options?.groupDescriptionFunc,
+        fieldSettings: fieldSettings,
+        customGroupByKeys: customGroupByKeys,
+        postGroupBySorting: intercepters?.postGroupSorting as PostGroupBySorting<T>,
+        preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
+      })
     );
+    onGardenReady && onGardenReady(createGardenApi());
+  }, [
+    /** Should maybe be empty */
+    data,
+    gardenKey,
+    groupByKeys,
+    status,
+    options?.groupDescriptionFunc,
+    fieldSettings,
+    customGroupByKeys,
+  ]);
 
-    const { createGardenApi } = useGardenApi(selectedItem, setSelectedCallback);
+  const amountOfColumns = useMemo(() => garden.length, [garden]);
 
-    useEffect(() => {
-        setGarden(
-            createGarden({
-                dataSet: data,
-                groupingKeys: groupByKeys,
-                isExpanded: !collapseSubGroupsByDefault,
-                gardenKey: gardenKey,
-                status: status,
-                groupDescriptionFunc: options?.groupDescriptionFunc,
-                fieldSettings: fieldSettings,
-                customGroupByKeys: customGroupByKeys,
-                postGroupBySorting: intercepters?.postGroupSorting as PostGroupBySorting<T>,
-                preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
-            })
-        );
-        onGardenReady && onGardenReady(createGardenApi());
-    }, [
-        /** Should maybe be empty */
-        data,
-        gardenKey,
-        groupByKeys,
-        status,
-        options?.groupDescriptionFunc,
-        fieldSettings,
-        customGroupByKeys,
-    ]);
-
-    const amountOfColumns = useMemo(() => garden.length, [garden]);
-
-    useEffect(() => {
-        if (garden && amountOfColumns > 0) {
-            const width =
-                (itemWidth && itemWidth(garden, gardenKey.toString(), customGroupByKeys)) || 300;
-            setWidths(new Array(amountOfColumns).fill(width));
-        }
-    }, [amountOfColumns, gardenKey, itemWidth]);
-
-    //TODO: Handle widths = 0 better
-    if (widths.length === 0 || amountOfColumns !== widths.length) {
-        return null;
+  useEffect(() => {
+    if (garden && amountOfColumns > 0) {
+      const width =
+        (itemWidth && itemWidth(garden, gardenKey.toString(), customGroupByKeys)) || 300;
+      setWidths(new Array(amountOfColumns).fill(width));
     }
+  }, [amountOfColumns, gardenKey, itemWidth]);
 
-    if (widths.length !== amountOfColumns) {
-        return null;
-    }
+  //TODO: Handle widths = 0 better
+  if (widths.length === 0 || amountOfColumns !== widths.length) {
+    return null;
+  }
 
-    return (
-        <Container>
-            <GroupingSelector />
-            <ExpandProvider initialWidths={widths}>
-                <VirtualGarden
-                    garden={garden}
-                    width={itemWidth && itemWidth(garden, gardenKey.toString())}
-                    handleOnItemClick={handleOnItemClick}
-                    selectedItem={selectedItem}
-                />
-            </ExpandProvider>
-        </Container>
-    );
+  if (widths.length !== amountOfColumns) {
+    return null;
+  }
+
+  return (
+    <Container>
+      <GroupingSelector />
+      <ExpandProvider initialWidths={widths}>
+        <VirtualGarden
+          garden={garden}
+          width={itemWidth && itemWidth(garden, gardenKey.toString())}
+          handleOnItemClick={handleOnItemClick}
+          selectedItem={selectedItem}
+        />
+      </ExpandProvider>
+    </Container>
+  );
 };

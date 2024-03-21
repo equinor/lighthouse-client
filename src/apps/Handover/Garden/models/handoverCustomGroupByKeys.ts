@@ -1,4 +1,4 @@
 export type HandoverCustomGroupByKeys = {
-    weeklyDaily: 'Weekly' | 'Daily';
-    plannedForecast: 'Planned' | 'Forecast';
+  weeklyDaily: 'Weekly' | 'Daily';
+  plannedForecast: 'Planned' | 'Forecast';
 };

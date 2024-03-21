@@ -6,28 +6,28 @@ import { useReleaseControlContext } from '../../../../hooks/useReleaseControlCon
 import { actionWithCommentAtom, resetSigningAtom } from '@equinor/Workflow';
 
 export const CriteriaActionOverlay = (): JSX.Element | null => {
-    const state = useAtom(actionWithCommentAtom);
-    const releaseControlId = useReleaseControlContext(({ releaseControl }) => releaseControl.id);
+  const state = useAtom(actionWithCommentAtom);
+  const releaseControlId = useReleaseControlContext(({ releaseControl }) => releaseControl.id);
 
-    if (!state) {
-        return null;
-    }
-    return (
-        <ButtonContainer>
-            <ReassignBar
-                criteriaId={state.criteriaId}
-                requestId={releaseControlId}
-                stepId={state.stepId}
-            />
-            <Button variant="outlined" onClick={resetSigningAtom}>
-                Cancel
-            </Button>
-        </ButtonContainer>
-    );
+  if (!state) {
+    return null;
+  }
+  return (
+    <ButtonContainer>
+      <ReassignBar
+        criteriaId={state.criteriaId}
+        requestId={releaseControlId}
+        stepId={state.stepId}
+      />
+      <Button variant="outlined" onClick={resetSigningAtom}>
+        Cancel
+      </Button>
+    </ButtonContainer>
+  );
 };
 
 const ButtonContainer = styled.div`
-    display: flex;
-    gap: 2em;
-    width: 100%;
+  display: flex;
+  gap: 2em;
+  width: 100%;
 `;

@@ -10,61 +10,61 @@ import { ModalButtonContainer, ModalInputContainer } from './modalStyles';
 import { TextField, FormContainer } from '../../../../EdsForm';
 
 const validationSchema = object().shape({
-    name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
+  name: string().max(255, 'The name must be less than 255 characters!').required('(Required)'),
 });
 
 type CreateWorkflowModalProps = {
-    readonly setIsCreating: (isCreating: boolean) => void;
+  readonly setIsCreating: (isCreating: boolean) => void;
 };
 
 export const CreateWorkflowModal = ({ setIsCreating }: CreateWorkflowModalProps): JSX.Element => {
-    const workflowOwner = useAdminContext((s) => s.workflowOwner);
+  const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
-    const { createWorkflowMutation } = useAdminMutations();
+  const { createWorkflowMutation } = useAdminMutations();
 
-    const { postKey } = adminMutationKeys('');
+  const { postKey } = adminMutationKeys('');
 
-    const { mutate } = useAdminMutation('', postKey, createWorkflowMutation);
+  const { mutate } = useAdminMutation('', postKey, createWorkflowMutation);
 
-    const onSubmit = async (values: FormikValues) => {
-        mutate({
-            workflow: { id: '', name: values.name, changeCategory: null, owner: workflowOwner },
-        });
-        setIsCreating(false);
-    };
+  const onSubmit = async (values: FormikValues) => {
+    mutate({
+      workflow: { id: '', name: values.name, changeCategory: null, owner: workflowOwner },
+    });
+    setIsCreating(false);
+  };
 
-    const onCancel = () => {
-        setIsCreating(false);
-    };
+  const onCancel = () => {
+    setIsCreating(false);
+  };
 
-    return (
-        <FormContainer
-            initialValues={{ name: '' }}
-            validationSchema={validationSchema}
-            validateOnMount={true}
-            onSubmit={onSubmit}
-        >
-            {({ isValid }) => (
-                <Form>
-                    <ModalInputContainer>
-                        <TextField
-                            id="name"
-                            name="name"
-                            label="Name"
-                            multiline
-                            placeholder="Write a name for the workflow"
-                        />
-                    </ModalInputContainer>
-                    <ModalButtonContainer>
-                        <Button type="submit" variant="contained" disabled={!isValid}>
-                            Create
-                        </Button>
-                        <Button variant="outlined" onClick={onCancel}>
-                            Cancel
-                        </Button>
-                    </ModalButtonContainer>
-                </Form>
-            )}
-        </FormContainer>
-    );
+  return (
+    <FormContainer
+      initialValues={{ name: '' }}
+      validationSchema={validationSchema}
+      validateOnMount={true}
+      onSubmit={onSubmit}
+    >
+      {({ isValid }) => (
+        <Form>
+          <ModalInputContainer>
+            <TextField
+              id="name"
+              name="name"
+              label="Name"
+              multiline
+              placeholder="Write a name for the workflow"
+            />
+          </ModalInputContainer>
+          <ModalButtonContainer>
+            <Button type="submit" variant="contained" disabled={!isValid}>
+              Create
+            </Button>
+            <Button variant="outlined" onClick={onCancel}>
+              Cancel
+            </Button>
+          </ModalButtonContainer>
+        </Form>
+      )}
+    </FormContainer>
+  );
 };

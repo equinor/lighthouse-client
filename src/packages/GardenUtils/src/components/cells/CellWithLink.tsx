@@ -3,30 +3,30 @@ import { CellProps } from 'react-table';
 import styled from 'styled-components';
 
 const Link = styled.a`
-    color: ${tokens.colors.interactive.primary__resting.hex};
-    text-decoration: none;
-    :hover {
-        text-decoration: underline;
-        cursor: pointer;
-    }
+  color: ${tokens.colors.interactive.primary__resting.hex};
+  text-decoration: none;
+  :hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 type CellLinkProps<T extends Record<string, number | string>> = {
-    content: T;
-    url: string;
-    currentKey: keyof T;
-    linkTitle?: string;
+  content: T;
+  url: string;
+  currentKey: keyof T;
+  linkTitle?: string;
 };
 export const CellWithLink = <T extends Record<string, number | string>>({
-    value,
+  value,
 }: CellProps<T, CellLinkProps<T>>): JSX.Element => {
-    if (value === null) {
-        return <></>;
-    }
-    const { content, currentKey, url, linkTitle = 'Open in ProCoSys' } = value;
+  if (value === null) {
+    return <></>;
+  }
+  const { content, currentKey, url, linkTitle = 'Open in ProCoSys' } = value;
 
-    return (
-        <Link href={url} target={'_blank'} rel="noreferrer" title={linkTitle}>
-            {content[currentKey]}
-        </Link>
-    );
+  return (
+    <Link href={url} target={'_blank'} rel="noreferrer" title={linkTitle}>
+      {content[currentKey]}
+    </Link>
+  );
 };

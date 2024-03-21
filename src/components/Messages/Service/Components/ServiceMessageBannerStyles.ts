@@ -2,8 +2,8 @@ import { Banner as EDSBanner } from '@equinor/eds-core-react-old';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 interface BannerProps {
-    iconColor: string;
-    background: string;
+  iconColor: string;
+  background: string;
 }
 export const Banner = styled(EDSBanner)`
     top: 48px;

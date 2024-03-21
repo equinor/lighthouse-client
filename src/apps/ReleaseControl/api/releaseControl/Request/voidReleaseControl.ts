@@ -2,36 +2,36 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 import { throwOnError } from '../../../functions/throwError';
 
 interface VoidParams {
-    releaseControlId: string;
+  releaseControlId: string;
 }
 
 export async function voidReleaseControl({ releaseControlId }: VoidParams): Promise<void> {
-    const { scopeChange } = httpClient();
+  const { scopeChange } = httpClient();
 
-    const requestOptions = {
-        method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
-        body: JSON.stringify({}),
-    };
-    const res = await scopeChange.fetch(
-        `api/releasecontrol/${releaseControlId}/void`,
-        requestOptions
-    );
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { ['content-type']: 'application/json' },
+    body: JSON.stringify({}),
+  };
+  const res = await scopeChange.fetch(
+    `api/releasecontrol/${releaseControlId}/void`,
+    requestOptions
+  );
 
-    await throwOnError(res, 'Failed to void request');
+  await throwOnError(res, 'Failed to void request');
 }
 
 export async function unVoidReleaseControl({ releaseControlId }: VoidParams): Promise<void> {
-    const { scopeChange } = httpClient();
+  const { scopeChange } = httpClient();
 
-    const requestOptions = {
-        method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
-    };
-    const res = await scopeChange.fetch(
-        `api/releasecontrol/${releaseControlId}/unvoid`,
-        requestOptions
-    );
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { ['content-type']: 'application/json' },
+  };
+  const res = await scopeChange.fetch(
+    `api/releasecontrol/${releaseControlId}/unvoid`,
+    requestOptions
+  );
 
-    await throwOnError(res, 'Failed to unvoid request');
+  await throwOnError(res, 'Failed to unvoid request');
 }

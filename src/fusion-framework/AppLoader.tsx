@@ -30,15 +30,17 @@ export const AppLoader = (props: { readonly appKey: string }) => {
   const { data: bundle, isLoading: bundleLoading } = useQuery(
     [appKey, 'bundle'],
     async ({ signal }) => {
-      var blob = await (await fusionClient.fetch(`bundles/apps/${appKey}.js`, { signal })).blob().catch(e => {
-        console.error("Failed to parse blob", e)
-      })
+      var blob = await (await fusionClient.fetch(`bundles/apps/${appKey}.js`, { signal }))
+        .blob()
+        .catch((e) => {
+          console.error('Failed to parse blob', e);
+        });
       if (!blob) {
-        throw new Error("Failed to load blob")
+        throw new Error('Failed to load blob');
       }
       return URL.createObjectURL(blob);
     },
-    { structuralSharing: false, cacheTime: Infinity, staleTime: Infinity, }
+    { structuralSharing: false, cacheTime: Infinity, staleTime: Infinity }
   );
 
   const isLoading = manifestLoading || configLoading || bundleLoading;
@@ -76,7 +78,7 @@ export const AppLoader = (props: { readonly appKey: string }) => {
 
       ref.current.appendChild(el);
 
-      const url = bundle 
+      const url = bundle;
 
       import(/* @vite-ignore */ url).then((script) => {
         const render = script.renderApp ?? script.default;
@@ -88,7 +90,7 @@ export const AppLoader = (props: { readonly appKey: string }) => {
             })
           );
         } catch (e) {
-          console.error(e)
+          console.error(e);
         }
 
         setLoading(false);
