@@ -9,10 +9,10 @@ import levenshtein from 'fast-levenshtein';
  * @returns
  */
 export function sort(a: TypedSelectOption, b: TypedSelectOption, searchValue: string): number {
-    return (
-        levenshtein.get(replaceCharacter(a.searchValue), replaceCharacter(searchValue)) -
-        levenshtein.get(replaceCharacter(b.searchValue), replaceCharacter(searchValue))
-    );
+  return (
+    levenshtein.get(replaceCharacter(a.searchValue), replaceCharacter(searchValue)) -
+    levenshtein.get(replaceCharacter(b.searchValue), replaceCharacter(searchValue))
+  );
 }
 
 /**
@@ -21,5 +21,5 @@ export function sort(a: TypedSelectOption, b: TypedSelectOption, searchValue: st
  * @returns
  */
 export function replaceCharacter(a: string): string {
-    return a.replace('#', '|');
+  return a.replace('#', '|');
 }

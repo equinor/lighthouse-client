@@ -6,20 +6,20 @@ import { Actions, actions } from './ParkViewActions';
  **/
 
 export function GardenReducer(state: any, action: Actions) {
-    switch (action.type) {
-        case getType(actions.setGroupKeys):
-            return { ...state, groupByKeys: action.groupKeys };
-        case getType(actions.setCustomGroupKeys):
-            return { ...state, customGroupByKeys: action.groupKeys };
-        case getType(actions.setCustomState):
-            return { ...state, customState: action.data };
+  switch (action.type) {
+    case getType(actions.setGroupKeys):
+      return { ...state, groupByKeys: action.groupKeys };
+    case getType(actions.setCustomGroupKeys):
+      return { ...state, customGroupByKeys: action.groupKeys };
+    case getType(actions.setCustomState):
+      return { ...state, customState: action.data };
 
-        case getType(actions.setGardenKey):
-            return { ...state, gardenKey: action.gardenKey };
+    case getType(actions.setGardenKey):
+      return { ...state, gardenKey: action.gardenKey };
 
-        case getType(actions.setData):
-            return { ...state, data: action.data };
-        default:
-            return state;
-    }
+    case getType(actions.setData):
+      return { ...state, data: action.data };
+    default:
+      return state;
+  }
 }

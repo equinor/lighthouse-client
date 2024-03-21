@@ -12,45 +12,39 @@ type PowerBiViewerProps = Omit<ViewState, 'report'>;
  * utilizing the @equinor/lighthouse-powerbi
  */
 export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
-    return (
-        <PowerBiViewerContext>
-            <PbiViewer {...props} />
-        </PowerBiViewerContext>
-    );
+  return (
+    <PowerBiViewerContext>
+      <PbiViewer {...props} />
+    </PowerBiViewerContext>
+  );
 }
 
 const PbiViewer = (props: PowerBiViewerProps) => {
-    const {
-        handleApplyingBookmark,
-        handleSaveBookmarks,
-        setReport,
-        pbiOptions,
-        activePage,
-        ready,
-    } = usePowerBiContext();
-    const { report: configReport } = usePowerBiViewer(props.shortName);
-    return (
-        <Wrapper>
-            <PowerBiViewerHeader {...props} groupName={props.groupe} />
+  const { handleApplyingBookmark, handleSaveBookmarks, setReport, pbiOptions, activePage, ready } =
+    usePowerBiContext();
+  const { report: configReport } = usePowerBiViewer(props.shortName);
+  return (
+    <Wrapper>
+      <PowerBiViewerHeader {...props} groupName={props.groupe} />
 
-            {configReport && configReport.reportURI && ready && (
-                <PowerBI
-                    reportUri={configReport.reportURI}
-                    filterOptions={configReport.filter}
-                    onReportLoad={(report) => {
-                        setReport(report);
-                    }}
-                    options={{
-                        ...pbiOptions,
-                        activePage: activePage?.pageId,
-                        defaultPage: pbiOptions?.defaultPage || activePage?.pageId,
-                        bookmark: pbiOptions?.bookmark,
-                        activePageDisplayName: activePage?.pageTitle,
-                        applyBookmark: handleApplyingBookmark,
-                        persistPayload: handleSaveBookmarks,
-                    }}
-                />
-            )}
-        </Wrapper>
-    );
+      {configReport && configReport.reportURI && ready && (
+        <PowerBI
+          reportUri={configReport.reportURI}
+          filterOptions={configReport.filter}
+          onReportLoad={(report) => {
+            setReport(report);
+          }}
+          options={{
+            ...pbiOptions,
+            activePage: activePage?.pageId,
+            defaultPage: pbiOptions?.defaultPage || activePage?.pageId,
+            bookmark: pbiOptions?.bookmark,
+            activePageDisplayName: activePage?.pageTitle,
+            applyBookmark: handleApplyingBookmark,
+            persistPayload: handleSaveBookmarks,
+          }}
+        />
+      )}
+    </Wrapper>
+  );
 };

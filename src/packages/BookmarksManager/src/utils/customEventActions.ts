@@ -1,4 +1,4 @@
 export enum CustomEventActions {
-    SAVE = 'savePbiBookmark',
-    APPLY = 'applyPbiBookmark',
+  SAVE = 'savePbiBookmark',
+  APPLY = 'applyPbiBookmark',
 }

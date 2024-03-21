@@ -7,57 +7,57 @@ import { ClientContext, Facility, FusionContext, Project } from '../Types/Client
  */
 
 export function internalUpdateContext(
-    update: ((context: ClientContext) => Partial<ClientContext>) | Partial<ClientContext>
+  update: ((context: ClientContext) => Partial<ClientContext>) | Partial<ClientContext>
 ): void {
-    updateGlobalClientState((state) => {
-        const context = typeof update === 'function' ? update(state.context) : update;
-        return {
-            context: {
-                ...state.context,
-                ...context,
-            },
-        };
-    });
+  updateGlobalClientState((state) => {
+    const context = typeof update === 'function' ? update(state.context) : update;
+    return {
+      context: {
+        ...state.context,
+        ...context,
+      },
+    };
+  });
 }
 
 export function internalUpdateFacility(
-    update: ((facility: Facility) => Partial<Facility>) | Partial<Facility>
+  update: ((facility: Facility) => Partial<Facility>) | Partial<Facility>
 ): void {
-    internalUpdateContext((state) => {
-        const facility = typeof update === 'function' ? update(state) : update;
-        return {
-            ...state,
-            ...facility,
-        };
-    });
+  internalUpdateContext((state) => {
+    const facility = typeof update === 'function' ? update(state) : update;
+    return {
+      ...state,
+      ...facility,
+    };
+  });
 }
 
 export function internalUpdateProject(
-    update: ((project: Project) => Partial<Project>) | Partial<Project>
+  update: ((project: Project) => Partial<Project>) | Partial<Project>
 ): void {
-    internalUpdateContext((state) => {
-        const project = typeof update === 'function' ? update(state.project) : update;
-        return {
-            ...state,
-            project: {
-                ...state.project,
-                ...project,
-            },
-        };
-    });
+  internalUpdateContext((state) => {
+    const project = typeof update === 'function' ? update(state.project) : update;
+    return {
+      ...state,
+      project: {
+        ...state.project,
+        ...project,
+      },
+    };
+  });
 }
 
 export function internalUpdateFusionContext(
-    update: ((fusionContext?: FusionContext) => FusionContext) | FusionContext
+  update: ((fusionContext?: FusionContext) => FusionContext) | FusionContext
 ): void {
-    internalUpdateContext((state) => {
-        const fusionContext = typeof update === 'function' ? update(state.fusionContext) : update;
-        return {
-            ...state,
-            fusionContext: {
-                ...state.fusionContext,
-                ...fusionContext,
-            },
-        };
-    });
+  internalUpdateContext((state) => {
+    const fusionContext = typeof update === 'function' ? update(state.fusionContext) : update;
+    return {
+      ...state,
+      fusionContext: {
+        ...state.fusionContext,
+        ...fusionContext,
+      },
+    };
+  });
 }

@@ -6,6 +6,6 @@ export const htResolverFunction = htSidesheetCreator('ResolverFunction');
 
 export const ReleaseControlSidesheetWidgetManifest = rcSidesheetCreator('SidesheetManifest');
 export const ReleaseControlSidesheetWidgetComponent = rcSidesheetCreator(
-    'SidesheetComponentManifest'
+  'SidesheetComponentManifest'
 );
 export const rcResolverFunction = rcSidesheetCreator('ResolverFunction');

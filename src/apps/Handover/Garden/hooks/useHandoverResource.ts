@@ -5,39 +5,38 @@ import { useHttpClient } from '../../../../Core/Client/Hooks';
 import { HandoverResourceTypeMap } from '../models/handoverResources';
 
 type UseHandoverResource<T extends keyof HandoverResourceTypeMap> = {
-    data: HandoverResourceTypeMap[T][] | undefined;
-    dataIsFetching: boolean;
-    error: unknown;
+  data: HandoverResourceTypeMap[T][] | undefined;
+  dataIsFetching: boolean;
+  error: unknown;
 };
 
 const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
-    packageId: string,
-    packageType: T
+  packageId: string,
+  packageType: T
 ): UseHandoverResource<T> => {
-    const contextId = isProduction()
-        ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
-        : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-    /** 
+  const contextId = isProduction()
+    ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
+    : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
+  /** 
     This causes an infinite render loop when added as dependency to getData.
      apiClient should be stable, but does not look to be the case.   
     **/
-    const client = useHttpClient('fusionDataproxy');
+  const client = useHttpClient('fusionDataproxy');
 
-    const getData = useCallback(
-        async (id: string, signal?: AbortSignal) => {
-            const result = await client.fetch(
-                `api/contexts/${contextId}/handover/${id}/${packageType}`,
-                { signal }
-            );
+  const getData = useCallback(
+    async (id: string, signal?: AbortSignal) => {
+      const result = await client.fetch(`api/contexts/${contextId}/handover/${id}/${packageType}`, {
+        signal,
+      });
 
-            return JSON.parse(await result.text()) as HandoverResourceTypeMap[T][];
-        },
-        [packageType, contextId, client]
-    );
+      return JSON.parse(await result.text()) as HandoverResourceTypeMap[T][];
+    },
+    [packageType, contextId, client]
+  );
 
-    const resource = usePackageResource(packageType, packageId, getData);
+  const resource = usePackageResource(packageType, packageId, getData);
 
-    return { data: resource.data, dataIsFetching: resource.isFetching, error: resource.error };
+  return { data: resource.data, dataIsFetching: resource.isFetching, error: resource.error };
 };
 
 export default useHandoverResource;

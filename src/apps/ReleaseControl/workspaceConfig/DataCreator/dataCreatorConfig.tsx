@@ -4,21 +4,21 @@ import { checkOptionsRequest } from '../../api/releaseControl/Access/optionsRequ
 import { DisciplineReleaseControlFactoryComponent } from '../../components/Factory/FactoryComponent';
 
 const creator = setupCreator({
-    widgetId: 'releaseCreator',
-    title: 'Create release control workflow',
-    color: '#7B3A96',
-    widget: DisciplineReleaseControlFactoryComponent,
-    props: {
-        accessCheckFunctionId: 'releaseCreatorAccess',
-        parentApp: 'release',
-        function: async (): Promise<boolean> => {
-            const { scopeChange } = httpClient();
-            const check = () => scopeChange.fetch('api/releasecontrol', { method: 'OPTIONS' });
-            return await (
-                await checkOptionsRequest(check)
-            ).canPost;
-        },
+  widgetId: 'releaseCreator',
+  title: 'Create release control workflow',
+  color: '#7B3A96',
+  widget: DisciplineReleaseControlFactoryComponent,
+  props: {
+    accessCheckFunctionId: 'releaseCreatorAccess',
+    parentApp: 'release',
+    function: async (): Promise<boolean> => {
+      const { scopeChange } = httpClient();
+      const check = () => scopeChange.fetch('api/releasecontrol', { method: 'OPTIONS' });
+      return await (
+        await checkOptionsRequest(check)
+      ).canPost;
     },
+  },
 });
 
 export const releaseCreatorManifest = creator('CreatorManifest');

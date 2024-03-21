@@ -9,84 +9,79 @@ import { useState } from 'react';
 import { TagTable } from './TagTable';
 
 interface SearchTagsProps {
-    onChange: (newTags: TypedSelectOption[]) => void;
-    tags: TypedSelectOption[];
+  onChange: (newTags: TypedSelectOption[]) => void;
+  tags: TypedSelectOption[];
 }
 
 export const SearchTags = ({ onChange, tags }: SearchTagsProps): JSX.Element => {
-    const { searchFAM } = useCompletionSearch();
-    const { getSignal, abort } = useCancellationToken();
-    const [timer, setTimer] = useState<NodeJS.Timeout>();
+  const { searchFAM } = useCompletionSearch();
+  const { getSignal, abort } = useCancellationToken();
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
 
-    async function loadOptions(
-        type: FAMTypes,
-        inputValue: string,
-        callback: (
-            options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
-        ) => void
-    ) {
-        const items = await searchFAM(inputValue, type, getSignal());
-        callback(items);
-    }
+  async function loadOptions(
+    type: FAMTypes,
+    inputValue: string,
+    callback: (options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>) => void
+  ) {
+    const items = await searchFAM(inputValue, type, getSignal());
+    callback(items);
+  }
 
-    const tagLoadOptions = async (
-        inputValue: string,
-        callback: (
-            options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
-        ) => void
-    ) => {
-        if (inputValue.trim().length >= 3)
-            return await loadOptions('famtagno', inputValue, callback);
-        return callback([
-            {
-                label: 'Need at least three chars',
-                value: '',
-                type: 'famtagno',
-                searchValue: '',
-                object: null,
-            },
-        ]);
-    };
+  const tagLoadOptions = async (
+    inputValue: string,
+    callback: (options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>) => void
+  ) => {
+    if (inputValue.trim().length >= 3) return await loadOptions('famtagno', inputValue, callback);
+    return callback([
+      {
+        label: 'Need at least three chars',
+        value: '',
+        type: 'famtagno',
+        searchValue: '',
+        object: null,
+      },
+    ]);
+  };
 
-    function addTag(value: TypedSelectOption) {
-        onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
-    }
+  function addTag(value: TypedSelectOption) {
+    onChange([...(DRCFormAtomApi.readAtomValue().tags ?? []), value]);
+  }
 
-    return (
+  return (
+    <div>
+      <Section>
+        <div>Tag involved in this release control</div>
+        <SearchWrapper>
+          <Select
+            loadOptions={(val, cb) => {
+              if (timer) {
+                clearTimeout(timer);
+              }
+              const newTimer = setTimeout(() => tagLoadOptions(val.trim(), cb), 500);
+              setTimer(newTimer);
+            }}
+            onChange={(
+              _: MultiValue<TypedSelectOption>,
+              actionMeta: ActionMeta<TypedSelectOption>
+            ) => {
+              if (!actionMeta.option) return;
+              addTag(actionMeta.option);
+            }}
+            onInputChange={abort}
+            value={tags}
+          />
+        </SearchWrapper>
         <div>
-            <Section>
-                <div>Tag involved in this release control</div>
-                <SearchWrapper>
-                    <Select
-                        loadOptions={(val, cb) => {
-                            if (timer) {
-                                clearTimeout(timer);
-                            }
-                            const newTimer = setTimeout(() => tagLoadOptions(val.trim(), cb), 500);
-                            setTimer(newTimer);
-                        }}
-                        onChange={(
-                            _: MultiValue<TypedSelectOption>,
-                            actionMeta: ActionMeta<TypedSelectOption>
-                        ) => {
-                            if (!actionMeta.option) return;
-                            addTag(actionMeta.option);
-                        }}
-                        onInputChange={abort}
-                        value={tags}
-                    />
-                </SearchWrapper>
-                <div>
-                    <TagTable
-                        tags={
-                            tags
-                                .filter(({ type }) => type === 'scopetag' || type === 'famtag')
-                                .map((s) => s.object) as RcScopeTag[]
-                        }
-                        editMode={true}
-                    />
-                </div>
-            </Section>
+          <TagTable
+            tags={
+              tags
+                .filter(({ type }) => type === 'scopetag' || type === 'famtag')
+                .map((s) => s.object) as RcScopeTag[]
+            }
+            editMode={true}
+          />
         </div>
-    );
+      </Section>
+    </div>
+  );
 };

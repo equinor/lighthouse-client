@@ -5,11 +5,11 @@ import { SearchTags } from './SearchTags';
 const { updateAtom, useAtomState } = DRCFormAtomApi;
 
 const updateTags = (newVals: TypedSelectOption[]) => {
-    updateAtom({ tags: newVals });
+  updateAtom({ tags: newVals });
 };
 
 export const TagsInput = (): JSX.Element => {
-    const tags = useAtomState((s) => s.tags) ?? [];
+  const tags = useAtomState((s) => s.tags) ?? [];
 
-    return <SearchTags onChange={updateTags} tags={tags} />;
+  return <SearchTags onChange={updateTags} tags={tags} />;
 };

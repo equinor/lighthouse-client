@@ -17,70 +17,70 @@ import { CheckboxWrapper } from '../WarrantyCaseDetailCheckbox/warrantyCaseDetai
 import { IsATSScopeCheckbox } from './Inputs/AtsScopeCheckbox';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
-    const request = useScopeChangeContext(({ request }) => request);
-    useEffect(() => {
-        const { clearState, updateAtom } = scopeChangeFormAtomApi;
-        clearState();
-        updateAtom({
-            ...request,
-            disciplineGuesstimates: request.disciplineGuesstimates.map(
-                ({ discipline: { procosysCode }, guesstimate }) => ({
-                    disciplineCode: procosysCode,
-                    guesstimateHours: guesstimate,
-                })
-            ),
-        });
-        return () => {
-            clearState();
-        };
-    }, []);
+  const request = useScopeChangeContext(({ request }) => request);
+  useEffect(() => {
+    const { clearState, updateAtom } = scopeChangeFormAtomApi;
+    clearState();
+    updateAtom({
+      ...request,
+      disciplineGuesstimates: request.disciplineGuesstimates.map(
+        ({ discipline: { procosysCode }, guesstimate }) => ({
+          disciplineCode: procosysCode,
+          guesstimateHours: guesstimate,
+        })
+      ),
+    });
+    return () => {
+      clearState();
+    };
+  }, []);
 
-    useUnpackRelatedObjects({ request });
+  useUnpackRelatedObjects({ request });
 
-    return (
-        <EditFormWrapper>
-            <FormBanner state={request.state} />
-            <Wrapper>
-                <FormWrapper>
-                    <FlexColumn>
-                        Request
-                        <ScopeChangeBaseForm />
-                        Disciplines and guesstimates
-                        <CheckboxWrapper>
-                            <IsATSScopeCheckbox />
-                        </CheckboxWrapper>
-                        <GuesstimateDiscipline />
-                        Materials
-                        <MaterialsInput />
-                    </FlexColumn>
+  return (
+    <EditFormWrapper>
+      <FormBanner state={request.state} />
+      <Wrapper>
+        <FormWrapper>
+          <FlexColumn>
+            Request
+            <ScopeChangeBaseForm />
+            Disciplines and guesstimates
+            <CheckboxWrapper>
+              <IsATSScopeCheckbox />
+            </CheckboxWrapper>
+            <GuesstimateDiscipline />
+            Materials
+            <MaterialsInput />
+          </FlexColumn>
 
-                    <FlexColumn>
-                        <Section>
-                            <ScopeChangeReferences />
-                        </Section>
-                        Attachments
-                        <HotUpload />
-                        <RequestAttachmentsList />
-                    </FlexColumn>
-                </FormWrapper>
-            </Wrapper>
-            <EditFormActionBar />
-        </EditFormWrapper>
-    );
+          <FlexColumn>
+            <Section>
+              <ScopeChangeReferences />
+            </Section>
+            Attachments
+            <HotUpload />
+            <RequestAttachmentsList />
+          </FlexColumn>
+        </FormWrapper>
+      </Wrapper>
+      <EditFormActionBar />
+    </EditFormWrapper>
+  );
 };
 
 const EditFormWrapper = styled.div`
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    overflow: hidden;
-    height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  height: 100%;
 `;
 
 const Wrapper = styled.div`
-    margin: 24px 32px;
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    overflow-x: hidden;
+  margin: 24px 32px;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;

@@ -1,7 +1,7 @@
 export interface FunctionManifest {
-    functionId: string;
-    function: CustomFunction;
-    type?: string;
+  functionId: string;
+  function: CustomFunction;
+  type?: string;
 }
 
 export type CustomFunction = (prop: any) => any | Promise<any>;

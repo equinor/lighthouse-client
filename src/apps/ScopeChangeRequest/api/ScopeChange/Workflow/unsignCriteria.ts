@@ -2,9 +2,9 @@ import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../functions/throwError';
 
 interface UnsignCriteriaParams {
-    requestId: string;
-    stepId: string;
-    criteriaId: string;
+  requestId: string;
+  stepId: string;
+  criteriaId: string;
 }
 
 /**
@@ -14,22 +14,22 @@ interface UnsignCriteriaParams {
  * @param criteriaId
  */
 export async function unsignCriteria({
-    requestId,
-    stepId,
-    criteriaId,
+  requestId,
+  stepId,
+  criteriaId,
 }: UnsignCriteriaParams): Promise<void> {
-    const { scopeChange } = httpClient();
+  const { scopeChange } = httpClient();
 
-    const requestOptions = {
-        method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
-        body: JSON.stringify({}),
-    };
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { ['content-type']: 'application/json' },
+    body: JSON.stringify({}),
+  };
 
-    const res = await scopeChange.fetch(
-        `api/scope-change-requests/${requestId}/workflow/step/${stepId}/unsign/${criteriaId}`,
-        requestOptions
-    );
+  const res = await scopeChange.fetch(
+    `api/scope-change-requests/${requestId}/workflow/step/${stepId}/unsign/${criteriaId}`,
+    requestOptions
+  );
 
-    await throwOnError(res);
+  await throwOnError(res);
 }

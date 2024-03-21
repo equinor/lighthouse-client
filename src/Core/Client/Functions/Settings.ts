@@ -4,41 +4,41 @@ import { ClientSettings } from '../Types/ClientSettings';
 import { readClientSettings } from './Readers';
 
 function internalUpdateSettings(
-    update: ((settings: ClientSettings) => Partial<ClientSettings>) | Partial<ClientSettings>
+  update: ((settings: ClientSettings) => Partial<ClientSettings>) | Partial<ClientSettings>
 ) {
-    updateGlobalClientState((state) => {
-        const settings = typeof update === 'function' ? update(state.settings) : update;
-        return {
-            settings: {
-                ...state.settings,
-                ...settings,
-            },
-        };
-    });
+  updateGlobalClientState((state) => {
+    const settings = typeof update === 'function' ? update(state.settings) : update;
+    return {
+      settings: {
+        ...state.settings,
+        ...settings,
+      },
+    };
+  });
 }
 
 export function setLoggingState(logging: boolean): void {
-    internalUpdateSettings({ logging });
+  internalUpdateSettings({ logging });
 }
 
 export function setContactPerson(contactPerson: string): void {
-    internalUpdateSettings({ contactPerson });
+  internalUpdateSettings({ contactPerson });
 }
 
 export function setEnv(isProduction: boolean, clientEnv: string): void {
-    internalUpdateSettings({ isProduction, clientEnv });
+  internalUpdateSettings({ isProduction, clientEnv });
 }
 export function setClientEnv(clientEnv: string): void {
-    internalUpdateSettings({ clientEnv });
+  internalUpdateSettings({ clientEnv });
 }
 
 export function isProduction(): boolean {
-    return readClientSettings().isProduction;
+  return readClientSettings().isProduction;
 }
 export function setUserImageUrl(url?: string): void {
-    internalUpdateSettings({ userImageUrl: url });
+  internalUpdateSettings({ userImageUrl: url });
 }
 
 export function setUser(user?: User): void {
-    user && internalUpdateSettings({ user });
+  user && internalUpdateSettings({ user });
 }

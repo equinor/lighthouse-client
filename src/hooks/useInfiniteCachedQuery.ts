@@ -9,23 +9,23 @@ import { QueryFunction, QueryKey, useQuery, UseQueryOptions, UseQueryResult } fr
  * @returns
  */
 export function useInfiniteCachedQuery<
-    TQueryFnData = unknown,
-    TError = unknown,
-    TData = TQueryFnData,
-    TQueryKey extends QueryKey = QueryKey
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey
 >(
-    queryKey: TQueryKey,
-    queryFn: QueryFunction<TQueryFnData, TQueryKey>,
-    options?: Omit<
-        UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-        'queryKey' | 'queryFn' | 'staleTime' | 'cacheTime'
-    >
+  queryKey: TQueryKey,
+  queryFn: QueryFunction<TQueryFnData, TQueryKey>,
+  options?: Omit<
+    UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
+    'queryKey' | 'queryFn' | 'staleTime' | 'cacheTime'
+  >
 ): UseQueryResult<TData, TError> {
-    return useQuery(queryKey, queryFn, {
-        ...options,
-        staleTime: CacheTime.ThirtyMinutes,
-        cacheTime: CacheTime.TenHours,
-        retry: 3,
-        retryDelay: 1000,
-    });
+  return useQuery(queryKey, queryFn, {
+    ...options,
+    staleTime: CacheTime.ThirtyMinutes,
+    cacheTime: CacheTime.TenHours,
+    retry: 3,
+    retryDelay: 1000,
+  });
 }

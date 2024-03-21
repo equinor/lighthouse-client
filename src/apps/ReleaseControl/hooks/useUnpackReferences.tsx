@@ -1,10 +1,10 @@
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import {
-    getDocumentById,
-    getPunchListItemByNo,
-    proCoSysQueryKeys,
-    stidQueryKeys,
-    TypedSelectOption,
+  getDocumentById,
+  getPunchListItemByNo,
+  proCoSysQueryKeys,
+  stidQueryKeys,
+  TypedSelectOption,
 } from '@equinor/Workflow';
 import { useEffect } from 'react';
 import { useQueryCacheLookup } from '../../../hooks/QueryCache/useQueryCacheLookup';
@@ -13,108 +13,105 @@ import { transformIsoDate } from '../components/Workflow/Utils/dateFormatting';
 import { ReleaseControl } from '../types/releaseControl';
 
 interface UseUnpackReferencesParams {
-    releaseControl: ReleaseControl;
+  releaseControl: ReleaseControl;
 }
 
 export function useUnpackReferences({ releaseControl }: UseUnpackReferencesParams): void {
-    const { addToQueryCache } = useQueryCacheLookup();
-    const referencesKeys = { ...proCoSysQueryKeys(), ...stidQueryKeys() };
-    const { procosysPlantId: facilityId } = useFacility();
+  const { addToQueryCache } = useQueryCacheLookup();
+  const referencesKeys = { ...proCoSysQueryKeys(), ...stidQueryKeys() };
+  const { procosysPlantId: facilityId } = useFacility();
 
-    const { updateAtom, readAtomValue } = DRCFormAtomApi;
+  const { updateAtom, readAtomValue } = DRCFormAtomApi;
 
-    const handleReferencesChanged = (newVals: TypedSelectOption[]) => {
-        updateAtom({ references: newVals });
-    };
+  const handleReferencesChanged = (newVals: TypedSelectOption[]) => {
+    updateAtom({ references: newVals });
+  };
 
-    useEffect(() => {
-        unpackReferences(releaseControl, handleReferencesChanged);
-    }, [releaseControl.id]);
+  useEffect(() => {
+    unpackReferences(releaseControl, handleReferencesChanged);
+  }, [releaseControl.id]);
 
-    function updateReferences(x: TypedSelectOption) {
-        const references = readAtomValue().references ?? [];
+  function updateReferences(x: TypedSelectOption) {
+    const references = readAtomValue().references ?? [];
 
-        const index = references.findIndex(({ value }) => value === x.value);
-        if (index === -1) return;
-        handleReferencesChanged([...references.slice(0, index), x, ...references.slice(index + 1)]);
-    }
+    const index = references.findIndex(({ value }) => value === x.value);
+    if (index === -1) return;
+    handleReferencesChanged([...references.slice(0, index), x, ...references.slice(index + 1)]);
+  }
 
-    async function unpackReferences(
-        releaseControl: ReleaseControl,
-        handleReferencesChanged: (references: TypedSelectOption[]) => void
-    ) {
-        const { readAtomValue } = DRCFormAtomApi;
+  async function unpackReferences(
+    releaseControl: ReleaseControl,
+    handleReferencesChanged: (references: TypedSelectOption[]) => void
+  ) {
+    const { readAtomValue } = DRCFormAtomApi;
 
-        const appendReferences = (x: TypedSelectOption) =>
-            handleReferencesChanged([...(readAtomValue().references ?? []), x]);
+    const appendReferences = (x: TypedSelectOption) =>
+      handleReferencesChanged([...(readAtomValue().references ?? []), x]);
 
-        releaseControl.punchListItems?.forEach(async (x) => {
-            const punchSelectedOption: TypedSelectOption = {
-                label: `${x.procosysId}`,
-                object: x,
-                searchValue: x.procosysId.toString(),
-                type: 'punch',
-                value: x.procosysId.toString(),
-            };
+    releaseControl.punchListItems?.forEach(async (x) => {
+      const punchSelectedOption: TypedSelectOption = {
+        label: `${x.procosysId}`,
+        object: x,
+        searchValue: x.procosysId.toString(),
+        type: 'punch',
+        value: x.procosysId.toString(),
+      };
 
-            appendReferences(punchSelectedOption);
+      appendReferences(punchSelectedOption);
 
-            const punch = await addToQueryCache(['Punch', punchSelectedOption.value], () =>
-                getPunchListItemByNo(x.procosysId)
-            );
+      const punch = await addToQueryCache(['Punch', punchSelectedOption.value], () =>
+        getPunchListItemByNo(x.procosysId)
+      );
 
-            updateReferences({
-                ...punchSelectedOption,
-                label: `${punch.punchItemNo} ${punch.description}`,
-                object: punch,
-            });
-        });
+      updateReferences({
+        ...punchSelectedOption,
+        label: `${punch.punchItemNo} ${punch.description}`,
+        object: punch,
+      });
+    });
 
-        releaseControl.documents?.forEach(async (x) => {
-            const documentSelectOption: TypedSelectOption = {
-                label: `${x.stidDocumentNumber}`,
-                value: x.stidDocumentNumber,
-                object: x,
-                searchValue: x.stidDocumentNumber,
-                type: 'document',
-            };
+    releaseControl.documents?.forEach(async (x) => {
+      const documentSelectOption: TypedSelectOption = {
+        label: `${x.stidDocumentNumber}`,
+        value: x.stidDocumentNumber,
+        object: x,
+        searchValue: x.stidDocumentNumber,
+        type: 'document',
+      };
 
-            appendReferences(documentSelectOption);
+      appendReferences(documentSelectOption);
 
-            const document = await addToQueryCache(
-                referencesKeys.document(x.stidDocumentNumber),
-                () => getDocumentById(x.stidDocumentNumber, facilityId)
-            );
-            updateReferences({
-                ...documentSelectOption,
-                label: `${x.stidDocumentNumber} ${document.docTitle}`,
-                object: document,
-                metadata: `Revision ${document.currentRevision.revNo} | Rev date ${
-                    document.currentRevision.revDate &&
-                    transformIsoDate(document.currentRevision.revDate)
-                } | Reason for issue ${
-                    document.currentRevision.reasonForIssue &&
-                    document.currentRevision.reasonForIssue
-                }`,
-            });
-        });
+      const document = await addToQueryCache(referencesKeys.document(x.stidDocumentNumber), () =>
+        getDocumentById(x.stidDocumentNumber, facilityId)
+      );
+      updateReferences({
+        ...documentSelectOption,
+        label: `${x.stidDocumentNumber} ${document.docTitle}`,
+        object: document,
+        metadata: `Revision ${document.currentRevision.revNo} | Rev date ${
+          document.currentRevision.revDate && transformIsoDate(document.currentRevision.revDate)
+        } | Reason for issue ${
+          document.currentRevision.reasonForIssue && document.currentRevision.reasonForIssue
+        }`,
+      });
+    });
 
-        releaseControl.scopeChangeRequestReferences?.forEach(async (reference) => {
-            const scopeChangeSelectOption: TypedSelectOption = {
-                label: `${reference.scopeChangeReferenceSerialNumber} - ${reference.scopeChangeReferenceTitle}`,
-                value: reference.scopeChangeReferenceId,
-                object: reference,
-                searchValue: reference.scopeChangeReferenceId,
-                type: 'scopechangerequest',
-            };
+    releaseControl.scopeChangeRequestReferences?.forEach(async (reference) => {
+      const scopeChangeSelectOption: TypedSelectOption = {
+        label: `${reference.scopeChangeReferenceSerialNumber} - ${reference.scopeChangeReferenceTitle}`,
+        value: reference.scopeChangeReferenceId,
+        object: reference,
+        searchValue: reference.scopeChangeReferenceId,
+        type: 'scopechangerequest',
+      };
 
-            appendReferences(scopeChangeSelectOption);
+      appendReferences(scopeChangeSelectOption);
 
-            updateReferences({
-                ...scopeChangeSelectOption,
-                label: `${reference.scopeChangeReferenceSerialNumber} - ${reference.scopeChangeReferenceTitle}`,
-                object: reference,
-            });
-        });
-    }
+      updateReferences({
+        ...scopeChangeSelectOption,
+        label: `${reference.scopeChangeReferenceSerialNumber} - ${reference.scopeChangeReferenceTitle}`,
+        object: reference,
+      });
+    });
+  }
 }

@@ -10,8 +10,8 @@
 export type Dict<T> = Record<keyof T, T>;
 
 export function arrayToDict<T, K extends keyof T>(arr: T[], key: K): Dict<T> {
-    return arr.reduce((a, i) => {
-        a[i[key.toString()]] || (a[i[key.toString()]] = i);
-        return a;
-    }, {} as Dict<T>);
+  return arr.reduce((a, i) => {
+    a[i[key.toString()]] || (a[i[key.toString()]] = i);
+    return a;
+  }, {} as Dict<T>);
 }

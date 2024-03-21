@@ -3,21 +3,21 @@ import { throwOnError } from '../../../functions/throwError';
 import { ScopeChangeCreateEditModel } from '../../../types/scopeChangeRequest';
 
 export async function patchScopeChange(
-    request: ScopeChangeCreateEditModel,
-    setAsOpen?: boolean
+  request: ScopeChangeCreateEditModel,
+  setAsOpen?: boolean
 ): Promise<string> {
-    const { scopeChange } = httpClient();
-    const requestOptions = {
-        method: 'PATCH',
-        headers: { ['content-type']: 'application/json' },
-        body: setAsOpen
-            ? JSON.stringify({ ...request, setAsOpen: setAsOpen })
-            : JSON.stringify(request),
-    };
+  const { scopeChange } = httpClient();
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { ['content-type']: 'application/json' },
+    body: setAsOpen
+      ? JSON.stringify({ ...request, setAsOpen: setAsOpen })
+      : JSON.stringify(request),
+  };
 
-    const res = await scopeChange.fetch(`api/scope-change-requests/${request.id}`, requestOptions);
+  const res = await scopeChange.fetch(`api/scope-change-requests/${request.id}`, requestOptions);
 
-    await throwOnError(res, 'Failed to update scopechange');
+  await throwOnError(res, 'Failed to update scopechange');
 
-    return await res.json();
+  return await res.json();
 }

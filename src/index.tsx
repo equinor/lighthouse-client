@@ -9,9 +9,9 @@ EdsIconOld.add({ ...icons });
 EdsIcon.add({ ...icons });
 
 render(
-    <>
-        <GlobalStyle />
-        <Bootstrap />
-    </>,
-    document.getElementById('root')
+  <>
+    <GlobalStyle />
+    <Bootstrap />
+  </>,
+  document.getElementById('root')
 );

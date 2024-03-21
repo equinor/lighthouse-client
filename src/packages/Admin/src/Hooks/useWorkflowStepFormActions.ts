@@ -6,62 +6,62 @@ import { adminMutationKeys } from '../Queries/adminMutationKeys';
 import { useAdminMutation } from '../Hooks/useAdminMutation';
 
 type UseCreateWorkflowStepResult = {
-    createWorkflowStep: () => void;
-    isLoading: boolean;
-    isError: boolean;
+  createWorkflowStep: () => void;
+  isLoading: boolean;
+  isError: boolean;
 };
 
 export const useCreateWorkflowStep = (): UseCreateWorkflowStepResult => {
-    const workflowOwner = useAdminContext((s) => s.workflowOwner);
+  const workflowOwner = useAdminContext((s) => s.workflowOwner);
 
-    const { createWorkflowStepMutation } = useAdminMutations();
-    const { isLoading, mutate, isError } = useMutation(createWorkflowStepMutation);
+  const { createWorkflowStepMutation } = useAdminMutations();
+  const { isLoading, mutate, isError } = useMutation(createWorkflowStepMutation);
 
-    const createWorkflowStep = (saveAndClose = false) => {
-        const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
-        mutate({
-            workflowStep: prepareWorkflowStep(workflowOwner),
-            saveAndClose: saveAndClose,
-        });
-    };
+  const createWorkflowStep = (saveAndClose = false) => {
+    const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
+    mutate({
+      workflowStep: prepareWorkflowStep(workflowOwner),
+      saveAndClose: saveAndClose,
+    });
+  };
 
-    return {
-        createWorkflowStep,
-        isLoading,
-        isError,
-    };
+  return {
+    createWorkflowStep,
+    isLoading,
+    isError,
+  };
 };
 
 type UseUpdateWorkflowStepResult = {
-    saveWorkflowStep: () => void;
-    isLoading: boolean;
-    isError: boolean;
+  saveWorkflowStep: () => void;
+  isLoading: boolean;
+  isError: boolean;
 };
 
 export const useUpdateWorkflowStep = (): UseUpdateWorkflowStepResult => {
-    const workflowOwner = useAdminContext((s) => s.workflowOwner);
-    const workflowStep = useAdminContext(({ workflowStep }) => workflowStep);
-    const { patchKey } = adminMutationKeys(workflowStep?.id);
+  const workflowOwner = useAdminContext((s) => s.workflowOwner);
+  const workflowStep = useAdminContext(({ workflowStep }) => workflowStep);
+  const { patchKey } = adminMutationKeys(workflowStep?.id);
 
-    const { editWorkflowStepMutation } = useAdminMutations();
+  const { editWorkflowStepMutation } = useAdminMutations();
 
-    const { isLoading, mutate, isError } = useAdminMutation(
-        workflowStep.id,
-        patchKey,
-        editWorkflowStepMutation
-    );
+  const { isLoading, mutate, isError } = useAdminMutation(
+    workflowStep.id,
+    patchKey,
+    editWorkflowStepMutation
+  );
 
-    const saveWorkflowStep = (saveAndClose = false) => {
-        const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
-        mutate({
-            workflowStep: prepareWorkflowStep(workflowOwner),
-            saveAndClose: saveAndClose,
-        });
-    };
+  const saveWorkflowStep = (saveAndClose = false) => {
+    const { prepareWorkflowStep } = WorkflowStepAdminAtomApi;
+    mutate({
+      workflowStep: prepareWorkflowStep(workflowOwner),
+      saveAndClose: saveAndClose,
+    });
+  };
 
-    return {
-        isLoading,
-        saveWorkflowStep,
-        isError,
-    };
+  return {
+    isLoading,
+    saveWorkflowStep,
+    isError,
+  };
 };

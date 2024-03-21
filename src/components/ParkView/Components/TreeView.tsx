@@ -6,30 +6,30 @@ import { useParkViewContext } from '../Context/ParkViewProvider';
 import { GroupingSelector } from './GroupBySelectors';
 
 export function TreeView<T extends Record<PropertyKey, unknown>>(): JSX.Element | null {
-    const { groupByKeys, options, status, data } = useParkViewContext<T>();
+  const { groupByKeys, options, status, data } = useParkViewContext<T>();
 
-    const tree = useMemo(
-        () =>
-            data &&
-            createTree(
-                data,
-                groupByKeys as unknown as (keyof T)[],
-                status,
-                options?.groupDescriptionFunc
-            ),
-        [data, groupByKeys, options?.groupDescriptionFunc, status]
-    );
+  const tree = useMemo(
+    () =>
+      data &&
+      createTree(
+        data,
+        groupByKeys as unknown as (keyof T)[],
+        status,
+        options?.groupDescriptionFunc
+      ),
+    [data, groupByKeys, options?.groupDescriptionFunc, status]
+  );
 
-    return (
-        <>
-            <GroupingSelector<T> />
-            <Wrapper>
-                {tree && (
-                    <Col>
-                        <TreeColumn group={tree[0]} />
-                    </Col>
-                )}
-            </Wrapper>
-        </>
-    );
+  return (
+    <>
+      <GroupingSelector<T> />
+      <Wrapper>
+        {tree && (
+          <Col>
+            <TreeColumn group={tree[0]} />
+          </Col>
+        )}
+      </Wrapper>
+    </>
+  );
 }

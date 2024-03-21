@@ -1,4 +1,4 @@
 export type CustomGroupByKeys = {
-    weeklyDaily: 'Weekly' | 'Daily';
-    plannedForecast: 'Planned' | 'Forecast';
+  weeklyDaily: 'Weekly' | 'Daily';
+  plannedForecast: 'Planned' | 'Forecast';
 };

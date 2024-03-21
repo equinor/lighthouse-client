@@ -5,11 +5,11 @@ import { SearchHtCables } from './SearchHtCables';
 const { updateAtom, useAtomState } = DRCFormAtomApi;
 
 const updateHtCables = (newVals: TypedSelectOption[]) => {
-    updateAtom({ htCables: newVals });
+  updateAtom({ htCables: newVals });
 };
 
 export const HtCablesInput = (): JSX.Element => {
-    const htCables = useAtomState((s) => s.htCables) ?? [];
+  const htCables = useAtomState((s) => s.htCables) ?? [];
 
-    return <SearchHtCables onChange={updateHtCables} htCables={htCables} />;
+  return <SearchHtCables onChange={updateHtCables} htCables={htCables} />;
 };

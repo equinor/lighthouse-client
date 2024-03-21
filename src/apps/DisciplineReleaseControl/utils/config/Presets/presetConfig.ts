@@ -2,34 +2,34 @@ import { PresetOption } from '@equinor/WorkSpace';
 import { drcGardenKeys } from '../Garden/gardenConfig';
 
 export const presetConfig: PresetOption[] = [
-    {
-        name: 'HT cables',
-        type: 'garden',
-        filter: {
-            filterGroups: [
-                {
-                    name: 'Switchboard',
-                    values: [null, ''],
-                },
-                {
-                    name: 'Circuit',
-                    values: [null, ''],
-                },
-            ],
+  {
+    name: 'HT cables',
+    type: 'garden',
+    filter: {
+      filterGroups: [
+        {
+          name: 'Switchboard',
+          values: [null, ''],
         },
-        garden: {
-            gardenKey: drcGardenKeys.electroGardenKey,
-            groupByKeys: ['heatTraces'],
+        {
+          name: 'Circuit',
+          values: [null, ''],
         },
+      ],
     },
-    {
-        name: 'Pipetest',
-        type: 'garden',
-        filter: {
-            filterGroups: [],
-        },
-        garden: {
-            gardenKey: drcGardenKeys.defaultGardenKey,
-        },
+    garden: {
+      gardenKey: drcGardenKeys.electroGardenKey,
+      groupByKeys: ['heatTraces'],
     },
+  },
+  {
+    name: 'Pipetest',
+    type: 'garden',
+    filter: {
+      filterGroups: [],
+    },
+    garden: {
+      gardenKey: drcGardenKeys.defaultGardenKey,
+    },
+  },
 ];

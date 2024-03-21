@@ -13,10 +13,10 @@ import { HttpClients } from './HttpClients';
  * and `useGlobalClientState` hook.
  */
 export interface GlobalClientState {
-    context: ClientContext;
-    registry: ClientRegistry;
-    settings: ClientSettings;
-    appConfig: AppConfig;
-    clients: HttpClients;
-    internal: InternalState;
+  context: ClientContext;
+  registry: ClientRegistry;
+  settings: ClientSettings;
+  appConfig: AppConfig;
+  clients: HttpClients;
+  internal: InternalState;
 }

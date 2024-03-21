@@ -2,17 +2,17 @@ import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { checkOptionsRequest, OptionRequestResult } from './optionsRequestChecker';
 
 export async function getRequestAccess(
-    requestId: string,
-    signal?: AbortSignal
+  requestId: string,
+  signal?: AbortSignal
 ): Promise<OptionRequestResult> {
-    const { scopeChange } = httpClient();
+  const { scopeChange } = httpClient();
 
-    const requestOptions = {
-        method: 'OPTIONS',
-        signal,
-    };
+  const requestOptions = {
+    method: 'OPTIONS',
+    signal,
+  };
 
-    const check = () => scopeChange.fetch(`api/scope-change-requests/${requestId}`, requestOptions);
+  const check = () => scopeChange.fetch(`api/scope-change-requests/${requestId}`, requestOptions);
 
-    return await checkOptionsRequest(check);
+  return await checkOptionsRequest(check);
 }

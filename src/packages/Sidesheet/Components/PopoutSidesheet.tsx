@@ -7,35 +7,35 @@ import { getSidesheetContext } from '../context/sidesheetContext';
 import { ResizableSidesheet } from './ResizableSidesheet';
 
 export const PopoutSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props } = useAtom(getSidesheetContext());
-    const navigate = useNavigate();
-    const location = useLocation();
+  const { SidesheetComponent, props } = useAtom(getSidesheetContext());
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    /**
-     * Removes hash from url when closed
-     */
-    useEffect(() => {
-        if (window.location.hash.length > 0) return;
-        if (!props) {
-            navigate(location.pathname + location.search, { replace: true });
-        }
-    }, [props, location.pathname, location.hash.length, navigate]);
-
-    // if sidesheet
-    if (!SidesheetComponent) {
-        return <div></div>;
+  /**
+   * Removes hash from url when closed
+   */
+  useEffect(() => {
+    if (window.location.hash.length > 0) return;
+    if (!props) {
+      navigate(location.pathname + location.search, { replace: true });
     }
+  }, [props, location.pathname, location.hash.length, navigate]);
 
-    return (
-        <Wrapper>
-            <ResizableSidesheet />
-        </Wrapper>
-    );
+  // if sidesheet
+  if (!SidesheetComponent) {
+    return <div></div>;
+  }
+
+  return (
+    <Wrapper>
+      <ResizableSidesheet />
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`
-    width: auto;
-    height: 100%;
-    background: white;
-    border-left: 2px solid ${tokens.colors.ui.background__medium.rgba};
+  width: auto;
+  height: 100%;
+  background: white;
+  border-left: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;

@@ -7,43 +7,43 @@ import { Pipetest } from '../../Types/pipetest';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 
 export function useSidesheetEffects(actions: SidesheetApi, item: Pipetest): void {
-    const makeMenuItems = () => {
-        const menuItems: MenuItem[] = [];
+  const makeMenuItems = () => {
+    const menuItems: MenuItem[] = [];
 
-        const url = `https://procosys.equinor.com/JOHAN_CASTBERG/Completion#McPkg|${item.mcPkgUrlId}`;
+    const url = `https://procosys.equinor.com/JOHAN_CASTBERG/Completion#McPkg|${item.mcPkgUrlId}`;
 
-        const procosysUrl = isProduction() ? url : url.replace('procosys', 'procosystest');
+    const procosysUrl = isProduction() ? url : url.replace('procosys', 'procosystest');
 
-        menuItems.push({
-            label: 'Open in ProCoSys',
-            onClick: () => {
-                const w = window.open(procosysUrl, '_blank');
-                if (w) {
-                    w.focus();
-                }
-            },
-            icon: (
-                <Icon
-                    size={24}
-                    color={tokens.colors.interactive.primary__resting.hex}
-                    name="external_link"
-                />
-            ),
-        });
-        return menuItems;
-    };
+    menuItems.push({
+      label: 'Open in ProCoSys',
+      onClick: () => {
+        const w = window.open(procosysUrl, '_blank');
+        if (w) {
+          w.focus();
+        }
+      },
+      icon: (
+        <Icon
+          size={24}
+          color={tokens.colors.interactive.primary__resting.hex}
+          name="external_link"
+        />
+      ),
+    });
+    return menuItems;
+  };
 
-    useEffect(() => {
-        actions.setMenuItems(makeMenuItems());
-    }, [item.mcPkgId]);
+  useEffect(() => {
+    actions.setMenuItems(makeMenuItems());
+  }, [item.mcPkgId]);
 
-    useEffect(() => {
-        actions.setTitle(`Pipetest ${item.name} - ${item.description}`);
-    }, [item.name, item.description]);
+  useEffect(() => {
+    actions.setTitle(`Pipetest ${item.name} - ${item.description}`);
+  }, [item.name, item.description]);
 
-    const width = window.innerWidth / 2;
+  const width = window.innerWidth / 2;
 
-    useEffect(() => {
-        actions.setWidth(width);
-    }, [width]);
+  useEffect(() => {
+    actions.setWidth(width);
+  }, [width]);
 }

@@ -1,14 +1,13 @@
 export interface ServiceMessage {
-    id: string;
-    message?: string;
-    toDate: string;
-    fromDate: string;
-    link?: Link;
-    type?: 'info' | 'warning' | 'default';
+  id: string;
+  message?: string;
+  toDate: string;
+  fromDate: string;
+  link?: Link;
+  type?: 'info' | 'warning' | 'default';
 }
 
-
 export interface Link {
-    url: string;
-    title: string;
-};
+  url: string;
+  title: string;
+}

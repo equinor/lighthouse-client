@@ -5,28 +5,28 @@ import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomAp
 import { scopeChangeQueries } from '../../../../keys/queries';
 
 export const ScopeSelect = (): JSX.Element => {
-    const { scopeQuery } = scopeChangeQueries;
-    const { data: scopes } = useQuery(scopeQuery);
+  const { scopeQuery } = scopeChangeQueries;
+  const { data: scopes } = useQuery(scopeQuery);
 
-    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
+  const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
 
-    const scope = useAtomState(({ scope }) => scope);
+  const scope = useAtomState(({ scope }) => scope);
 
-    return (
-        <SingleSelect
-            items={scopes?.map(({ name }) => name) ?? []}
-            label={'Scope'}
-            meta="(Required)"
-            value={scope?.name}
-            placeholder="Select scope"
-            disabled={false}
-            handleSelectedItemChange={(change) => {
-                !change.selectedItem
-                    ? updateAtom({ scope: null })
-                    : updateAtom({
-                          scope: scopes?.find(({ name }) => name === change.selectedItem),
-                      });
-            }}
-        />
-    );
+  return (
+    <SingleSelect
+      items={scopes?.map(({ name }) => name) ?? []}
+      label={'Scope'}
+      meta="(Required)"
+      value={scope?.name}
+      placeholder="Select scope"
+      disabled={false}
+      handleSelectedItemChange={(change) => {
+        !change.selectedItem
+          ? updateAtom({ scope: null })
+          : updateAtom({
+              scope: scopes?.find(({ name }) => name === change.selectedItem),
+            });
+      }}
+    />
+  );
 };

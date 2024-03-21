@@ -8,30 +8,30 @@ import { ScopeTab } from './Tabs/ScopeTab';
 import { WorkflowTab } from './Tabs/WorkflowTab';
 
 export const ReleaseControlDetailView = (): JSX.Element => {
-    const { activeTab, handleChange } = useEdsTabs();
-    return (
-        <>
-            <ReleaseControlSidesheetBanner />
-            <Tabs activeTab={activeTab} onChange={handleChange}>
-                <SidesheetTabList>
-                    <HeaderTab>Scope</HeaderTab>
-                    <HeaderTab>Workflow</HeaderTab>
-                    <HeaderTab>Circuit diagram</HeaderTab>
-                    <HeaderTab>History</HeaderTab>
-                </SidesheetTabList>
-                <TabList>
-                    <Tab>
-                        <ScopeTab />
-                    </Tab>
-                    <Tab>{activeTab == 1 && <WorkflowTab />}</Tab>
-                    <Tab>
-                        <CircuitDiagramTab />
-                    </Tab>
-                    <Tab>
-                        <HistoryTab />
-                    </Tab>
-                </TabList>
-            </Tabs>
-        </>
-    );
+  const { activeTab, handleChange } = useEdsTabs();
+  return (
+    <>
+      <ReleaseControlSidesheetBanner />
+      <Tabs activeTab={activeTab} onChange={handleChange}>
+        <SidesheetTabList>
+          <HeaderTab>Scope</HeaderTab>
+          <HeaderTab>Workflow</HeaderTab>
+          <HeaderTab>Circuit diagram</HeaderTab>
+          <HeaderTab>History</HeaderTab>
+        </SidesheetTabList>
+        <TabList>
+          <Tab>
+            <ScopeTab />
+          </Tab>
+          <Tab>{activeTab == 1 && <WorkflowTab />}</Tab>
+          <Tab>
+            <CircuitDiagramTab />
+          </Tab>
+          <Tab>
+            <HistoryTab />
+          </Tab>
+        </TabList>
+      </Tabs>
+    </>
+  );
 };

@@ -1,8 +1,8 @@
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 import {
-    FlexColumn,
-    FormWrapper,
-    NewStepButton,
+  FlexColumn,
+  FormWrapper,
+  NewStepButton,
 } from '../../../Form/releaseControlProcessForm.styles';
 
 import { EditButtonBar } from './EditButtonBar';
@@ -11,23 +11,23 @@ import { addStep } from '../../../Form/WorkflowEditor/WorkflowEditorHelpers';
 import { Wrapper, WrapperFillerDiv } from '../sidesheetStyles';
 
 export const EditWorkflowTab = (): JSX.Element => {
-    const { useAtomState } = DRCFormAtomApi;
-    const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
+  const { useAtomState } = DRCFormAtomApi;
+  const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
 
-    return (
-        <Wrapper>
-            <FormWrapper>
-                <FlexColumn>
-                    Workflow
-                    <WorkflowCustomEditor isEditMode={false} />
-                    {steps.length !== 0 && (
-                        <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
-                    )}
-                </FlexColumn>
-            </FormWrapper>
-            <WrapperFillerDiv />
+  return (
+    <Wrapper>
+      <FormWrapper>
+        <FlexColumn>
+          Workflow
+          <WorkflowCustomEditor isEditMode={false} />
+          {steps.length !== 0 && (
+            <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
+          )}
+        </FlexColumn>
+      </FormWrapper>
+      <WrapperFillerDiv />
 
-            <EditButtonBar />
-        </Wrapper>
-    );
+      <EditButtonBar />
+    </Wrapper>
+  );
 };

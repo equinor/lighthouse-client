@@ -78,9 +78,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
 
 function useIsValid(api: DefaultAtomAPI<DRCFormModel>): boolean {
   const [isValid, setIsValid] = useState<boolean>(false);
-  api.useOnAtomStateChanged(
-    (s) => checkFormState(s) !== isValid && setIsValid((valid) => !valid)
-  );
+  api.useOnAtomStateChanged((s) => checkFormState(s) !== isValid && setIsValid((valid) => !valid));
 
   return isValid;
 }
@@ -109,7 +107,11 @@ function unPackReferencesAndScope(
 
 function packWorkflowSteps(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlPackedSteps {
   const editedSteps = api.readAtomValue().workflowSteps?.filter((x) => !x.isCompleted) ?? [];
-  const signedSteps = api.readAtomValue().workflowSteps?.filter((x) => x.isCompleted).map(s => ({ ...s, description: null })) ?? [];
+  const signedSteps =
+    api
+      .readAtomValue()
+      .workflowSteps?.filter((x) => x.isCompleted)
+      .map((s) => ({ ...s, description: null })) ?? [];
   return {
     editedWorkflowSteps: editedSteps,
     signedWorkflowSteps: signedSteps,
@@ -153,10 +155,7 @@ function checkFormState(
         return false;
     }
     //Do not allow empty workflowSteps
-    if (
-      releaseControl.workflowSteps === undefined ||
-      releaseControl.workflowSteps.length === 0
-    ) {
+    if (releaseControl.workflowSteps === undefined || releaseControl.workflowSteps.length === 0) {
       return false;
     }
     //Do not allow empty steps
@@ -166,9 +165,7 @@ function checkFormState(
     //Do not allow empty responsible
     if (
       releaseControl.workflowSteps?.some((step) =>
-        step.criteriaTemplates.some(
-          (criteria) => criteria.value === null || criteria.value === ''
-        )
+        step.criteriaTemplates.some((criteria) => criteria.value === null || criteria.value === '')
       )
     ) {
       return false;

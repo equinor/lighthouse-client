@@ -4,161 +4,155 @@ import { Punch } from '../../../types';
 import { getMaterialRequired } from '../../../utility/config/punchItemMapping';
 
 const TabContent = styled.div`
-    height: 100%;
-    overflow: auto;
-    box-sizing: border-box;
-    h3 {
-        padding: 8px;
-    }
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  h3 {
+    padding: 8px;
+  }
 `;
 const TextBlock = styled.div`
-    max-width: 960px;
+  max-width: 960px;
 
-    pre {
-        white-space: pre-wrap;
-        line-height: 1.5em;
-    }
+  pre {
+    white-space: pre-wrap;
+    line-height: 1.5em;
+  }
 `;
 
 type DetailsTabProps = {
-    punch: Punch;
+  punch: Punch;
 };
 export const DetailsTab = ({ punch }: DetailsTabProps): JSX.Element => {
-    return (
-        <TabContent>
-            <h3>Details</h3>
+  return (
+    <TabContent>
+      <h3>Details</h3>
 
-            <Table>
-                <tbody>
-                    <tr>
-                        <td>Category</td>
-                        <td>
-                            <StringCell value={punch.category} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td>
-                            <StringCell value={punch.status} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Priority</td>
-                        <td>
-                            <StringCell value={punch.priority} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sorting</td>
-                        <td>
-                            <StringCell value={punch.sorting} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Type</td>
-                        <td>
-                            <StringCell value={punch.type} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Estimate</td>
-                        <td>
-                            <StringCell
-                                value={punch.estimate !== null ? punch.estimate.toString() : null}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Raised by</td>
-                        <td>
-                            <StringCell value={punch.raisedBy} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Clearing by</td>
-                        <td>
-                            <StringCell value={punch.cleardBy} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cleared date</td>
-                        <td>
-                            <StringCell value={formatDateString(punch.clearedAtDate)} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Verified date</td>
-                        <td>
-                            <StringCell value={formatDateString(punch.verifiedAtDate)} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Handover plan</td>
-                        <td>
-                            <StringCell value={formatDateString(punch.handoverPlan)} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Due date</td>
-                        <td>
-                            <StringCell value={formatDateString(punch.dueDate)} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Material required</td>
-                        <td>
-                            <StringCell value={getMaterialRequired(punch)} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Material est. arrival</td>
-                        <td>
-                            <StringCell
-                                value={formatDateString(punch.materialEstimatedTimeOfArrival)}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Created date</td>
-                        <td>
-                            <StringCell value={formatDateString(punch.createdDate)} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Description</td>
-                        <td>
-                            <TextBlock>
-                                {punch.description ? <pre>{punch.description}</pre> : 'N/A'}
-                            </TextBlock>
-                        </td>
-                    </tr>
-                </tbody>
-            </Table>
+      <Table>
+        <tbody>
+          <tr>
+            <td>Category</td>
+            <td>
+              <StringCell value={punch.category} />
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>
+              <StringCell value={punch.status} />
+            </td>
+          </tr>
+          <tr>
+            <td>Priority</td>
+            <td>
+              <StringCell value={punch.priority} />
+            </td>
+          </tr>
+          <tr>
+            <td>Sorting</td>
+            <td>
+              <StringCell value={punch.sorting} />
+            </td>
+          </tr>
+          <tr>
+            <td>Type</td>
+            <td>
+              <StringCell value={punch.type} />
+            </td>
+          </tr>
+          <tr>
+            <td>Estimate</td>
+            <td>
+              <StringCell value={punch.estimate !== null ? punch.estimate.toString() : null} />
+            </td>
+          </tr>
+          <tr>
+            <td>Raised by</td>
+            <td>
+              <StringCell value={punch.raisedBy} />
+            </td>
+          </tr>
+          <tr>
+            <td>Clearing by</td>
+            <td>
+              <StringCell value={punch.cleardBy} />
+            </td>
+          </tr>
+          <tr>
+            <td>Cleared date</td>
+            <td>
+              <StringCell value={formatDateString(punch.clearedAtDate)} />
+            </td>
+          </tr>
+          <tr>
+            <td>Verified date</td>
+            <td>
+              <StringCell value={formatDateString(punch.verifiedAtDate)} />
+            </td>
+          </tr>
+          <tr>
+            <td>Handover plan</td>
+            <td>
+              <StringCell value={formatDateString(punch.handoverPlan)} />
+            </td>
+          </tr>
+          <tr>
+            <td>Due date</td>
+            <td>
+              <StringCell value={formatDateString(punch.dueDate)} />
+            </td>
+          </tr>
+          <tr>
+            <td>Material required</td>
+            <td>
+              <StringCell value={getMaterialRequired(punch)} />
+            </td>
+          </tr>
+          <tr>
+            <td>Material est. arrival</td>
+            <td>
+              <StringCell value={formatDateString(punch.materialEstimatedTimeOfArrival)} />
+            </td>
+          </tr>
+          <tr>
+            <td>Created date</td>
+            <td>
+              <StringCell value={formatDateString(punch.createdDate)} />
+            </td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td>
+              <TextBlock>{punch.description ? <pre>{punch.description}</pre> : 'N/A'}</TextBlock>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
 
-            <h3>Checklist</h3>
+      <h3>Checklist</h3>
 
-            <Table>
-                <tbody>
-                    <tr>
-                        <td>Form type</td>
-                        <td>
-                            <StringCell value={punch.formularType} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Form group</td>
-                        <td>
-                            <StringCell value={punch.formularGroup} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Form discipline</td>
-                        <td>
-                            <StringCell value={punch.formularDiscipline} />
-                        </td>
-                    </tr>
-                </tbody>
-            </Table>
-        </TabContent>
-    );
+      <Table>
+        <tbody>
+          <tr>
+            <td>Form type</td>
+            <td>
+              <StringCell value={punch.formularType} />
+            </td>
+          </tr>
+          <tr>
+            <td>Form group</td>
+            <td>
+              <StringCell value={punch.formularGroup} />
+            </td>
+          </tr>
+          <tr>
+            <td>Form discipline</td>
+            <td>
+              <StringCell value={punch.formularDiscipline} />
+            </td>
+          </tr>
+        </tbody>
+      </Table>
+    </TabContent>
+  );
 };

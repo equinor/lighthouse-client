@@ -24,8 +24,11 @@ export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
     {
       order: 1,
       name: 'Initiate',
-      description: "",
-      allowContributors: true, completedStatusName: 'Initiated', criteriaTemplates: [ {
+      description: '',
+      allowContributors: true,
+      completedStatusName: 'Initiated',
+      criteriaTemplates: [
+        {
           type: 'RequireProcosysUserSignature',
           assignToCreator: true,
           value: '',
@@ -127,7 +130,7 @@ export function addStepAfter(
   const newStep: CreateReleaseControlStepModel = {
     id: Math.random().toString(), //Needs temporary unique id for drag/drop sorting
     order: currentStep.order + 1,
-    description: "",
+    description: '',
     name: '',
     allowContributors: true,
     criteriaTemplates: [
@@ -154,7 +157,7 @@ export function addStepBefore(
 ): CreateReleaseControlStepModel[] {
   const newStep: CreateReleaseControlStepModel = {
     id: Math.random().toString(), //Needs temporary unique id for drag/drop sorting
-    description: "",
+    description: '',
     order: currentStep.order,
     name: '',
     allowContributors: true,
@@ -211,7 +214,7 @@ export function addStep(steps: CreateReleaseControlStepModel[]): void {
     workflowSteps: addStepAfter(
       {
         id: Math.random().toString(), //Needs temporary unique id for drag/drop sorting
-        description: "",
+        description: '',
         order: steps.length,
         name: '',
         allowContributors: true,

@@ -1,8 +1,9 @@
 # Widget Readme
 
 ## Spec
-A widget is a functional component that can be mounted anywhere, as long as the widgets 
-requirements are met. 
+
+A widget is a functional component that can be mounted anywhere, as long as the widgets
+requirements are met.
 
 - WidgetManifest
 - WidgetComponent

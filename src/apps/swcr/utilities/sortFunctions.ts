@@ -2,32 +2,32 @@ import { SwcrPackage, SwcrStatus } from '../models/SwcrPackage';
 import { DATE_BLANKSTRING, getSwcrStatusPriority } from './packages';
 
 export const sortPackagesByStatusAndNumber = (columnA: SwcrPackage, columnB: SwcrPackage): number =>
-    getSwcrStatusPriority(columnA.status) - getSwcrStatusPriority(columnB.status) ||
-    parseInt(columnA.swcrNo) - parseInt(columnB.swcrNo);
+  getSwcrStatusPriority(columnA.status) - getSwcrStatusPriority(columnB.status) ||
+  parseInt(columnA.swcrNo) - parseInt(columnB.swcrNo);
 
 export const sortBySwcrStatusPriority = (a: string, b: string): number =>
-    getSwcrStatusPriority(a as SwcrStatus) - getSwcrStatusPriority(b as SwcrStatus);
+  getSwcrStatusPriority(a as SwcrStatus) - getSwcrStatusPriority(b as SwcrStatus);
 
 export const sortByEstimatedManHours = (a: string, b: string): number =>
-    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+  a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
 
 export const isSafetyOrder = { Yes: 1, No: 2, Related: 3 };
 export const sortByIsSafety = (a: string, b: string): number =>
-    isSafetyOrder[a as keyof typeof isSafetyOrder] - isSafetyOrder[b as keyof typeof isSafetyOrder];
+  isSafetyOrder[a as keyof typeof isSafetyOrder] - isSafetyOrder[b as keyof typeof isSafetyOrder];
 
 export const sortByLastSignedRanking = (a: string, b: string): number => {
-    const [aRank, aStatus] = a.split(' ');
-    const [bRank, bStatus] = b.split(' ');
+  const [aRank, aStatus] = a.split(' ');
+  const [bRank, bStatus] = b.split(' ');
 
-    return (
-        aRank.localeCompare(bRank, undefined, { numeric: true, sensitivity: 'base' }) ||
-        getSwcrStatusPriority(aStatus as SwcrStatus) - getSwcrStatusPriority(bStatus as SwcrStatus)
-    );
+  return (
+    aRank.localeCompare(bRank, undefined, { numeric: true, sensitivity: 'base' }) ||
+    getSwcrStatusPriority(aStatus as SwcrStatus) - getSwcrStatusPriority(bStatus as SwcrStatus)
+  );
 };
 export const sortByDate = (a: string, b: string) => {
-    if (a === DATE_BLANKSTRING) return -1;
-    if (b === DATE_BLANKSTRING) return 1;
-    if (a === b) return 0;
+  if (a === DATE_BLANKSTRING) return -1;
+  if (b === DATE_BLANKSTRING) return 1;
+  if (a === b) return 0;
 
-    return a.localeCompare(b);
+  return a.localeCompare(b);
 };

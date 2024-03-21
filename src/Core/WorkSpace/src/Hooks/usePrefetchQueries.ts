@@ -4,14 +4,13 @@ import { useQueryClient } from 'react-query';
 import { PrefetchQueriesOptions } from '../WorkSpaceApi/workspaceState';
 
 export function usePrefetchQueries(
-    prefetchQueriesOptions: PrefetchQueriesOptions[] & DeepImmutableArray<PrefetchQueriesOptions>
+  prefetchQueriesOptions: PrefetchQueriesOptions[] & DeepImmutableArray<PrefetchQueriesOptions>
 ): void {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    useEffect(() => {
-        prefetchQueriesOptions?.forEach(
-            async (query) =>
-                await queryClient.prefetchQuery(query.queryKey, query.queryFn, query.options)
-        );
-    }, [prefetchQueriesOptions, queryClient]);
+  useEffect(() => {
+    prefetchQueriesOptions?.forEach(
+      async (query) => await queryClient.prefetchQuery(query.queryKey, query.queryFn, query.options)
+    );
+  }, [prefetchQueriesOptions, queryClient]);
 }

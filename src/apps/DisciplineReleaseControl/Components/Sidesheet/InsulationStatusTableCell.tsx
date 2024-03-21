@@ -5,25 +5,23 @@ import { StatusCircle } from '../../../../packages/GardenUtils/src';
 import { InsulationBoxType } from '../../Types/pipetest';
 
 export const InsulationStatusTableCell = ({
-    value,
+  value,
 }: CellProps<InsulationBoxType, InsulationBoxType>): JSX.Element => {
-    return (
-        <StatusItem>
-            <StatusText>{value.procosysStatus}</StatusText>
-            {value.procosysStatus && (
-                <StatusCircle
-                    statusColor={getCircuitDiagramCompletionStatusColor(value.procosysStatus)}
-                />
-            )}
-        </StatusItem>
-    );
+  return (
+    <StatusItem>
+      <StatusText>{value.procosysStatus}</StatusText>
+      {value.procosysStatus && (
+        <StatusCircle statusColor={getCircuitDiagramCompletionStatusColor(value.procosysStatus)} />
+      )}
+    </StatusItem>
+  );
 };
 
 export const StatusItem = styled.div`
-    display: flex;
-    flex-direction: horizontal;
+  display: flex;
+  flex-direction: horizontal;
 `;
 
 export const StatusText = styled.div`
-    width: 20px;
+  width: 20px;
 `;

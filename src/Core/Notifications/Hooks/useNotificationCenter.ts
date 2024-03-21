@@ -8,72 +8,72 @@ import { useSignalRHub } from './useSignalRHub';
 import { useFramework } from '@equinor/fusion-framework-react';
 
 interface NotificationCenter {
-    isFetchingRead: boolean;
-    isFetchingUnRead: boolean;
-    isEstablishingHubConnection: boolean;
-    unreadNotificationsCount: number;
-    unreadNotificationCards: Notification[];
-    readNotificationCards: Notification[];
-    hubConnectionState: ConnectionState;
+  isFetchingRead: boolean;
+  isFetchingUnRead: boolean;
+  isEstablishingHubConnection: boolean;
+  unreadNotificationsCount: number;
+  unreadNotificationCards: Notification[];
+  readNotificationCards: Notification[];
+  hubConnectionState: ConnectionState;
 }
 
 export type ConnectionState = 'Connected' | 'Reconnecting' | 'Disconnected';
 export function useNotificationCenter(
-    onNotification?: (notification: Notification) => void
+  onNotification?: (notification: Notification) => void
 ): NotificationCenter {
-    const client = useHttpClient('fusionNotifications');
-    const fusion = useHttpClient('fusion');
+  const client = useHttpClient('fusionNotifications');
+  const fusion = useHttpClient('fusion');
 
-    const queryClient = useQueryClient();
-    const [state, setState] = useState<ConnectionState>('Disconnected');
+  const queryClient = useQueryClient();
+  const [state, setState] = useState<ConnectionState>('Disconnected');
 
-    const { getReadNotificationsQuery, getUnreadNotificationsQuery } = notificationQueries;
+  const { getReadNotificationsQuery, getUnreadNotificationsQuery } = notificationQueries;
 
-    const { data: readNotifications, isFetching: isFetchingRead } = useQuery<
-        unknown,
-        unknown,
-        Notification[]
-    >(getReadNotificationsQuery(client));
-    const { data: unreadNotifications, isFetching: isFetchingUnRead } = useQuery<
-        unknown,
-        unknown,
-        Notification[]
-    >(getUnreadNotificationsQuery(client));
+  const { data: readNotifications, isFetching: isFetchingRead } = useQuery<
+    unknown,
+    unknown,
+    Notification[]
+  >(getReadNotificationsQuery(client));
+  const { data: unreadNotifications, isFetching: isFetchingUnRead } = useQuery<
+    unknown,
+    unknown,
+    Notification[]
+  >(getUnreadNotificationsQuery(client));
 
-    const { hubConnection } = useSignalRHub(
-        `${fusion.uri}/signalr/hubs/notifications/?negotiateVersion=1`
-    );
+  const { hubConnection } = useSignalRHub(
+    `${fusion.uri}/signalr/hubs/notifications/?negotiateVersion=1`
+  );
 
-    const onNotificationRecieved = useCallback(
-        (notification: Notification) => {
-            onNotification && onNotification(notification);
-            queryClient.invalidateQueries(getUnreadNotificationsQuery(client).queryKey);
-        },
-        [getUnreadNotificationsQuery, onNotification, queryClient]
-    );
+  const onNotificationRecieved = useCallback(
+    (notification: Notification) => {
+      onNotification && onNotification(notification);
+      queryClient.invalidateQueries(getUnreadNotificationsQuery(client).queryKey);
+    },
+    [getUnreadNotificationsQuery, onNotification, queryClient]
+  );
 
-    const onReconnecting = () => setState('Reconnecting');
-    const onClose = () => setState('Disconnected');
-    const onReconnected = () => setState('Connected');
+  const onReconnecting = () => setState('Reconnecting');
+  const onClose = () => setState('Disconnected');
+  const onReconnected = () => setState('Connected');
 
-    useEffect(() => {
-        if (hubConnection) {
-            hubConnection.state === HubConnectionState.Connected && setState('Connected');
-            hubConnection.onclose(onClose);
-            hubConnection.onreconnected(onReconnected);
-            hubConnection.onreconnecting(onReconnecting);
-            hubConnection.on('notifications', onNotificationRecieved);
-            return () => hubConnection.off('notifications', onNotificationRecieved);
-        }
-    }, [hubConnection, onNotificationRecieved]);
+  useEffect(() => {
+    if (hubConnection) {
+      hubConnection.state === HubConnectionState.Connected && setState('Connected');
+      hubConnection.onclose(onClose);
+      hubConnection.onreconnected(onReconnected);
+      hubConnection.onreconnecting(onReconnecting);
+      hubConnection.on('notifications', onNotificationRecieved);
+      return () => hubConnection.off('notifications', onNotificationRecieved);
+    }
+  }, [hubConnection, onNotificationRecieved]);
 
-    return {
-        hubConnectionState: state,
-        isFetchingRead,
-        isFetchingUnRead,
-        isEstablishingHubConnection: false,
-        readNotificationCards: readNotifications || [],
-        unreadNotificationCards: unreadNotifications || [],
-        unreadNotificationsCount: unreadNotifications?.length || 0,
-    };
+  return {
+    hubConnectionState: state,
+    isFetchingRead,
+    isFetchingUnRead,
+    isEstablishingHubConnection: false,
+    readNotificationCards: readNotifications || [],
+    unreadNotificationCards: unreadNotifications || [],
+    unreadNotificationsCount: unreadNotifications?.length || 0,
+  };
 }

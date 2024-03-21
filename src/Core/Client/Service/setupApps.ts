@@ -5,21 +5,21 @@ import { clientApiBuilder } from './ClientBuilder';
 import { IHttpClient } from '@equinor/fusion-framework-module-http';
 
 export function setupApps(
-    registry: ClientRegistry,
-    appConfig: AppConfigResult,
-    client: IHttpClient
+  registry: ClientRegistry,
+  appConfig: AppConfigResult,
+  client: IHttpClient
 ): ClientRegistry {
-    registry.apps.forEach((manifest) => {
-        manifest.app?.setup &&
-            manifest.app.setup(
-                clientApiBuilder({
-                    ...manifest,
-                    isProduction: appConfig.isProduction,
-                    appConfig,
-                    openSidesheet,
-                    client,
-                })
-            );
-    });
-    return registry;
+  registry.apps.forEach((manifest) => {
+    manifest.app?.setup &&
+      manifest.app.setup(
+        clientApiBuilder({
+          ...manifest,
+          isProduction: appConfig.isProduction,
+          appConfig,
+          openSidesheet,
+          client,
+        })
+      );
+  });
+  return registry;
 }

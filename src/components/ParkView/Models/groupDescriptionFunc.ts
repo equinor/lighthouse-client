@@ -1,3 +1,3 @@
 export interface GroupDescriptionFunc<T> {
-    (data: T, groupingKey: string): string;
+  (data: T, groupingKey: string): string;
 }

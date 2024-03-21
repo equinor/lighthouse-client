@@ -4,80 +4,80 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 interface AttachmentsProps {
-    onDrop: (acceptedFiles: File[], fileRejections: FileRejection[]) => Promise<void>;
-    maxSizeInBytes: number;
-    isLoading?: boolean;
+  onDrop: (acceptedFiles: File[], fileRejections: FileRejection[]) => Promise<void>;
+  maxSizeInBytes: number;
+  isLoading?: boolean;
 }
 
 export function Attachments({ maxSizeInBytes, onDrop, isLoading }: AttachmentsProps): JSX.Element {
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        maxSize: maxSizeInBytes,
-    });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    maxSize: maxSizeInBytes,
+  });
 
-    return (
-        <Wrapper>
-            <AttachmentsContainer {...getRootProps()}>
-                <DropHere>
-                    <TextWrapper>
-                        {isLoading ? (
-                            <Progress.Dots color="primary" />
-                        ) : (
-                            <Icon
-                                style={{ width: '32px', height: '32px' }}
-                                name={'cloud_upload'}
-                                color={tokens.colors.interactive.primary__resting.rgba}
-                            />
-                        )}
+  return (
+    <Wrapper>
+      <AttachmentsContainer {...getRootProps()}>
+        <DropHere>
+          <TextWrapper>
+            {isLoading ? (
+              <Progress.Dots color="primary" />
+            ) : (
+              <Icon
+                style={{ width: '32px', height: '32px' }}
+                name={'cloud_upload'}
+                color={tokens.colors.interactive.primary__resting.rgba}
+              />
+            )}
 
-                        <input {...getInputProps()} />
+            <input {...getInputProps()} />
 
-                        <UploadText>
-                            Drop files or <Highlight>browse</Highlight> to upload
-                        </UploadText>
-                    </TextWrapper>
-                </DropHere>
-            </AttachmentsContainer>
-        </Wrapper>
-    );
+            <UploadText>
+              Drop files or <Highlight>browse</Highlight> to upload
+            </UploadText>
+          </TextWrapper>
+        </DropHere>
+      </AttachmentsContainer>
+    </Wrapper>
+  );
 }
 
 const TextWrapper = styled.div`
-    display: flex;
-    gap: 0.7em;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  gap: 0.7em;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const UploadText = styled.div`
-    display: flex;
-    font-size: 16px;
-    gap: 0.2em;
+  display: flex;
+  font-size: 16px;
+  gap: 0.2em;
 `;
 
 const Highlight = styled.div`
-    color: ${tokens.colors.interactive.primary__resting.hex};
+  color: ${tokens.colors.interactive.primary__resting.hex};
 `;
 
 const Wrapper = styled.div`
-    display: flex;
-    min-width: 300px;
-    flex-direction: column;
+  display: flex;
+  min-width: 300px;
+  flex-direction: column;
 `;
 
 const AttachmentsContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 96px;
-    width: -webkit-fill-available;
-    cursor: pointer;
-    border: 2px dotted ${tokens.colors.interactive.primary__resting.hex};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 96px;
+  width: -webkit-fill-available;
+  cursor: pointer;
+  border: 2px dotted ${tokens.colors.interactive.primary__resting.hex};
 `;
 
 const DropHere = styled.div`
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
 `;

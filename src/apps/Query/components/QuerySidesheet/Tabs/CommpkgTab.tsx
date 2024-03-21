@@ -9,79 +9,79 @@ import { Query, QueryCommpkg } from '../../../types';
 import { getqueryCommpkg, queryCommpkgColumnNames } from '../../../utility/api';
 
 const columns: Column<QueryCommpkg>[] = [
-    {
-        id: 'CommissioningPackageNo',
-        Header: 'Commpkg no',
-        accessor: (pkg) => ({
-            content: pkg,
-            currentKey: 'contentTagNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId ?? ''),
-        }),
-        width: 150,
+  {
+    id: 'CommissioningPackageNo',
+    Header: 'Commpkg no',
+    accessor: (pkg) => ({
+      content: pkg,
+      currentKey: 'contentTagNo',
+      url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackageUrlId ?? ''),
+    }),
+    width: 150,
 
-        Cell: (cellProps: CellProps<Query>) => (
-            <CustomLinkCellWithTextDecoration
-                contentToBeDisplayed={cellProps.value.content.commissioningPackageNo}
-                url={cellProps.value.url}
-            />
-        ),
-    },
-    {
-        id: 'description',
-        Header: 'Description',
-        accessor: (pkg) => pkg.description,
-        width: 300,
-    },
-    {
-        id: 'rfC_Status',
-        Header: 'RFC Status',
-        accessor: (pkg) => pkg.rfC_Status,
-    },
-    {
-        id: 'rfO_Status',
-        Header: 'RFO Status',
-        accessor: (pkg) => pkg.rfO_Status,
-    },
+    Cell: (cellProps: CellProps<Query>) => (
+      <CustomLinkCellWithTextDecoration
+        contentToBeDisplayed={cellProps.value.content.commissioningPackageNo}
+        url={cellProps.value.url}
+      />
+    ),
+  },
+  {
+    id: 'description',
+    Header: 'Description',
+    accessor: (pkg) => pkg.description,
+    width: 300,
+  },
+  {
+    id: 'rfC_Status',
+    Header: 'RFC Status',
+    accessor: (pkg) => pkg.rfC_Status,
+  },
+  {
+    id: 'rfO_Status',
+    Header: 'RFO Status',
+    accessor: (pkg) => pkg.rfO_Status,
+  },
 ];
 type QueryCommpkgProps = {
-    query: Query;
+  query: Query;
 };
 export const QueryCommpkgTable = ({ query }: QueryCommpkgProps): JSX.Element => {
-    const expressions = generateExpressions('queryNo', 'Equals', [query.queryNo]);
-    const requestArgs = generateFamRequest(queryCommpkgColumnNames, 'Or', expressions);
-    const { data, isLoading, error } = useQuery(['queryCommpkg', query.queryNo], ({ signal }) =>
-        getqueryCommpkg(requestArgs, signal)
-    );
+  const expressions = generateExpressions('queryNo', 'Equals', [query.queryNo]);
+  const requestArgs = generateFamRequest(queryCommpkgColumnNames, 'Or', expressions);
+  const { data, isLoading, error } = useQuery(['queryCommpkg', query.queryNo], ({ signal }) =>
+    getqueryCommpkg(requestArgs, signal)
+  );
 
-    return (
-        <TabTable
-            columns={columns}
-            packages={data}
-            error={error instanceof Error ? error : null}
-            isFetching={isLoading}
-            resourceName="Query commpkg"
-            height={300}
-        />
-    );
+  return (
+    <TabTable
+      columns={columns}
+      packages={data}
+      error={error instanceof Error ? error : null}
+      isFetching={isLoading}
+      resourceName="Query commpkg"
+      height={300}
+    />
+  );
 };
 
 const TabContent = styled.div`
-    height: 100%;
-    overflow: auto;
-    box-sizing: border-box;
-    h3 {
-        padding: 8px;
-    }
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  h3 {
+    padding: 8px;
+  }
 `;
 
 type CommpkgTabProps = {
-    query: Query;
+  query: Query;
 };
 export const CommpkgTab = ({ query }: CommpkgTabProps) => {
-    return (
-        <TabContent>
-            <h3>Commpkgs</h3>
-            <QueryCommpkgTable query={query} />
-        </TabContent>
-    );
+  return (
+    <TabContent>
+      <h3>Commpkgs</h3>
+      <QueryCommpkgTable query={query} />
+    </TabContent>
+  );
 };

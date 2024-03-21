@@ -10,14 +10,14 @@ const DEFAULT_WIDTH = 650;
 export const DEFAULT_TAB_COLOR = '#ff9900';
 
 export const SidesheetCoreContext = createGlobalSidesheetState({
-    minWidth: MIN_WIDTH,
-    defaultWidth: DEFAULT_WIDTH,
-    isMinimized: false,
-    width: DEFAULT_WIDTH,
-    color: DEFAULT_TAB_COLOR,
-    hasUnsavedChanges: false,
+  minWidth: MIN_WIDTH,
+  defaultWidth: DEFAULT_WIDTH,
+  isMinimized: false,
+  width: DEFAULT_WIDTH,
+  color: DEFAULT_TAB_COLOR,
+  hasUnsavedChanges: false,
 });
 
 export function getSidesheetContext(): Atom<SidesheetState<unknown>> {
-    return SidesheetCoreContext;
+  return SidesheetCoreContext;
 }

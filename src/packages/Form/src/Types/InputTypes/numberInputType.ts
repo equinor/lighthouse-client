@@ -1,4 +1,4 @@
 export interface NumberInput {
-    type: 'NumberInput';
-    CustomInputType?: React.FC;
+  type: 'NumberInput';
+  CustomInputType?: React.FC;
 }

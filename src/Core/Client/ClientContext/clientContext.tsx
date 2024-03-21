@@ -6,19 +6,19 @@ export type ClientContextState = GlobalClientState;
 
 export const ClientContext = createContext({} as ClientContextState);
 interface ClientContextProviderProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export const ClientContextProvider = ({ children }: ClientContextProviderProps): JSX.Element => {
-    const state = useGlobalClientState();
+  const state = useGlobalClientState();
 
-    return (
-        <ClientContext.Provider
-            value={{
-                ...state,
-            }}
-        >
-            {children}
-        </ClientContext.Provider>
-    );
+  return (
+    <ClientContext.Provider
+      value={{
+        ...state,
+      }}
+    >
+      {children}
+    </ClientContext.Provider>
+  );
 };

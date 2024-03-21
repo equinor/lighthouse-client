@@ -3,14 +3,14 @@ import { Workflow } from '../Types/WorkflowTypes';
 import { throwOnError } from './throwOnError';
 
 interface QueryProps {
-    workflowOwner: string;
+  workflowOwner: string;
 }
 
 export const getWorkflows = async ({ workflowOwner }: QueryProps): Promise<Workflow[]> => {
-    const { scopeChange } = httpClient();
-    const res = await scopeChange.fetch(`api/workflows?owner=${workflowOwner}`);
+  const { scopeChange } = httpClient();
+  const res = await scopeChange.fetch(`api/workflows?owner=${workflowOwner}`);
 
-    throwOnError(res, 'Failed to get workflows');
+  throwOnError(res, 'Failed to get workflows');
 
-    return await res.json();
+  return await res.json();
 };

@@ -31,7 +31,7 @@ export const WorkflowCustomEditor = ({
       .slice()
       .reverse()
       .forEach((x) => workflowSteps.unshift(x));
-    updateAtom({ workflowSteps: workflowSteps.filter(s => !!s).map(({ item }) => item) });
+    updateAtom({ workflowSteps: workflowSteps.filter((s) => !!s).map(({ item }) => item) });
   };
 
   const { getFunctionalRolesQuery } = ProCoSysQueries;

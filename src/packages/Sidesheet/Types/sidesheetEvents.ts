@@ -1,4 +1,4 @@
 export enum SidesheetEvents {
-    SidesheetClosed = 'sidesheetClosed',
-    SidesheetOpened = 'sidesheetOpened',
+  SidesheetClosed = 'sidesheetClosed',
+  SidesheetOpened = 'sidesheetOpened',
 }

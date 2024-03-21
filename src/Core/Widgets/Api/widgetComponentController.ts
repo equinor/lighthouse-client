@@ -11,19 +11,19 @@ import { widgetSore } from './widgetsStore';
  * @return {*}  {Promise<WidgetComponent>}
  */
 export async function getWidgetById(widgetId: string): Promise<WidgetComponent> {
-    const currentComponent = widgetSore[widgetId];
-    if (currentComponent) return currentComponent;
+  const currentComponent = widgetSore[widgetId];
+  if (currentComponent) return currentComponent;
 
-    const component = await fetchComponent(widgetId);
-    if (component) {
-        try {
-            return _addWidget(widgetId, component);
-        } catch (error) {
-            console.warn(error);
-        }
+  const component = await fetchComponent(widgetId);
+  if (component) {
+    try {
+      return _addWidget(widgetId, component);
+    } catch (error) {
+      console.warn(error);
     }
+  }
 
-    throw new Error(`Failed to find WidgetComponent with id ${widgetId}`);
+  throw new Error(`Failed to find WidgetComponent with id ${widgetId}`);
 }
 
 /**
@@ -34,9 +34,9 @@ export async function getWidgetById(widgetId: string): Promise<WidgetComponent> 
  * @return {*}  {WidgetComponent}
  */
 function _addWidget(widgetId: string, widget: WidgetComponent): WidgetComponent {
-    if (widgetSore[widgetId]) {
-        throw new Error(`Widget already exist with id ${widgetId}`);
-    }
-    widgetSore[widgetId] = widget;
-    return widgetSore[widgetId];
+  if (widgetSore[widgetId]) {
+    throw new Error(`Widget already exist with id ${widgetId}`);
+  }
+  widgetSore[widgetId] = widget;
+  return widgetSore[widgetId];
 }

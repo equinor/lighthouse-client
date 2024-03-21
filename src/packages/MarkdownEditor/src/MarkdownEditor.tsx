@@ -30,7 +30,7 @@ import { StyledContainer } from './editor.styles';
 export type ReactEditorProps = Pick<CreateEditorStateProps, 'stringHandler'> &
   Pick<RemirrorProps, 'initialContent' | 'editable' | 'autoFocus' | 'hooks'> & {
     placeholder?: string;
-    commandButtons?: JSX.Element[]
+    commandButtons?: JSX.Element[];
   };
 export type MarkdownEditorProps = Partial<Omit<ReactEditorProps, 'stringHandler'>>;
 
@@ -74,6 +74,6 @@ export const MarkdownEditor: FC<PropsWithChildren<MarkdownEditorProps>> = ({
           {children}
         </Remirror>
       </ThemeProvider>
-    </StyledContainer >
+    </StyledContainer>
   );
 };

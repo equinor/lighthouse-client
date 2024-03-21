@@ -6,24 +6,24 @@ import { useMenuContext } from './Context/MenuContext';
 import { ChildrenWrapper, MainMenuWrapper, Wrapper } from './MenuStyles';
 
 export const Menu = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
-    const { expandedMenuActive, menuActive } = useMenuContext();
+  const { expandedMenuActive, menuActive } = useMenuContext();
 
-    return (
-        <FavoritesProvider>
-            <Wrapper>
-                {menuActive && (
-                    <div>
-                        {expandedMenuActive ? (
-                            <ExpandedMenu />
-                        ) : (
-                            <MainMenuWrapper>
-                                <CompactMenu />
-                            </MainMenuWrapper>
-                        )}
-                    </div>
-                )}
-                <ChildrenWrapper>{children}</ChildrenWrapper>
-            </Wrapper>
-        </FavoritesProvider>
-    );
+  return (
+    <FavoritesProvider>
+      <Wrapper>
+        {menuActive && (
+          <div>
+            {expandedMenuActive ? (
+              <ExpandedMenu />
+            ) : (
+              <MainMenuWrapper>
+                <CompactMenu />
+              </MainMenuWrapper>
+            )}
+          </div>
+        )}
+        <ChildrenWrapper>{children}</ChildrenWrapper>
+      </Wrapper>
+    </FavoritesProvider>
+  );
 };

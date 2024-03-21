@@ -5,58 +5,58 @@ import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 import { ScopeChangeCreateEditModel } from '../../types/scopeChangeRequest';
 
 interface EditScopeChangeParams {
-    model: ScopeChangeCreateEditModel;
-    setAsOpen?: boolean;
+  model: ScopeChangeCreateEditModel;
+  setAsOpen?: boolean;
 }
 
 interface CreateScopeChangeParams {
-    draft: boolean;
-    model: ScopeChangeCreateEditModel;
+  draft: boolean;
+  model: ScopeChangeCreateEditModel;
 }
 
 interface RequestMutations {
-    editScopeChangeMutation: ({ model, setAsOpen }: EditScopeChangeParams) => Promise<void>;
-    createScopeChangeMutation: ({
-        draft,
-        model,
-    }: CreateScopeChangeParams) => Promise<string | undefined>;
+  editScopeChangeMutation: ({ model, setAsOpen }: EditScopeChangeParams) => Promise<void>;
+  createScopeChangeMutation: ({
+    draft,
+    model,
+  }: CreateScopeChangeParams) => Promise<string | undefined>;
 }
 
 export function useRequestMutations(): RequestMutations {
-    const { mutate: uploadAttachmentMutation } = useMutation(uploadAttachment, {
-        retry: 2,
-        retryDelay: 2,
-    });
-    const queryClient = useQueryClient();
+  const { mutate: uploadAttachmentMutation } = useMutation(uploadAttachment, {
+    retry: 2,
+    retryDelay: 2,
+  });
+  const queryClient = useQueryClient();
 
-    const editScopeChangeMutation = async ({ model, setAsOpen }: EditScopeChangeParams) => {
-        await patchScopeChange(model, setAsOpen);
-    };
+  const editScopeChangeMutation = async ({ model, setAsOpen }: EditScopeChangeParams) => {
+    await patchScopeChange(model, setAsOpen);
+  };
 
-    const createScopeChangeMutation = async ({ draft, model }: CreateScopeChangeParams) => {
-        const validatedModel = model as ScopeChangeCreateEditModel;
-        const scID = await postScopeChange(
-            {
-                ...validatedModel,
-                changeCategoryId: model.changeCategory?.id ?? '',
-            },
-            draft
-        );
+  const createScopeChangeMutation = async ({ draft, model }: CreateScopeChangeParams) => {
+    const validatedModel = model as ScopeChangeCreateEditModel;
+    const scID = await postScopeChange(
+      {
+        ...validatedModel,
+        changeCategoryId: model.changeCategory?.id ?? '',
+      },
+      draft
+    );
 
-        if (scID) {
-            const { baseKey } = scopeChangeQueryKeys(scID);
-            model?.newAttachments?.forEach((attachment) => {
-                uploadAttachmentMutation({ file: attachment, requestId: scID });
-            });
+    if (scID) {
+      const { baseKey } = scopeChangeQueryKeys(scID);
+      model?.newAttachments?.forEach((attachment) => {
+        uploadAttachmentMutation({ file: attachment, requestId: scID });
+      });
 
-            queryClient.invalidateQueries(baseKey);
-            queryClient.invalidateQueries(['change']);
-            openNewScopeChange(scID);
-            return scID;
-        }
-    };
-    return {
-        createScopeChangeMutation,
-        editScopeChangeMutation,
-    };
+      queryClient.invalidateQueries(baseKey);
+      queryClient.invalidateQueries(['change']);
+      openNewScopeChange(scID);
+      return scID;
+    }
+  };
+  return {
+    createScopeChangeMutation,
+    editScopeChangeMutation,
+  };
 }

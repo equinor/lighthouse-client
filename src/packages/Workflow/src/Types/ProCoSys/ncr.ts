@@ -1,4 +1,4 @@
 export interface NCR {
-    DocumentNo: string;
-    DocumentTitle: string;
+  DocumentNo: string;
+  DocumentTitle: string;
 }

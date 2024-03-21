@@ -11,82 +11,79 @@ import { GardenItem } from './types/gardenItem';
 import { tokens } from '@equinor/eds-tokens';
 
 type HeaderContainerProps<T extends Record<PropertyKey, unknown>> = {
-    columnVirtualizer: { virtualItems: VirtualItem[] };
-    headerChild?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
-    garden: GardenGroups<T>;
-    highlightColumn: string | undefined;
-    customDescription?: (item: T | GardenItem<T>) => string;
-    groupByKey: string;
+  columnVirtualizer: { virtualItems: VirtualItem[] };
+  headerChild?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
+  garden: GardenGroups<T>;
+  highlightColumn: string | undefined;
+  customDescription?: (item: T | GardenItem<T>) => string;
+  groupByKey: string;
 };
 export const HeaderContainer = <T extends Record<PropertyKey, unknown>>(
-    props: HeaderContainerProps<T>
+  props: HeaderContainerProps<T>
 ): JSX.Element => {
-    const {
-        columnVirtualizer,
-        garden,
-        groupByKey,
-        headerChild: HeaderChild,
-        highlightColumn,
-        customDescription,
-    } = props;
-    const expandColumn = useExpandDispatch();
-    const expanded = useExpand();
+  const {
+    columnVirtualizer,
+    garden,
+    groupByKey,
+    headerChild: HeaderChild,
+    highlightColumn,
+    customDescription,
+  } = props;
+  const expandColumn = useExpandDispatch();
+  const expanded = useExpand();
 
-    const handleHeaderClick = useCallback(
-        (index: number, column: DataSet<T>) => {
-            expandColumn({
-                type: ActionType.EXPAND_COLUMN,
-                index,
-                key: column.value,
-                descriptionData: getGardenItems(column),
-                customDescription: customDescription,
-            });
-        },
-        [expandColumn, getGardenItems]
-    );
-    return (
-        <HeaderRoot>
-            {columnVirtualizer.virtualItems.map((virtualColumn) => {
-                const isHighlighted = highlightColumn === garden[virtualColumn.index].value;
-                return (
-                    <Header
-                        onClick={() =>
-                            handleHeaderClick(virtualColumn.index, garden[virtualColumn.index])
-                        }
-                        style={{
-                            width: `${virtualColumn.size}px`,
-                            transform: `translateX(${virtualColumn.start}px) translateY(0px)`,
-                            backgroundColor: isHighlighted ? '#007079' : '#f7f7f7',
-                            color: isHighlighted ? 'white' : 'black',
-                        }}
-                        key={virtualColumn.index}
-                    >
-                        {HeaderChild ? (
-                            <HeaderChild
-                                garden={garden}
-                                columnIndex={virtualColumn.index}
-                                columnIsExpanded={
-                                    expanded.expandedColumns?.[garden[virtualColumn.index].value]
-                                        ?.isExpanded
-                                }
-                                groupByKey={groupByKey}
-                            />
-                        ) : (
-                            <>
-                                {garden[virtualColumn.index].value}
-                                <Count>({garden[virtualColumn.index].count})</Count>
-                            </>
-                        )}
-                    </Header>
-                );
-            })}
-        </HeaderRoot>
-    );
+  const handleHeaderClick = useCallback(
+    (index: number, column: DataSet<T>) => {
+      expandColumn({
+        type: ActionType.EXPAND_COLUMN,
+        index,
+        key: column.value,
+        descriptionData: getGardenItems(column),
+        customDescription: customDescription,
+      });
+    },
+    [expandColumn, getGardenItems]
+  );
+  return (
+    <HeaderRoot>
+      {columnVirtualizer.virtualItems.map((virtualColumn) => {
+        const isHighlighted = highlightColumn === garden[virtualColumn.index].value;
+        return (
+          <Header
+            onClick={() => handleHeaderClick(virtualColumn.index, garden[virtualColumn.index])}
+            style={{
+              width: `${virtualColumn.size}px`,
+              transform: `translateX(${virtualColumn.start}px) translateY(0px)`,
+              backgroundColor: isHighlighted ? '#007079' : '#f7f7f7',
+              color: isHighlighted ? 'white' : 'black',
+            }}
+            key={virtualColumn.index}
+          >
+            {HeaderChild ? (
+              <HeaderChild
+                garden={garden}
+                columnIndex={virtualColumn.index}
+                columnIsExpanded={
+                  expanded.expandedColumns?.[garden[virtualColumn.index].value]?.isExpanded
+                }
+                groupByKey={groupByKey}
+              />
+            ) : (
+              <>
+                {garden[virtualColumn.index].value}
+                <Count>({garden[virtualColumn.index].count})</Count>
+              </>
+            )}
+          </Header>
+        );
+      })}
+    </HeaderRoot>
+  );
 };
 
 export const Count = styled.span`
-    color: ${tokens.colors.text.static_icons__default.hex};
-    font-weight: 300;
-    font-size: 0.8rem;
-    margin-left: 0.8em;
+  color: ${tokens.colors.text.static_icons__default.hex};
+  font-weight: 300;
+  font-size: 0.8rem;
+  margin-left: 0.8em;
 `;

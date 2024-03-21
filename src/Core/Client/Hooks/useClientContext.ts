@@ -7,34 +7,34 @@ import { ClientRegistry } from '../Types/ClientRegistry';
 import { ClientSettings } from '../Types/ClientSettings';
 
 export function useClientContext(): ClientContextState {
-    return useContext(context);
+  return useContext(context);
 }
 
 export function useContextData(): ClientContext {
-    return useClientContext().context;
+  return useClientContext().context;
 }
 
 export function useSettings(): ClientSettings {
-    return useClientContext().settings;
+  return useClientContext().settings;
 }
 export function useCurrentUser(): User | undefined {
-    return useClientContext().settings.user;
+  return useClientContext().settings.user;
 }
 
 export function useAppConfig(): AppConfig {
-    return useClientContext().appConfig;
+  return useClientContext().appConfig;
 }
 
 export function useRegistry(): ClientRegistry {
-    return useClientContext().registry;
+  return useClientContext().registry;
 }
 
 export function useFacility(): Facility {
-    return useClientContext().context;
+  return useClientContext().context;
 }
 export function useFusionContext(): FusionContext | undefined {
-    return useClientContext().context.fusionContext;
+  return useClientContext().context.fusionContext;
 }
 export function useProject(): Project {
-    return useClientContext().context.project;
+  return useClientContext().context.project;
 }

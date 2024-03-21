@@ -6,28 +6,28 @@ import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
 import { filterSetup } from './utilities/filterSetup';
 import {
-    customDescription,
-    fieldSettings,
-    getHighlighColumn,
-    getItemWidth,
+  customDescription,
+  fieldSettings,
+  getHighlighColumn,
+  getItemWidth,
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { tableConfig } from './utilities/tableSetup';
 
 const creator = setupWorkspaceSidesheet<SwcrPackage, 'swcrDetails'>({
-    id: 'swcrDetails',
-    color: '#0084C4',
-    component: SwcrSideSheet,
-    props: {
-        objectIdentifier: 'swcrNo',
-        parentApp: 'swcr',
-        function: async (id: string) => {
-            // TODO: Add Proper resolver function
-            const swcrs = await responseParser(await responseAsync());
-            return swcrs.find((swcr) => swcr.swcrNo === id);
-        },
+  id: 'swcrDetails',
+  color: '#0084C4',
+  component: SwcrSideSheet,
+  props: {
+    objectIdentifier: 'swcrNo',
+    parentApp: 'swcr',
+    function: async (id: string) => {
+      // TODO: Add Proper resolver function
+      const swcrs = await responseParser(await responseAsync());
+      return swcrs.find((swcr) => swcr.swcrNo === id);
     },
+  },
 });
 
 export const swcrCreatorManifest = creator('SidesheetManifest');
@@ -35,57 +35,57 @@ export const swcrCreatorComponent = creator('SidesheetComponentManifest');
 export const swcrResolverFunction = creator('ResolverFunction');
 
 export function setup(appApi: ClientApi): void {
-    appApi
-        .createWorkSpace<SwcrPackage>({
-            customSidesheetOptions: creator('WorkspaceSideSheet'),
-            objectIdentifier: 'swcrNo',
-            defaultTab: 'garden',
-        })
-        .registerDataSource({ responseAsync, responseParser })
-        .registerFilterOptions(filterSetup)
-        .registerTableOptions(tableConfig)
-        .registerGardenOptions({
-            gardenKey: 'dueAtDate',
-            itemKey: 'swcrNo',
-            objectIdentifier: 'swcrNo',
-            fieldSettings,
-            customViews: {
-                customItemView: SwcrItemView,
-                customHeaderView: SwcrHeaderView,
-            },
-            itemWidth: getItemWidth,
-            rowHeight: 25,
-            highlightColumn: getHighlighColumn,
-            customDescription: customDescription,
-        })
-        .registerSearchOptions([
-            { name: 'Id', valueFormatter: ({ swcrNo }) => swcrNo },
-            {
-                name: 'Description',
-                valueFormatter: (pkg) => pkg.description,
-            },
-        ])
-        .registerStatusItems(statusBarData)
-        .registerPowerBIOptions({
-            reportURI: 'pp-swcr-analytics',
-        });
+  appApi
+    .createWorkSpace<SwcrPackage>({
+      customSidesheetOptions: creator('WorkspaceSideSheet'),
+      objectIdentifier: 'swcrNo',
+      defaultTab: 'garden',
+    })
+    .registerDataSource({ responseAsync, responseParser })
+    .registerFilterOptions(filterSetup)
+    .registerTableOptions(tableConfig)
+    .registerGardenOptions({
+      gardenKey: 'dueAtDate',
+      itemKey: 'swcrNo',
+      objectIdentifier: 'swcrNo',
+      fieldSettings,
+      customViews: {
+        customItemView: SwcrItemView,
+        customHeaderView: SwcrHeaderView,
+      },
+      itemWidth: getItemWidth,
+      rowHeight: 25,
+      highlightColumn: getHighlighColumn,
+      customDescription: customDescription,
+    })
+    .registerSearchOptions([
+      { name: 'Id', valueFormatter: ({ swcrNo }) => swcrNo },
+      {
+        name: 'Description',
+        valueFormatter: (pkg) => pkg.description,
+      },
+    ])
+    .registerStatusItems(statusBarData)
+    .registerPowerBIOptions({
+      reportURI: 'pp-swcr-analytics',
+    });
 }
 
 async function responseAsync(signal?: AbortSignal) {
-    const { fusionDataproxy } = httpClient();
-    const contextId = getFusionContextId();
-    return await fusionDataproxy.fetch(`/api/contexts/${contextId}/swcr`, { signal: signal });
+  const { fusionDataproxy } = httpClient();
+  const contextId = getFusionContextId();
+  return await fusionDataproxy.fetch(`/api/contexts/${contextId}/swcr`, { signal: signal });
 }
 
 async function responseParser(res: Response) {
-    const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
-    return swcrPackages.sort(sortPackagesByStatusAndNumber);
+  const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
+  return swcrPackages.sort(sortPackagesByStatusAndNumber);
 }
 
 export const swcrSideSheetWidget = {
-    widget: SwcrSideSheet,
-    manifest: {
-        widgetId: 'swcr',
-        widgetType: 'sidesheet',
-    },
+  widget: SwcrSideSheet,
+  manifest: {
+    widgetId: 'swcr',
+    widgetType: 'sidesheet',
+  },
 };

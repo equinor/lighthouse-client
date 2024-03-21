@@ -5,9 +5,9 @@ import { scopeChangeAtom } from '../../../../Atoms/scopeChangeAtom';
 import { ScopeChangeRequest } from '../../../../types/scopeChangeRequest';
 
 export function updateContext(item?: ScopeChangeRequest, api?: SidesheetApi): void {
-    swap(scopeChangeAtom, (old) => ({
-        ...old,
-        request: item ?? old.request,
-        actions: api ?? old.actions,
-    }));
+  swap(scopeChangeAtom, (old) => ({
+    ...old,
+    request: item ?? old.request,
+    actions: api ?? old.actions,
+  }));
 }

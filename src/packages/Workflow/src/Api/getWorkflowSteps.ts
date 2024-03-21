@@ -3,21 +3,21 @@ import { WorkflowStepTemplate } from '@equinor/Workflow';
 import { throwOnError } from './throwOnError';
 
 interface QueryProps {
-    workflowOwner: string;
+  workflowOwner: string;
 }
 
 export const getWorkflowSteps = async ({
-    workflowOwner,
+  workflowOwner,
 }: QueryProps): Promise<WorkflowStepTemplate[]> => {
-    const { scopeChange } = httpClient();
+  const { scopeChange } = httpClient();
 
-    if (!workflowOwner || workflowOwner.length === 0) {
-        throw new Error("Workflow owner can't be null");
-    }
+  if (!workflowOwner || workflowOwner.length === 0) {
+    throw new Error("Workflow owner can't be null");
+  }
 
-    const res = await scopeChange.fetch(`api/workflows/workflow-available-steps/${workflowOwner}`);
+  const res = await scopeChange.fetch(`api/workflows/workflow-available-steps/${workflowOwner}`);
 
-    throwOnError(res, 'Failed to get steps');
+  throwOnError(res, 'Failed to get steps');
 
-    return await res.json();
+  return await res.json();
 };

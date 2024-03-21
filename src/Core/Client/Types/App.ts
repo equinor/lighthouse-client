@@ -10,17 +10,17 @@ type AppType = 'Workspace' | 'CustomApp' | 'PowerBI' | 'PowerBIViewer' | 'Fusion
 export type CustomClientApi = Omit<ClientApi, 'createWorkSpace' | 'createPowerBiViewer'>;
 
 export type App = {
-    appType?: AppType;
-    setup?: (api: ClientApi) => void;
-    component?: React.FC<CustomClientApi>;
+  appType?: AppType;
+  setup?: (api: ClientApi) => void;
+  component?: React.FC<CustomClientApi>;
 };
 
 export type ClientApi = AppManifest & {
-    appConfig: AppConfig;
-    createWorkSpace<T extends Record<PropertyKey, unknown>, SideSheetId extends string = string>(
-        options: WorkspaceViewerOptions<T, SideSheetId>
-    ): WorkSpaceApi<T>;
-    createPowerBiViewer(): PowerBIViewerInstance;
-    isProduction: boolean;
-    hasSidesheet?: boolean;
+  appConfig: AppConfig;
+  createWorkSpace<T extends Record<PropertyKey, unknown>, SideSheetId extends string = string>(
+    options: WorkspaceViewerOptions<T, SideSheetId>
+  ): WorkSpaceApi<T>;
+  createPowerBiViewer(): PowerBIViewerInstance;
+  isProduction: boolean;
+  hasSidesheet?: boolean;
 };

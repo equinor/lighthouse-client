@@ -5,46 +5,46 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../Types/SidesheetApi';
 
 interface SuspenseSidesheetProps {
-    item: () => Promise<void>;
-    actions: SidesheetApi;
+  item: () => Promise<void>;
+  actions: SidesheetApi;
 }
 export function SuspenseSidesheet({
-    item: loadData,
-    actions,
+  item: loadData,
+  actions,
 }: SuspenseSidesheetProps): JSX.Element {
-    const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-    const isMounted = useIsMounted();
+  const isMounted = useIsMounted();
 
-    useEffect(() => {
-        async function getData() {
-            try {
-                setIsError(false);
-                await loadData();
-            } catch (e) {
-                if (isMounted) {
-                    setIsError(true);
-                    actions.setTitle('Failed to load...');
-                }
-            }
+  useEffect(() => {
+    async function getData() {
+      try {
+        setIsError(false);
+        await loadData();
+      } catch (e) {
+        if (isMounted) {
+          setIsError(true);
+          actions.setTitle('Failed to load...');
         }
-        actions.setTitle('Loading sidesheet...');
-        getData();
-    }, [loadData]);
+      }
+    }
+    actions.setTitle('Loading sidesheet...');
+    getData();
+  }, [loadData]);
 
-    useEffect(() => {
-        return () => {
-            actions.setTitle('');
-        };
-    }, []);
+  useEffect(() => {
+    return () => {
+      actions.setTitle('');
+    };
+  }, []);
 
-    return <Loading>{isError ? <h1>Failed to load sidesheet</h1> : <CircularProgress />}</Loading>;
+  return <Loading>{isError ? <h1>Failed to load sidesheet</h1> : <CircularProgress />}</Loading>;
 }
 
 const Loading = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 `;

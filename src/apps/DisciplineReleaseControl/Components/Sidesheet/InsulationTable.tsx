@@ -3,68 +3,66 @@ import { InsulationBoxType } from '../../Types/pipetest';
 import { InsulationStatusTableCell } from './InsulationStatusTableCell';
 
 type TableProps = {
-    insulations: InsulationBoxType[];
-    pipeInsulation?: boolean;
-    pipetestName?: string;
+  insulations: InsulationBoxType[];
+  pipeInsulation?: boolean;
+  pipetestName?: string;
 };
 
 export const InsulationTable = ({
-    insulations,
-    pipeInsulation,
-    pipetestName,
+  insulations,
+  pipeInsulation,
+  pipetestName,
 }: TableProps): JSX.Element => {
-    if (!insulations.length)
-        return (
-            <h4>{pipeInsulation ? 'No pipe insulations found' : 'No insulation boxes found'}</h4>
-        );
-    const rowHeight = 35;
+  if (!insulations.length)
+    return <h4>{pipeInsulation ? 'No pipe insulations found' : 'No insulation boxes found'}</h4>;
+  const rowHeight = 35;
 
-    const columns: Column<InsulationBoxType>[] = [
-        {
-            id: 'objectNo',
-            Header: pipeInsulation ? 'Pipe insulation' : 'Insulation box',
-            accessor: (item) => item.objectNo,
-            width: 200,
-        },
-        {
-            id: 'objectName',
-            Header: 'Description',
-            //Remove pipetest name from descripton to make it cleaner/shorter
-            accessor: (item) => item.objectName.replace('-' + pipetestName, ''),
-            width: 450,
-        },
-        {
-            id: 'objectStatus',
-            Header: 'Status',
-            accessor: (item) => item.objectStatus,
-            width: 100,
-        },
-        {
-            id: 'objectStatusName',
-            Header: 'Status name',
-            accessor: (item) => item.objectStatusName,
-            width: 200,
-        },
-        {
-            id: 'procosysStatus',
-            Header: 'Checklist',
-            accessor: (item) => item,
-            width: 100,
-            Cell: InsulationStatusTableCell,
-        },
-    ];
+  const columns: Column<InsulationBoxType>[] = [
+    {
+      id: 'objectNo',
+      Header: pipeInsulation ? 'Pipe insulation' : 'Insulation box',
+      accessor: (item) => item.objectNo,
+      width: 200,
+    },
+    {
+      id: 'objectName',
+      Header: 'Description',
+      //Remove pipetest name from descripton to make it cleaner/shorter
+      accessor: (item) => item.objectName.replace('-' + pipetestName, ''),
+      width: 450,
+    },
+    {
+      id: 'objectStatus',
+      Header: 'Status',
+      accessor: (item) => item.objectStatus,
+      width: 100,
+    },
+    {
+      id: 'objectStatusName',
+      Header: 'Status name',
+      accessor: (item) => item.objectStatusName,
+      width: 200,
+    },
+    {
+      id: 'procosysStatus',
+      Header: 'Checklist',
+      accessor: (item) => item,
+      width: 100,
+      Cell: InsulationStatusTableCell,
+    },
+  ];
 
-    return (
-        <>
-            <h4>{pipeInsulation ? 'Pipe insulations:' : 'Box insulations:'}</h4>
-            <div>
-                <Table
-                    data={insulations}
-                    columns={columns}
-                    options={{}}
-                    height={rowHeight + insulations?.length * rowHeight}
-                />
-            </div>
-        </>
-    );
+  return (
+    <>
+      <h4>{pipeInsulation ? 'Pipe insulations:' : 'Box insulations:'}</h4>
+      <div>
+        <Table
+          data={insulations}
+          columns={columns}
+          options={{}}
+          height={rowHeight + insulations?.length * rowHeight}
+        />
+      </div>
+    </>
+  );
 };

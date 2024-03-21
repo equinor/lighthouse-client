@@ -7,43 +7,42 @@ import { ScopeChangeRequest, ScopeChangeCreateEditModel } from '../../../types/s
  */
 
 interface InitiateScopeChangeParams {
-    request: ScopeChangeRequest;
+  request: ScopeChangeRequest;
 }
 
 export async function initiateScopeChange({ request }: InitiateScopeChangeParams): Promise<void> {
-    const scopeChange: ScopeChangeCreateEditModel = {
-        ...request,
-        changeCategoryId: request.changeCategory.id,
-        description: request.description,
-        disciplineGuesstimates: request.disciplineGuesstimates.map(
-            ({ discipline: { procosysCode }, guesstimate }) => ({
-                disciplineCode: procosysCode,
-                guesstimateHours: guesstimate,
-            })
-        ),
-        id: request.id,
-        scopeId: request.scope.id,
-        originSource: request.originSource,
-        originSourceId: request.originSourceId,
-        phase: request.phase,
-        title: request.title,
-        punchListItemIds: request.punchListItems.map(({ procosysId }) => procosysId) || [],
-        commissioningPackageNumbers:
-            request.commissioningPackages.map(({ procosysNumber }) => procosysNumber) || [],
-        mcPackageNumbers: request.mcPackages.map(({ procosysNumber }) => procosysNumber) || [],
-        systemIds: request.systems.map(({ procosysId }) => procosysId) || [],
-        tagNumbers: request.tags.map(({ procosysNumber }) => procosysNumber) || [],
-        documentNumbers:
-            request.documents.map(({ stidDocumentNumber }) => stidDocumentNumber) || [],
-        areaCodes: [],
-        attachmentsToDuplicate: [],
-        revisionAttachments: [],
-    };
+  const scopeChange: ScopeChangeCreateEditModel = {
+    ...request,
+    changeCategoryId: request.changeCategory.id,
+    description: request.description,
+    disciplineGuesstimates: request.disciplineGuesstimates.map(
+      ({ discipline: { procosysCode }, guesstimate }) => ({
+        disciplineCode: procosysCode,
+        guesstimateHours: guesstimate,
+      })
+    ),
+    id: request.id,
+    scopeId: request.scope.id,
+    originSource: request.originSource,
+    originSourceId: request.originSourceId,
+    phase: request.phase,
+    title: request.title,
+    punchListItemIds: request.punchListItems.map(({ procosysId }) => procosysId) || [],
+    commissioningPackageNumbers:
+      request.commissioningPackages.map(({ procosysNumber }) => procosysNumber) || [],
+    mcPackageNumbers: request.mcPackages.map(({ procosysNumber }) => procosysNumber) || [],
+    systemIds: request.systems.map(({ procosysId }) => procosysId) || [],
+    tagNumbers: request.tags.map(({ procosysNumber }) => procosysNumber) || [],
+    documentNumbers: request.documents.map(({ stidDocumentNumber }) => stidDocumentNumber) || [],
+    areaCodes: [],
+    attachmentsToDuplicate: [],
+    revisionAttachments: [],
+  };
 
-    const payload = {
-        ...scopeChange,
-        setAsOpen: true,
-    };
+  const payload = {
+    ...scopeChange,
+    setAsOpen: true,
+  };
 
-    await patchScopeChange(payload);
+  await patchScopeChange(payload);
 }

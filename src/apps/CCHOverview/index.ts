@@ -1,7 +1,7 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 
 export function setup(appApi: ClientApi): void {
-    appApi.createPowerBiViewer().registerFusionPowerBi({
-        reportURI: 'pp-cch-overview',
-    });
+  appApi.createPowerBiViewer().registerFusionPowerBi({
+    reportURI: 'pp-cch-overview',
+  });
 }

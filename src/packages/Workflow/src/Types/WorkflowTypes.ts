@@ -1,64 +1,64 @@
 export type Workflow = {
-    id: string;
-    name: string;
-    changeCategory: ChangeCategory | null;
-    owner?: string;
-    isVoided?: boolean;
+  id: string;
+  name: string;
+  changeCategory: ChangeCategory | null;
+  owner?: string;
+  isVoided?: boolean;
 };
 
 export type ChangeCategory = {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 };
 
 export type WorkflowTemplate = {
-    id: string;
-    isPublished: boolean;
-    workflowStepTemplates: WorkflowStepTemplate[];
+  id: string;
+  isPublished: boolean;
+  workflowStepTemplates: WorkflowStepTemplate[];
 };
 
 export type WorkflowStepTemplate = {
-    id: string;
-    name: string;
-    description?: string;
-    order: number;
-    allowContributors: boolean;
-    completedStatusName?: string;
-    rejectedStatusName?: string;
-    isCompleted?: boolean;
-    isCurrent?: boolean;
-    workflowStepCriteriaTemplates: CriteriaTemplate[];
-    criteriaTemplates: CriteriaTemplate[];
-    criterias: Criteria[];
-    owner?: string;
+  id: string;
+  name: string;
+  description?: string;
+  order: number;
+  allowContributors: boolean;
+  completedStatusName?: string;
+  rejectedStatusName?: string;
+  isCompleted?: boolean;
+  isCurrent?: boolean;
+  workflowStepCriteriaTemplates: CriteriaTemplate[];
+  criteriaTemplates: CriteriaTemplate[];
+  criterias: Criteria[];
+  owner?: string;
 };
 
 export type CriteriaTemplate = {
-    id?: string;
-    type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
-    assignToCreator: boolean;
-    //I.E functional role name or azure oid
-    value?: string;
-    valueDescription?: string;
+  id?: string;
+  type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
+  assignToCreator: boolean;
+  //I.E functional role name or azure oid
+  value?: string;
+  valueDescription?: string;
 };
 
 export type Criteria = {
-    id: string;
-    type: string;
-    value: string;
-    valueDescription: string;
-    signedAtUtc: string;
-    signedBy: SignedBy;
-    signedComment: string;
-    signedState: CriteriaSignState | null;
+  id: string;
+  type: string;
+  value: string;
+  valueDescription: string;
+  signedAtUtc: string;
+  signedBy: SignedBy;
+  signedComment: string;
+  signedState: CriteriaSignState | null;
 };
 
 export type SignedBy = {
-    id: string;
-    oid: string;
-    firstName: string;
-    lastName: string;
-    email: string;
+  id: string;
+  oid: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 };
 
 export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';
@@ -66,125 +66,125 @@ export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';
 export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';
 
 export type WorkflowStatus = {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 };
 
 export type DraggableStep = {
-    id: string;
-    item: WorkflowStepTemplate;
+  id: string;
+  item: WorkflowStepTemplate;
 };
 
 export interface FunctionalRole {
-    Code: string;
-    Description: string;
-    Email: string | null;
-    InformationEmail: string | null;
-    UsePersonalEmail: boolean | null;
-    Classification: string;
-    Persons: Person[];
+  Code: string;
+  Description: string;
+  Email: string | null;
+  InformationEmail: string | null;
+  UsePersonalEmail: boolean | null;
+  Classification: string;
+  Persons: Person[];
 }
 
 export interface Person {
-    azureOid: string;
-    firstName: string;
-    lastName: string;
-    userName: string;
-    email: string;
+  azureOid: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  email: string;
 }
 
 export interface PersonSearch {
-    AzureOid: string;
-    FirstName: string;
-    LastName: string;
-    UserName: string;
-    Email: string;
+  AzureOid: string;
+  FirstName: string;
+  LastName: string;
+  UserName: string;
+  Email: string;
 }
 
 export type Contributor = {
-    id: string;
-    instructionsToContributor: string;
-    person: Person;
-    contribution: Contribution;
-    createdAtUtc: Date | null;
-    createdBy: Person;
-    modifiedAtUtc: Date;
-    modifiedBy: Person;
-    plant: string;
+  id: string;
+  instructionsToContributor: string;
+  person: Person;
+  contribution: Contribution;
+  createdAtUtc: Date | null;
+  createdBy: Person;
+  modifiedAtUtc: Date;
+  modifiedBy: Person;
+  plant: string;
 };
 
 export type Contribution = {
-    createdAtUtc: Date;
-    createdBy: Person;
-    modifiedAtUtc: Date;
-    modifiedBy: Person;
-    id: string;
-    comment: string;
-    suggestion: string;
+  createdAtUtc: Date;
+  createdBy: Person;
+  modifiedAtUtc: Date;
+  modifiedBy: Person;
+  id: string;
+  comment: string;
+  suggestion: string;
 };
 
 export type WorkflowTemplateModel = Partial<WorkflowTemplate>;
 export type WorkflowStepModel = Partial<WorkflowStepTemplate>;
 
 export enum ReleaseControlStepNames {
-    Coordinator = 'Coordinator',
-    Engineering = 'Engineering',
-    Material = 'Material',
-    WorkPrep = 'Work prep',
-    Scaffolding = 'Scaffolding',
-    CircuitIsolation = 'Circuit isolation',
-    DemountISO = 'Demount ISO',
-    CheckHT = 'Check/demount HT',
-    DemountMech = 'Demount Mech./Piping',
-    ATest = 'Remount (or new) HT/A-test',
-    RemountISO = 'Remount (or new) ISO',
-    BTest = 'Recheck (or new) HT/B-test',
-    CircuitPowerUp = 'Circuit power-up',
-    CTest = 'Recheck (or new) HT/C-test',
+  Coordinator = 'Coordinator',
+  Engineering = 'Engineering',
+  Material = 'Material',
+  WorkPrep = 'Work prep',
+  Scaffolding = 'Scaffolding',
+  CircuitIsolation = 'Circuit isolation',
+  DemountISO = 'Demount ISO',
+  CheckHT = 'Check/demount HT',
+  DemountMech = 'Demount Mech./Piping',
+  ATest = 'Remount (or new) HT/A-test',
+  RemountISO = 'Remount (or new) ISO',
+  BTest = 'Recheck (or new) HT/B-test',
+  CircuitPowerUp = 'Circuit power-up',
+  CTest = 'Recheck (or new) HT/C-test',
 }
 
 export interface OnSignStepAction {
-    action: CriteriaSignState;
-    comment: string | undefined;
+  action: CriteriaSignState;
+  comment: string | undefined;
 }
 
 export interface WorkflowSigningParams {
-    requestId: string;
-    stepId: string;
-    criteriaId: string;
+  requestId: string;
+  stepId: string;
+  criteriaId: string;
 }
 
 export type WorkflowStep = {
-    id: string;
-    name: string;
-    order: number;
-    isCompleted: boolean;
-    isCurrent: boolean;
-    criterias: Criteria[];
-    contributors: Contributor[];
+  id: string;
+  name: string;
+  order: number;
+  isCompleted: boolean;
+  isCurrent: boolean;
+  criterias: Criteria[];
+  contributors: Contributor[];
 };
 
 export type LogEntry = {
-    createdAtUtc: string;
-    createdBy: {
-        id: string;
-        oid: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    modifiedAtUtc: string;
-    modifiedBy: {
-        id: string;
-        oid: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
+  createdAtUtc: string;
+  createdBy: {
     id: string;
-    title: string;
-    objectGuid: string;
-    eventType: string;
-    objectType: string;
-    details: string;
+    oid: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  modifiedAtUtc: string;
+  modifiedBy: {
+    id: string;
+    oid: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  id: string;
+  title: string;
+  objectGuid: string;
+  eventType: string;
+  objectType: string;
+  details: string;
 };

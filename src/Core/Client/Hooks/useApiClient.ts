@@ -10,5 +10,5 @@ import { HttpClients } from '../Types/HttpClients';
  * @return {} HttpClients available
  */
 export function useHttpClient(clientName: keyof HttpClients) {
-    return useFrameworkClient(clientName);
+  return useFrameworkClient(clientName);
 }

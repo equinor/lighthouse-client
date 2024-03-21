@@ -98,15 +98,20 @@ export const createConfig = (appSettings: AppConfigResult) => {
 };
 //Will ignore the powerbi custom event isTrusted errors
 function ignorePowerBiGenericError<T extends ITelemetryItem>(a: T) {
-  if (a.name !== "Microsoft.ApplicationInsights.{0}.Exception" || !Object.keys(a.data ?? {}).includes("message")) {
-    return true
+  if (
+    a.name !== 'Microsoft.ApplicationInsights.{0}.Exception' ||
+    !Object.keys(a.data ?? {}).includes('message')
+  ) {
+    return true;
   }
 
   if (a.data?.message == `CustomEvent: {"isTrusted":false}`) {
     return false;
   }
 
-  if (a.data?.message === 'ErrorEvent: ResizeObserver loop completed with undelivered notifications.') {
+  if (
+    a.data?.message === 'ErrorEvent: ResizeObserver loop completed with undelivered notifications.'
+  ) {
     return false;
   }
   return true;

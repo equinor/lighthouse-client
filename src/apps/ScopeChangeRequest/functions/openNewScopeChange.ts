@@ -4,9 +4,9 @@ import { SidesheetWrapper } from '../Components/Sidesheet/SidesheetWrapper/Sides
 import { changeSideSheetWidgetManifest } from '../ScopeChangeRequestApp';
 
 export async function openNewScopeChange(scopeChangeId: string): Promise<void> {
-    openSidesheet(
-        SidesheetWrapper,
-        await getScopeChangeById(scopeChangeId),
-        changeSideSheetWidgetManifest
-    );
+  openSidesheet(
+    SidesheetWrapper,
+    await getScopeChangeById(scopeChangeId),
+    changeSideSheetWidgetManifest
+  );
 }

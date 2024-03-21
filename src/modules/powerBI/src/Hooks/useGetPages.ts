@@ -8,25 +8,25 @@ import { useEffect, useState } from 'react';
  * user changes a page.
  */
 export const useGetPages = (report?: Report): { pages: Page[] | undefined } => {
-    const [pages, setPages] = useState<Page[]>();
+  const [pages, setPages] = useState<Page[]>();
 
-    useEffect(() => {
-        const getPages = () => {
-            report &&
-                !pages &&
-                report.on('rendered', async () => {
-                    try {
-                        const pbiPages = await report.getPages();
-                        // Don't want to add the pages that should be hidden for user
-                        const filteredPages = pbiPages.filter((page) => page.visibility !== 1);
-                        setPages(filteredPages);
-                    } catch {
-                        console.error('Cannot retrieve pages');
-                    }
-                });
-        };
-        getPages();
-    }, [report, pages]);
+  useEffect(() => {
+    const getPages = () => {
+      report &&
+        !pages &&
+        report.on('rendered', async () => {
+          try {
+            const pbiPages = await report.getPages();
+            // Don't want to add the pages that should be hidden for user
+            const filteredPages = pbiPages.filter((page) => page.visibility !== 1);
+            setPages(filteredPages);
+          } catch {
+            console.error('Cannot retrieve pages');
+          }
+        });
+    };
+    getPages();
+  }, [report, pages]);
 
-    return { pages };
+  return { pages };
 };

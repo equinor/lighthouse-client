@@ -11,13 +11,13 @@ type SelectorFunction<T, R> = (s: T) => R;
  * @returns
  */
 export function useScopeChangeContext<R = ScopeChangeAtom>(
-    selector?: SelectorFunction<ScopeChangeAtom, R>
+  selector?: SelectorFunction<ScopeChangeAtom, R>
 ): DeepImmutable<R> {
-    const select = selector ? selector : (s: ScopeChangeAtom) => s;
+  const select = selector ? selector : (s: ScopeChangeAtom) => s;
 
-    return useAtom(scopeChangeAtom, { select: select as (s: ScopeChangeAtom) => R });
+  return useAtom(scopeChangeAtom, { select: select as (s: ScopeChangeAtom) => R });
 }
 
 export function getScopeChangeSnapshot(): ScopeChangeAtom {
-    return deref(scopeChangeAtom);
+  return deref(scopeChangeAtom);
 }

@@ -2,22 +2,22 @@ import { Atom, deref, swap } from '@dbeining/react-atom';
 import { SidesheetState } from './sidesheetState';
 
 export function dispatch(
-    globalState: Atom<SidesheetState<unknown>>,
-    update: (state: SidesheetState<unknown>) => SidesheetState<unknown>
+  globalState: Atom<SidesheetState<unknown>>,
+  update: (state: SidesheetState<unknown>) => SidesheetState<unknown>
 ): void {
-    swap(globalState, update);
+  swap(globalState, update);
 }
 
 export function readState<S>(
-    globalState: Atom<SidesheetState<unknown>>,
-    read: <T>(state: SidesheetState<T>) => S
+  globalState: Atom<SidesheetState<unknown>>,
+  read: <T>(state: SidesheetState<T>) => S
 ): S {
-    const state = deref<SidesheetState<unknown>>(globalState);
-    return read(state);
+  const state = deref<SidesheetState<unknown>>(globalState);
+  return read(state);
 }
 
 export function createGlobalSidesheetState(
-    defaultState: SidesheetState<unknown>
+  defaultState: SidesheetState<unknown>
 ): Atom<SidesheetState<unknown>> {
-    return Atom.of(defaultState);
+  return Atom.of(defaultState);
 }

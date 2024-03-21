@@ -11,7 +11,7 @@ import { InternalState } from '../Types/InternalState';
  * @return {*}  {ClientContext}
  */
 export function getClientContext(): Readonly<ClientContext> {
-    return readGlobalClientState((state) => state.context);
+  return readGlobalClientState((state) => state.context);
 }
 
 /**
@@ -19,10 +19,10 @@ export function getClientContext(): Readonly<ClientContext> {
  * @return {*}  {string}
  */
 export function getFusionContextId(): Readonly<string> {
-    return (
-        readGlobalClientState((state) => state.context).fusionContext?.id ||
-        readGlobalClientState((state) => state.context).fusionContextId
-    );
+  return (
+    readGlobalClientState((state) => state.context).fusionContext?.id ||
+    readGlobalClientState((state) => state.context).fusionContextId
+  );
 }
 
 /**
@@ -30,11 +30,11 @@ export function getFusionContextId(): Readonly<string> {
  * @return {*}  {AppConfig}
  */
 export function readAppConfig(): Readonly<AppConfig> {
-    return readGlobalClientState((state) => state.appConfig);
+  return readGlobalClientState((state) => state.appConfig);
 }
 
 export function readClients(): HttpClients {
-    return readGlobalClientState((s) => s.clients);
+  return readGlobalClientState((s) => s.clients);
 }
 
 /**
@@ -42,7 +42,7 @@ export function readClients(): HttpClients {
  * @return {*}  {ClientRegistry}
  */
 export function readClientRegistry(): Readonly<ClientRegistry> {
-    return readGlobalClientState((state) => state.registry);
+  return readGlobalClientState((state) => state.registry);
 }
 
 /**
@@ -50,7 +50,7 @@ export function readClientRegistry(): Readonly<ClientRegistry> {
  * @return {*}  {ClientSettings}
  */
 export function readClientSettings(): Readonly<ClientSettings> {
-    return readGlobalClientState((state) => state.settings);
+  return readGlobalClientState((state) => state.settings);
 }
 
 /**
@@ -58,5 +58,5 @@ export function readClientSettings(): Readonly<ClientSettings> {
  * @return {*}  {ClientSettings}
  */
 export function readInternalState(): Readonly<InternalState> {
-    return readGlobalClientState((state) => state.internal);
+  return readGlobalClientState((state) => state.internal);
 }

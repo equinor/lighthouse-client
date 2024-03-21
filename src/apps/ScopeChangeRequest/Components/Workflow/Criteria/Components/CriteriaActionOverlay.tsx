@@ -6,28 +6,24 @@ import styled from 'styled-components';
 import { actionWithCommentAtom, resetSigningAtom } from '@equinor/Workflow';
 
 export const CriteriaActionOverlay = (): JSX.Element | null => {
-    const state = useAtom(actionWithCommentAtom);
-    const requestId = useScopeChangeContext(({ request }) => request.id);
+  const state = useAtom(actionWithCommentAtom);
+  const requestId = useScopeChangeContext(({ request }) => request.id);
 
-    if (!state) {
-        return null;
-    }
-    return (
-        <ButtonContainer>
-            <ReassignBar
-                criteriaId={state.criteriaId}
-                requestId={requestId}
-                stepId={state.stepId}
-            />
-            <Button variant="outlined" onClick={resetSigningAtom}>
-                Cancel
-            </Button>
-        </ButtonContainer>
-    );
+  if (!state) {
+    return null;
+  }
+  return (
+    <ButtonContainer>
+      <ReassignBar criteriaId={state.criteriaId} requestId={requestId} stepId={state.stepId} />
+      <Button variant="outlined" onClick={resetSigningAtom}>
+        Cancel
+      </Button>
+    </ButtonContainer>
+  );
 };
 
 const ButtonContainer = styled.div`
-    display: flex;
-    gap: 2em;
-    width: 100%;
+  display: flex;
+  gap: 2em;
+  width: 100%;
 `;

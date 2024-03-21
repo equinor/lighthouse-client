@@ -6,15 +6,15 @@ import { FunctionalRole, proCoSysQueries } from '@equinor/Workflow';
 import { searchPerson } from '../../Api/searchPerson';
 
 interface PCSSearch {
-    searchPCS: (
-        searchValue: string,
-        type: ProcoSysTypes,
-        signal?: AbortSignal
-    ) => Promise<TypedSelectOption[]>;
+  searchPCS: (
+    searchValue: string,
+    type: ProcoSysTypes,
+    signal?: AbortSignal
+  ) => Promise<TypedSelectOption[]>;
 }
 
 interface PCSOptions {
-    functionalRoleClassification?: string;
+  functionalRoleClassification?: string;
 }
 
 /**
@@ -23,60 +23,60 @@ interface PCSOptions {
  * @returns
  */
 export function usePcsPersonRoleSearch(options?: PCSOptions): PCSSearch {
-    const { procosysPlantId } = useFacility();
+  const { procosysPlantId } = useFacility();
 
-    const { getFunctionalRolesQuery } = proCoSysQueries;
+  const { getFunctionalRolesQuery } = proCoSysQueries;
 
-    const { data: functionalRoles, refetch: refetchFunctionalRoles } = useQuery<
-        unknown,
-        unknown,
-        FunctionalRole[]
-    >(getFunctionalRolesQuery(procosysPlantId, options?.functionalRoleClassification));
+  const { data: functionalRoles, refetch: refetchFunctionalRoles } = useQuery<
+    unknown,
+    unknown,
+    FunctionalRole[]
+  >(getFunctionalRolesQuery(procosysPlantId, options?.functionalRoleClassification));
 
-    const { procosys } = httpClient();
+  const { procosys } = httpClient();
 
-    async function search(
-        searchValue: string,
-        type: ProcoSysTypes,
-        signal?: AbortSignal
-    ): Promise<TypedSelectOption[]> {
-        switch (type) {
-            case 'functionalRole': {
-                return await searchFunctionalRole(searchValue);
-            }
+  async function search(
+    searchValue: string,
+    type: ProcoSysTypes,
+    signal?: AbortSignal
+  ): Promise<TypedSelectOption[]> {
+    switch (type) {
+      case 'functionalRole': {
+        return await searchFunctionalRole(searchValue);
+      }
 
-            case 'person': {
-                return await searchPerson(searchValue, procosysPlantId, procosys, signal);
-            }
+      case 'person': {
+        return await searchPerson(searchValue, procosysPlantId, procosys, signal);
+      }
 
-            default: {
-                throw new Error('Unknown searchItem');
-            }
-        }
+      default: {
+        throw new Error('Unknown searchItem');
+      }
+    }
+  }
+
+  async function searchFunctionalRole(searchValue: string) {
+    if (!functionalRoles) {
+      await refetchFunctionalRoles();
     }
 
-    async function searchFunctionalRole(searchValue: string) {
-        if (!functionalRoles) {
-            await refetchFunctionalRoles();
-        }
-
-        const options = {
-            keys: ['Code'],
-        };
-
-        const fuse = new Fuse(functionalRoles || [], options);
-
-        return fuse.search(searchValue).map((x): TypedSelectOption => {
-            return {
-                label: x.item.Code,
-                object: x,
-                searchValue: x.item.Code,
-                type: 'functionalRole',
-                value: x.item.Code,
-            };
-        });
-    }
-    return {
-        searchPCS: search,
+    const options = {
+      keys: ['Code'],
     };
+
+    const fuse = new Fuse(functionalRoles || [], options);
+
+    return fuse.search(searchValue).map((x): TypedSelectOption => {
+      return {
+        label: x.item.Code,
+        object: x,
+        searchValue: x.item.Code,
+        type: 'functionalRole',
+        value: x.item.Code,
+      };
+    });
+  }
+  return {
+    searchPCS: search,
+  };
 }

@@ -2,76 +2,76 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const SelectContainer = styled.div`
-    flex-basis: 30%;
-    border-bottom: none;
+  flex-basis: 30%;
+  border-bottom: none;
 `;
 
 export const SearchContainer = styled.div`
-    flex-basis: 70%;
-    border-bottom: none;
+  flex-basis: 70%;
+  border-bottom: none;
 `;
 
 export const Inline = styled.span`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
 `;
 
 export const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 0.5em;
-    gap: 0.2em;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5em;
+  gap: 0.2em;
 `;
 
 export const Wrapper = styled.div`
-    width: 100%;
+  width: 100%;
 `;
 
 export const ErrorWrapper = styled.div`
-    font-size: 12px;
-    color: red;
+  font-size: 12px;
+  color: red;
 `;
 
 export const ListItem = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 24fr 1fr;
-    gap: 1em;
-    text-overflow: ellipsis;
-    color: ${tokens.colors.interactive.primary__resting.hex};
+  display: grid;
+  grid-template-columns: 1fr 24fr 1fr;
+  gap: 1em;
+  text-overflow: ellipsis;
+  color: ${tokens.colors.interactive.primary__resting.hex};
 `;
 
 export const SelectedItemLabel = styled.div`
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 20px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
 `;
 
 export const Title = styled.div`
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 24px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
 `;
 
 export const TitleBar = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 `;
 
 export const MetaData = styled.div`
-    font-size: 12px;
-    color: ${tokens.colors.text.static_icons__default.hex};
+  font-size: 12px;
+  color: ${tokens.colors.text.static_icons__default.hex};
 `;
 
 export const SearchLineWrapper = styled.div`
-    width: -webkit-fill-available;
-    font-size: 16px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    margin: 0.2em 0em;
+  width: -webkit-fill-available;
+  font-size: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  margin: 0.2em 0em;
 `;

@@ -17,116 +17,112 @@ import EquinorLoader from '../../fusion-framework/EquinorLoader';
 import { FusionAppLoaderRoute } from './FusionAppLoader';
 
 type ContextGuardProps = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 const getContextId = () =>
-    isProduction()
-        ? '3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-        : '94dd5f4d-17f1-4312-bf75-ad75f4d9572c';
+  isProduction() ? '3380fe7d-e5b7-441f-8ce9-a8c3133ee499' : '94dd5f4d-17f1-4312-bf75-ad75f4d9572c';
 
 export function ContextGuard({ children }: ContextGuardProps) {
-    const context = useFramework().modules.context;
-    const { error, isLoading } = useQuery<ContextItem<Record<string, unknown>>>(
-        ['context', getContextId()],
-        async () => context.setCurrentContextByIdAsync(getContextId()),
-        {
-            refetchOnWindowFocus: false,
-            staleTime: Infinity,
-            cacheTime: Infinity,
-            retry: 5,
-            retryDelay: 1000,
-        }
-    );
-
-    if (isLoading) {
-        return <EquinorLoader text={'Resolving fusion context'} />;
+  const context = useFramework().modules.context;
+  const { error, isLoading } = useQuery<ContextItem<Record<string, unknown>>>(
+    ['context', getContextId()],
+    async () => context.setCurrentContextByIdAsync(getContextId()),
+    {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      cacheTime: Infinity,
+      retry: 5,
+      retryDelay: 1000,
     }
+  );
 
-    if (error) {
-        return <div>Failed to resolve fusion context</div>;
-    }
+  if (isLoading) {
+    return <EquinorLoader text={'Resolving fusion context'} />;
+  }
 
-    return <>{children}</>;
+  if (error) {
+    return <div>Failed to resolve fusion context</div>;
+  }
+
+  return <>{children}</>;
 }
 
 export function ClientRoutes(): JSX.Element {
-    const {
-        appConfig,
-        registry: { apps, appGroups },
-        settings: { isProduction },
-    } = useClientContext();
+  const {
+    appConfig,
+    registry: { apps, appGroups },
+    settings: { isProduction },
+  } = useClientContext();
 
-    const currentRoute = useLocationKey();
+  const currentRoute = useLocationKey();
 
-    useEffect(() => {
-        closeSidesheet();
-    }, [currentRoute]);
+  useEffect(() => {
+    closeSidesheet();
+  }, [currentRoute]);
 
-    return (
-        <Routes>
-            <Route path={'/'} element={<ClientHome />} />
-            <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
-            {Object.keys(appGroups).map((key) => {
-                const group = appGroups[key];
-                const links = apps.filter((app) => {
-                    return app.groupe === (key as Apps);
-                });
-                return (
-                    <Route
-                        key={key}
-                        path={`${key}`}
-                        element={<GroupView group={group} links={links} groupeId={key} />}
-                    />
-                );
-            })}
-            {apps.map((route) => {
-                if (route.app?.appType === 'Workspace') {
-                    const api = {
-                        ...route,
-                        appConfig,
-                        hasSidesheet: true,
-                        isProduction,
-                    };
-                    return (
-                        <Route
-                            key={route.shortName + route.groupe}
-                            path={`${route.groupe}/${route.shortName}/*`}
-                            element={<WorkSpace {...api} />}
-                        />
-                    );
-                }
-                if (route.app?.appType === 'PowerBIViewer') {
-                    return (
-                        <Route key={route.shortName + route.groupe}>
-                            <Route
-                                key={route.shortName}
-                                path={`${route.groupe}/${route.shortName}`}
-                                element={<PowerBiViewer {...route} />}
-                            />
-                        </Route>
-                    );
-                }
+  return (
+    <Routes>
+      <Route path={'/'} element={<ClientHome />} />
+      <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
+      {Object.keys(appGroups).map((key) => {
+        const group = appGroups[key];
+        const links = apps.filter((app) => {
+          return app.groupe === (key as Apps);
+        });
+        return (
+          <Route
+            key={key}
+            path={`${key}`}
+            element={<GroupView group={group} links={links} groupeId={key} />}
+          />
+        );
+      })}
+      {apps.map((route) => {
+        if (route.app?.appType === 'Workspace') {
+          const api = {
+            ...route,
+            appConfig,
+            hasSidesheet: true,
+            isProduction,
+          };
+          return (
+            <Route
+              key={route.shortName + route.groupe}
+              path={`${route.groupe}/${route.shortName}/*`}
+              element={<WorkSpace {...api} />}
+            />
+          );
+        }
+        if (route.app?.appType === 'PowerBIViewer') {
+          return (
+            <Route key={route.shortName + route.groupe}>
+              <Route
+                key={route.shortName}
+                path={`${route.groupe}/${route.shortName}`}
+                element={<PowerBiViewer {...route} />}
+              />
+            </Route>
+          );
+        }
 
-                if (route.app?.appType === 'FusionApp') {
-                    return (
-                        <Route
-                            key={route.shortName + route.groupe}
-                            path={`${route.groupe}/${route.shortName}/*`}
-                            element={
-                                <AppLoaderWrapper appKey={route.shortName.replace('-new', '')} />
-                            }
-                        />
-                    );
-                }
-                return (
-                    <Route
-                        key={route.shortName}
-                        path={`${route.groupe}/${route.shortName}`}
-                        element={<ComponentWrapper {...route} />}
-                    />
-                );
-            })}
-        </Routes>
-    );
+        if (route.app?.appType === 'FusionApp') {
+          return (
+            <Route
+              key={route.shortName + route.groupe}
+              path={`${route.groupe}/${route.shortName}/*`}
+              element={<AppLoaderWrapper appKey={route.shortName.replace('-new', '')} />}
+            />
+          );
+        }
+        return (
+          <Route
+            key={route.shortName}
+            path={`${route.groupe}/${route.shortName}`}
+            element={<ComponentWrapper {...route} />}
+          />
+        );
+      })}
+    </Routes>
+  );
 }

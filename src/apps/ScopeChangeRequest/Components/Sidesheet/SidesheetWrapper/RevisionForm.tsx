@@ -17,81 +17,81 @@ import { FormWrapper, FlexColumn } from './SidesheetWrapper.styles';
 import { WarningRevisionBanner } from './WarningCreateRevisionBanner';
 
 interface RevisionFormProps {
-    cancel: () => void;
+  cancel: () => void;
 }
 
 export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
-    const { actions, request } = useScopeChangeContext();
+  const { actions, request } = useScopeChangeContext();
 
-    useEffect(() => {
-        actions.setHasUnsavedChanges(true);
-        const { clearState, updateAtom } = scopeChangeFormAtomApi;
-        clearState();
-        updateAtom({
-            ...request,
-            revisionAttachments: request.attachments,
-            attachmentsToDuplicate: request.attachments.map((s) => s.id),
-            disciplineGuesstimates: request.disciplineGuesstimates.map(
-                ({ discipline: { procosysCode }, guesstimate }) => ({
-                    disciplineCode: procosysCode,
-                    guesstimateHours: guesstimate,
-                })
-            ),
-        });
-        return () => {
-            actions.setHasUnsavedChanges(false);
-            clearState();
-        };
-    }, []);
+  useEffect(() => {
+    actions.setHasUnsavedChanges(true);
+    const { clearState, updateAtom } = scopeChangeFormAtomApi;
+    clearState();
+    updateAtom({
+      ...request,
+      revisionAttachments: request.attachments,
+      attachmentsToDuplicate: request.attachments.map((s) => s.id),
+      disciplineGuesstimates: request.disciplineGuesstimates.map(
+        ({ discipline: { procosysCode }, guesstimate }) => ({
+          disciplineCode: procosysCode,
+          guesstimateHours: guesstimate,
+        })
+      ),
+    });
+    return () => {
+      actions.setHasUnsavedChanges(false);
+      clearState();
+    };
+  }, []);
 
-    useUnpackRelatedObjects({ request });
-    return (
-        <RevisionFormStyledWrapper>
-            <FormBanner state={request.state} />
-            <WarningRevisionBanner />
-            <Wrapper>
-                <div>
-                    <FormWrapper>
-                        <FlexColumn>
-                            Request
-                            <ScopeChangeBaseForm />
-                            Disciplines and guesstimates
-                            <CheckboxWrapper>
-                                <IsATSScopeCheckbox />
-                            </CheckboxWrapper>
-                            <GuesstimateDiscipline />
-                            Materials
-                            <MaterialsInput />
-                        </FlexColumn>
+  useUnpackRelatedObjects({ request });
+  return (
+    <RevisionFormStyledWrapper>
+      <FormBanner state={request.state} />
+      <WarningRevisionBanner />
+      <Wrapper>
+        <div>
+          <FormWrapper>
+            <FlexColumn>
+              Request
+              <ScopeChangeBaseForm />
+              Disciplines and guesstimates
+              <CheckboxWrapper>
+                <IsATSScopeCheckbox />
+              </CheckboxWrapper>
+              <GuesstimateDiscipline />
+              Materials
+              <MaterialsInput />
+            </FlexColumn>
 
-                        <FlexColumn>
-                            <Section>
-                                <ScopeChangeReferences />
-                            </Section>
-                            Attachments
-                            <RevisionAttachments />
-                        </FlexColumn>
-                    </FormWrapper>
-                </div>
-            </Wrapper>
-            <RevisionSubmitBar cancel={cancel} />
-        </RevisionFormStyledWrapper>
-    );
+            <FlexColumn>
+              <Section>
+                <ScopeChangeReferences />
+              </Section>
+              Attachments
+              <RevisionAttachments />
+            </FlexColumn>
+          </FormWrapper>
+        </div>
+      </Wrapper>
+      <RevisionSubmitBar cancel={cancel} />
+    </RevisionFormStyledWrapper>
+  );
 };
 
 const RevisionFormStyledWrapper = styled.div`
-    display: grid;
-    grid-template-rows: auto auto 1fr auto;
-    overflow: hidden;
-    height: 100%;
-    font-size: 14px;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  overflow: hidden;
+  height: 100%;
+  font-size: 14px;
 `;
 
 const Wrapper = styled.div`
-    margin: 24px 32px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    overflow-x: hidden;
+  margin: 24px 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;

@@ -12,148 +12,148 @@ import { Message, MessageWrapper, Wrapper } from './ModelViewerStyles';
 import { useFramework } from '@equinor/fusion-framework-react';
 
 export interface ModelViewerProps {
-    tags?: string[];
-    loadFullModel?: boolean;
-    padding?: number;
-    selectionActions?: SelectionAction[];
-    platformSectionId?: string;
+  tags?: string[];
+  loadFullModel?: boolean;
+  padding?: number;
+  selectionActions?: SelectionAction[];
+  platformSectionId?: string;
 }
 export interface ViewerProps extends ModelViewerProps {
-    echoPlantId: string;
-    children?: React.ReactNode;
+  echoPlantId: string;
+  children?: React.ReactNode;
 }
 
 export const ModelViewer: React.FC<ModelViewerProps> = (props: ModelViewerProps): JSX.Element => {
-    const { echoPlantId } = useFacility();
+  const { echoPlantId } = useFacility();
 
-    return (
-        <ModelViewerContextProvider>
-            <Viewer {...props} echoPlantId={echoPlantId} />
-        </ModelViewerContextProvider>
-    );
+  return (
+    <ModelViewerContextProvider>
+      <Viewer {...props} echoPlantId={echoPlantId} />
+    </ModelViewerContextProvider>
+  );
 };
 
 export const Viewer: React.FC<ViewerProps> = ({
-    tags,
-    loadFullModel,
-    padding = 1,
-    echoPlantId,
-    selectionActions,
-    children,
-    platformSectionId,
+  tags,
+  loadFullModel,
+  padding = 1,
+  echoPlantId,
+  selectionActions,
+  children,
+  platformSectionId,
 }: ViewerProps): JSX.Element => {
-    const viewerRef = useRef<HTMLCanvasElement>(null);
-    const auth = useFramework().modules.auth;
-    const { urls, scope } = useAppConfig();
-    const { isLoading, message, setMessage, setup, selection, echo3DClient } =
-        useModelViewerContext();
-    useModel(loadFullModel, tags, padding);
+  const viewerRef = useRef<HTMLCanvasElement>(null);
+  const auth = useFramework().modules.auth;
+  const { urls, scope } = useAppConfig();
+  const { isLoading, message, setMessage, setup, selection, echo3DClient } =
+    useModelViewerContext();
+  useModel(loadFullModel, tags, padding);
 
-    /**
-     * Setup the Echo3DClient
-     */
-    useEffect(() => {
-        const getModelDistributionToken = async () =>
-            (await auth.acquireAccessToken({
-                scopes: [scope.echoModelDist],
-            })) as string;
+  /**
+   * Setup the Echo3DClient
+   */
+  useEffect(() => {
+    const getModelDistributionToken = async () =>
+      (await auth.acquireAccessToken({
+        scopes: [scope.echoModelDist],
+      })) as string;
 
-        const getHierarchyToken = async () =>
-            (await auth.acquireAccessToken({
-                scopes: [scope.echoHierarchy],
-            })) as string;
+    const getHierarchyToken = async () =>
+      (await auth.acquireAccessToken({
+        scopes: [scope.echoHierarchy],
+      })) as string;
 
-        const modelDistributionConfig = {
-            baseUrl: urls.echoModelDist,
-            getAccessToken: getModelDistributionToken,
-        };
-        const hierarchyConfig = {
-            baseUrl: urls.echoHierarchy,
-            getAccessToken: getHierarchyToken,
-        };
-        const renderConfig: RendererConfiguration = {
-            clearColor: tokens.colors.ui.background__info.hex,
-        };
+    const modelDistributionConfig = {
+      baseUrl: urls.echoModelDist,
+      getAccessToken: getModelDistributionToken,
+    };
+    const hierarchyConfig = {
+      baseUrl: urls.echoHierarchy,
+      getAccessToken: getHierarchyToken,
+    };
+    const renderConfig: RendererConfiguration = {
+      clearColor: tokens.colors.ui.background__info.hex,
+    };
 
-        (async () => {
-            if (!viewerRef.current) return;
-            try {
-                setup(
-                    echoPlantId,
-                    viewerRef.current,
-                    modelDistributionConfig,
-                    hierarchyConfig,
-                    renderConfig,
-                    platformSectionId
-                );
-            } catch (ex) {
-                console.log(ex);
-                setMessage({ message: 'Failed to setup Echo 3D web client', type: 'NoPlant' });
-            }
-        })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [auth]);
+    (async () => {
+      if (!viewerRef.current) return;
+      try {
+        setup(
+          echoPlantId,
+          viewerRef.current,
+          modelDistributionConfig,
+          hierarchyConfig,
+          renderConfig,
+          platformSectionId
+        );
+      } catch (ex) {
+        console.log(ex);
+        setMessage({ message: 'Failed to setup Echo 3D web client', type: 'NoPlant' });
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
 
-    useEffect(() => {
-        return () => {
-            echo3DClient?.viewer.disposeAll();
-        };
-    }, []);
+  useEffect(() => {
+    return () => {
+      echo3DClient?.viewer.disposeAll();
+    };
+  }, []);
 
-    return (
-        <>
-            <Wrapper>
-                <canvas ref={viewerRef} />
-                {children && children}
+  return (
+    <>
+      <Wrapper>
+        <canvas ref={viewerRef} />
+        {children && children}
 
-                {(isLoading || !selection) && (
-                    <MessageWrapper>
-                        <Message>
-                            <CircularProgress />
-                        </Message>
-                    </MessageWrapper>
-                )}
-                {message && (
-                    <MessageWrapper>
-                        <Switch defaultCase={<h2>{message.message}</h2>}>
-                            <Case when={message.type === 'NoPlant'}>
-                                <Message
-                                    onClick={() => {
-                                        setMessage();
-                                    }}
-                                >
-                                    <h2>{message.message}</h2>
+        {(isLoading || !selection) && (
+          <MessageWrapper>
+            <Message>
+              <CircularProgress />
+            </Message>
+          </MessageWrapper>
+        )}
+        {message && (
+          <MessageWrapper>
+            <Switch defaultCase={<h2>{message.message}</h2>}>
+              <Case when={message.type === 'NoPlant'}>
+                <Message
+                  onClick={() => {
+                    setMessage();
+                  }}
+                >
+                  <h2>{message.message}</h2>
 
-                                    <Button
-                                        onClick={() => {
-                                            window.open(
-                                                `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
-                                            );
-                                        }}
-                                    >
-                                        Apply for access
-                                    </Button>
-                                </Message>
-                            </Case>
-                            <Case when={message.type === 'NoTags'}>
-                                <Message
-                                    onClick={() => {
-                                        setMessage();
-                                    }}
-                                >
-                                    <Icon
-                                        name={'warning_outlined'}
-                                        color={tokens.colors.interactive.warning__resting.rgba}
-                                        size={48}
-                                    />
-                                    <h2>{message.message}</h2>
-                                </Message>
-                            </Case>
-                        </Switch>
-                    </MessageWrapper>
-                )}
-            </Wrapper>
-            <SelectionMenu selectionActions={selectionActions} />
-        </>
-    );
+                  <Button
+                    onClick={() => {
+                      window.open(
+                        `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
+                      );
+                    }}
+                  >
+                    Apply for access
+                  </Button>
+                </Message>
+              </Case>
+              <Case when={message.type === 'NoTags'}>
+                <Message
+                  onClick={() => {
+                    setMessage();
+                  }}
+                >
+                  <Icon
+                    name={'warning_outlined'}
+                    color={tokens.colors.interactive.warning__resting.rgba}
+                    size={48}
+                  />
+                  <h2>{message.message}</h2>
+                </Message>
+              </Case>
+            </Switch>
+          </MessageWrapper>
+        )}
+      </Wrapper>
+      <SelectionMenu selectionActions={selectionActions} />
+    </>
+  );
 };

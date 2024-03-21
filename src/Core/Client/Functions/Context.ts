@@ -1,8 +1,8 @@
 import { Facility, FusionContext, Project } from '../Types/ClientContext';
 import {
-    internalUpdateFacility,
-    internalUpdateFusionContext,
-    internalUpdateProject
+  internalUpdateFacility,
+  internalUpdateFusionContext,
+  internalUpdateProject,
 } from './internal';
 
 /**
@@ -10,9 +10,9 @@ import {
  * @param {Partial<Facility>} facility
  */
 export function setSelectedFacility(facility: Partial<Facility>): void {
-    internalUpdateFacility({
-        ...facility,
-    });
+  internalUpdateFacility({
+    ...facility,
+  });
 }
 
 /**
@@ -20,7 +20,7 @@ export function setSelectedFacility(facility: Partial<Facility>): void {
  * @param {Partial<Project>} project
  */
 export function setSelectedProject(project: Partial<Project>): void {
-    internalUpdateProject({ ...project });
+  internalUpdateProject({ ...project });
 }
 
 /**
@@ -28,5 +28,5 @@ export function setSelectedProject(project: Partial<Project>): void {
  * @param {Partial<FusionContext>} fusionContext
  */
 export function setSelectedFusionContext(fusionContext: FusionContext): void {
-    internalUpdateFusionContext(fusionContext);
+  internalUpdateFusionContext(fusionContext);
 }

@@ -11,13 +11,13 @@ type SelectorFunction<T, R> = (s: T) => R;
  * @returns
  */
 export function useReleaseControlContext<R = ReleaseControlAtom>(
-    selector?: SelectorFunction<ReleaseControlAtom, R>
+  selector?: SelectorFunction<ReleaseControlAtom, R>
 ): DeepImmutable<R> {
-    const select = selector ? selector : (s: ReleaseControlAtom) => s;
+  const select = selector ? selector : (s: ReleaseControlAtom) => s;
 
-    return useAtom(releaseControlAtom, { select: select as (s: ReleaseControlAtom) => R });
+  return useAtom(releaseControlAtom, { select: select as (s: ReleaseControlAtom) => R });
 }
 
 export function getReleaseControlSnapshot(): ReleaseControlAtom {
-    return deref(releaseControlAtom);
+  return deref(releaseControlAtom);
 }

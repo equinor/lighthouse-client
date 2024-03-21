@@ -1,20 +1,20 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { BookmarkError, BookmarkErrorResponse } from '../../types';
 type ErrorResponse = {
-    error: BookmarkErrorResponse;
+  error: BookmarkErrorResponse;
 };
 export const getAllBookmarks = async (signal?: AbortSignal) => {
-    const { fusionBookmarks } = httpClient();
-    const filterSourceSystem = "$filter=sourcesystem.name eq 'Castberg-portal'";
-    const response = await fusionBookmarks.fetchAsync(
-        `persons/me/bookmarks?api-version=1.0&${filterSourceSystem}`,
-        { signal }
-    );
+  const { fusionBookmarks } = httpClient();
+  const filterSourceSystem = "$filter=sourcesystem.name eq 'Castberg-portal'";
+  const response = await fusionBookmarks.fetchAsync(
+    `persons/me/bookmarks?api-version=1.0&${filterSourceSystem}`,
+    { signal }
+  );
 
-    if (!response.ok) {
-        const { error } = (await response.json()) as ErrorResponse;
-        throw new BookmarkError(error?.message);
-    }
+  if (!response.ok) {
+    const { error } = (await response.json()) as ErrorResponse;
+    throw new BookmarkError(error?.message);
+  }
 
-    return response.json();
+  return response.json();
 };

@@ -1,4 +1,4 @@
 export interface TextArea {
-    type: 'TextArea';
-    CustomInputType?: React.FC;
+  type: 'TextArea';
+  CustomInputType?: React.FC;
 }
