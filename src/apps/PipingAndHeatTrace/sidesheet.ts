@@ -1,4 +1,4 @@
-import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
+import { htSidesheetCreator, rcSidesheetCreator } from './PipingAndHeatTraceWidgets';
 
 export const htSidesheetWidgetManifest = htSidesheetCreator('SidesheetManifest');
 export const htSidesheetWidgetComponent = htSidesheetCreator('SidesheetComponentManifest');

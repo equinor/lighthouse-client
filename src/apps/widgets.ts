@@ -46,7 +46,7 @@ import {
   ReleaseControlSidesheetWidgetManifest,
   htSidesheetWidgetComponent,
   ReleaseControlSidesheetWidgetComponent,
-} from './DisciplineReleaseControl/sidesheet';
+} from './PipingAndHeatTrace/sidesheet';
 
 const _widgets: WidgetManifest[] = [
   changeSideSheetWidgetManifest,
