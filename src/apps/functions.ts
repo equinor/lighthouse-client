@@ -12,7 +12,7 @@ import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfi
 import { swcrResolverFunction } from './swcr';
 import { tagResolverFunction } from './Tags';
 import { workOrderResolverFunction } from './WorkOrder/utility/sidesheetConfig';
-import { htResolverFunction, rcResolverFunction } from './DisciplineReleaseControl/sidesheet';
+import { htResolverFunction, rcResolverFunction } from './PipingAndHeatTrace/sidesheet';
 
 export const functions: FunctionManifest[] = [
   changeCreatorAccessFunction,

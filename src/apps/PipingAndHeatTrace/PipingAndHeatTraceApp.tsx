@@ -1,6 +1,6 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { generateCommaSeperatedStringArrayColumn } from '@equinor/Table';
-import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
+import { htSidesheetCreator, rcSidesheetCreator } from './PipingAndHeatTraceWidgets';
 import { Pipetest } from './Types/pipetest';
 import {
   filterConfig,
