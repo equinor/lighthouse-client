@@ -42,7 +42,7 @@
     "@microsoft/applicationinsights-web": "^3.0.3",
     "@microsoft/microsoft-graph-types": "^2.7.0",
     "@microsoft/signalr": "^6.0.8",
-    "@remirror/pm": "^2.0.2",
+    "@remirror/pm": "^2.0.8",
     "@remirror/react": "^2.0.22",
     "@remirror/styles": "^2.0.2",
     "@tweenjs/tween.js": "^21.0.0",
