@@ -1,14 +1,14 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { PhaseSelect } from '../../../DisciplineReleaseControl/Components/Form/Inputs/PhaseSelect';
+import { PhaseSelect } from '../../../PipingAndHeatTrace/Components/Form/Inputs/PhaseSelect';
 import { getReleaseControlById } from '../../api/releaseControl/Request';
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 import { useRequestMutations } from '../../hooks/useRequestMutations';
 import { releaseControlQueries } from '../../queries/queries';
 import { releaseManifest } from '../../ReleaseControlApp';
 import { CreateReleaseControlStepModel } from '../../types/releaseControl';
-import { disciplineReleaseControlFactoryContext } from '../Factory/FactoryComponent';
+import { pipingAndHeatTraceFactoryContext } from '../Factory/FactoryComponent';
 import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
 import { HtCablesInput } from './Inputs/Scope/HtCables';
@@ -106,7 +106,7 @@ export const SubmitButtonBar = (): JSX.Element => {
 
   const step = useAtomState(({ step }) => step ?? 'scope');
 
-  const swapComponent = disciplineReleaseControlFactoryContext.useAtomState(
+  const swapComponent = pipingAndHeatTraceFactoryContext.useAtomState(
     ({ swapComponent }) => swapComponent
   );
 
@@ -133,7 +133,7 @@ export const SubmitButtonBar = (): JSX.Element => {
 
   const onMutate = (draft: boolean) => {
     const { prepareReleaseControl } = DRCFormAtomApi;
-    disciplineReleaseControlFactoryContext.readAtomValue().setHasUnsavedChanges(false);
+    pipingAndHeatTraceFactoryContext.readAtomValue().setHasUnsavedChanges(false);
     mutate({
       draft: draft,
       model: prepareReleaseControl(),

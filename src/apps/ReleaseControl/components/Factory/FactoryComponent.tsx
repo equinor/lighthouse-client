@@ -6,15 +6,15 @@ import { ReleaseControlProcessForm } from '../Form/ReleaseControlProcessForm';
 import { deref } from '@dbeining/react-atom';
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 
-interface DisciplineReleaseControlFactoryComponentProps {
+interface PipingAndHeatTraceFactoryComponentProps {
   actions: SidesheetApi;
 }
 
-export const DisciplineReleaseControlFactoryComponent = ({
+export const PipingAndHeatTraceFactoryComponent = ({
   actions,
-}: DisciplineReleaseControlFactoryComponentProps): JSX.Element => {
+}: PipingAndHeatTraceFactoryComponentProps): JSX.Element => {
   useEffect(() => {
-    disciplineReleaseControlFactoryContext.updateAtom(actions);
+    pipingAndHeatTraceFactoryContext.updateAtom(actions);
     actions.setHasUnsavedChanges(true);
     actions.setTitle('Create Release control workflow');
     actions.setWidth(1550);
@@ -43,4 +43,4 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const disciplineReleaseControlFactoryContext = createAtom<SidesheetApi>({} as SidesheetApi);
+export const pipingAndHeatTraceFactoryContext = createAtom<SidesheetApi>({} as SidesheetApi);

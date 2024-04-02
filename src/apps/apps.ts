@@ -12,7 +12,7 @@ import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './Checklist';
-import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
+import { setup as pipingAndHeatTraceSetup } from './PipingAndHeatTrace/PipingAndHeatTraceApp';
 import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import { setup as MDRSetup } from './MDR';
@@ -497,7 +497,7 @@ export const apps: AppManifest[] = [
     tags: [],
     app: {
       appType: 'Workspace',
-      setup: disciplineReleaseControlSetup,
+      setup: pipingAndHeatTraceSetup,
     },
     appEnv: 'prod',
     helpPageUrl:
