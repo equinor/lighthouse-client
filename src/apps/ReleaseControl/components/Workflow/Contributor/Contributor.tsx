@@ -33,7 +33,7 @@ export const ContributorRender = ({ contributor, stepId }: ContributorRenderProp
         <RowContent>
           <FlexColumn>
             <span>{contributor.instructionsToContributor}</span>
-            <span>
+            <span style={{fontSize: "14px"}}>
               {contributor.person.firstName} {contributor.person.lastName}
             </span>
             {contributor.contribution?.comment && <q>{contributor.contribution?.comment}</q>}
