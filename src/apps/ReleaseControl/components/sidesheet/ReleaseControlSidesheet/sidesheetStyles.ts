@@ -34,7 +34,7 @@ export const StyledFlexColumnWorkflowTab = styled.div`
   flex-direction: column;
   gap: 44px;
   overflow-wrap: break-word;
-  max-width: 600px;
+  max-width: 1000px;
 `;
 export const FormWrapper = styled.form`
   display: grid;
