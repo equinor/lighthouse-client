@@ -80,7 +80,6 @@ export const WorkflowStep = ({
 
   return (
     <>
-      <Divider />
       <Line>
         {step.isCompleted ? (
           step.criterias !== undefined ? (
@@ -124,16 +123,19 @@ export const WorkflowStep = ({
           </>
         ) : (
           <StyledWorkflowStepRow>
+            <div style={{ gridRow: 1, gridColumnStart: 1, gridColumnEnd: 5 }}>
+              <Divider />
+            </div>
             <DraggableIconWrapper
-              style={{ gridRow: 1, gridColumn: 1 }}
+              style={{ gridRow: 2, gridColumn: 1 }}
               className={DraggableHandleSelector}
-            >
+              >
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
-            <NumberCircle style={{ gridRow: 1, gridColumn: 2 }}>{step.order}</NumberCircle>
+            <NumberCircle style={{ gridRow: 2, gridColumn: 2 }}>{step.order}</NumberCircle>
             <Selections
-              style={{ gridRow: 1, gridColumn: 3, display: 'flex', alignItems: 'flex-end' }}
-            >
+              style={{ gridRow: 2, gridColumn: 3, display: 'flex', alignItems: 'flex-end' }}
+              >
               <StepSelect>
                 <Autocomplete
                   options={availableSteps.map((s) => s.name)}
@@ -144,7 +146,7 @@ export const WorkflowStep = ({
                       workflowSteps: updateStepName(step, steps, change.selectedItems[0] ?? ''),
                     })
                   }
-                />
+                  />
               </StepSelect>
               <ResponsibleSelect>
                 <PCSPersonRoleSearch
@@ -158,17 +160,17 @@ export const WorkflowStep = ({
                         !value ? '' : value.value,
                         responsibleObject.email,
                         value.type
-                      ),
-                    });
-                  }}
-                  classification="RELEASECONTROL"
-                  value={
-                    step?.criteriaTemplates?.[0]?.type === 'RequireProcosysFunctionalRoleSignature'
+                        ),
+                      });
+                    }}
+                    classification="RELEASECONTROL"
+                    value={
+                      step?.criteriaTemplates?.[0]?.type === 'RequireProcosysFunctionalRoleSignature'
                       ? step?.criteriaTemplates?.[0]?.value
                       : step?.criteriaTemplates?.[0]?.valueDescription
-                  }
-                  defaultResult={functionalRoles}
-                />
+                    }
+                    defaultResult={functionalRoles}
+                    />
               </ResponsibleSelect>
             </Selections>
 
@@ -181,38 +183,38 @@ export const WorkflowStep = ({
                     workflowSteps: removeStep(step, steps),
                   })
                 }
-              />
+                />
               {step.contributors && step.contributors?.length > 0 && (
                 <Icon
-                  title="This step has contributors"
-                  color={tokens.colors.interactive.primary__resting.hex}
-                  name="group"
+                title="This step has contributors"
+                color={tokens.colors.interactive.primary__resting.hex}
+                name="group"
                 />
-              )}
+                )}
             </StyledWorkflowActionsWrapper>
             <StyledMarkdownWrapper>
               {!step.isCompleted && (
                 <MarkdownEditor
-                  commandButtons={[
-                    <ToggleTaskListButton />,
-                    <CommandButton
-                      label={'Add heat tracing cables'}
-                      icon={<Icon size={16} name="heat_trace" />}
-                      commandName={'add_ht_cables'}
-                      onSelect={() => addHeatTracingCables()}
-                      enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0}
-                    />,
-                    <CommandButton
-                      label={'Add tags'}
-                      icon={<Icon size={16} name="tag" />}
-                      commandName={'add_tags'}
-                      onSelect={() => addTags()}
-                      enabled={(releaseControl?.scopeTags ?? [])?.length > 0}
-                    />,
-                    //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
-                  ]}
-                  key={refreshTrigger ? 'true' : 'false'}
-                  initialContent={step.description ?? ''}
+                commandButtons={[
+                  <ToggleTaskListButton />,
+                  <CommandButton
+                  label={'Add heat tracing cables'}
+                  icon={<Icon size={16} name="heat_trace" />}
+                  commandName={'add_ht_cables'}
+                  onSelect={() => addHeatTracingCables()}
+                  enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0}
+                  />,
+                  <CommandButton
+                  label={'Add tags'}
+                  icon={<Icon size={16} name="tag" />}
+                  commandName={'add_tags'}
+                  onSelect={() => addTags()}
+                  enabled={(releaseControl?.scopeTags ?? [])?.length > 0}
+                  />,
+                  //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
+                ]}
+                key={refreshTrigger ? 'true' : 'false'}
+                initialContent={step.description ?? ''}
                 >
                   <DescriptionChanges stepId={step.id!} />
                 </MarkdownEditor>
@@ -257,13 +259,13 @@ const StyledWorkflowStepRow = styled.div`
 `;
 
 const StyledMarkdownWrapper = styled.div`
-  grid-row: 2;
+  grid-row: 3;
   grid-column: 2/5;
 `;
 
 const StyledWorkflowActionsWrapper = styled.div`
   margin-top: 10px;
-  grid-row: 1;
+  grid-row: 2;
   display: flex;
   align-items: center;
 `;
