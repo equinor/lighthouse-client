@@ -20,6 +20,5 @@ export const WorkflowWrapper = styled.div`
 export const RowContent = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  align-items: center;
+  padding-bottom: 10px;
 `;

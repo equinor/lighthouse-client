@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { AllStyledComponent } from '@remirror/styles/styled-components';
 
 export const StyledContainer = styled(AllStyledComponent)`
+  padding-bottom: 10px;
   font-size: 16px;
   p {
     font-size: 16px !important;
