@@ -80,7 +80,6 @@ export const WorkflowStep = ({
 
   return (
     <>
-      <Divider />
       <Line>
         {step.isCompleted ? (
           step.criterias !== undefined ? (
@@ -124,15 +123,18 @@ export const WorkflowStep = ({
           </>
         ) : (
           <StyledWorkflowStepRow>
+            <div style={{ gridRow: 1, gridColumnStart: 1, gridColumnEnd: 5 }}>
+              <Divider />
+            </div>
             <DraggableIconWrapper
-              style={{ gridRow: 1, gridColumn: 1 }}
+              style={{ gridRow: 2, gridColumn: 1 }}
               className={DraggableHandleSelector}
             >
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
-            <NumberCircle style={{ gridRow: 1, gridColumn: 2 }}>{step.order}</NumberCircle>
+            <NumberCircle style={{ gridRow: 2, gridColumn: 2 }}>{step.order}</NumberCircle>
             <Selections
-              style={{ gridRow: 1, gridColumn: 3, display: 'flex', alignItems: 'flex-end' }}
+              style={{ gridRow: 2, gridColumn: 3, display: 'flex', alignItems: 'flex-end' }}
             >
               <StepSelect>
                 <Autocomplete
@@ -252,18 +254,18 @@ export const DescriptionChanges = (props: DescriptionChangesProps): JSX.Element 
 const StyledWorkflowStepRow = styled.div`
   display: grid;
   grid-template-rows: 50px 1fr;
-  grid-template-columns: 5% 5% 80% 10%;
+  grid-template-columns: 1fr 1fr 23fr 1fr;
   align-items: center;
 `;
 
 const StyledMarkdownWrapper = styled.div`
-  grid-row: 2;
+  grid-row: 3;
   grid-column: 2/5;
 `;
 
 const StyledWorkflowActionsWrapper = styled.div`
   margin-top: 10px;
-  grid-row: 1;
+  grid-row: 2;
   display: flex;
   align-items: center;
 `;
