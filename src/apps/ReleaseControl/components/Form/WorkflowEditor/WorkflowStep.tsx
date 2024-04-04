@@ -129,13 +129,13 @@ export const WorkflowStep = ({
             <DraggableIconWrapper
               style={{ gridRow: 2, gridColumn: 1 }}
               className={DraggableHandleSelector}
-              >
+            >
               <DraggableIcon></DraggableIcon>
             </DraggableIconWrapper>
             <NumberCircle style={{ gridRow: 2, gridColumn: 2 }}>{step.order}</NumberCircle>
             <Selections
               style={{ gridRow: 2, gridColumn: 3, display: 'flex', alignItems: 'flex-end' }}
-              >
+            >
               <StepSelect>
                 <Autocomplete
                   options={availableSteps.map((s) => s.name)}
@@ -146,7 +146,7 @@ export const WorkflowStep = ({
                       workflowSteps: updateStepName(step, steps, change.selectedItems[0] ?? ''),
                     })
                   }
-                  />
+                />
               </StepSelect>
               <ResponsibleSelect>
                 <PCSPersonRoleSearch
@@ -160,17 +160,17 @@ export const WorkflowStep = ({
                         !value ? '' : value.value,
                         responsibleObject.email,
                         value.type
-                        ),
-                      });
-                    }}
-                    classification="RELEASECONTROL"
-                    value={
-                      step?.criteriaTemplates?.[0]?.type === 'RequireProcosysFunctionalRoleSignature'
+                      ),
+                    });
+                  }}
+                  classification="RELEASECONTROL"
+                  value={
+                    step?.criteriaTemplates?.[0]?.type === 'RequireProcosysFunctionalRoleSignature'
                       ? step?.criteriaTemplates?.[0]?.value
                       : step?.criteriaTemplates?.[0]?.valueDescription
-                    }
-                    defaultResult={functionalRoles}
-                    />
+                  }
+                  defaultResult={functionalRoles}
+                />
               </ResponsibleSelect>
             </Selections>
 
@@ -183,38 +183,38 @@ export const WorkflowStep = ({
                     workflowSteps: removeStep(step, steps),
                   })
                 }
-                />
+              />
               {step.contributors && step.contributors?.length > 0 && (
                 <Icon
-                title="This step has contributors"
-                color={tokens.colors.interactive.primary__resting.hex}
-                name="group"
+                  title="This step has contributors"
+                  color={tokens.colors.interactive.primary__resting.hex}
+                  name="group"
                 />
-                )}
+              )}
             </StyledWorkflowActionsWrapper>
             <StyledMarkdownWrapper>
               {!step.isCompleted && (
                 <MarkdownEditor
-                commandButtons={[
-                  <ToggleTaskListButton />,
-                  <CommandButton
-                  label={'Add heat tracing cables'}
-                  icon={<Icon size={16} name="heat_trace" />}
-                  commandName={'add_ht_cables'}
-                  onSelect={() => addHeatTracingCables()}
-                  enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0}
-                  />,
-                  <CommandButton
-                  label={'Add tags'}
-                  icon={<Icon size={16} name="tag" />}
-                  commandName={'add_tags'}
-                  onSelect={() => addTags()}
-                  enabled={(releaseControl?.scopeTags ?? [])?.length > 0}
-                  />,
-                  //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
-                ]}
-                key={refreshTrigger ? 'true' : 'false'}
-                initialContent={step.description ?? ''}
+                  commandButtons={[
+                    <ToggleTaskListButton />,
+                    <CommandButton
+                      label={'Add heat tracing cables'}
+                      icon={<Icon size={16} name="heat_trace" />}
+                      commandName={'add_ht_cables'}
+                      onSelect={() => addHeatTracingCables()}
+                      enabled={(releaseControl?.scopeHTTags ?? [])?.length > 0}
+                    />,
+                    <CommandButton
+                      label={'Add tags'}
+                      icon={<Icon size={16} name="tag" />}
+                      commandName={'add_tags'}
+                      onSelect={() => addTags()}
+                      enabled={(releaseControl?.scopeTags ?? [])?.length > 0}
+                    />,
+                    //HACK: using key to trigger a remount, only way I could find to update initialcontent and trigger an update
+                  ]}
+                  key={refreshTrigger ? 'true' : 'false'}
+                  initialContent={step.description ?? ''}
                 >
                   <DescriptionChanges stepId={step.id!} />
                 </MarkdownEditor>
@@ -254,7 +254,7 @@ export const DescriptionChanges = (props: DescriptionChangesProps): JSX.Element 
 const StyledWorkflowStepRow = styled.div`
   display: grid;
   grid-template-rows: 50px 1fr;
-  grid-template-columns: 5% 5% 80% 10%;
+  grid-template-columns: 1fr 1fr 23fr 1fr;
   align-items: center;
 `;
 
