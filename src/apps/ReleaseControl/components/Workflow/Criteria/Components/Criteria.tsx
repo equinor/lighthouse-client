@@ -14,7 +14,7 @@ import { DetailText, VerticalLine, WorklowIconAndLine } from './criteria.styles'
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
 import { Contributor, Criteria } from '../../../../types/releaseControl';
 import { Modal } from '@equinor/modal';
-import { actionWithCommentAtom, SignWithCommentModal } from '@equinor/Workflow';
+import { actionWithCommentAtom, SignWithCommentModal, throwOnError } from '@equinor/Workflow';
 import { useGetReleaseControl, useWorkflowSigning } from '../../../../hooks';
 import { CircularProgress } from '@equinor/eds-core-react-old';
 import { useMutation } from 'react-query';
@@ -161,14 +161,14 @@ type WorkflowStepMarkdownDescriptionProps = {
 function WorkflowStepMarkdownDescription(props: WorkflowStepMarkdownDescriptionProps) {
   const releaseControlId = useReleaseControlContext((r) => r.releaseControl.id);
 
-  const { mutateAsync, error } = useMutation<void, void, UpdateWorkflowMarkdown>({
+  const { mutateAsync, error } = useMutation<void, Error, UpdateWorkflowMarkdown>({
     mutationFn: async (args) => updateWorkflowStepMarkdownDescription(args),
   });
 
   return (
     <>
-      {error && <div>Failed to update description</div>}
       <MarkdownRemirrorViewer
+        key={JSON.stringify(error)}
         editable={props.isStepCompleted ? false : 'checkboxes-only'}
         initialContent={props.description}
         onCheckboxTicked={(markdown) => {
@@ -196,7 +196,7 @@ async function updateWorkflowStepMarkdownDescription({
   releaseControlId,
 }: UpdateWorkflowMarkdown) {
   const { scopeChange } = httpClient();
-  await scopeChange.fetch(
+  const res = await scopeChange.fetch(
     `api/releasecontrol/${releaseControlId}/workflow/step/${stepId}/description`,
     {
       headers: {
@@ -206,4 +206,6 @@ async function updateWorkflowStepMarkdownDescription({
       body: JSON.stringify({ description: description }),
     }
   );
+
+  await throwOnError(res, "Failed to update description")
 }
