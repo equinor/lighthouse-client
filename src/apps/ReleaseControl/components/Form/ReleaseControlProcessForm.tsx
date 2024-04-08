@@ -26,6 +26,7 @@ import {
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, updateStep } from './WorkflowEditor/WorkflowEditorHelpers';
 import { Autocomplete, Button, Icon, Progress, Typography } from '@equinor/eds-core-react';
+import { useInternalSidesheetFunction } from '@equinor/sidesheet';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
   const { useAtomState, updateAtom, clearState } = DRCFormAtomApi;
@@ -103,6 +104,7 @@ export const SubmitButtonBar = (): JSX.Element => {
   const { useIsValid, useAtomState } = DRCFormAtomApi;
   const [isCreated, setIsCreated] = useState(false);
   const isValid = useIsValid();
+  const { setHasUnsavedChanges } = useInternalSidesheetFunction()
 
   const step = useAtomState(({ step }) => step ?? 'scope');
 
@@ -133,7 +135,7 @@ export const SubmitButtonBar = (): JSX.Element => {
 
   const onMutate = (draft: boolean) => {
     const { prepareReleaseControl } = DRCFormAtomApi;
-    pipingAndHeatTraceFactoryContext.readAtomValue().setHasUnsavedChanges(false);
+    setHasUnsavedChanges(false);
     mutate({
       draft: draft,
       model: prepareReleaseControl(),

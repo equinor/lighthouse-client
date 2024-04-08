@@ -14,7 +14,7 @@ export const VerticalLine = styled.div<VerticalLineProps>`
 `;
 
 export const DetailText = styled.div`
-  font-size: 14px;
+  font-size: 12px;
 `;
 
 export const WorklowIconAndLine = styled.div`
