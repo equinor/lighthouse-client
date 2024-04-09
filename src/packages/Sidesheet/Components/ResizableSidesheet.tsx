@@ -52,9 +52,9 @@ export const ResizableSidesheet = (): JSX.Element | null => {
   if (!SidesheetComponent) return null;
 
   return (
-    <div style={{ height: '100%', width: isMinimized ? "24px" : "100%" }}>
+    <div style={{ height: '100%' }}>
       <Resizable
-        size={{ width: width, height: '100%' }}
+        size={{ width: isMinimized ? "24px" : width, height: '100%' }}
         maxWidth={'100vw'}
         onResizeStop={(e, direction, ref, d) => {
           if (width + d.width < minWidth) {
@@ -62,23 +62,26 @@ export const ResizableSidesheet = (): JSX.Element | null => {
             setIsMinimized(true);
           } else {
             setWidth(width + d.width);
+            setIsMinimized(false);
           }
         }}
       >
         <Header>
           <LeftHeader>
             <ColourTab appColor={color} onClick={handleMinimize}>
-              <Icon name="chevron_right" size={24} color={'white'} />
+              <Icon name={isMinimized ? "chevron_left" : "chevron_right"} size={24} color={'white'} />
             </ColourTab>
             <Title>{title}</Title>
           </LeftHeader>
+          {!isMinimized && (
+            <RightHeader>
+              {menuItems.length > 0 && <IconMenu placement="bottom" items={menuItems} />}
+              <Button variant="ghost_icon" onClick={closeSidesheet}>
+                <Icon name="close" size={24} color={tokens.colors.interactive.primary__resting.hex} />
+              </Button>
+            </RightHeader>
+          )}
 
-          <RightHeader>
-            {menuItems.length > 0 && <IconMenu placement="bottom" items={menuItems} />}
-            <Button variant="ghost_icon" onClick={closeSidesheet}>
-              <Icon name="close" size={24} color={tokens.colors.interactive.primary__resting.hex} />
-            </Button>
-          </RightHeader>
         </Header>
 
         <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
