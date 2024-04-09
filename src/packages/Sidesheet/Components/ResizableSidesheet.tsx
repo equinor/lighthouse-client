@@ -51,23 +51,8 @@ export const ResizableSidesheet = (): JSX.Element | null => {
 
   if (!SidesheetComponent) return null;
 
-  if (isMinimized) {
-    return (
-      //HACK: auto doesnt work?
-      <div style={{ width: '24px' }}>
-        <ColourTab appColor={color} onClick={handleMinimize}>
-          <Icon name="chevron_left" color={'white'} />
-        </ColourTab>
-        <RotatedText>{title}</RotatedText>
-        <div style={{ display: 'none' }}>
-          <SidesheetComponent {...sidesheetProps} />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', width: isMinimized ? "24px" : "100%" }}>
       <Resizable
         size={{ width: width, height: '100%' }}
         maxWidth={'100vw'}
@@ -97,10 +82,11 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         </Header>
 
         <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
-          <div style={{ height: '95%' }}>
+          <div style={{ height: '95%', display: isMinimized ? "none" : "block" }}>
             <SidesheetComponent {...sidesheetProps} />
           </div>
         </ErrorBoundary>
+        {isMinimized && <RotatedText>{title}</RotatedText>}
       </Resizable>
     </div>
   );
