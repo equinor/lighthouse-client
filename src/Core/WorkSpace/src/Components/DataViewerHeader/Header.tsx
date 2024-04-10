@@ -4,10 +4,6 @@ import { TabsConfigItem } from '../../Util/tabsConfig';
 import { ActionBar, HeaderWrapper, Title, TitleBar } from './HeaderStyles';
 import { PowerBiHeader } from './PowerBiHeader';
 import { WorkspaceHeader } from './WorkspaceHeader';
-import { useEffect } from 'react';
-import { spawnConfirmationDialog } from '../../../../ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { CircularProgress } from '@equinor/eds-core-react-old';
-import { useContactPerson } from '../../../../../hooks/useContactPerson';
 
 interface CompletionViewHeaderProps {
   shortName: string;
@@ -28,20 +24,6 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
   const { activeTab } = useLocationContext();
 
-  const isOldApp = !!oldApps.find((s) => s.shortName === shortName);
-
-  useEffect(() => {
-    if (isOldApp) {
-      spawnConfirmationDialog(
-        `Looks like you're using an old version of this app, press Ok to go to the new one`,
-        'New version of app available',
-        () => {
-          window.location.href = makeRedirectUrl(shortName);
-        }
-      );
-    }
-  }, [isOldApp]);
-
   return (
     <HeaderWrapper sideSheetWidth={sideSheetWidth}>
       <TitleBar>
@@ -49,13 +31,9 @@ export const CompletionViewHeader = ({
         {!!oldApps.find((s) => s.shortName === shortName) && (
           <span style={{ marginLeft: '16px', fontSize: '18px' }}>
             <div style={{ color: 'red' }}>
-              This app is being replaced with a new app and will stop recieving updates
+              This app has been replaced and will not receive any updates
             </div>
-            <a href={makeRedirectUrl(shortName)}>Click here to try the new app</a>
-            <div>
-              Any questions regarding this change, please contact the Fusion Digital Coach:{' '}
-              <ContactPerson />
-            </div>
+            <a href={makeRedirectUrl(shortName)}>Click here to go to the new app</a>
           </span>
         )}
       </TitleBar>
@@ -83,26 +61,6 @@ const makeRedirectUrl = (shortName: string) => {
   }
   return '';
 };
-
-export function ContactPerson() {
-  const { isLoading, data, error } = useContactPerson();
-
-  if (isLoading) {
-    return <CircularProgress size={16} />;
-  }
-
-  if (error) {
-    return <div>Failed to load contact person</div>;
-  }
-
-  return (
-    <>
-      <a target="_blank" href={`https://teams.microsoft.com/l/chat/0/0?users=${data?.mail}`}>
-        {data?.name} (Site 2, 3. Floor,Open plan)
-      </a>
-    </>
-  );
-}
 
 export interface FusionPerson {
   fusionPersonId: string;
