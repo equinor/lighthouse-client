@@ -73,7 +73,7 @@ const columns: Column<RcScopeHtTag>[] = [
     // temp fix on duplicate data problem
     accessor: (item) => {
       const switchBoardArr = item.switchboardTagNos?.split(", ");
-      const uniqueSwitchBoard = Array.from(new Set(switchBoardArr)).toString();
+      const uniqueSwitchBoard = Array.from(new Set(switchBoardArr)).join(", ");
 
       return uniqueSwitchBoard;
     },
@@ -85,7 +85,7 @@ const columns: Column<RcScopeHtTag>[] = [
     // temp fix on duplicate data problem
     accessor: (item) => {
       const circuitArr = item.circuitTagNos?.split(", ");
-      const uniqueCircuits = Array.from(new Set(circuitArr)).toString();
+      const uniqueCircuits = Array.from(new Set(circuitArr)).join(", ");
 
       return uniqueCircuits;
     },
