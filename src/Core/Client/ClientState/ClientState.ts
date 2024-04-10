@@ -11,7 +11,6 @@ const INITIAL_STATE = {
     logging: false,
     isProduction: false,
     clientEnv: 'dev',
-    contactPerson: '',
   },
   context: {
     project: {
@@ -46,7 +45,6 @@ const INITIAL_STATE = {
   },
 } as GlobalClientState;
 
-/** @type {Atom<GlobalClientState>}  Main State in Application*/
 const GLOBAL_CLIENT_STATE = createGlobalClientState(INITIAL_STATE);
 
 function createGlobalClientState(initialState: GlobalClientState) {

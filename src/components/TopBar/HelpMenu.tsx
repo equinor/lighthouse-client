@@ -3,7 +3,6 @@ import { useLocationKey } from '@equinor/hooks';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useState, useRef, useMemo } from 'react';
 import { getApps } from '../../apps/apps';
-import { useContactPerson } from '../../hooks/useContactPerson';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -12,8 +11,6 @@ export const HelpMenu = (): JSX.Element => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  //preload
-  useContactPerson();
 
   return (
     <div ref={ref}>
@@ -29,7 +26,6 @@ export const HelpMenu = (): JSX.Element => {
 
         <Popover.Content>
           <Wrapper>
-            <ContactPerson />
             <HelpPage />
             <Feedback />
           </Wrapper>
@@ -38,25 +34,6 @@ export const HelpMenu = (): JSX.Element => {
     </div>
   );
 };
-
-function ContactPerson() {
-  const { data } = useContactPerson();
-
-  return (
-    <div>
-      <StyledContent>
-        <Icon color={tokens.colors.interactive.primary__resting.hex} name="support" />
-        <Typography variant="h3">Fusion Digital Coach</Typography>
-      </StyledContent>
-      <Typography variant="h4">
-        <a target="_blank" href={`https://teams.microsoft.com/l/chat/0/0?users=${data?.mail}`}>
-          {data?.name}
-        </a>
-        <div>Stord Site 2, 3rd floor</div>
-      </Typography>
-    </div>
-  );
-}
 
 function HelpPage() {
   const locationName = useLocationKey();
