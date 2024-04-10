@@ -70,13 +70,25 @@ const columns: Column<RcScopeHtTag>[] = [
   {
     id: 'switchBoardTagNos',
     Header: 'Switchboard',
-    accessor: (item) => item.switchboardTagNos,
+    // temp fix on duplicate data problem
+    accessor: (item) => {
+      const switchBoardArr = item.switchboardTagNos?.split(", ");
+      const uniqueSwitchBoard = Array.from(new Set(switchBoardArr)).toString();
+
+      return uniqueSwitchBoard;
+    },
     width: 100,
   },
   {
     id: 'circuitTagNos',
     Header: 'Circuit',
-    accessor: (item) => item.circuitTagNos,
+    // temp fix on duplicate data problem
+    accessor: (item) => {
+      const circuitArr = item.switchboardTagNos?.split(", ");
+      const uniqueCircuits = Array.from(new Set(circuitArr)).toString();
+
+      return uniqueCircuits;
+    },
     width: 100,
   },
   {
