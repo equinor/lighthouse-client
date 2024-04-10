@@ -46,6 +46,8 @@ viewed at:
 
 # How to run
 
+Create a .env file with the same format as .env.default. Get your environment variables from the console in radix.
+
 ```PS
 $ pnpm install
 $ pnpm start
