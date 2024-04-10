@@ -84,7 +84,7 @@ const columns: Column<RcScopeHtTag>[] = [
     Header: 'Circuit',
     // temp fix on duplicate data problem
     accessor: (item) => {
-      const circuitArr = item.switchboardTagNos?.split(", ");
+      const circuitArr = item.circuitTagNos?.split(", ");
       const uniqueCircuits = Array.from(new Set(circuitArr)).toString();
 
       return uniqueCircuits;
