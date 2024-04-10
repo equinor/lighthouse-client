@@ -37,8 +37,8 @@ export function ReleaseControlSidesheetBanner(): JSX.Element {
       <BannerItem
         title="Curr. step/tot. steps"
         value={`${
-          releaseControl.currentWorkflowStep?.order
-            ? releaseControl.currentWorkflowStep.order + 1
+          releaseControl.currentWorkflowStep?.order || releaseControl.currentWorkflowStep?.order! >= 0
+            ? releaseControl.currentWorkflowStep?.order! + 1
             : totalSteps
         }/${totalSteps}`}
       />
