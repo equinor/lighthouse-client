@@ -20,7 +20,6 @@ export function registerClientRegistry(registry: ClientRegistry): ClientRegistry
 }
 
 export function registerAppConfig(appConfig: AppConfigResult): AppConfigResult {
-  setContactPerson(appConfig.settings.contactPerson);
   updateGlobalClientState(() => ({
     appConfig,
   }));

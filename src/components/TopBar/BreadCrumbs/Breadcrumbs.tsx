@@ -1,24 +1,12 @@
 import { Breadcrumbs } from '@equinor/eds-core-react-old';
 import { Fragment, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { readClientRegistry } from '../../../Core/Client/Functions';
 
-function isNewAppLoaded() {
-  return (
-    window.location.href.includes('handover-new') ||
-    window.location.href.includes('mechanical-completion') ||
-    window.location.href.includes('loop-new')
-  );
-}
-
 export const LocationBreadCrumbs = (): JSX.Element => {
   const location = useLocation();
-  const clientRegistry = readClientRegistry();
-  const paths = location.pathname.split('/').filter((s) => s !== '');
-  const appName = clientRegistry.apps.find((s) => s.shortName === paths.at(1))?.shortName;
 
   const createBreadCrumbs = useCallback(() => {
     const paths = location.pathname.split('/').filter((s) => s !== '');
@@ -47,7 +35,7 @@ export const LocationBreadCrumbs = (): JSX.Element => {
 
   return (
     <>
-      {createBreadCrumbs().map(({ displayName, pathName }, i) => (
+      {createBreadCrumbs().map(({ displayName, pathName }) => (
         <Fragment key={pathName}>
           <BreadcrumbStyle>/</BreadcrumbStyle>
           <Breadcrumbs>
@@ -55,28 +43,9 @@ export const LocationBreadCrumbs = (): JSX.Element => {
           </Breadcrumbs>
         </Fragment>
       ))}
-      {isNewAppLoaded() && (
-        <div style={{ color: 'red' }}>
-          Looking for the old app?
-          <Link to={getRedirectUrl(appName)}>Click here</Link>
-        </div>
-      )}
     </>
   );
 };
-
-function getRedirectUrl(key: string | undefined) {
-  if (key === 'mechanical-completion') {
-    return 'ConstructionAndCommissioning/mc';
-  }
-  if (key === 'loop-new') {
-    return 'ConstructionAndCommissioning/loop';
-  }
-  if (key === 'handover-new') {
-    return 'ConstructionAndCommissioning/handover';
-  }
-  return 'ConstructionAndCommissioning/handover-new';
-}
 
 const BreadcrumbStyle = styled.div`
   font-family: Equinor;
