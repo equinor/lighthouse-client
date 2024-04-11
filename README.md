@@ -36,7 +36,7 @@ viewed at:
 
 # How to run
 
-Create a .env file with the same format as the .env.default from root folder. Get your environment variables from the console in [radix](https://console.radix.equinor.com/applications/lighthouse-client/envs/dev/component/frontend)(or ask a team-member).
+Create a .env file with the same format as the .env.default from root folder. Get your environment variables from the console in [radix](https://console.radix.equinor.com/applications/lighthouse-client)(or ask a team-member).
 
 [Direct link to env variables](https://console.radix.equinor.com/applications/lighthouse-client/envs/dev/component/frontend)
 
