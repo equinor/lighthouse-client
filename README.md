@@ -9,19 +9,9 @@ Table of content
     - [Optional Software](#optional-software)
 - [How to run](#how-to-run)
 - [Development](#development)
-- [Docker & Docker Compose](#docker--docker-compose)
-  - [Manual](#manual)
-- [Libraries](#libraries)
-  - [Microsoft Authentication Library (MSAL)](#microsoft-authentication-library-msal)
-  - [React](#react)
-- [Testing](#testing)
-  - [JEST](#jest)
-  - [TS-JEST](#ts-jest)
-- [(Build) Tools for the job](#build-tools-for-the-job)
-  - [Styled Components](#styled-components)
-  - [TypeScript](#typescript)
-  - [Vitejs](#vitejs)
 - [Create new Release](#create-new-release)
+    - [Deployment dev environment](#deploy-to-dev)
+    - [Deployment production environment](#deploy-to-production)
 
 ## About
 
@@ -46,6 +36,10 @@ viewed at:
 
 # How to run
 
+Create a .env file with the same format as the .env.default from root folder. Get your environment variables from the console in [radix](https://console.radix.equinor.com/applications/lighthouse-client)(or ask a team-member).
+
+[Direct link to env variables](https://console.radix.equinor.com/applications/lighthouse-client/envs/dev/component/frontend)
+
 ```PS
 $ pnpm install
 $ pnpm start
@@ -58,55 +52,6 @@ $ pnpm start
 `pnpm test` - runs the test suite
 
 `pnpm test-watch` - continual re-testing when files change
-
-## Manual
-
-```
-$ docker build --force-rm -t ppo:latest -f .docker/Dockerfile .
-$ docker run -it -p 3000:80 ppo:latest
-```
-
-# Libraries
-
-### Microsoft Authentication Library (MSAL)
-
-https://github.com/AzureAD/microsoft-authentication-library-for-js
-
-### React
-
-https://reactjs.org/
-
-# Testing (Not in use)
-
-### JEST
-
-https://jestjs.io/
-Testing Framework
-
-### TS-JEST
-
-https://github.com/kulshekhar/ts-jest
-For running tests with Typescript and Typechecking
-
-# (Build) Tools for the job
-
-### Styled Components
-
-General component styling
-
-https://www.styled-components.com
-
-### TypeScript
-
-Better code quality and easier transition for developers coming from a typed language
-
-https://Typescriptlang.org
-
-### Vitejs
-
-Building the application
-
-https://vitejs.dev/
 
 # Create new release
 
