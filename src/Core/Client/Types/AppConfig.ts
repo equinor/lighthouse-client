@@ -14,6 +14,5 @@ export type AppConfigSettings = {
   logging: boolean;
   clientId: string;
   tenantId: string;
-  contactPerson: string;
   ai?: string;
 };
