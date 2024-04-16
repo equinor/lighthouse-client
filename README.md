@@ -1,74 +1,60 @@
 # Castberg ProjectPortal
 
-Table of content
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/equinor/lighthouse-client/ci-build.yml?label=Prod%20deployment)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/equinor/lighthouse-client/deploy-pr.yml?label=PR%20deployment)
+![GitHub issues](https://img.shields.io/github/issues/equinor/lighthouse-client)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/equinor/lighthouse-client)
+![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/lighthouse-client/badge)
+![Known Vulnerabilities](https://snyk.io/test/github/equinor/lighthouse-client/badge.svg)
 
-- [Castberg ProjectPortal](#castberg-projectportal)
-  - [About](#about)
-  - [Software - Required](#software---required)
-    - [Required Software](#required-software)
-    - [Optional Software](#optional-software)
-- [How to run](#how-to-run)
-- [Development](#development)
-- [Create new Release](#create-new-release)
-    - [Deployment dev environment](#deploy-to-dev)
-    - [Deployment production environment](#deploy-to-production)
+This repository contains various applications and many different Power BI reports. Most of the applications are read-only, except *Release Control*, *Scope Change Request* and partially *Piping and Heat trace* (also called Discipline Release Control). The backend for *Release Control*, *Scope Change Request* and *Piping and Heat Trace* can be found [here](https://github.com/equinor/lighthouse-scope-change-control-api).
 
-## About
+This project uses [NodeJS](https://nodejs.org/en/) and [PNPM](https://pnpm.io/). Applications are developed using [React](https://react.dev/), [Typescript](https://www.typescriptlang.org/) and [Vite](https://vitejs.dev/).
 
-This repository contains nine different apps and many different PBI reports. Six of the apps is read-only. Only "Release Control", "Scope Change Request" and partially "Piping and Heat trace" (Discipline Release Control) has read and write. The backend for Release Control, Scope Change Request and Piping and Heat Trace can be found [here](https://github.com/equinor/lighthouse-scope-change-control-api).
+## Getting started 🚀
 
-Client for the Castberg project portal. The client can be
-viewed at:
+Create a .env file with the same format as the .env.default from root folder. Get your environment variables from the console in [Radix](https://console.radix.equinor.com/applications/lighthouse-client/envs/dev/component/frontend) (or ask a team-member). The, run the following commands:
 
-- [https://jc.fusion.equinor.com/](https://jc.fusion.equinor.com/)
-- [https://jc.fusion.dev.equinor.com/](https://jc.fusion.dev.equinor.com/)
-
-## Software - Required
-
-### Required Software
-
-- [NodeJS](https://nodejs.org/en/)
-- [PNPM](https://pnpm.io/)([GitHub](https://github.com/pnpm/pnpm))
-
-### Optional Software
-
-- Docker - https://www.docker.com/ 
-
-# How to run
-
-Create a .env file with the same format as the .env.default from root folder. Get your environment variables from the console in [radix](https://console.radix.equinor.com/applications/lighthouse-client)(or ask a team-member).
-
-[Direct link to env variables](https://console.radix.equinor.com/applications/lighthouse-client/envs/dev/component/frontend)
-
-```PS
-$ pnpm install
-$ pnpm start
+```bash
+pnpm install
+pnpm start
 ```
 
-# Development
+Some other usefull commands are:
 
-`pnpm start` - Starts the dev environment with hot reloading
+- `pnpm start` - starts the dev environment with hot reloading
+- `pnpm test` - runs the test suite
+- `pnpm test-watch` - continual re-testing when files change
 
-`pnpm test` - runs the test suite
+## Contributing ⚒️
 
-`pnpm test-watch` - continual re-testing when files change
+Contributing, check out our [contributing guide](./CONTRIBUTING.md)
 
-# Create new release
+Also, check out the [lighthouse team docs](https://github.com/equinor/lighthouse-docs) for information on how to stucture work.
 
-> 🔴Make sure to align the deployment with [backend](https://github.com/equinor/lighthouse-scope-change-control-api) changes🔴
+## Issues ✨
 
-#### Deploy to dev
+To submit an issue, use one of the predefined issue types in Github Issues.
+Be sure to give good explanation and context in the issue description.
 
-1. Create a pull request
-2. Go to the GitHub actions page and click on "Deploy PR to dev" on the left-hand side
-3. Click on "Run workflow", select your branch and a server to deploy too, click on the "Run workflow" button
-4. Your branch will not get deployed to the respective dev server you selected
+Submitted issues will be prioritized and followed up in our Github Projects.
 
----
+## CI/CD ⚙️
 
-#### Deploy to production
+We continously build, test and verify all PRs submitted to GitHub.
+PRs merged with main will automatically be deployed to production.
 
-> 🔴Make sure to align the deployment with [backend](https://github.com/equinor/lighthouse-scope-change-control-api) changes🔴
+> [!WARNING]  
+> Changes merged with main will be built and deployed to production without any additional approval steps.
 
-1. Merge your branch with main
-2. Your changes will automatically get deployed to the production server
+> [!IMPORTANT]  
+> 🚨 Make sure to align the deployment with [backend](https://github.com/equinor/lighthouse-scope-change-control-api) changes
+
+**The following environments are availible:**
+
+- [🧪 Test environment](https://jc.fusion.dev.equinor.com/)
+- [🏭 Production environment](https://jc.fusion.equinor.com/)
+
+**The following manual deployment actions are availible:**
+
+- [Manual deployment to test](https://github.com/equinor/lighthouse-client/actions/workflows/deploy-pr.yml)
