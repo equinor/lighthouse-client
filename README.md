@@ -9,7 +9,7 @@
 
 This repository contains various applications and many different Power BI reports. Most of the applications are read-only, except *Release Control*, *Scope Change Request* and partially *Piping and Heat trace* (also called Discipline Release Control). The backend for *Release Control*, *Scope Change Request* and *Piping and Heat Trace* can be found [here](https://github.com/equinor/lighthouse-scope-change-control-api).
 
-This project uses [NodeJS](https://nodejs.org/en/) and [PNPM](https://pnpm.io/). Applications are developed using [React](https://react.dev/), [Typescript](https://www.typescriptlang.org/) and [Vite](https://vitejs.dev/).
+This project uses [NodeJS](https://nodejs.org/en/) and [PNPM](https://pnpm.io/). Applications are developed using [React](https://react.dev/), [Typescript](https://www.typescriptlang.org/) and [Vite](https://vitejs.dev/) and hosted in [Radix](https://www.radix.equinor.com/).
 
 ## Getting started 🚀
 
@@ -30,7 +30,7 @@ Some other usefull commands are:
 
 Contributing, check out our [contributing guide](./CONTRIBUTING.md)
 
-Also, check out the [lighthouse team docs](https://github.com/equinor/lighthouse-docs) for information on how to stucture work.
+Also, check out the [lighthouse team docs](https://github.com/equinor/lighthouse-docs) for information on how to structure work.
 
 ## Issues ✨
 
