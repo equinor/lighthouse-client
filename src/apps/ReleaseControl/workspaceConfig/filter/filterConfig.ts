@@ -39,6 +39,13 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
     },
   },
   {
+    name: "Created by",
+    valueFormatter: ({ createdBy }) => {
+      if (!createdBy) return null;
+      return `${createdBy.firstName} ${createdBy.lastName}`
+    }
+  },
+  {
     name: 'Tags',
     valueFormatter: ({ scopeTags }) => {
       if (!scopeTags) {
@@ -56,13 +63,13 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
       return scopeHTTags?.map((x) => x.tagNo).filter((v, i, a) => a.indexOf(v) === i);
     },
   },
-  // {
-  //     name: 'System',
-  //     valueFormatter: ({ systems }) =>
-  //         systems
-  //             ?.map((system) => (system.toString() !== '' ? system.toString() : null))
-  //             .filter((v, i, a) => a.indexOf(v) === i),
-  // },
+  {
+    name: 'System',
+    valueFormatter: ({ commPkNos }) =>
+      commPkNos
+        ?.map((system) => system.slice(0, 2))
+        .filter((v, i, a) => a.indexOf(v) === i),
+  },
   // {
   //     name: 'Circuit',
   //     valueFormatter: ({ circuits }) =>
@@ -82,13 +89,13 @@ export const filterOptions: FilterOptions<ReleaseControl> = [
     valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
     defaultUncheckedValues: ['Voided', 'Closed'],
   },
-  // {
-  //     name: 'CommPk',
-  //     valueFormatter: ({ commPkNos }) =>
-  //         commPkNos
-  //             ?.map((commPk) => (commPk !== '' ? commPk : null))
-  //             .filter((v, i, a) => a.indexOf(v) === i),
-  // },
+  {
+    name: 'CommPk',
+    valueFormatter: ({ commPkNos }) =>
+      commPkNos
+        ?.map((commPk) => (commPk !== '' ? commPk : null))
+        .filter((v, i, a) => a.indexOf(v) === i),
+  },
   // {
   //     name: 'Area',
   //     valueFormatter: ({ areas }) =>
