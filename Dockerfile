@@ -1,9 +1,13 @@
-FROM node:18.0.0-slim as build
+FROM node:20.0.0-slim as build
 
 WORKDIR /app
 COPY . /app
 
-RUN npm i -g pnpm@8.0.0
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN npm i -g pnpm@9.0.5
 RUN pnpm install
 RUN pnpm build:radix
 
