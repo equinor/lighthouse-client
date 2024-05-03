@@ -19,7 +19,7 @@ export const Header = styled.div`
 export const ViewportWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 80%;
   margin: 1rem;
   height: 100%;
 `;
