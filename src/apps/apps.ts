@@ -13,7 +13,6 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './Checklist';
 import { setup as pipingAndHeatTraceSetup } from './PipingAndHeatTrace/PipingAndHeatTraceApp';
-import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import { setup as MDRSetup } from './MDR';
 import { setup as querySetup } from './Query';
@@ -23,12 +22,10 @@ import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeReque
 import { setup as SwcrSetup } from './swcr';
 import { setup as tasksSetup } from './Tasks/TasksApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
-import { setup as workPreparationSetup } from './workPreparation';
 import { setup as loopSetup } from './Loop';
 import { setup as punchSetup } from './Punch';
 import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
 import { setup as preservationAnalyticsSetup } from './Preservation';
-import { setup as spoolsAnalyticsSetup } from './Spools';
 import { setup as ProgressStatusSetup } from './ProgressStatus';
 import { setup as cchOverviewSetup } from './CCHOverview';
 import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTask';
@@ -367,20 +364,6 @@ export const apps: AppManifest[] = [
     appEnv: 'prod',
   },
   {
-    // Ny Power Bi
-    title: 'Work preparation',
-    shortName: 'work-preparation',
-    color: '#0364B8',
-    groupe: Apps.ConstructionAndCommissioning,
-    icon: '',
-    tags: ['PowerBI'],
-    app: {
-      appType: 'PowerBIViewer',
-      setup: workPreparationSetup,
-    },
-    appEnv: 'prod',
-  },
-  {
     title: 'Handover',
     shortName: 'handover-new',
     color: '#0364B8',
@@ -433,33 +416,6 @@ export const apps: AppManifest[] = [
       setup: activitiesSetup,
     },
     appEnv: 'test',
-  },
-  {
-    title: 'Installation',
-    shortName: 'installation',
-    color: '#0364B8',
-    groupe: Apps.ConstructionAndCommissioning,
-    icon: '',
-    tags: ['PowerBI'],
-    app: {
-      appType: 'PowerBIViewer',
-      setup: installationSetup,
-    },
-    appEnv: 'prod',
-    helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Installation.aspx',
-  },
-  {
-    title: 'Spools analytics',
-    shortName: 'spools-analytics',
-    color: '#0364B8',
-    groupe: Apps.ConstructionAndCommissioning,
-    icon: '',
-    tags: ['PowerBI'],
-    app: {
-      appType: 'PowerBIViewer',
-      setup: spoolsAnalyticsSetup,
-    },
-    appEnv: 'prod',
   },
   {
     title: 'Commissioning Analytics',

@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react-old';
 import { useSettings } from '../Hooks/useClientContext';
-import { PowerBIHome } from './PbiHome/PbiHome';
-import { Container, Content, Header, ViewportWrapper } from './clientHomeStyles';
+import { Content, Header, ViewportWrapper } from './clientHomeStyles';
+import { AppLoaderWrapper } from '../../../fusion-framework/AppLoaderWrapper';
 
 export const ClientHome = (): JSX.Element => {
   const { user } = useSettings();
@@ -12,11 +12,11 @@ export const ClientHome = (): JSX.Element => {
         <Header>
           <Typography variant="h3">Welcome {user?.displayName}</Typography>
         </Header>
-        <ViewportWrapper>
-          <Container>
-            <PowerBIHome reportUri={'jca-landing-page '} />
-          </Container>
-        </ViewportWrapper>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <ViewportWrapper> 
+            <AppLoaderWrapper appKey={"completion-analytics"} />
+          </ViewportWrapper>
+        </div>
       </Content>
     </>
   );
