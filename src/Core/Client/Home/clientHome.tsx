@@ -9,14 +9,9 @@ export const ClientHome = (): JSX.Element => {
   return (
     <>
       <Content>
-        <Header>
-          <Typography variant="h3">Welcome {user?.displayName}</Typography>
-        </Header>
-        <div style={{ display: "flex", justifyContent: "center" }}>
           <ViewportWrapper> 
             <AppLoaderWrapper appKey={"completion-analytics"} />
           </ViewportWrapper>
-        </div>
       </Content>
     </>
   );

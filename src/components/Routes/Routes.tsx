@@ -63,7 +63,7 @@ export function ClientRoutes(): JSX.Element {
 
   return (
     <Routes>
-      <Route path={'/'} element={<ClientHome />} />
+      <Route path={'/'} element={ <AppLoaderWrapper appKey={"completion-analytics"} />} />
       <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
       {Object.keys(appGroups).map((key) => {
         const group = appGroups[key];

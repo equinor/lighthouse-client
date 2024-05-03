@@ -2,11 +2,10 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Content = styled.section`
-  padding: 1rem;
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto;
   overflow: auto;
   background-color: ${tokens.colors.ui.background__light.rgba};
 `;
@@ -19,8 +18,7 @@ export const Header = styled.div`
 export const ViewportWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: 80%;
-  margin: 1rem;
+  width: 100%;
   height: 100%;
 `;
 
