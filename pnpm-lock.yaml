@@ -72,8 +72,8 @@ importers:
         specifier: ^3.0.6
         version: 3.0.6(@types/react@17.0.20)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@equinor/fusion-observable':
-        specifier: ^8.1.2
-        version: 8.1.2(@types/react@17.0.20)(react@17.0.2)
+        specifier: ^8.3.0
+        version: 8.3.0(@types/react@17.0.20)(react@17.0.2)
       '@equinor/fusion-react-progress-indicator':
         specifier: ^0.2.0
         version: 0.2.0(react@17.0.2)
@@ -875,8 +875,8 @@ packages:
   '@equinor/fusion-framework@7.0.23':
     resolution: {integrity: sha512-jw1nk+8cPvbEFWLsE4dyTZcwWA4c9wiENT16gZ53JgIinrz5boGW1CbrNgrX+B5908mhIwDwPeTTz/GYkA2hXg==}
 
-  '@equinor/fusion-observable@8.1.2':
-    resolution: {integrity: sha512-pzfr80y+vXijX5hZZK6uQHp/8GcA9PD8ZLWL7PBptD70Rdlig9bMVaIb61e/TNexG6KDCOoynuX2rx1BcxU9QA==}
+  '@equinor/fusion-observable@8.3.0':
+    resolution: {integrity: sha512-z9pUQPVFwzX8SqWKClEXJW65HFwmKbgshCsZhV5Pc0LdSP9sJOyZOGzXo1hGcG4Udx/CetNxoBJ7NmojVJxhxg==}
     peerDependencies:
       '@types/react': "^17.0.0 ||\_^18.0.0"
       react: "^17.0.0 ||\_^18.0.0"
@@ -897,6 +897,7 @@ packages:
 
   '@equinor/fusion-react-progress-indicator@0.2.0':
     resolution: {integrity: sha512-D8FyVHGQwlDHHG8+fb7GgbshDdsg3zGke2oWmcOoAAgV4jxEaXQGPbVvFWBeCZJVSAdYGZGZhJcpawHP+Uky+Q==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   '@equinor/fusion-react-utils@2.1.0':
     resolution: {integrity: sha512-qbQ8Unf8uX5+oVNOBRXq14eTRIiMr2GmShbzYcuZyHlH1Ri4zKns7Lzas/IjbUq/Wxv7uG0A2ssKZX2VipdZXA==}
@@ -2513,6 +2514,7 @@ packages:
 
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
+    deprecated: Use your platform's native atob() and btoa() methods instead
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -2678,6 +2680,7 @@ packages:
 
   babel-merge@3.0.0:
     resolution: {integrity: sha512-eBOBtHnzt9xvnjpYNI5HmaPp/b2vMveE5XggzqHnQeHJ8mFIBrBv6WZEVIj5jJ2uwTItkqKo9gWzEEcBxEq0yw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     peerDependencies:
       '@babel/core': ^7.0.0
 
@@ -3111,6 +3114,7 @@ packages:
   domexception@2.0.1:
     resolution: {integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==}
     engines: {node: '>=8'}
+    deprecated: Use your platform's native DOMException instead
 
   domino@2.1.6:
     resolution: {integrity: sha512-3VdM/SXBZX2omc9JF9nOPCtDaYQ67BGp5CoLpIQlO2KCAPETs8TcDHacF26jXadGbvUteZzRTeos2fhID5+ucQ==}
@@ -5641,10 +5645,6 @@ packages:
   util@0.12.5:
     resolution: {integrity: sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==}
 
-  uuid@8.3.2:
-    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
-    hasBin: true
-
   uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
@@ -6488,7 +6488,7 @@ snapshots:
 
   '@equinor/fusion-framework-module-app@5.2.8(@types/react@17.0.20)(jsdom@16.7.0)(react@17.0.2)(sass@1.43.2)(terser@5.24.0)':
     dependencies:
-      '@equinor/fusion-observable': 8.1.2(@types/react@17.0.20)(react@17.0.2)
+      '@equinor/fusion-observable': 8.3.0(@types/react@17.0.20)(react@17.0.2)
       '@equinor/fusion-query': 4.0.3(@types/react@17.0.20)(jsdom@16.7.0)(react@17.0.2)(sass@1.43.2)(terser@5.24.0)
       immer: 9.0.21
       rxjs: 7.8.1
@@ -6514,7 +6514,7 @@ snapshots:
   '@equinor/fusion-framework-module-bookmark@1.0.15(@types/react@17.0.20)(jsdom@16.7.0)(react@17.0.2)(sass@1.43.2)(terser@5.24.0)':
     dependencies:
       '@equinor/fusion-framework-module': 4.2.5
-      '@equinor/fusion-observable': 8.1.2(@types/react@17.0.20)(react@17.0.2)
+      '@equinor/fusion-observable': 8.3.0(@types/react@17.0.20)(react@17.0.2)
       '@equinor/fusion-query': 4.0.3(@types/react@17.0.20)(jsdom@16.7.0)(react@17.0.2)(sass@1.43.2)(terser@5.24.0)
       rxjs: 7.8.1
     transitivePeerDependencies:
@@ -6711,7 +6711,7 @@ snapshots:
       '@equinor/fusion-framework-module': 4.2.5
       '@equinor/fusion-framework-react-module': 3.0.6(@types/react@17.0.20)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@equinor/fusion-framework-react-module-http': 4.0.1(@equinor/fusion-framework-module-http@5.1.1)(@equinor/fusion-framework-react-module@3.0.6(@types/react@17.0.20)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.20)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      '@equinor/fusion-observable': 8.1.2(@types/react@17.0.20)(react@17.0.2)
+      '@equinor/fusion-observable': 8.3.0(@types/react@17.0.20)(react@17.0.2)
       react: 17.0.2
       rxjs: 7.8.1
     optionalDependencies:
@@ -6768,18 +6768,18 @@ snapshots:
       - terser
       - webdriverio
 
-  '@equinor/fusion-observable@8.1.2(@types/react@17.0.20)(react@17.0.2)':
+  '@equinor/fusion-observable@8.3.0(@types/react@17.0.20)(react@17.0.2)':
     dependencies:
       immer: 9.0.21
       react: 17.0.2
       rxjs: 7.8.1
-      uuid: 8.3.2
+      uuid: 9.0.1
     optionalDependencies:
       '@types/react': 17.0.20
 
   '@equinor/fusion-query@4.0.3(@types/react@17.0.20)(jsdom@16.7.0)(react@17.0.2)(sass@1.43.2)(terser@5.24.0)':
     dependencies:
-      '@equinor/fusion-observable': 8.1.2(@types/react@17.0.20)(react@17.0.2)
+      '@equinor/fusion-observable': 8.3.0(@types/react@17.0.20)(react@17.0.2)
       immer: 9.0.21
       rxjs: 7.8.1
       uuid: 9.0.1
@@ -12918,8 +12918,6 @@ snapshots:
       is-generator-function: 1.0.10
       is-typed-array: 1.1.12
       which-typed-array: 1.1.13
-
-  uuid@8.3.2: {}
 
   uuid@9.0.1: {}
 

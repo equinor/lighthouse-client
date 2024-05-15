@@ -36,7 +36,7 @@
     "@equinor/fusion-framework-react": "^5.3.3",
     "@equinor/fusion-framework-react-app": "^4.1.9",
     "@equinor/fusion-framework-react-module": "^3.0.6",
-    "@equinor/fusion-observable": "^8.1.2",
+    "@equinor/fusion-observable": "^8.3.0",
     "@equinor/fusion-react-progress-indicator": "^0.2.0",
     "@equinor/fusion-web-theme": "^0.1.7",
     "@esfx/async-canceltoken": "^1.0.0-pre.30",
