@@ -285,21 +285,6 @@ importers:
       css-loader:
         specifier: ^6.4.0
         version: 6.4.0(webpack@5.89.0(esbuild@0.19.9))
-      eslint:
-        specifier: ^7.32.0
-        version: 7.32.0
-      eslint-config-prettier:
-        specifier: ^8.3.0
-        version: 8.3.0(eslint@7.32.0)
-      eslint-plugin-prettier:
-        specifier: ^4.0.0
-        version: 4.0.0(eslint-config-prettier@8.3.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.4.1)
-      eslint-plugin-react:
-        specifier: ^7.26.1
-        version: 7.26.1(eslint@7.32.0)
-      eslint-plugin-react-hooks:
-        specifier: ^4.2.0
-        version: 4.2.0(eslint@7.32.0)
       file-loader:
         specifier: ^6.2.0
         version: 6.2.0(webpack@5.89.0(esbuild@0.19.9))
@@ -3263,12 +3248,6 @@ packages:
     peerDependencies:
       eslint: '>=3.14.1'
 
-  eslint-config-prettier@8.3.0:
-    resolution: {integrity: sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==}
-    hasBin: true
-    peerDependencies:
-      eslint: '>=7.0.0'
-
   eslint-plugin-prettier@3.4.1:
     resolution: {integrity: sha512-htg25EUYUeIhKHXjOinK4BgCcDwtLHjqaxCDsMy5nbnUMkKFvIhMVCp+5GFUXQ4Nr8lBsPqtGAqBenbpFqAA2g==}
     engines: {node: '>=6.0.0'}
@@ -3276,17 +3255,6 @@ packages:
       eslint: '>=5.0.0'
       eslint-config-prettier: '*'
       prettier: '>=1.13.0'
-    peerDependenciesMeta:
-      eslint-config-prettier:
-        optional: true
-
-  eslint-plugin-prettier@4.0.0:
-    resolution: {integrity: sha512-98MqmCJ7vJodoQK359bqQWaxOE0CS8paAz/GgjaZLyex4TTk3g9HugoO89EqWCrFiOqn9EVvcoo7gZzONCWVwQ==}
-    engines: {node: '>=6.0.0'}
-    peerDependencies:
-      eslint: '>=7.28.0'
-      eslint-config-prettier: '*'
-      prettier: '>=2.0.0'
     peerDependenciesMeta:
       eslint-config-prettier:
         optional: true
@@ -10112,10 +10080,6 @@ snapshots:
       eslint: 7.32.0
       get-stdin: 6.0.0
 
-  eslint-config-prettier@8.3.0(eslint@7.32.0):
-    dependencies:
-      eslint: 7.32.0
-
   eslint-plugin-prettier@3.4.1(eslint-config-prettier@6.15.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.4.1):
     dependencies:
       eslint: 7.32.0
@@ -10123,14 +10087,6 @@ snapshots:
       prettier-linter-helpers: 1.0.0
     optionalDependencies:
       eslint-config-prettier: 6.15.0(eslint@7.32.0)
-
-  eslint-plugin-prettier@4.0.0(eslint-config-prettier@8.3.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.4.1):
-    dependencies:
-      eslint: 7.32.0
-      prettier: 2.4.1
-      prettier-linter-helpers: 1.0.0
-    optionalDependencies:
-      eslint-config-prettier: 8.3.0(eslint@7.32.0)
 
   eslint-plugin-react-hooks@4.2.0(eslint@7.32.0):
     dependencies:
