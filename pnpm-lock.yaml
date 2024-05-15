@@ -138,8 +138,8 @@ importers:
         specifier: ^4.0.12
         version: 4.0.12
       moment:
-        specifier: ^2.29.4
-        version: 2.29.4
+        specifier: ^2.30.1
+        version: 2.30.1
       odata-query:
         specifier: ^7.0.4
         version: 7.0.4
@@ -897,6 +897,7 @@ packages:
 
   '@equinor/fusion-react-progress-indicator@0.2.0':
     resolution: {integrity: sha512-D8FyVHGQwlDHHG8+fb7GgbshDdsg3zGke2oWmcOoAAgV4jxEaXQGPbVvFWBeCZJVSAdYGZGZhJcpawHP+Uky+Q==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   '@equinor/fusion-react-utils@2.1.0':
     resolution: {integrity: sha512-qbQ8Unf8uX5+oVNOBRXq14eTRIiMr2GmShbzYcuZyHlH1Ri4zKns7Lzas/IjbUq/Wxv7uG0A2ssKZX2VipdZXA==}
@@ -2513,6 +2514,7 @@ packages:
 
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
+    deprecated: Use your platform's native atob() and btoa() methods instead
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -2678,6 +2680,7 @@ packages:
 
   babel-merge@3.0.0:
     resolution: {integrity: sha512-eBOBtHnzt9xvnjpYNI5HmaPp/b2vMveE5XggzqHnQeHJ8mFIBrBv6WZEVIj5jJ2uwTItkqKo9gWzEEcBxEq0yw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     peerDependencies:
       '@babel/core': ^7.0.0
 
@@ -3111,6 +3114,7 @@ packages:
   domexception@2.0.1:
     resolution: {integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==}
     engines: {node: '>=8'}
+    deprecated: Use your platform's native DOMException instead
 
   domino@2.1.6:
     resolution: {integrity: sha512-3VdM/SXBZX2omc9JF9nOPCtDaYQ67BGp5CoLpIQlO2KCAPETs8TcDHacF26jXadGbvUteZzRTeos2fhID5+ucQ==}
@@ -4355,8 +4359,8 @@ packages:
   mlly@1.4.2:
     resolution: {integrity: sha512-i/Ykufi2t1EZ6NaPLdfnZk2AX8cs0d+mTzVKuPfqPKPatxLApaBoxJQ9x1/uckXtrS/U5oisPMDkNs0yQTaBRg==}
 
-  moment@2.29.4:
-    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+  moment@2.30.1:
+    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
 
   moo@0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
@@ -11479,7 +11483,7 @@ snapshots:
       pkg-types: 1.0.3
       ufo: 1.3.1
 
-  moment@2.29.4: {}
+  moment@2.30.1: {}
 
   moo@0.5.2: {}
 
