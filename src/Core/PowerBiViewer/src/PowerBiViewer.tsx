@@ -4,6 +4,8 @@ import { PowerBiViewerHeader } from './Components/PowerBiViewerHeader/PowerBiVie
 import { PowerBiViewerContext, usePowerBiContext } from './Context/PbiContext';
 import { Wrapper } from './PowerBiViewerStyles';
 import { ViewState } from './Types/State';
+import { useCurrentUser } from '@equinor/fusion-framework-react-app/framework';
+import { useEffect } from 'react';
 
 type PowerBiViewerProps = Omit<ViewState, 'report'>;
 
@@ -12,6 +14,23 @@ type PowerBiViewerProps = Omit<ViewState, 'report'>;
  * utilizing the @equinor/lighthouse-powerbi
  */
 export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
+  const user = useCurrentUser();
+
+  useEffect(() => {
+    const ai = window.AI;
+
+    if (!ai) return;
+
+    ai.trackEvent({
+      name: `[App loaded]: ${props.title}`,
+      properties: {
+        appKey: props.title,
+        url: window.location.toString(),
+        userId: user?.localAccountId.split('.')[0] ?? '',
+      },
+    });
+  }, []);
+
   return (
     <PowerBiViewerContext>
       <PbiViewer {...props} />
