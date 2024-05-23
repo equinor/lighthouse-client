@@ -40,16 +40,16 @@ spec:
         - environment: dev
           resources:
             requests:
-              memory: "1024Mi"
-              cpu: "800m"
+              memory: "512Mi"
+              cpu: "400m"
             limits:
               memory: "4096Mi"
               cpu: "800m"
         - environment: dev2
           resources:
             requests:
-              memory: "1024Mi"
-              cpu: "800m"
+              memory: "512Mi"
+              cpu: "400m"
             limits:
               memory: "4096Mi"
               cpu: "800m"
