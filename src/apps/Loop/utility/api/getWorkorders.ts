@@ -30,7 +30,7 @@ export const getWorkorders = async (
 ): Promise<Workorder[]> => {
   const { FAM } = httpClient();
   const res = await FAM.fetchAsync(
-    `v1/typed/completion/custom_loopworkorders/facility/JCA?view-version=v1`,
+    `v1/typed/completion/custom_loopworkordersv1/facility/JCA?view-version=v1`,
     {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

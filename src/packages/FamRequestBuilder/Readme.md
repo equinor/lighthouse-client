@@ -24,7 +24,7 @@ const { data, isLoading, error } = useQuery(['checklists', checklistId], ({ sign
 
 export const getChecklistsForLoop = async (famFilter: FamRequest, signal?: AbortSignal) => {
   const { FAM } = httpClient();
-  const res = await FAM.post(`v0.1/dynamic/completion/custom_loopsidesheetchecklists/JCA`, {
+  const res = await FAM.post(`v0.1/dynamic/completion/custom_loopsidesheetchecklistsv1/JCA`, {
     body: JSON.stringify(famFilter),
     signal,
   });

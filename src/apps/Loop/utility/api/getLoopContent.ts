@@ -20,7 +20,7 @@ export const getLoopContent = async (
 ): Promise<LoopContent[]> => {
   const { FAM } = httpClient();
   const res = await FAM.fetchAsync(
-    `v1/typed/completion/custom_loopcontent/facility/JCA?view-version=v1`,
+    `v1/typed/completion/custom_loopcontentv1/facility/JCA?view-version=v1`,
     {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

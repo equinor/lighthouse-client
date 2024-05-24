@@ -11,7 +11,7 @@ const idResolverFunction = async (id: string): Promise<Loop> => {
   const expressions = generateExpressions('checklistUrlId', 'Equals', [id]);
   const requestArgs = generateFamRequest(customLoopMccrColumns, 'Or', expressions);
   const res = await FAM.fetchAsync(
-    'v1/typed/Completion/Custom_LoopMCCR/facility/JCA?view-version=v1',
+    'v1/typed/Completion/Custom_LoopMCCRv1/facility/JCA?view-version=v1',
     {
       body: JSON.stringify(requestArgs),
       method: 'POST',
