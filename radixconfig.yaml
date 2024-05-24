@@ -56,8 +56,8 @@ spec:
         - environment: prod
           resources:
             requests:
-              memory: "1024Mi"
-              cpu: "800m"
+              memory: "512Mi"
+              cpu: "400m"
             limits:
               memory: "4096Mi"
               cpu: "800m"
