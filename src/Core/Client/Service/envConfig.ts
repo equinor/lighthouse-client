@@ -1,3 +1,5 @@
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+
 export interface EnvConfig {
   readonly CLIENT_ENV: string;
 }
@@ -6,6 +8,7 @@ declare global {
     AUTH_CONFIG: string;
     JC_CONFIG: string;
     SERVICE_MESSAGE: string;
+    AI?: ApplicationInsights;
   }
 }
 export async function fetchClientConfig(): Promise<EnvConfig> {

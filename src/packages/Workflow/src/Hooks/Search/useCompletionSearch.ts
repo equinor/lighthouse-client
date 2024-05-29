@@ -1,7 +1,7 @@
 import { FamTag, FAMTypes, TypedSelectOption } from '@equinor/Workflow';
 import { searchHtCable } from '../../Api/FAM/searchHtCable';
 import { searchHtCableTagNo } from '../../Api/FAM/searchHtCableTagNo';
-import { searchPunchListItems } from '../../Api/FAM/searchPunchListItems';
+import { searchPunchListItemsV2 } from '../../Api/FAM/searchPunchListItems';
 import { searchTag } from '../../Api/FAM/searchTag';
 import { searchTagNo } from '../../Api/FAM/searchTagNo';
 import { getScopeTag } from '../../Api/Backend/getScopeTag';
@@ -37,7 +37,7 @@ export function useCompletionSearch(): FAMSearch {
         ];
       }
       case 'punch': {
-        const items = await searchPunchListItems(searchValue, signal);
+        const items = await searchPunchListItemsV2(searchValue, signal);
         return items.map(
           ({ description, punchItemNo }): TypedSelectOption => ({
             label: `${punchItemNo} - ${description}`,

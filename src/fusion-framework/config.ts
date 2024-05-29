@@ -32,6 +32,7 @@ export const createConfig = (appSettings: AppConfigResult) => {
       appInsights.core.addTelemetryInitializer(ignorePowerBiGenericError);
       appInsights.loadAppInsights();
       appInsights.trackPageView();
+      window['AI'] = appInsights;
     }
 
     config.configureServiceDiscovery({
