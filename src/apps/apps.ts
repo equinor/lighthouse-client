@@ -13,6 +13,7 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './Checklist';
 import { setup as pipingAndHeatTraceSetup } from './PipingAndHeatTrace/PipingAndHeatTraceApp';
+import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
 import { setup as MDRSetup } from './MDR';
 import { setup as querySetup } from './Query';
@@ -416,6 +417,20 @@ export const apps: AppManifest[] = [
       setup: activitiesSetup,
     },
     appEnv: 'test',
+  },
+  {
+    title: 'Installation',
+    shortName: 'installation',
+    color: '#0364B8',
+    groupe: Apps.ConstructionAndCommissioning,
+    icon: '',
+    tags: ['PowerBI'],
+    app: {
+      appType: 'PowerBIViewer',
+      setup: installationSetup,
+    },
+    appEnv: 'prod',
+    helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Installation.aspx',
   },
   {
     title: 'Commissioning Analytics',
