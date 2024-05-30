@@ -1,6 +1,6 @@
 import { GroupView } from '@equinor/GroupView';
 import { useLocationKey } from '@equinor/hooks';
-import { ClientHome, isProduction, useClientContext } from '@equinor/lighthouse-portal-client';
+import { isProduction, useClientContext } from '@equinor/lighthouse-portal-client';
 import { PowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { ReactNode, useEffect } from 'react';
