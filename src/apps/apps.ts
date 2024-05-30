@@ -56,6 +56,21 @@ export enum Apps {
   SSU = 'SSU',
 }
 
+export const cchOverview: AppManifest = {
+  title: 'Overview',
+  // cch-overview is being referenced by frontpage, do not rename shortname
+  shortName: 'cch-overview',
+  color: '#0364B8',
+  groupe: Apps.ConstructionAndCommissioning,
+  icon: '',
+  tags: ['PowerBI'],
+  app: {
+    appType: 'PowerBIViewer',
+    setup: cchOverviewSetup,
+  },
+  appEnv: 'prod',
+}
+
 export const appGroups: Record<Apps, AppGroupe> = {
   AssetData: {
     name: 'Asset data',
@@ -322,20 +337,7 @@ export const apps: AppManifest[] = [
     icon: '',
     tags: [],
   },
-  {
-    title: 'Overview',
-    // cch-overview is being referenced by frontpage, do not rename shortname
-    shortName: 'cch-overview',
-    color: '#0364B8',
-    groupe: Apps.ConstructionAndCommissioning,
-    icon: '',
-    tags: ['PowerBI'],
-    app: {
-      appType: 'PowerBIViewer',
-      setup: cchOverviewSetup,
-    },
-    appEnv: 'prod',
-  },
+  cchOverview,
   {
     title: 'Work order',
     shortName: 'work-order',

@@ -5,7 +5,7 @@ import { PowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { ReactNode, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Apps } from '../../apps/apps';
+import { Apps, cchOverview } from '../../apps/apps';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 
 import { ComponentWrapper } from './ComponentWrapper';
@@ -63,8 +63,7 @@ export function ClientRoutes(): JSX.Element {
 
   return (
     <Routes>
-      {/** HACK: Apps is not strongly typed */}
-      <Route path={'/'} element={<PowerBiViewer {...apps.find(s => s.shortName === "cch-overview")!} />} />
+      <Route path={'/'} element={<PowerBiViewer {...cchOverview} />} />
       <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
       {Object.keys(appGroups).map((key) => {
         const group = appGroups[key];
