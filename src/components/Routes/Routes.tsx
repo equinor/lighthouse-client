@@ -1,11 +1,11 @@
 import { GroupView } from '@equinor/GroupView';
 import { useLocationKey } from '@equinor/hooks';
-import { ClientHome, isProduction, useClientContext } from '@equinor/lighthouse-portal-client';
+import { isProduction, useClientContext } from '@equinor/lighthouse-portal-client';
 import { PowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { ReactNode, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Apps } from '../../apps/apps';
+import { Apps, cchOverview } from '../../apps/apps';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 
 import { ComponentWrapper } from './ComponentWrapper';
@@ -63,7 +63,7 @@ export function ClientRoutes(): JSX.Element {
 
   return (
     <Routes>
-      <Route path={'/'} element={<ClientHome />} />
+      <Route path={'/'} element={<PowerBiViewer {...cchOverview} />} />
       <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
       {Object.keys(appGroups).map((key) => {
         const group = appGroups[key];

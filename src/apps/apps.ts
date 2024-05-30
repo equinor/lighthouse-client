@@ -23,12 +23,10 @@ import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeReque
 import { setup as SwcrSetup } from './swcr';
 import { setup as tasksSetup } from './Tasks/TasksApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
-import { setup as workPreparationSetup } from './workPreparation';
 import { setup as loopSetup } from './Loop';
 import { setup as punchSetup } from './Punch';
 import { setup as commissioningAnalyticsSetup } from './CommissioningAnalytics';
 import { setup as preservationAnalyticsSetup } from './Preservation';
-import { setup as spoolsAnalyticsSetup } from './Spools';
 import { setup as ProgressStatusSetup } from './ProgressStatus';
 import { setup as cchOverviewSetup } from './CCHOverview';
 import { setup as CommissioningPackageTaskSetup } from './CommissioningPackageTask';
@@ -56,6 +54,21 @@ export enum Apps {
   ProjectControl = 'ProjectControl',
   Reports = 'Reports',
   SSU = 'SSU',
+}
+
+export const cchOverview: AppManifest = {
+  title: 'Overview',
+  // cch-overview is being referenced by frontpage, do not rename shortname
+  shortName: 'cch-overview',
+  color: '#0364B8',
+  groupe: Apps.ConstructionAndCommissioning,
+  icon: '',
+  tags: ['PowerBI'],
+  app: {
+    appType: 'PowerBIViewer',
+    setup: cchOverviewSetup,
+  },
+  appEnv: 'prod',
 }
 
 export const appGroups: Record<Apps, AppGroupe> = {
@@ -216,10 +229,9 @@ export const apps: AppManifest[] = [
     groupe: Apps.ProjectInformation,
     icon: '',
     uri: (isProduction: boolean) =>
-      `${
-        isProduction
-          ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
-          : 'https://fusion-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
+      `${isProduction
+        ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
+        : 'https://fusion-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
       }`,
     appEnv: 'prod',
     tags: [],
@@ -313,7 +325,7 @@ export const apps: AppManifest[] = [
     tags: [],
     app: {
       appType: 'FusionApp',
-      setup: () => {},
+      setup: () => { },
     },
     appEnv: 'prod',
   },
@@ -325,19 +337,7 @@ export const apps: AppManifest[] = [
     icon: '',
     tags: [],
   },
-  {
-    title: 'Overview',
-    shortName: 'cch-overview',
-    color: '#0364B8',
-    groupe: Apps.ConstructionAndCommissioning,
-    icon: '',
-    tags: ['PowerBI'],
-    app: {
-      appType: 'PowerBIViewer',
-      setup: cchOverviewSetup,
-    },
-    appEnv: 'prod',
-  },
+  cchOverview,
   {
     title: 'Work order',
     shortName: 'work-order',
@@ -367,20 +367,6 @@ export const apps: AppManifest[] = [
     appEnv: 'prod',
   },
   {
-    // Ny Power Bi
-    title: 'Work preparation',
-    shortName: 'work-preparation',
-    color: '#0364B8',
-    groupe: Apps.ConstructionAndCommissioning,
-    icon: '',
-    tags: ['PowerBI'],
-    app: {
-      appType: 'PowerBIViewer',
-      setup: workPreparationSetup,
-    },
-    appEnv: 'prod',
-  },
-  {
     title: 'Handover',
     shortName: 'handover-new',
     color: '#0364B8',
@@ -389,7 +375,7 @@ export const apps: AppManifest[] = [
     tags: ['Fusion'],
     app: {
       appType: 'FusionApp',
-      setup: () => {},
+      setup: () => { },
     },
     appEnv: 'prod',
     helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
@@ -403,7 +389,7 @@ export const apps: AppManifest[] = [
     tags: ['Fusion'],
     app: {
       appType: 'FusionApp',
-      setup: () => {},
+      setup: () => { },
     },
     appEnv: 'prod',
   },
@@ -416,7 +402,7 @@ export const apps: AppManifest[] = [
     tags: ['Fusion'],
     app: {
       appType: 'FusionApp',
-      setup: () => {},
+      setup: () => { },
     },
     appEnv: 'prod',
     helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Loop.aspx',
@@ -447,19 +433,6 @@ export const apps: AppManifest[] = [
     },
     appEnv: 'prod',
     helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Installation.aspx',
-  },
-  {
-    title: 'Spools analytics',
-    shortName: 'spools-analytics',
-    color: '#0364B8',
-    groupe: Apps.ConstructionAndCommissioning,
-    icon: '',
-    tags: ['PowerBI'],
-    app: {
-      appType: 'PowerBIViewer',
-      setup: spoolsAnalyticsSetup,
-    },
-    appEnv: 'prod',
   },
   {
     title: 'Commissioning Analytics',
@@ -524,8 +497,7 @@ export const apps: AppManifest[] = [
     groupe: Apps.ConstructionAndCommissioning,
     icon: '',
     uri: (isProduction: boolean) =>
-      `https://${
-        isProduction ? 'procosys' : 'procosystest'
+      `https://${isProduction ? 'procosys' : 'procosystest'
       }.equinor.com/JOHAN_CASTBERG/Preservation`,
     tags: ['link', 'procosys'],
     appEnv: 'prod',
@@ -609,7 +581,7 @@ export const apps: AppManifest[] = [
     appEnv: 'prod',
   },
   {
-    title: 'EIT79 analytics',
+    title: 'Atex Inspections',
     shortName: 'eit-analytics',
     color: '#0364B8',
     groupe: Apps.ConstructionAndCommissioning,
@@ -628,8 +600,7 @@ export const apps: AppManifest[] = [
     groupe: Apps.ConstructionAndCommissioning,
     icon: '',
     uri: (isProduction: boolean) =>
-      `https://${
-        isProduction ? 'procosys' : 'procosystest'
+      `https://${isProduction ? 'procosys' : 'procosystest'
       }.equinor.com/JOHAN_CASTBERG/InvitationForPunchOut`,
     tags: ['link', 'procosys'],
     appEnv: 'prod',
@@ -838,8 +809,7 @@ export const apps: AppManifest[] = [
     groupe: Apps.AssetData,
     icon: '',
     uri: (isProduction: boolean) =>
-      `https://${
-        isProduction ? 'stid' : 'stidtest'
+      `https://${isProduction ? 'stid' : 'stidtest'
       }.equinor.com/JCA/search?type=doc&revstatus=OF%2CUA%2CRE%2CPL%2COF-P`,
     tags: ['3D', 'Asset', 'Map', 'Doc'],
     appEnv: 'prod',
@@ -851,8 +821,7 @@ export const apps: AppManifest[] = [
     groupe: Apps.AssetData,
     icon: 'tag',
     uri: (isProduction: boolean) =>
-      `https://${
-        isProduction ? 'stid' : 'stidtest'
+      `https://${isProduction ? 'stid' : 'stidtest'
       }.equinor.com/JCA/search?type=tag&tagstatus=A%2CP%2CR%2CF`,
     tags: ['Tag', 'Data', 'Functional Location'],
     appEnv: 'prod',

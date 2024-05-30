@@ -36,7 +36,7 @@ export function AppLoaderWrapper({ appKey }: { appKey: string }) {
   }
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', width: "100%" }}>
       {isLoading && !bypass ? (
         <CenterInAvailableSpace>
           <CircularProgress size={48} />
