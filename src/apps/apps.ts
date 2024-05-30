@@ -565,7 +565,7 @@ export const apps: AppManifest[] = [
     appEnv: 'prod',
   },
   {
-    title: 'EIT79 analytics',
+    title: 'Atex Inspections',
     shortName: 'eit-analytics',
     color: '#0364B8',
     groupe: Apps.ConstructionAndCommissioning,
