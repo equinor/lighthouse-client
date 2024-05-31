@@ -29,7 +29,7 @@ export const createConfig = (appSettings: AppConfigResult) => {
           enableAjaxPerfTracking: true,
         },
       });
-      appInsights.core.addTelemetryInitializer(ignorePowerBiGenericError);
+      appInsights.core.addTelemetryInitializer(applicationInsightsExceptionFilter);
       appInsights.loadAppInsights();
       appInsights.trackPageView();
       window['AI'] = appInsights;
@@ -97,8 +97,8 @@ export const createConfig = (appSettings: AppConfigResult) => {
     });
   };
 };
-//Will ignore the powerbi custom event isTrusted errors
-function ignorePowerBiGenericError<T extends ITelemetryItem>(a: T) {
+//Not all exceptions are within our control or reproducible. This function filters all exceptions that we choose to ignore.
+function applicationInsightsExceptionFilter<T extends ITelemetryItem>(a: T) {
   if (
     a.name !== 'Microsoft.ApplicationInsights.{0}.Exception' ||
     !Object.keys(a.data ?? {}).includes('message')
@@ -110,10 +110,17 @@ function ignorePowerBiGenericError<T extends ITelemetryItem>(a: T) {
     return false;
   }
 
-  if (
-    a.data?.message === 'ErrorEvent: ResizeObserver loop completed with undelivered notifications.'
-  ) {
+  if (a.data?.message === 'ErrorEvent: ResizeObserver loop completed with undelivered notifications.') {
     return false;
   }
+
+  if (a.data?.message === "Uncaught RequiredModuleTimeoutError: It was too slow") {
+    return false;
+  }
+
+  if ((a.data?.message as string).includes("Uncaught QueryClientError: failed to process task")) {
+    return false;
+  }
+
   return true;
 }
