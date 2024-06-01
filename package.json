@@ -61,7 +61,7 @@
     "moment": "^2.29.4",
     "odata-query": "^7.0.4",
     "powerbi-client": "^2.19.1",
-    "powerbi-client-react": "^1.3.3",
+    "powerbi-client-react": "^1.4.0",
     "powerbi-report-authoring": "^1.1.1",
     "prop-types": "^15.7.2",
     "re-resizable": "^6.9.1",
