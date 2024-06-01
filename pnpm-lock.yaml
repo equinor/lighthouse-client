@@ -147,8 +147,8 @@ importers:
         specifier: ^2.19.1
         version: 2.19.1
       powerbi-client-react:
-        specifier: ^1.3.3
-        version: 1.3.3(react@17.0.2)
+        specifier: ^1.4.0
+        version: 1.4.0(react@17.0.2)
       powerbi-report-authoring:
         specifier: ^1.1.1
         version: 1.1.1
@@ -897,6 +897,7 @@ packages:
 
   '@equinor/fusion-react-progress-indicator@0.2.0':
     resolution: {integrity: sha512-D8FyVHGQwlDHHG8+fb7GgbshDdsg3zGke2oWmcOoAAgV4jxEaXQGPbVvFWBeCZJVSAdYGZGZhJcpawHP+Uky+Q==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   '@equinor/fusion-react-utils@2.1.0':
     resolution: {integrity: sha512-qbQ8Unf8uX5+oVNOBRXq14eTRIiMr2GmShbzYcuZyHlH1Ri4zKns7Lzas/IjbUq/Wxv7uG0A2ssKZX2VipdZXA==}
@@ -2513,6 +2514,7 @@ packages:
 
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
+    deprecated: Use your platform's native atob() and btoa() methods instead
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -2601,6 +2603,7 @@ packages:
   are-we-there-yet@2.0.0:
     resolution: {integrity: sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
 
   arg@4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
@@ -2678,6 +2681,7 @@ packages:
 
   babel-merge@3.0.0:
     resolution: {integrity: sha512-eBOBtHnzt9xvnjpYNI5HmaPp/b2vMveE5XggzqHnQeHJ8mFIBrBv6WZEVIj5jJ2uwTItkqKo9gWzEEcBxEq0yw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     peerDependencies:
       '@babel/core': ^7.0.0
 
@@ -3111,6 +3115,7 @@ packages:
   domexception@2.0.1:
     resolution: {integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==}
     engines: {node: '>=8'}
+    deprecated: Use your platform's native DOMException instead
 
   domino@2.1.6:
     resolution: {integrity: sha512-3VdM/SXBZX2omc9JF9nOPCtDaYQ67BGp5CoLpIQlO2KCAPETs8TcDHacF26jXadGbvUteZzRTeos2fhID5+ucQ==}
@@ -3481,6 +3486,7 @@ packages:
   gauge@3.0.2:
     resolution: {integrity: sha512-+5J6MS/5XksCuXq++uFRsnUd7Ovu1XenbeuIuNRJxYWjgQbPuFhT14lAvsWfqfAmnwluf1OwMjz39HjfLPci0Q==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -3538,6 +3544,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -3743,6 +3750,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -4424,6 +4432,7 @@ packages:
 
   npmlog@5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
+    deprecated: This package is no longer supported.
 
   number-is-nan@1.0.1:
     resolution: {integrity: sha512-4jbtZXNAsfZbAHiiqjLPBiCl16dES1zI4Hpzzxw61Tk+loF+sBDBKx1ICKKKwIqQ7M0mFn1TmkN7euSncWgHiQ==}
@@ -4628,16 +4637,22 @@ packages:
     resolution: {integrity: sha512-D/kj5JNu6oo2EIy+XL/26JEDTlIbB8hw85G8StOE6L74RQAVVP5rej6wxCNqyMbR4RkPfqvezVbPw81Ngd6Kcw==}
     engines: {node: ^10 || ^12 || >=14}
 
-  powerbi-client-react@1.3.3:
-    resolution: {integrity: sha512-cIwdGUfljR6BBA5jhtwYkirdexnJMYtFOSiD9V65y6ZOAcjDD+q93rCvhECv+C2MQo/l/LCLZk98VUKKR67MLg==}
+  powerbi-client-react@1.4.0:
+    resolution: {integrity: sha512-AfS96lP+emEc4drguCUqLG0s4cFa15OM9eqDaP1sJZ+ca0V+FdvFeI1bD6EyC3smPlpRcl862uSzYexVeUxdIQ==}
     peerDependencies:
       react: '>= 16'
 
   powerbi-client@2.19.1:
     resolution: {integrity: sha512-vJOexJ9MA/NaaGju6FT1M5o/0lmLtEVNajeW8Qe5LnTYw+K/B05bKW649+9ZeZf20DOvr1kYLDCCHCsQ1CoV7w==}
 
+  powerbi-client@2.23.1:
+    resolution: {integrity: sha512-r04gDDq8YkrkZjSwOw4UBgzPwudXnA+x8B9ekVE7XDlhTDC7tujbcT15Z+iLDrx+49Bj4qVez0PgjA9CgEFpGw==}
+
   powerbi-models@1.13.0:
     resolution: {integrity: sha512-fToQmRqECBJSlHaKNAzFql52ryNnhSm2UwRXfsctcS5Hp//o9sExasVsASv6jZjXE8ACNyKjDUKdGqWsCjRd1Q==}
+
+  powerbi-models@1.15.2:
+    resolution: {integrity: sha512-UcBLtBB2wa8pL412DxyVZvv/bKiUVJfLTCXAuGmIqnOkoA/EnYDUM3B8oS2piN1azyEN8pjN353rE9DeARCJtA==}
 
   powerbi-report-authoring@1.1.1:
     resolution: {integrity: sha512-ex+zkkLtqpPhLEODaxxUSENXM6KEu5lzNmIFZ2SWWGGVYl430lkJFUjlG35gjYIo9d/PgjOjW0fETeVNLPULFw==}
@@ -5027,6 +5042,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   rollup-plugin-copy@3.4.0:
@@ -5835,6 +5851,9 @@ packages:
 
   window-post-message-proxy@0.2.6:
     resolution: {integrity: sha512-IwNWtUWVFarBa2F9vhmfv2yr0PfPm57QuOBCw3qSLaunhD3THcHUKQ4HrJQiCuYUT7LEjhUtaoA+hrV+wQzNmQ==}
+
+  window-post-message-proxy@0.2.8:
+    resolution: {integrity: sha512-lAxMnXcKMR3UjFmeIWnl+1OdUBZI8l3RlCbr3TUALFpnWK6H6i6x+AHSp7Hs7PFGb08ct8BLT8CrCtESo+PyTQ==}
 
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
@@ -11749,10 +11768,10 @@ snapshots:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
-  powerbi-client-react@1.3.3(react@17.0.2):
+  powerbi-client-react@1.4.0(react@17.0.2):
     dependencies:
       lodash.isequal: 4.5.0
-      powerbi-client: 2.19.1
+      powerbi-client: 2.23.1
       react: 17.0.2
 
   powerbi-client@2.19.1:
@@ -11762,7 +11781,16 @@ snapshots:
       powerbi-router: 0.1.5
       window-post-message-proxy: 0.2.6
 
+  powerbi-client@2.23.1:
+    dependencies:
+      http-post-message: 0.2.3
+      powerbi-models: 1.15.2
+      powerbi-router: 0.1.5
+      window-post-message-proxy: 0.2.8
+
   powerbi-models@1.13.0: {}
+
+  powerbi-models@1.15.2: {}
 
   powerbi-report-authoring@1.1.1:
     dependencies:
@@ -13126,6 +13154,10 @@ snapshots:
       string-width: 4.2.3
 
   window-post-message-proxy@0.2.6:
+    dependencies:
+      es6-promise: 3.3.1
+
+  window-post-message-proxy@0.2.8:
     dependencies:
       es6-promise: 3.3.1
 
