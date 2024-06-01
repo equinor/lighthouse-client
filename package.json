@@ -52,7 +52,7 @@
     "dompurify": "^3.0.9",
     "fast-levenshtein": "^3.0.0",
     "formik": "^2.4.5",
-    "fuse.js": "^6.5.3",
+    "fuse.js": "^7.0.0",
     "hold-event": "^0.1.0",
     "ieee754": "^1.2.1",
     "luxon": "2.5.2",
