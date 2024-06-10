@@ -13,6 +13,7 @@ export type App = {
   appType?: AppType;
   setup?: (api: ClientApi) => void;
   component?: React.FC<CustomClientApi>;
+  appkey?: string;
 };
 
 export type ClientApi = AppManifest & {

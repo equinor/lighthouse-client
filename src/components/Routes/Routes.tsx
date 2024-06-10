@@ -108,11 +108,12 @@ export function ClientRoutes(): JSX.Element {
         }
 
         if (route.app?.appType === 'FusionApp') {
+        
           return (
             <Route
               key={route.shortName + route.groupe}
               path={`${route.groupe}/${route.shortName}/*`}
-              element={<AppLoaderWrapper appKey={route.shortName.replace('-new', '')} />}
+              element={<AppLoaderWrapper appKey={route?.app?.appkey ?? route.shortName.replace('-new', '')} />}
             />
           );
         }
