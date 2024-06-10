@@ -1,4 +1,4 @@
-# Castberg ProjectPortal
+# Castberg Project Portal
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/equinor/lighthouse-client/ci-build.yml?label=Prod%20deployment)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/equinor/lighthouse-client/deploy-pr.yml?label=PR%20deployment)
@@ -58,3 +58,8 @@ PRs merged with main will automatically be deployed to production.
 **The following manual deployment actions are availible:**
 
 - [Manual deployment to test](https://github.com/equinor/lighthouse-client/actions/workflows/deploy-pr.yml)
+
+## Useful links
+
+[User statistics report](https://jc.fusion.equinor.com/ConstructionAndCommissioning/jc-user-statistics)
+
