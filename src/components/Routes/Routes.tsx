@@ -1,3 +1,4 @@
+
 import { GroupView } from '@equinor/GroupView';
 import { useLocationKey } from '@equinor/hooks';
 import { isProduction, useClientContext } from '@equinor/lighthouse-portal-client';
@@ -63,7 +64,7 @@ export function ClientRoutes(): JSX.Element {
 
   return (
     <Routes>
-      <Route path={'/'} element={<PowerBiViewer {...cchOverview} />} />
+      <Route path={'/'} element={<AppLoaderWrapper appKey='completion-analytics' />} />
       <Route path={'/fusion-apps/*'} element={<FusionAppLoaderRoute />} />
       {Object.keys(appGroups).map((key) => {
         const group = appGroups[key];
@@ -126,3 +127,4 @@ export function ClientRoutes(): JSX.Element {
     </Routes>
   );
 }
+
