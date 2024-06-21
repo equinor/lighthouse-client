@@ -17,12 +17,15 @@ import { Modal } from '@equinor/modal';
 export const createBookmarkURL = (bookmark: BookmarkResponse) => {
   /** JC handover shortname has a naming collision with the scaled versions appkey */
   /** Somebody should really refactor this at some point */
+  console.log(bookmark)
   if (bookmark.appKey == 'handover') {
     return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}-new?bookmarkId=${bookmark.id}`;
   } else if (bookmark.appKey == 'mechanical-completion') {
     return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}?bookmarkId=${bookmark.id}`;
   } else if (bookmark.appKey == 'jca-job-analytics') {
     return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}?bookmarkId=${bookmark.id}`;
+  } else if (bookmark.appKey === "completion-analytics") {
+    return `${window.location.origin}/ConstructionAndCommissioning/cch-overview?bookmarkId=${bookmark.id}`
   } else {
     return `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace(
       'jc-',
