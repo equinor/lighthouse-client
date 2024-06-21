@@ -23,6 +23,8 @@ export const createBookmarkURL = (bookmark: BookmarkResponse) => {
     return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}?bookmarkId=${bookmark.id}`;
   } else if (bookmark.appKey == 'jca-job-analytics') {
     return `${window.location.origin}/ConstructionAndCommissioning/${bookmark.appKey}?bookmarkId=${bookmark.id}`;
+  } else if (bookmark.appKey === "completion-analytics") {
+    return `${window.location.origin}/ConstructionAndCommissioning/cch-overview?bookmarkId=${bookmark.id}`
   } else {
     return `${window.location.origin}/${bookmark.sourceSystem.subSystem.replace(
       'jc-',

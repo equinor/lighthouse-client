@@ -38,6 +38,10 @@ const getBookmarkRedirect = (
 
     case 'jca-job-analytics':
       return `/ConstructionAndCommissioning/jca-job-analytics?bookmarkId=${bookmarkId}`;
+
+    case 'completion-analytics':
+      return `/ConstructionAndCommissioning/cch-overview?bookmarkId=${bookmarkId}`;
+
     default:
       return `/${subSystem}/${appKey}?bookmarkId=${bookmarkId}`;
   }
