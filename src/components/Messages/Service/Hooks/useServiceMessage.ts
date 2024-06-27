@@ -33,7 +33,7 @@ export function useServiceMessage(): Return {
 
   useEffect(() => {
     const stringifiedServiceMessage = window.SERVICE_MESSAGE;
-    if (!stringifiedServiceMessage || stringifiedServiceMessage.length == 0) return;
+    if (!stringifiedServiceMessage || stringifiedServiceMessage == ">" || stringifiedServiceMessage.length == 0) return;
     try {
       const message = stringifiedServiceMessage;
       if (message.length == 0) {
