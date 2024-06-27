@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const LogoWrapper = styled.div`
@@ -18,9 +17,8 @@ const LogoTitle = styled.div`
 `;
 
 const Logo = () => {
-  const navigate = useNavigate();
   function handleClick() {
-    navigate('/');
+    window.location.href = window.location.origin
   }
 
   return (
