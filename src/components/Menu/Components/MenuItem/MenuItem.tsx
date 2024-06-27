@@ -18,7 +18,6 @@ export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Ele
   const [showIcon, setShowIcon] = useState(false);
   const { toggleFavorite, hasFavorite } = useFavoritesContext();
 
-  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const isActive = useMemo(() => isAppActive(manifest), [manifest]);
@@ -36,7 +35,7 @@ export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Ele
         e.stopPropagation();
         manifest.uri
           ? window.open(manifest.uri(isProduction()))
-          : navigate(getURL(manifest, groupId));
+          : window.location.href = (getURL(manifest, groupId));
         onClick && onClick();
       }}
       onMouseEnter={() => setShowIcon(true)}
