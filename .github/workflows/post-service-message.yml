@@ -12,7 +12,7 @@ on:
           - dev2
           - prod
       message:
-        description: "The service message, leave empty to delete current SM"
+        description: "The service message, leave > to delete current SM"
         default: ">"
         required: false
         type: string
