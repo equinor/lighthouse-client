@@ -1,4 +1,4 @@
-FROM node:20.0.0-slim as build
+FROM registry.hub.docker.com/library/node:20.0.0-slim as build
 
 WORKDIR /app
 COPY . /app
