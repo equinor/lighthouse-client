@@ -3,6 +3,10 @@ kind: RadixApplication
 metadata:
   name: lighthouse-client
 spec:
+  build:
+    useBuildKit: true
+    useBuildCache: true
+
   dnsExternalAlias:
     - alias: jc.fusion.dev.equinor.com
       environment: dev
