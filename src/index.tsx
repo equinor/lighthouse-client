@@ -8,6 +8,18 @@ import { GlobalStyle } from './Core/Client/styleProvider';
 EdsIconOld.add({ ...icons });
 EdsIcon.add({ ...icons });
 
+function fixDuplicateDefine(originalDefine: typeof customElements.define) {
+  customElements.define = function(name, constructor, options) {
+    if (customElements.get(name)) {
+      console.warn(`Custom element '${name}' has already been defined.`);
+    } else {
+      originalDefine.call(customElements, name, constructor, options);
+    }
+  };
+}
+
+fixDuplicateDefine(customElements.define)
+
 render(
   <>
     <GlobalStyle />
