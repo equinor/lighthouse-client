@@ -1,5 +1,6 @@
 export interface Scope {
   fusion: string;
+  fusionApps: string;
   procosys: string;
   echoModelDist: string;
   echoHierarchy: string;
@@ -18,6 +19,7 @@ export interface Urls {
   echoModelDist: string;
   echoHierarchy: string;
   fusion: string;
+  fusionApps: string;
   procosys: string;
   scopeChange: string;
   FAM: string;

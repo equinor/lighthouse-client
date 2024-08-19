@@ -7,30 +7,32 @@ import { ErrorViewer } from './ErrorViewer';
 import { AppModule } from '@equinor/fusion-framework-module-app';
 import EquinorLoader from './EquinorLoader';
 import { useQuery } from 'react-query';
-import { httpClient } from '../Core/Client/Functions';
+import { useHttpClient } from '../Core/Client/Hooks';
 
 export const AppLoader = (props: { readonly appKey: string }) => {
   const { appKey } = props;
-  const fusionClient = httpClient().fusion;
+  const fusionClient = useHttpClient("fusionApps")
   const fusion = useFramework<[AppModule]>();
+
+  //https://apps.api.fusion.equinor.com/apps/:appIdentifier/builds/:versionIdentifier/config
   const { data: config, isLoading: configLoading } = useQuery(
     [appKey, 'config'],
     async ({ signal }) => {
-      return (await fusionClient.fetch(`api/apps/${appKey}/config`, { signal })).json();
+      return (await fusionClient.fetch(`apps/${appKey}/builds/latest/config`, { signal })).json();
     }
   );
 
   const { data: manifest, isLoading: manifestLoading } = useQuery(
     [appKey, 'manifest'],
     async ({ signal }) => {
-      return (await fusionClient.fetch(`api/apps/${appKey}`, { signal })).json();
+      return (await fusionClient.fetch(`apps/${appKey}`, { signal })).json();
     }
   );
 
   const { data: bundle, isLoading: bundleLoading } = useQuery(
     [appKey, 'bundle'],
     async ({ signal }) => {
-      var blob = await (await fusionClient.fetch(`bundles/apps/${appKey}.js`, { signal }))
+      var blob = await (await fusionClient.fetch(`bundles/apps/${appKey}/latest/${manifest.build.entryPoint}`, { signal }))
         .blob()
         .catch((e) => {
           console.error('Failed to parse blob', e);
@@ -40,7 +42,7 @@ export const AppLoader = (props: { readonly appKey: string }) => {
       }
       return URL.createObjectURL(blob);
     },
-    { structuralSharing: false, cacheTime: Infinity, staleTime: Infinity }
+    { structuralSharing: false, cacheTime: Infinity, staleTime: Infinity, enabled: !!manifest }
   );
 
   const isLoading = manifestLoading || configLoading || bundleLoading;
