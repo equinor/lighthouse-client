@@ -144,11 +144,13 @@ const useSetupClients = () => {
   const fusionPeople = useHttpClient('fusionPeople');
   const fusionTasks = useHttpClient('fusionTasks');
   const procosys = useHttpClient('procosys');
+  const fusionApps = useHttpClient('fusionApps');
 
   useEffect(() => {
     registerClients({
       echoHierarchy,
       echoModelDist,
+      fusionApps,
       FAM,
       fusion,
       fusionBookmarks,
